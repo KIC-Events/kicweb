@@ -2,61 +2,127 @@
 using Microsoft.AspNetCore.Mvc;
 using kicweb.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using kicweb.Services;
+using System.Net;
 
 namespace kicweb.Controllers;
 
 public class HomeController : Controller
 {
 	private readonly ILogger<HomeController> _logger;
+	private readonly IHttpContextAccessor _contextAccessor;
+	private readonly ICookieService _cookieService;
 
-	public HomeController(ILogger<HomeController> logger)
+	public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService)
 	{
 		_logger = logger;
+		_contextAccessor = httpContextAccessor;
+		_cookieService = cookieService;
 	}
 
+	[HttpGet]
 	public IActionResult Index()
 	{
-		return View();
+		IndexViewModel ivm = new IndexViewModel()
+		{
+			Consent = true
+		};
+
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+			//ivm.Consent = false;
+			ViewBag.AgeGateCookieAccepted = false;
+        }
+        return View(ivm);
+	}
+
+	[HttpPost]
+	public IActionResult Index(IndexViewModel ivmUpdated)
+	{
+		if (ivmUpdated.Consent == true)
+		{
+			ViewBag.AgeGateCookieAccepted = true;
+			CookieOptions cookieOptions = _cookieService.AgeGateCookieFactory();
+			_contextAccessor.HttpContext.Response.Cookies.Append("Age_Gate", "true", cookieOptions);
+			return View();
+		}
+		else
+		{
+			ViewBag.AgeGateCookieAccepted = false;
+			return View();
+		}
 	}
 
 	public IActionResult Privacy()
 	{
-		return View();
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Home/Index");
+        }
+        return View();
 	}
 
 	public IActionResult Club425()
 	{
-		return View();
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Home/Index");
+        }
+        return View();
 	}
 
 	public IActionResult About()
 	{
-		return View();
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Home/Index");
+        }
+        return View();
 	}
 
 	public IActionResult Events()
 	{
-		return View("/Views/Shared/UnderConstruction.cshtml");
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Home/Index");
+        }
+        return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
 	public IActionResult Purchase()
 	{
-		return View("/Views/Shared/UnderConstruction.cshtml");
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Home/Index");
+        }
+        return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
 	public IActionResult Presenters()
 	{
-		return View("/Views/Shared/UnderConstruction.cshtml");
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Home/Index");
+        }
+        return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
 	public IActionResult Vendors()
 	{
-		return View("/Views/Shared/UnderConstruction.cshtml");
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Home/Index");
+        }
+        return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
 	public IActionResult Volunteers()
 	{
-		ViewBag.PositionList = GetPositions();
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Home/Index");
+        }
+        ViewBag.PositionList = GetPositions();
 		return View();
 	}
 

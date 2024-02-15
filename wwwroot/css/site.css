@@ -153,3 +153,41 @@ button.accept-policy
   text-align: center;
   font-family: "Forum", serif;
 }
+
+.modal
+{
+    display: block;
+    position:sticky;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    border:solid;
+    height:30%;
+    width:30%;
+    background-color:black;
+}
+
+.modal-content
+{
+    width:auto;
+    height:auto;
+    background-color:black;
+    color:antiquewhite;
+    text-align: center;
+}
+
+#age-gate-button-accept
+{
+    background-color: darkgreen;
+    color: white;
+    width: 75px;
+    display: inline-block;
+}
+
+#age-gate-button-decline 
+{
+    background-color: darkred;
+    color: white;
+    width: 75px;
+    display: inline-block;
+}

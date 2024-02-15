@@ -4,6 +4,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<ICookieService, CookieService>();
 builder.Services.AddControllersWithViews();
 
 WebApplication app = builder.Build();
