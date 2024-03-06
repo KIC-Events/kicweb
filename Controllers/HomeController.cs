@@ -28,11 +28,12 @@ public class HomeController : Controller
 			Consent = true
 		};
 
-        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-        {
+		if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+		{
 			//ivm.Consent = false;
 			ViewBag.AgeGateCookieAccepted = false;
-        }
+		}
+		else { ViewBag.AgeGateCookieAccepted = true; }
         return View(ivm);
 	}
 
@@ -125,7 +126,10 @@ public class HomeController : Controller
         ViewBag.PositionList = GetPositions();
 		return View();
 	}
-
+	/// <summary>
+	/// Gets the available positions for which user can volunteer.
+	/// </summary>
+	/// <returns>MultiSelectList</returns>
 	private MultiSelectList GetPositions()
 	{
 		List<Position> positions = new List<Position>()
