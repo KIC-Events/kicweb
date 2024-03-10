@@ -154,6 +154,11 @@ public class HomeController : Controller
 		return new MultiSelectList(positions, "ID", "Name", null);
 	}
 
+	public IActionResult Contact()
+	{
+		return View();
+	}
+
 	public IActionResult Success()
 	{
 		return View();
