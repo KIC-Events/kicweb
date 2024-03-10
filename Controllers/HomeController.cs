@@ -145,6 +145,11 @@ public class HomeController : Controller
 		return new MultiSelectList(positions, "ID", "Name", null);
 	}
 
+	public IActionResult Contact()
+	{
+		return View();
+	}
+
 	[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 	public IActionResult Error()
 	{
