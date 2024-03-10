@@ -117,6 +117,7 @@ public class HomeController : Controller
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
+	[HttpGet]
 	public IActionResult Volunteers()
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
@@ -124,8 +125,16 @@ public class HomeController : Controller
             return Redirect("Home/Index");
         }
         ViewBag.PositionList = GetPositions();
-		return View();
+		VolViewModel vvm = new VolViewModel();
+		return View(vvm);
 	}
+
+	[HttpPost]
+	public IActionResult Volunteers(VolViewModel vvmUpdated)
+	{
+
+	}
+
 	/// <summary>
 	/// Gets the available positions for which user can volunteer.
 	/// </summary>
