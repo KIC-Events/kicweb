@@ -31,12 +31,16 @@
       "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\models\\volviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:models\\volviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\views\\payment\\purchase.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -139,8 +143,7 @@
               "RelativeToolTip": "Views\\Home\\About.cshtml",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAB0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-03-06T06:08:45.948Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-06T06:08:45.948Z"
             },
             {
               "$type": "Document",
@@ -200,9 +203,9 @@
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "D:\\Source\\Repos\\kic\\kicweb\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ToolTip": "D:\\Source\\Repos\\kic\\kicweb\\Views\\Shared\\_Layout.cshtml*",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml*",
+              "ViewState": "AQIAADwAAAAAAAAAAAAAAE8AAAC0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-02-22T02:04:47.139Z",
               "EditorCaption": ""
