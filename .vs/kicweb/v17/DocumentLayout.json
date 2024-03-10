@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "D:\\Source\\Repos\\kic\\kicweb\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\views\\home\\contact.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:views\\home\\contact.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\services\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:services\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\views\\home\\volunteers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:views\\home\\volunteers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,22 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\views\\home\\volunteers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:views\\home\\volunteers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\models\\volviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|solutionrelative:models\\volviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{50362013-C3D4-4276-BD54-7275B3575E60}|kicweb.csproj|d:\\source\\repos\\kic\\kicweb\\views\\payment\\purchase.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -63,19 +71,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Contact.cshtml",
-              "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Views\\Home\\Contact.cshtml",
-              "RelativeDocumentMoniker": "Views\\Home\\Contact.cshtml",
-              "ToolTip": "D:\\Source\\Repos\\kic\\kicweb\\Views\\Home\\Contact.cshtml*",
-              "RelativeToolTip": "Views\\Home\\Contact.cshtml*",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAABpAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-03-10T21:11:27.111Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": ".gitignore",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -88,7 +83,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -96,7 +91,34 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAABBAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-06T06:40:47.398Z"
+              "WhenOpened": "2024-03-06T06:40:47.398Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Services\\EmailService.cs",
+              "RelativeDocumentMoniker": "Services\\EmailService.cs",
+              "ToolTip": "D:\\Source\\Repos\\kic\\kicweb\\Services\\EmailService.cs",
+              "RelativeToolTip": "Services\\EmailService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAA1AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-06T06:24:21.293Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IEmailService.cs",
+              "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Services\\IEmailService.cs",
+              "RelativeDocumentMoniker": "Services\\IEmailService.cs",
+              "ToolTip": "D:\\Source\\Repos\\kic\\kicweb\\Services\\IEmailService.cs",
+              "RelativeToolTip": "Services\\IEmailService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-06T06:24:10.837Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -108,7 +130,8 @@
               "RelativeToolTip": "Views\\Home\\Volunteers.cshtml",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-03-06T06:20:31.738Z"
+              "WhenOpened": "2024-03-06T06:20:31.738Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -124,7 +147,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "VolViewModel.cs",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Models\\VolViewModel.cs",
               "RelativeDocumentMoniker": "Models\\VolViewModel.cs",
@@ -132,11 +155,12 @@
               "RelativeToolTip": "Models\\VolViewModel.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-03T04:59:52.41Z"
+              "WhenOpened": "2024-03-03T04:59:52.41Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ICookieService.cs",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Services\\ICookieService.cs",
               "RelativeDocumentMoniker": "Services\\ICookieService.cs",
@@ -144,11 +168,12 @@
               "RelativeToolTip": "Services\\ICookieService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-23T13:46:01.923Z"
+              "WhenOpened": "2024-02-23T13:46:01.923Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "CookieService.cs",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Services\\CookieService.cs",
               "RelativeDocumentMoniker": "Services\\CookieService.cs",
@@ -156,11 +181,12 @@
               "RelativeToolTip": "Services\\CookieService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAIBJwBsAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-23T13:43:22.702Z"
+              "WhenOpened": "2024-02-23T13:43:22.702Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Purchase.cshtml",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Views\\Payment\\Purchase.cshtml",
               "RelativeDocumentMoniker": "Views\\Payment\\Purchase.cshtml",
@@ -168,11 +194,12 @@
               "RelativeToolTip": "Views\\Payment\\Purchase.cshtml",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAB8AAABkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-02-22T02:09:49.708Z"
+              "WhenOpened": "2024-02-22T02:09:49.708Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
@@ -185,7 +212,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Payment.cs",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Controllers\\Payment.cs",
               "RelativeDocumentMoniker": "Controllers\\Payment.cs",
@@ -193,17 +220,18 @@
               "RelativeToolTip": "Controllers\\Payment.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAIBJwBwAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-22T02:04:39.637Z"
+              "WhenOpened": "2024-02-22T02:04:39.637Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "HomeController.cs",
               "DocumentMoniker": "D:\\Source\\Repos\\kic\\kicweb\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
-              "ToolTip": "D:\\Source\\Repos\\kic\\kicweb\\Controllers\\HomeController.cs*",
-              "RelativeToolTip": "Controllers\\HomeController.cs*",
-              "ViewState": "AQIAAHcAAAAAAAAAAAA7wJUAAAAMAAAA",
+              "ToolTip": "D:\\Source\\Repos\\kic\\kicweb\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AQIAAG0AAAAAAAAAAAAYwIYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-02-22T02:04:28.324Z",
               "EditorCaption": ""

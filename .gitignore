@@ -74,3 +74,8 @@ _[Ss]cripts
 *.ncrunchsolution
 *.dot[Cc]over
 *.vsidx
+################
+# Config Files #
+################
+appsettings.json
+appsettings.*.json
