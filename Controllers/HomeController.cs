@@ -132,7 +132,7 @@ public class HomeController : Controller
 	[HttpPost]
 	public IActionResult Volunteers(VolViewModel vvmUpdated)
 	{
-
+		return Redirect("Home/Success");
 	}
 
 	/// <summary>
@@ -152,6 +152,11 @@ public class HomeController : Controller
 		};
 
 		return new MultiSelectList(positions, "ID", "Name", null);
+	}
+
+	public IActionResult Success()
+	{
+		return View();
 	}
 
 	[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

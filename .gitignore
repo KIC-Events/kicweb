@@ -79,3 +79,4 @@ _[Ss]cripts
 ################
 appsettings.json
 appsettings.*.json
+.vs/*
