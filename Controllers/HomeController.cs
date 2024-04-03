@@ -28,11 +28,12 @@ public class HomeController : Controller
 			Consent = true
 		};
 
-        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-        {
+		if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+		{
 			//ivm.Consent = false;
 			ViewBag.AgeGateCookieAccepted = false;
-        }
+		}
+		else { ViewBag.AgeGateCookieAccepted = true; }
         return View(ivm);
 	}
 
@@ -116,6 +117,7 @@ public class HomeController : Controller
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
+	[HttpGet]
 	public IActionResult Volunteers()
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
@@ -123,9 +125,20 @@ public class HomeController : Controller
             return Redirect("Home/Index");
         }
         ViewBag.PositionList = GetPositions();
-		return View();
+		VolViewModel vvm = new VolViewModel();
+		return View(vvm);
 	}
 
+	[HttpPost]
+	public IActionResult Volunteers(VolViewModel vvmUpdated)
+	{
+		return Redirect("Home/Success");
+	}
+
+	/// <summary>
+	/// Gets the available positions for which user can volunteer.
+	/// </summary>
+	/// <returns>MultiSelectList</returns>
 	private MultiSelectList GetPositions()
 	{
 		List<Position> positions = new List<Position>()
@@ -139,6 +152,16 @@ public class HomeController : Controller
 		};
 
 		return new MultiSelectList(positions, "ID", "Name", null);
+	}
+
+	public IActionResult Contact()
+	{
+		return View();
+	}
+
+	public IActionResult Success()
+	{
+		return View();
 	}
 
 	[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

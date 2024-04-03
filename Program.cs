@@ -2,7 +2,13 @@ using kicweb.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+IConfigurationBuilder configBuilder = new ConfigurationBuilder()
+	.AddJsonFile("appsettings.json");
+IConfigurationRoot config = configBuilder.Build();
+
 // Add services to the container.
+builder.Services.AddSingleton(config);
+builder.Services.AddSingleton<IEmailService, EmailService>(config);
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICookieService, CookieService>();
