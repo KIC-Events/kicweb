@@ -1,0 +1,37 @@
+﻿@page
+@model kicweb.Models.IndexViewModel
+
+<div class="view-body">
+    <h1 class="main-title">Welcome Home</h1>
+    <hr />
+
+</div>
+
+@if(!ViewBag.AgeGateCookieAccepted)
+{
+    <div id="AgeGateModal" class="modal">
+        <div class="modal-content">
+            <p>This site is intended only for persons 18 years of age or older.</p>
+            <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
+            <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
+            @using (Html.BeginForm())
+            {
+                @Html.HiddenFor(model => model.Consent, true)
+                
+                <p>
+                    <button id="age-gate-button-accept" type="submit">Accept</button>
+                    <button id="age-gate-button-decline">Decline</button>
+                </p>
+            }            
+        </div>
+    </div>
+}
+
+<script>
+    var acceptBtn = document.getElementById("age-gate-button-accept");
+    var declineBtn = document.getElementById("age-gate-button-decline");
+
+    declineBtn.onclick = function(){
+        window.location=('https://google.com')
+    }
+</script>
