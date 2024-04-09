@@ -75,3 +75,6 @@ _[Ss]cripts
 *.dot[Cc]over
 *.vsidx
 /.vs/
+/kicweb/appsettings.json
+/kicweb/appsettings.Development.json
+/kicweb/appsettings.Production.json
