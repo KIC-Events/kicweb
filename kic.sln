@@ -3,7 +3,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kicweb", "kicweb\kicweb.csproj", "{F97DD5DE-225F-49E0-957D-BFF26F23C396}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BB5D9217-9C13-499C-AB51-A37A425CEF2A} = {BB5D9217-9C13-499C-AB51-A37A425CEF2A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kicdata", "kicdata\kicdata.csproj", "{BB5D9217-9C13-499C-AB51-A37A425CEF2A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0457FD6A-AF6C-47C7-AE71-A5FFFCCF87D4}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F97DD5DE-225F-49E0-957D-BFF26F23C396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F97DD5DE-225F-49E0-957D-BFF26F23C396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F97DD5DE-225F-49E0-957D-BFF26F23C396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F97DD5DE-225F-49E0-957D-BFF26F23C396}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB5D9217-9C13-499C-AB51-A37A425CEF2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB5D9217-9C13-499C-AB51-A37A425CEF2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB5D9217-9C13-499C-AB51-A37A425CEF2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB5D9217-9C13-499C-AB51-A37A425CEF2A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
