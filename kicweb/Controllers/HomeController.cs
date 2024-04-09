@@ -4,6 +4,10 @@ using kicweb.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using kicweb.Services;
 using System.Net;
+using MailKit.Security;
+using MailKit.Net.Smtp;
+using MimeKit;
+using System.Text;
 
 namespace kicweb.Controllers;
 
@@ -12,12 +16,16 @@ public class HomeController : Controller
 	private readonly ILogger<HomeController> _logger;
 	private readonly IHttpContextAccessor _contextAccessor;
 	private readonly ICookieService _cookieService;
+	private readonly IEmailService _emailService;
+	private readonly IConfigurationRoot _configurationRoot;
 
-	public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService)
+	public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot)
 	{
 		_logger = logger;
 		_contextAccessor = httpContextAccessor;
 		_cookieService = cookieService;
+		_emailService = emailService;
+		_configurationRoot = configurationRoot;
 	}
 
 	[HttpGet]
@@ -132,6 +140,46 @@ public class HomeController : Controller
 	[HttpPost]
 	public IActionResult Volunteers(VolViewModel vvmUpdated)
 	{
+		MimeMessage message = _emailService.FormSubmissionEmailFactory("Volunteer", _configurationRoot["AppSettings:Email Addresses:Volunteers"]);
+		if (message == null)
+		{
+			//log exception here
+
+			return Redirect("Home/Error");
+		}
+
+		StringBuilder posList = new StringBuilder();
+		foreach(string s in vvmUpdated.Positions)
+		{
+			posList.Append(s + ", ");
+		}
+		
+
+		message.Body = new TextPart("html")
+		{
+			Text = "<p>This is an automated email message sent through kicevents.com. A new volunteer sign up has occurred.</p>" +
+			"<br />" +
+			"<br />" +
+            "<br /><b>Name: </b>" + vvmUpdated.LegalName +
+            "<br /><b>Fet Name: </b>" + vvmUpdated.FetName +
+            "<br /><b>Email: </b>" + vvmUpdated.EmailAddress +
+            "<br /><b>Details: </b>" + vvmUpdated.Details +
+            "<br /><bPositions: </b>" + posList.ToString() +
+            "<br />" +
+            "<br />" +
+			"Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
+        };
+
+		try
+		{
+            _emailService.SendEmail(message);
+        }
+		catch (Exception ex)
+		{
+			//Log exception here
+			return Redirect("Home/Error");
+		}
+
 		return Redirect("Home/Success");
 	}
 
