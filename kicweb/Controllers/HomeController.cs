@@ -174,6 +174,7 @@ public class HomeController : Controller
 			"<br /><b>Club ID: </b>" + volUpdated.ClubId +
             "<br /><b>Email: </b>" + volUpdated.EmailAddress +
             "<br /><b>Details: </b>" + volUpdated.Details +
+			"<br /><b>Phone: </b>" + volUpdated.PhoneNumber +
             //"<br /><bPositions: </b>" + posList.ToString() +
             "<br />" +
             "<br />" +

@@ -17,6 +17,8 @@ namespace KiCData.Models
         [Required]
         public string? EmailAddress { get;set; }
 
+        public string? PhoneNumber { get; set;}
+
         public List<string>? Positions { get; set; }
 
         public string? Details { get; set; }
