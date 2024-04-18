@@ -10,4 +10,8 @@
     <PackageReference Include="MailKit" Version="4.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\kicdata\KiCData.csproj" />
+  </ItemGroup>
+
 </Project>
