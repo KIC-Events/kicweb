@@ -11,9 +11,9 @@ namespace KiCData.Models
     {
         public string? FetName { get; set; }
 
-        public string? Details { get; set; }
+        public string? PublicName { get; set; }
 
-        public string? Notes { get; set; }
+        public string? Bio { get; set; }
 
         public DateOnly? LastAttended { get; set; }
     }
