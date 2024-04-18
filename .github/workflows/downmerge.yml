@@ -1,0 +1,32 @@
+name: downmerge
+
+on: 
+  pull_request:
+    branches:
+      main
+    types:
+      closed
+  push:
+    branches:
+      main
+
+env:
+  REPO: https://malechus:${{secrets.GITHUB_TOKEN}}@github.com/malechus/kic.git
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: downmerge main
+      run: |
+        git clone ${{env.REPO}} -b dev tmp
+        cd tmp
+        git config user.name "downmerge action"
+        git config user.email "garrett@malechus.com"
+        git config pull.rebase false
+        git pull ${{env.REPO}} main
+        git push
