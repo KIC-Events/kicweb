@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kicdata", "kicdata\kicdata.csproj", "{A92C23A0-C1A0-4C65-96D5-A7EFBB1A93C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KiCData", "kicdata\KiCData.csproj", "{A92C23A0-C1A0-4C65-96D5-A7EFBB1A93C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kicweb", "kicweb\kicweb.csproj", "{DF1B15D6-D005-448C-B32D-9B924CC2111D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KiCWeb", "kicweb\KiCWeb.csproj", "{DF1B15D6-D005-448C-B32D-9B924CC2111D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A92C23A0-C1A0-4C65-96D5-A7EFBB1A93C0} = {A92C23A0-C1A0-4C65-96D5-A7EFBB1A93C0}
 	EndProjectSection

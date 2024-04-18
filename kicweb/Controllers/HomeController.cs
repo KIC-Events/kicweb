@@ -8,8 +8,10 @@ using MailKit.Security;
 using MailKit.Net.Smtp;
 using MimeKit;
 using System.Text;
+using KiCData;
+using KiCData.Models;
 
-namespace kicweb.Controllers;
+namespace KiCWeb.Controllers;
 
 public class HomeController : Controller
 {
@@ -133,13 +135,13 @@ public class HomeController : Controller
             return Redirect("Index");
         }
         ViewBag.PositionList = GetPositions();
-		VolViewModel vvm = new VolViewModel();
+		Volunteer volunteer = new Volunteer();
 
-        return View(vvm);
+        return View(volunteer);
 	}
 
 	[HttpPost]
-	public IActionResult Volunteers(VolViewModel vvmUpdated)
+	public IActionResult Volunteers(Volunteer volUpdated)
 	{
 		if(!ModelState.IsValid)
 		{
@@ -167,11 +169,11 @@ public class HomeController : Controller
 			Text = "<p>This is an automated email message sent through kicevents.com. A new volunteer sign up has occurred.</p>" +
 			"<br />" +
 			"<br />" +
-            "<br /><b>Name: </b>" + vvmUpdated.LegalName +
-            "<br /><b>Fet Name: </b>" + vvmUpdated.FetName +
-			"<br /><b>Club ID: </b>" + vvmUpdated.ClubID +
-            "<br /><b>Email: </b>" + vvmUpdated.EmailAddress +
-            "<br /><b>Details: </b>" + vvmUpdated.Details +
+            "<br /><b>Name: </b>" + volUpdated.LegalName +
+            "<br /><b>Fet Name: </b>" + volUpdated.FetName +
+			"<br /><b>Club ID: </b>" + volUpdated.ClubId +
+            "<br /><b>Email: </b>" + volUpdated.EmailAddress +
+            "<br /><b>Details: </b>" + volUpdated.Details +
             //"<br /><bPositions: </b>" + posList.ToString() +
             "<br />" +
             "<br />" +
