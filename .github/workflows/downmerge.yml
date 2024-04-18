@@ -6,6 +6,9 @@ on:
       main
     types:
       closed
+  push:
+    branches:
+      main
 
 env:
   REPO: https://malechus:${{secrets.GITHUB_TOKEN}}@github.com/malechus/kic.git
@@ -13,6 +16,9 @@ env:
 jobs:
   merge:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     steps:
     - name: downmerge main
