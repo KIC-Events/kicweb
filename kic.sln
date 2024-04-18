@@ -10,6 +10,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KiCWeb", "kicweb\KiCWeb.csp
 		{A92C23A0-C1A0-4C65-96D5-A7EFBB1A93C0} = {A92C23A0-C1A0-4C65-96D5-A7EFBB1A93C0}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A9C10A06-F5D1-4041-A564-143AA4BC3625}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
