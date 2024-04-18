@@ -4,6 +4,14 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 IConfigurationBuilder configBuilder = new ConfigurationBuilder()
 	.AddJsonFile("appsettings.json");
+if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+{
+	configBuilder.AddJsonFile("appsettings.Production.json");
+}
+else
+{
+	configBuilder.AddJsonFile("appsettings.Development.json");
+}
 IConfigurationRoot config = configBuilder.Build();
 
 // Add services to the container.

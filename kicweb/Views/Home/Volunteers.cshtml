@@ -1,5 +1,5 @@
 @page
-@model kicweb.Models.VolViewModel
+@model KiCData.Models.Volunteer
 
 <div class="view-body">
     <div class="row">
@@ -20,15 +20,25 @@
                     @Html.ValidationMessageFor(model => model.FetName, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(model => model.ClubId)
+                    @Html.TextBoxFor(model => model.ClubId, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ClubId, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
                     @Html.LabelFor(model => model.EmailAddress)
                     @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PhoneNumber)
+                    @Html.TextBoxFor(model => model.PhoneNumber)
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.Details)
                     @Html.TextAreaFor(model => model.Details, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
                 </div>
+                /*
                 <div class="form-group">
                     @Html.LabelFor(model => model.Positions)
                     @Html.ListBox("PositionList", ViewBag.Positions as MultiSelectList, new
@@ -37,6 +47,7 @@
                             data_placeholder = "Choose Positions"
                         })
                 </div>
+                */
                 <div class="form-group">
                     <input type="Submit" value="Send" />
                 </div>

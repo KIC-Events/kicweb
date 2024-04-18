@@ -4,20 +4,30 @@ using kicweb.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using kicweb.Services;
 using System.Net;
+using MailKit.Security;
+using MailKit.Net.Smtp;
+using MimeKit;
+using System.Text;
+using KiCData;
+using KiCData.Models;
 
-namespace kicweb.Controllers;
+namespace KiCWeb.Controllers;
 
 public class HomeController : Controller
 {
 	private readonly ILogger<HomeController> _logger;
 	private readonly IHttpContextAccessor _contextAccessor;
 	private readonly ICookieService _cookieService;
+	private readonly IEmailService _emailService;
+	private readonly IConfigurationRoot _configurationRoot;
 
-	public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService)
+	public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot)
 	{
 		_logger = logger;
 		_contextAccessor = httpContextAccessor;
 		_cookieService = cookieService;
+		_emailService = emailService;
+		_configurationRoot = configurationRoot;
 	}
 
 	[HttpGet]
@@ -58,7 +68,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View();
 	}
@@ -67,7 +77,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View();
 	}
@@ -76,7 +86,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View();
 	}
@@ -85,7 +95,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
@@ -94,7 +104,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
@@ -103,7 +113,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
@@ -112,7 +122,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
@@ -122,17 +132,66 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         ViewBag.PositionList = GetPositions();
-		VolViewModel vvm = new VolViewModel();
-		return View(vvm);
+		Volunteer volunteer = new Volunteer();
+
+        return View(volunteer);
 	}
 
 	[HttpPost]
-	public IActionResult Volunteers(VolViewModel vvmUpdated)
+	public IActionResult Volunteers(Volunteer volUpdated)
 	{
-		return Redirect("Home/Success");
+		if(!ModelState.IsValid)
+		{
+			return View("Volunteers");
+		}
+
+		MimeMessage message = _emailService.FormSubmissionEmailFactory("Volunteer", _configurationRoot["Email Addresses:Volunteers"].ToString());
+		if (message == null)
+		{
+			//log exception here
+
+			return Redirect("Error");
+		}
+
+		/*
+		StringBuilder posList = new StringBuilder();
+		foreach(string s in vvmUpdated.Positions)
+		{
+			posList.Append(s + ", ");
+		}
+		*/		
+
+		message.Body = new TextPart("html")
+		{
+			Text = "<p>This is an automated email message sent through kicevents.com. A new volunteer sign up has occurred.</p>" +
+			"<br />" +
+			"<br />" +
+            "<br /><b>Name: </b>" + volUpdated.LegalName +
+            "<br /><b>Fet Name: </b>" + volUpdated.FetName +
+			"<br /><b>Club ID: </b>" + volUpdated.ClubId +
+            "<br /><b>Email: </b>" + volUpdated.EmailAddress +
+            "<br /><b>Details: </b>" + volUpdated.Details +
+			"<br /><b>Phone: </b>" + volUpdated.PhoneNumber +
+            //"<br /><bPositions: </b>" + posList.ToString() +
+            "<br />" +
+            "<br />" +
+			"Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
+        };
+
+		try
+		{
+            _emailService.SendEmail(message);
+        }
+		catch (Exception ex)
+		{
+			//Log exception here
+			return Redirect("Error");
+		}
+
+		return Redirect("Success");
 	}
 
 	/// <summary>
