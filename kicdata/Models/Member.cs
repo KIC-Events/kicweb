@@ -24,6 +24,8 @@ namespace KiCData.Models
 
         public bool IsPresenter { get; set; }
 
+        public bool IsStaff {  get; set; }
+
         public string? AdditionalInfo { get; set; }
 
         [NotMapped]
