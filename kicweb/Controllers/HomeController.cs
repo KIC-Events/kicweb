@@ -134,11 +134,19 @@ public class HomeController : Controller
         {
             return Redirect("Index");
         }
+        return View("/Views/Shared/UnderConstruction.cshtml");
+
+        /* This is still being worked on
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Index");
+        }
         ViewBag.PositionList = GetPositions();
 		Volunteer volunteer = new Volunteer();
 
         return View(volunteer);
-	}
+		*/
+    }
 
 	[HttpPost]
 	public IActionResult Volunteers(Volunteer volUpdated)
