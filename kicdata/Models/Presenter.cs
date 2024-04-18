@@ -2,12 +2,12 @@
 {
     public class Presenter
     {
+        public int? Id { get; set; }
+
         public string? FetName { get; set; }
 
-        public string? CourseDescription { get; set; }
+        public string? Bio { get; set; }
 
         public DateOnly? LastAttended { get; set; }
-
-        public string? Topics { get; set; }
     }
 }
