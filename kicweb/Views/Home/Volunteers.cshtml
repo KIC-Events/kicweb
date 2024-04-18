@@ -20,6 +20,11 @@
                     @Html.ValidationMessageFor(model => model.FetName, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(model => model.ClubID)
+                    @Html.TextBoxFor(model => model.ClubID, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ClubID, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
                     @Html.LabelFor(model => model.EmailAddress)
                     @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
@@ -29,6 +34,7 @@
                     @Html.TextAreaFor(model => model.Details, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
                 </div>
+                /*
                 <div class="form-group">
                     @Html.LabelFor(model => model.Positions)
                     @Html.ListBox("PositionList", ViewBag.Positions as MultiSelectList, new
@@ -37,6 +43,7 @@
                             data_placeholder = "Choose Positions"
                         })
                 </div>
+                */
                 <div class="form-group">
                     <input type="Submit" value="Send" />
                 </div>

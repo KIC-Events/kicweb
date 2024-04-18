@@ -66,7 +66,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View();
 	}
@@ -75,7 +75,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View();
 	}
@@ -84,7 +84,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View();
 	}
@@ -93,7 +93,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
@@ -102,7 +102,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
@@ -111,7 +111,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
@@ -120,7 +120,7 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
@@ -130,30 +130,37 @@ public class HomeController : Controller
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
-            return Redirect("Home/Index");
+            return Redirect("Index");
         }
         ViewBag.PositionList = GetPositions();
 		VolViewModel vvm = new VolViewModel();
-		return View(vvm);
+
+        return View(vvm);
 	}
 
 	[HttpPost]
 	public IActionResult Volunteers(VolViewModel vvmUpdated)
 	{
-		MimeMessage message = _emailService.FormSubmissionEmailFactory("Volunteer", _configurationRoot["AppSettings:Email Addresses:Volunteers"]);
+		if(!ModelState.IsValid)
+		{
+			return View("Volunteers");
+		}
+
+		MimeMessage message = _emailService.FormSubmissionEmailFactory("Volunteer", _configurationRoot["Email Addresses:Volunteers"].ToString());
 		if (message == null)
 		{
 			//log exception here
 
-			return Redirect("Home/Error");
+			return Redirect("Error");
 		}
 
+		/*
 		StringBuilder posList = new StringBuilder();
 		foreach(string s in vvmUpdated.Positions)
 		{
 			posList.Append(s + ", ");
 		}
-		
+		*/		
 
 		message.Body = new TextPart("html")
 		{
@@ -162,9 +169,10 @@ public class HomeController : Controller
 			"<br />" +
             "<br /><b>Name: </b>" + vvmUpdated.LegalName +
             "<br /><b>Fet Name: </b>" + vvmUpdated.FetName +
+			"<br /><b>Club ID: </b>" + vvmUpdated.ClubID +
             "<br /><b>Email: </b>" + vvmUpdated.EmailAddress +
             "<br /><b>Details: </b>" + vvmUpdated.Details +
-            "<br /><bPositions: </b>" + posList.ToString() +
+            //"<br /><bPositions: </b>" + posList.ToString() +
             "<br />" +
             "<br />" +
 			"Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
@@ -177,10 +185,10 @@ public class HomeController : Controller
 		catch (Exception ex)
 		{
 			//Log exception here
-			return Redirect("Home/Error");
+			return Redirect("Error");
 		}
 
-		return Redirect("Home/Success");
+		return Redirect("Success");
 	}
 
 	/// <summary>

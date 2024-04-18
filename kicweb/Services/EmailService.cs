@@ -19,7 +19,7 @@ namespace kicweb.Services
 
             message.From.Add(new MailboxAddress("KICWeb Automation", "technology@kicevents.com"));
             message.To.Add(new MailboxAddress(rep, address));
-            message.Cc.Add(new MailboxAddress("KIC Admin", _config["AppSettings:Email Addresses:Admin"]));
+            message.Cc.Add(new MailboxAddress("KIC Admin", _config["Email Addresses:Admin"]));
             message.Subject = "Web Form Submission";
             
             return message;
@@ -32,7 +32,7 @@ namespace kicweb.Services
                 try
                 {
                     smtpClient.Connect("smtp.gmail.com", 587, SecureSocketOptions.SslOnConnect);
-                    smtpClient.Authenticate(_config.GetValue<string>("AppSettings:Credentials:smtp-username"), _config.GetValue<string>("AppSettings:Credentials:smtp-password"));
+                    smtpClient.Authenticate(_config.GetValue<string>("Credentials:smtp-username"), _config.GetValue<string>("Credentials:smtp-password"));
                     smtpClient.Send(message);
                 }
                 catch (Exception ex)

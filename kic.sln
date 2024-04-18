@@ -6,10 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kicdata", "kicdata\kicdata.csproj", "{A92C23A0-C1A0-4C65-96D5-A7EFBB1A93C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kicweb", "kicweb\kicweb.csproj", "{DF1B15D6-D005-448C-B32D-9B924CC2111D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EC3F42D8-28A5-46A6-ADD7-5CDEF0E19E7D}"
-	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
+	ProjectSection(ProjectDependencies) = postProject
+		{A92C23A0-C1A0-4C65-96D5-A7EFBB1A93C0} = {A92C23A0-C1A0-4C65-96D5-A7EFBB1A93C0}
 	EndProjectSection
 EndProject
 Global
