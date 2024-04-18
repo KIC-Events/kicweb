@@ -12,7 +12,13 @@ namespace KiCData.Models
 
         public string? Details { get; set; }
 
-        
+        public string? EmailAddress { get; set; }
 
+        public string? PhoneNumber { get; set; }
+
+        public Volunteer(string fetname)
+        {
+            FetName = fetname;
+        }
     }
 }
