@@ -2,15 +2,18 @@
 using MailKit.Security;
 using MailKit.Net.Smtp;
 using MimeKit;
+using KiCWeb.Services;
 
 namespace kicweb.Services
 {
     public class EmailService : IEmailService
     {
         private IConfigurationRoot _config;
-        public EmailService(IConfigurationRoot config)
+        private IKiCLogger _logger;
+        public EmailService(IConfigurationRoot config, IKiCLogger logger)
         {
             this._config = config;
+            this._logger = logger;
         }
 
         public MimeMessage FormSubmissionEmailFactory(string rep, string address)
@@ -25,7 +28,7 @@ namespace kicweb.Services
             return message;
         }
 
-        public void SendEmail(MimeMessage message)
+        public void SendEmail(MimeMessage message, HttpRequest context)
         {
             using(SmtpClient smtpClient = new SmtpClient())
             {
@@ -37,7 +40,7 @@ namespace kicweb.Services
                 }
                 catch (Exception ex)
                 {
-                    //Handle exception and log here
+                    _logger.Log(ex, context);
                 }
             }
         }
