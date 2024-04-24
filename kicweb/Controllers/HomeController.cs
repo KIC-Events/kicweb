@@ -10,6 +10,7 @@ using MimeKit;
 using System.Text;
 using KiCData;
 using KiCData.Models;
+using KiCWeb.Models;
 
 namespace KiCWeb.Controllers;
 
@@ -134,18 +135,11 @@ public class HomeController : Controller
         {
             return Redirect("Index");
         }
-        return View("/Views/Shared/UnderConstruction.cshtml");
-
-        /* This is still being worked on
-        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-        {
-            return Redirect("Index");
-        }
         ViewBag.PositionList = GetPositions();
+		ViewBag.Error = null;
 		Volunteer volunteer = new Volunteer();
 
         return View(volunteer);
-		*/
     }
 
 	[HttpPost]
@@ -153,10 +147,11 @@ public class HomeController : Controller
 	{
 		if(!ModelState.IsValid)
 		{
+			ViewBag.Error = "There was a validation issue.";
 			return View("Volunteers");
 		}
 
-		MimeMessage message = _emailService.FormSubmissionEmailFactory("Volunteer", _configurationRoot["Email Addresses:Volunteers"].ToString());
+		FormMessage message = _emailService.FormSubmissionEmailFactory("Volunteers");
 		if (message == null)
 		{
 			//log exception here
@@ -172,22 +167,20 @@ public class HomeController : Controller
 		}
 		*/		
 
-		message.Body = new TextPart("html")
-		{
-			Text = "<p>This is an automated email message sent through kicevents.com. A new volunteer sign up has occurred.</p>" +
+		message.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new volunteer sign up has occurred.</p>" +
 			"<br />" +
 			"<br />" +
             "<br /><b>Name: </b>" + volUpdated.LegalName +
             "<br /><b>Fet Name: </b>" + volUpdated.FetName +
 			"<br /><b>Club ID: </b>" + volUpdated.ClubId +
-            "<br /><b>Email: </b>" + volUpdated.EmailAddress +
+            "<br /><b>Email: </b>" + volUpdated.Email +
             "<br /><b>Details: </b>" + volUpdated.Details +
 			"<br /><b>Phone: </b>" + volUpdated.PhoneNumber +
             //"<br /><bPositions: </b>" + posList.ToString() +
             "<br />" +
             "<br />" +
 			"Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
-        };
+        );
 
 		try
 		{

@@ -20,6 +20,7 @@ builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICookieService, CookieService>();
+builder.Services.AddHttpClient();
 builder.Services.AddControllersWithViews();
 
 WebApplication app = builder.Build();

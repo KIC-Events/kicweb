@@ -6,55 +6,76 @@
         <h1>Volunteer Info</h1>
     </div>
     <div class="row">
-        <div class="form-fillable col-4">
+        <div class="form-fillable">
             @using (Html.BeginForm())
             {
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LegalName)
-                    @Html.TextBoxFor(model => model.LegalName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.LegalName, "", new { @class = "text-danger" })
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FirstName)
+                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LastName)
+                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FetName)
+                        @Html.TextBoxFor(model => model.FetName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.FetName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ClubId)
+                        @Html.TextBoxFor(model => model.ClubId, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ClubId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email)
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PhoneNumber)
+                        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Details)
+                        @Html.TextAreaFor(model => model.Details, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <input type="Submit" value="Send" />
+                    </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.FetName)
-                    @Html.TextBoxFor(model => model.FetName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.FetName, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ClubId)
-                    @Html.TextBoxFor(model => model.ClubId, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.ClubId, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EmailAddress)
-                    @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PhoneNumber)
-                    @Html.TextBoxFor(model => model.PhoneNumber)
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Details)
-                    @Html.TextAreaFor(model => model.Details, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
-                </div>
-                /*
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Positions)
-                    @Html.ListBox("PositionList", ViewBag.Positions as MultiSelectList, new
+                <div class="col-6">
+                    @*
+                    <div class="form-group">
+                        @foreach(Position p in ViewBag.PositionList)
                         {
-                            @class = "chzn-select",
-                            data_placeholder = "Choose Positions"
-                        })
-                </div>
-                */
-                <div class="form-group">
-                    <input type="Submit" value="Send" />
+                            @Html.LabelFor()
+                            @Html.CheckBoxFor()
+                        }
+                    </div>
+                    *@
                 </div>
             }
         </div>
     </div>
 </div>
+
+@if(ViewBag.Error is not null)
+{
+    <div id="ValidationErrorModal" class="modal">
+        <div class="modal-content">
+            <p>There was a validation error, please try again.</p>
+        </div>
+    </div>
+}
+
+
+
 
 <script src="@Url.Content("~/wwwroot/js/chosen/chosen.jquery.js")" type="text/javascript"></script>
 <link href="@Url.Content("~/wwwroot/js/chosen/chosen.css")" rel="stylesheet" type="text/css" />
