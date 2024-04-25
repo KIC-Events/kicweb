@@ -5,6 +5,8 @@ using MimeKit;
 using KiCWeb.Models;
 using System.Net.Http.Headers;
 using KiCWeb.Services;
+using System.Net;
+using Microsoft.AspNetCore.SignalR;
 
 namespace kicweb.Services
 {
@@ -12,10 +14,8 @@ namespace kicweb.Services
     {
         private readonly IConfigurationRoot _config;
         private readonly IHttpClientFactory _httpClientFactory;
-        public EmailService(IConfigurationRoot config, IHttpClientFactory clientFactory)
-        private IConfigurationRoot _config;
         private IKiCLogger _logger;
-        public EmailService(IConfigurationRoot config, IKiCLogger logger)
+        public EmailService(IConfigurationRoot config, IHttpClientFactory clientFactory, IKiCLogger logger)
         {
             this._config = config;
             this._httpClientFactory = clientFactory;
@@ -40,22 +40,45 @@ namespace kicweb.Services
                 throw new Exception("Empty FormMessage");
             }
 
-            if(message.Html is null)
+            if (message.Html is null)
             {
                 message.BuildHtml();
             }
 
-            string serializedMessage = message.MessageFactory();
+            string serializedMessage;
+
+            try
+            {
+                serializedMessage = message.MessageFactory();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
             HttpClient client = _httpClientFactory.CreateClient();
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://api.forwardemail.net/v1/emails");
-            request.Headers.Add("Basic Authorization", _config["Credentials:Mailbot:Toekn"]);
+            var content = new System.Net.Http.StringContent(serializedMessage);
+            request.Content = content;
+
+            try
+            {
+                var tokenInBytes = System.Text.Encoding.UTF8.GetBytes(_config["Credentials:Mailbot:Token"]);
+                var tokenBase64 = System.Convert.ToBase64String(tokenInBytes);
+                AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Basic", tokenBase64);
+                request.Headers.Authorization = authenticationHeaderValue;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
             var response = await client.SendAsync(request);
 
-            Console.WriteLine(response.Content);
-
-            //ADD EXCEPTION HANDLING and LOGGING
+            if(response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("Email sending failed.");
+            }
         }
     }
 }

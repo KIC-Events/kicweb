@@ -185,7 +185,7 @@ public class HomeController : Controller
 
 		try
 		{
-            _emailService.SendEmail(message, _contextAccessor.HttpContext.Request);
+            _emailService.SendEmail(message);
         }
 		catch (Exception ex)
 		{
