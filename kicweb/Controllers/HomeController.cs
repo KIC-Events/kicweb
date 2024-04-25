@@ -11,18 +11,19 @@ using System.Text;
 using KiCData;
 using KiCData.Models;
 using KiCWeb.Models;
+using KiCWeb.Services;
 
 namespace KiCWeb.Controllers;
 
 public class HomeController : Controller
 {
-	private readonly ILogger<HomeController> _logger;
+	private readonly IKiCLogger _logger;
 	private readonly IHttpContextAccessor _contextAccessor;
 	private readonly ICookieService _cookieService;
 	private readonly IEmailService _emailService;
 	private readonly IConfigurationRoot _configurationRoot;
 
-	public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot)
+	public HomeController(IKiCLogger logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot)
 	{
 		_logger = logger;
 		_contextAccessor = httpContextAccessor;
@@ -184,11 +185,11 @@ public class HomeController : Controller
 
 		try
 		{
-            _emailService.SendEmail(message);
+            _emailService.SendEmail(message, _contextAccessor.HttpContext.Request);
         }
 		catch (Exception ex)
 		{
-			//Log exception here
+			_logger.Log(ex, _contextAccessor.HttpContext.Request);
 			return Redirect("Error");
 		}
 

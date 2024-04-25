@@ -4,6 +4,7 @@ using MailKit.Net.Smtp;
 using MimeKit;
 using KiCWeb.Models;
 using System.Net.Http.Headers;
+using KiCWeb.Services;
 
 namespace kicweb.Services
 {
@@ -12,9 +13,13 @@ namespace kicweb.Services
         private readonly IConfigurationRoot _config;
         private readonly IHttpClientFactory _httpClientFactory;
         public EmailService(IConfigurationRoot config, IHttpClientFactory clientFactory)
+        private IConfigurationRoot _config;
+        private IKiCLogger _logger;
+        public EmailService(IConfigurationRoot config, IKiCLogger logger)
         {
             this._config = config;
             this._httpClientFactory = clientFactory;
+            this._logger = logger;
         }
 
         public FormMessage FormSubmissionEmailFactory(string rep)
