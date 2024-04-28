@@ -157,14 +157,14 @@ button.accept-policy
 .modal
 {
     display: block;
-    position:sticky;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    border:solid;
-    height:30%;
-    width:30%;
-    background-color:black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: solid;
+    height: 35%;
+    width: 20%;
+    background-color: black;
 }
 
 .modal-content
