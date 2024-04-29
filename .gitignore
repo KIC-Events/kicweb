@@ -78,3 +78,5 @@ _[Ss]cripts
 /kicweb/appsettings.json
 /kicweb/appsettings.Development.json
 /kicweb/appsettings.Production.json
+/Publish
+/Publish/*

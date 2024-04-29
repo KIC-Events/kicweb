@@ -16,6 +16,7 @@ html
 .btn-link.nav-link:focus,
 .form-control:focus,
 .form-check-input:focus
+.btn-primary:focus
 {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -23,9 +24,12 @@ html
 .flat-btn
 {
   color: rgba(255, 255, 255, .5) !important;
+  background-color: black;
+  border-color: antiquewhite;
 }
 
 .flat-btn:hover
+.btn-primary:hover
 {
   color: rgba(255, 255, 255, .8) !important;
 }
@@ -37,7 +41,7 @@ html
 
 .navbar-brand
 {
-  background-image: url('images/kic-logo-light.png');
+  background-image: url('images/kic-logo-dark.png');
   background-size: contain;
   background-repeat: no-repeat;
   display: block;
@@ -97,9 +101,10 @@ a
 
 .btn-primary
 {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  color: antiquewhite;
+  background-color: black;
+  border-color: antiquewhite;
+  font-family: "Forum", serif;
 }
 
 .nav-pills .nav-link.active,
@@ -157,14 +162,14 @@ button.accept-policy
 .modal
 {
     display: block;
-    position:sticky;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    border:solid;
-    height:30%;
-    width:30%;
-    background-color:black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: solid;
+    height: 35%;
+    width: 20%;
+    background-color: black;
 }
 
 .modal-content
