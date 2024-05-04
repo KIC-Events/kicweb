@@ -162,13 +162,13 @@ button.accept-policy
 .modal
 {
     display: block;
-    position: absolute;
-    top: 50%;
+    position: fixed;
+    top: 30%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -10%);
     border: solid;
-    height: 35%;
-    width: 20%;
+    height: 30%;
+    width: 80%;
     background-color: black;
 }
 
