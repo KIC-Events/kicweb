@@ -17,6 +17,8 @@ namespace KiCWeb.Models
 
         public string? Html { get; set; }
 
+        public string? Text { get; set; }
+
         public StringBuilder? HtmlBuilder { get; set; }
 
         public string Sender { get; set; }
@@ -44,6 +46,7 @@ namespace KiCWeb.Models
             }
 
             Html = HtmlBuilder.ToString();
+            Text = HtmlBuilder.ToString();
         }
 
         public string MessageFactory()

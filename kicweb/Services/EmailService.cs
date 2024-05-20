@@ -63,10 +63,12 @@ namespace kicweb.Services
 
             try
             {
-                var tokenInBytes = System.Text.Encoding.UTF8.GetBytes(_config["Credentials:Mailbot:Token"]);
+                string token = _config["Credentials:Mailbot:Token"];
+                var tokenInBytes = System.Text.Encoding.UTF8.GetBytes(token + ":");
                 var tokenBase64 = System.Convert.ToBase64String(tokenInBytes);
                 AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Basic", tokenBase64);
                 request.Headers.Authorization = authenticationHeaderValue;
+                client.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
             }
             catch (Exception ex)
             {
