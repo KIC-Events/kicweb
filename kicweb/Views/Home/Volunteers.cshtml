@@ -4,12 +4,14 @@
 <div class="view-body">
     <div class="row">
         <h1>Volunteer Info</h1>
+        <p>Please fill out the form below with your details to be added to the mailing list for volunteer shifts.</p>
+        <p>Volunteers are given complimentary access to the event in exchange for working a short shift during the event, as well as assisting with setup and teardown. Shift positions include dungeon monitors, bartenders, door greeters, as well as service tops for corporal, fire, and electric. </p>
     </div>
     <div class="row">
         <div class="form-fillable">
             @using (Html.BeginForm())
             {
-                <div class="col-6">
+                <div class="col-8">
                     <div class="form-group">
                         @Html.LabelFor(model => model.FirstName)
                         @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
@@ -48,17 +50,6 @@
                     <div class="form-group">
                         <input type="Submit" value="Send" />
                     </div>
-                </div>
-                <div class="col-6">
-                    @*
-                    <div class="form-group">
-                        @foreach(Position p in ViewBag.PositionList)
-                        {
-                            @Html.LabelFor()
-                            @Html.CheckBoxFor()
-                        }
-                    </div>
-                    *@
                 </div>
             }
         </div>

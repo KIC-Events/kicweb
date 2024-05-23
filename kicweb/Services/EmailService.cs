@@ -45,41 +45,28 @@ namespace kicweb.Services
                 message.BuildHtml();
             }
 
-            string serializedMessage;
+            MimeMessage mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(new MailboxAddress("KIC Automated Mailer", "mailer-daemon@kicevents.com"));
+            foreach(string s in message.To)
+            {
+                mimeMessage.To.Add(new MailboxAddress("", s));
+            }
+            mimeMessage.Subject = message.Subject;
+            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Html };
 
             try
             {
-                serializedMessage = message.MessageFactory();
+                using (SmtpClient client = new SmtpClient())
+                {
+                    client.Connect("smtp.forwardemail.net", 465, true);
+                    client.Authenticate(_config["Credentials:Mailbot:Username"], _config["Credentials:Mailbot:Password"]);
+                    client.Send(mimeMessage);
+                    client.Disconnect(true);
+                }
             }
             catch (Exception ex)
             {
                 throw ex;
-            }
-
-            HttpClient client = _httpClientFactory.CreateClient();
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://api.forwardemail.net/v1/emails");
-            var content = new System.Net.Http.StringContent(serializedMessage);
-            request.Content = content;
-
-            try
-            {
-                string token = _config["Credentials:Mailbot:Token"];
-                var tokenInBytes = System.Text.Encoding.UTF8.GetBytes(token + ":");
-                var tokenBase64 = System.Convert.ToBase64String(tokenInBytes);
-                AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Basic", tokenBase64);
-                request.Headers.Authorization = authenticationHeaderValue;
-                client.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            var response = await client.SendAsync(request);
-
-            if(response.StatusCode != HttpStatusCode.OK)
-            {
-                throw new Exception("Email sending failed.");
             }
         }
     }

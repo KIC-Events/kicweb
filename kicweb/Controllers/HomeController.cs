@@ -136,7 +136,6 @@ public class HomeController : Controller
         {
             return Redirect("Index");
         }
-        ViewBag.PositionList = GetPositions();
 		ViewBag.Error = null;
 		Volunteer volunteer = new Volunteer();
 
@@ -160,14 +159,6 @@ public class HomeController : Controller
 			return Redirect("Error");
 		}
 
-		/*
-		StringBuilder posList = new StringBuilder();
-		foreach(string s in vvmUpdated.Positions)
-		{
-			posList.Append(s + ", ");
-		}
-		*/		
-
 		message.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new volunteer sign up has occurred.</p>" +
 			"<br />" +
 			"<br />" +
@@ -175,9 +166,8 @@ public class HomeController : Controller
             "<br /><b>Fet Name: </b>" + volUpdated.FetName +
 			"<br /><b>Club ID: </b>" + volUpdated.ClubId +
             "<br /><b>Email: </b>" + volUpdated.Email +
+            "<br /><b>Phone: </b>" + volUpdated.PhoneNumber +
             "<br /><b>Details: </b>" + volUpdated.Details +
-			"<br /><b>Phone: </b>" + volUpdated.PhoneNumber +
-            //"<br /><bPositions: </b>" + posList.ToString() +
             "<br />" +
             "<br />" +
 			"Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
@@ -194,25 +184,6 @@ public class HomeController : Controller
 		}
 
 		return Redirect("Success");
-	}
-
-	/// <summary>
-	/// Gets the available positions for which user can volunteer.
-	/// </summary>
-	/// <returns>MultiSelectList</returns>
-	private MultiSelectList GetPositions()
-	{
-		List<Position> positions = new List<Position>()
-		{
-			new Position(){ID=1, Name="Bartender" },
-			new Position(){ID=2, Name="Door"},
-			new Position(){ID=3, Name="DM"},
-			new Position(){ID=4, Name="Corporal"},
-			new Position(){ID=5, Name="Fire"},
-			new Position(){ID=6, Name="Electric"}
-		};
-
-		return new MultiSelectList(positions, "ID", "Name", null);
 	}
 
 	public IActionResult Contact()
