@@ -1,0 +1,50 @@
+﻿@page
+@model KiCData.Models.Vendor
+
+<div class="view-body">
+    <div class="row">
+        <h1>Vendor Info</h1>
+        <p>If you are interested in vending at a KIC Event, please fill out the form below.</p>
+    </div>
+    <div class="row">
+        <div class="form-fillable">
+            @using (Html.BeginForm())
+            {
+                <div class="col-8">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FetName)
+                        @Html.TextBoxFor(model => model.FetName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.FetName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PublicName)
+                        @Html.TextBoxFor(model => model.PublicName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PublicName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmailAddress)
+                        @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Bio)
+                        @Html.TextAreaFor(model => model.Bio, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Bio, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <input type="Submit" value="Send" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.Error is not null)
+{
+    <div id="ValidationErrorModal" class="modal">
+        <div class="modal-content">
+            <p>There was a validation error, please try again.</p>
+        </div>
+    </div>
+}

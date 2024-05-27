@@ -80,3 +80,8 @@ _[Ss]cripts
 /kicweb/appsettings.Production.json
 /Publish
 /Publish/*
+/KiCWeb.runtimeconfig.json
+/KiCWeb.deps.json
+/appsettings.Production.json
+/appsettings.json
+/appsettings.Development.json

@@ -18,6 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(FolderGlobals) = preProject
 		C_5_4Users_4gckel_4source_4repos_4kic_4appsettings_1Development_1json__JsonSchema = 
 	EndProjectSection
+	ProjectSection(FolderGlobals) = preProject
+		C_5_4Users_4gckel_4source_4repos_4kic_4appsettings_1Development_1json__JsonSchema = 
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,46 +2,71 @@
 using MailKit.Security;
 using MailKit.Net.Smtp;
 using MimeKit;
+using KiCWeb.Models;
+using System.Net.Http.Headers;
 using KiCWeb.Services;
+using System.Net;
+using Microsoft.AspNetCore.SignalR;
 
 namespace kicweb.Services
 {
     public class EmailService : IEmailService
     {
-        private IConfigurationRoot _config;
+        private readonly IConfigurationRoot _config;
+        private readonly IHttpClientFactory _httpClientFactory;
         private IKiCLogger _logger;
-        public EmailService(IConfigurationRoot config, IKiCLogger logger)
+        public EmailService(IConfigurationRoot config, IHttpClientFactory clientFactory, IKiCLogger logger)
         {
             this._config = config;
+            this._httpClientFactory = clientFactory;
             this._logger = logger;
         }
 
-        public MimeMessage FormSubmissionEmailFactory(string rep, string address)
+        public FormMessage FormSubmissionEmailFactory(string rep)
         {
-            MimeMessage message = new MimeMessage();
+            FormMessage message = new FormMessage();
 
-            message.From.Add(new MailboxAddress("KICWeb Automation", "technology@kicevents.com"));
-            message.To.Add(new MailboxAddress(rep, address));
-            message.Cc.Add(new MailboxAddress("KIC Admin", _config["Email Addresses:Admin"]));
-            message.Subject = "Web Form Submission";
+            message.To.Add(_config["Email Addresses:" + rep]);
+            message.Cc.Add(_config["Email Addresses:Admin"]);
+            message.Subject = "Web Form Submission | " + rep + " | " + DateTime.Now.ToString();
             
             return message;
         }
 
-        public void SendEmail(MimeMessage message, HttpRequest context)
+        public async Task SendEmail(FormMessage message)
         {
-            using(SmtpClient smtpClient = new SmtpClient())
+            if(message.Html is null && message.HtmlBuilder is null)
             {
-                try
+                throw new Exception("Empty FormMessage");
+            }
+
+            if (message.Html is null)
+            {
+                message.BuildHtml();
+            }
+
+            MimeMessage mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(new MailboxAddress("KIC Automated Mailer", "mailer-daemon@kicevents.com"));
+            foreach(string s in message.To)
+            {
+                mimeMessage.To.Add(new MailboxAddress("", s));
+            }
+            mimeMessage.Subject = message.Subject;
+            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Html };
+
+            try
+            {
+                using (SmtpClient client = new SmtpClient())
                 {
-                    smtpClient.Connect("smtp.gmail.com", 587, SecureSocketOptions.SslOnConnect);
-                    smtpClient.Authenticate(_config.GetValue<string>("Credentials:smtp-username"), _config.GetValue<string>("Credentials:smtp-password"));
-                    smtpClient.Send(message);
+                    client.Connect("smtp.forwardemail.net", 465, true);
+                    client.Authenticate(_config["Credentials:Mailbot:Username"], _config["Credentials:Mailbot:Password"]);
+                    client.Send(mimeMessage);
+                    client.Disconnect(true);
                 }
-                catch (Exception ex)
-                {
-                    _logger.Log(ex, context);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }
