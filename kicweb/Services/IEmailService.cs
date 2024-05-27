@@ -1,10 +1,11 @@
-﻿using MimeKit;
+﻿using KiCWeb.Models;
+using MimeKit;
 
 namespace kicweb.Services
 {
     public interface IEmailService
     {
-        public void SendEmail(MimeMessage message, HttpRequest context);
-        public MimeMessage FormSubmissionEmailFactory(string rep, string address);
+        public Task SendEmail(FormMessage message);
+        public FormMessage FormSubmissionEmailFactory(string rep);
     }
 }
