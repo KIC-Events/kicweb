@@ -28,7 +28,7 @@ namespace kicweb.Services
 
             message.To.Add(_config["Email Addresses:" + rep]);
             message.Cc.Add(_config["Email Addresses:Admin"]);
-            message.Subject = "Web Form Submission";
+            message.Subject = "Web Form Submission | " + rep + " | " + DateTime.Now.ToString();
             
             return message;
         }
