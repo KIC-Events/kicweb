@@ -280,10 +280,57 @@ public class HomeController : Controller
 		return Redirect("Success");
 	}
 
+	[HttpGet]
 	public IActionResult Contact()
 	{
-		return View();
-	}
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Index");
+        }
+        ViewBag.Error = null;
+		Feedback feedback = new Feedback();
+
+		return View(feedback);
+    }
+
+	[HttpPost]
+	public IActionResult Contact(Feedback feedbackUpdated)
+	{
+		if (!ModelState.IsValid)
+		{
+			ViewBag.Error = "There was a validation issue.";
+			return View("Contact");
+		}
+
+        FormMessage message = _emailService.FormSubmissionEmailFactory("Admin");
+        if (message == null)
+        {
+            //log exception here
+
+            return Redirect("Error");
+        }
+
+        message.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new feedback submission has occurred.</p>" +
+            "<br />" +
+            "<br />" +
+            "<br /><b>Details: </b>" + feedbackUpdated.Text +
+            "<br />" +
+            "<br />" +
+            "Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
+        );
+
+        try
+        {
+            _emailService.SendEmail(message);
+        }
+        catch (Exception ex)
+        {
+            _logger.Log(ex, _contextAccessor.HttpContext.Request);
+            return Redirect("Error");
+        }
+
+        return Redirect("Success");
+    }
 
 	public IActionResult Success()
 	{
