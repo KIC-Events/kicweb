@@ -10,7 +10,9 @@ using MimeKit;
 using System.Text;
 using KiCData;
 using KiCData.Models;
+using KiCWeb.Models;
 using KiCWeb.Services;
+using Org.BouncyCastle.Crypto.Fpe;
 
 namespace KiCWeb.Controllers;
 
@@ -110,23 +112,116 @@ public class HomeController : Controller
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
+	[HttpGet]
 	public IActionResult Presenters()
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
             return Redirect("Index");
         }
-        return View("/Views/Shared/UnderConstruction.cshtml");
+		ViewBag.Error = null;
+		Presentation presentation = new Presentation() { Presenter = new Presenter() };
+		return View(presentation);
 	}
 
+	[HttpPost]
+	public IActionResult Presenters(Presentation presUpdated)
+	{
+		if (!ModelState.IsValid)
+		{
+			ViewBag.Error = "There was a validation issue.";
+			return Redirect("Presenters");
+		}
+
+		FormMessage formMessage = _emailService.FormSubmissionEmailFactory("Presenters");
+		if(formMessage is null)
+		{
+			//log error here
+
+			return Redirect("Error");
+		}
+
+        formMessage.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new presentation sign up has occurred.</p>" +
+            "<br />" +
+            "<br />" +
+            "<br /><b>FetName: </b>" + presUpdated.Presenter.FetName +
+            "<br /><b>Business Name: </b>" + presUpdated.Presenter.PublicName +
+            "<br /><b>Email: </b>" + presUpdated.Presenter.EmailAddress +
+            "<br /><b>Presenter Details: </b>" + presUpdated.Presenter.Bio +
+			"<br /><b>Presentation Name: </b>" + presUpdated.Name +
+            "<br /><b>Presentation Description: </b>" + presUpdated.Description +
+            "<br /><b>Presentation Topic: </b>" + presUpdated.Type +
+            "<br />" +
+            "<br />" +
+            "Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
+        );
+
+        try
+        {
+            _emailService.SendEmail(formMessage);
+        }
+        catch (Exception ex)
+        {
+            _logger.Log(ex, _contextAccessor.HttpContext.Request);
+            return Redirect("Error");
+        }
+
+        return Redirect("Success");
+    }
+
+	[HttpGet]
 	public IActionResult Vendors()
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
         {
             return Redirect("Index");
         }
-        return View("/Views/Shared/UnderConstruction.cshtml");
+		ViewBag.Error = null;
+		Vendor vendor = new Vendor() { LastAttended = null };
+		return View(vendor);
 	}
+
+	[HttpPost]
+	public IActionResult Vendors(Vendor venUpdated)
+	{
+		if (!ModelState.IsValid)
+		{
+			ViewBag.Error = "There was a validation issue.";
+			return View("Vendors");
+		}
+
+		FormMessage formMessage = _emailService.FormSubmissionEmailFactory("Vendors");
+		if(formMessage == null)
+		{
+			//log exception here
+
+			return Redirect("Error");
+		}
+
+		formMessage.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new vendor sign up has occurred.</p>" +
+            "<br />" +
+            "<br />" +
+            "<br /><b>FetName: </b>" + venUpdated.FetName +
+			"<br /><b>Business Name: </b>" + venUpdated.PublicName +
+            "<br /><b>Email: </b>" + venUpdated.EmailAddress +
+            "<br /><b>Details: </b>" + venUpdated.Bio +
+            "<br />" +
+            "<br />" +
+            "Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
+        );
+
+		try
+		{
+			_emailService.SendEmail(formMessage);
+        }
+        catch (Exception ex)
+        {
+            _logger.Log(ex, _contextAccessor.HttpContext.Request);
+            return Redirect("Error");
+        }
+
+        return Redirect("Success");
+    }
 
 	[HttpGet]
 	public IActionResult Volunteers()
@@ -135,18 +230,10 @@ public class HomeController : Controller
         {
             return Redirect("Index");
         }
-        return View("/Views/Shared/UnderConstruction.cshtml");
-
-        /* This is still being worked on
-        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-        {
-            return Redirect("Index");
-        }
-        ViewBag.PositionList = GetPositions();
+		ViewBag.Error = null;
 		Volunteer volunteer = new Volunteer();
 
         return View(volunteer);
-		*/
     }
 
 	[HttpPost]
@@ -154,10 +241,11 @@ public class HomeController : Controller
 	{
 		if(!ModelState.IsValid)
 		{
+			ViewBag.Error = "There was a validation issue.";
 			return View("Volunteers");
 		}
 
-		MimeMessage message = _emailService.FormSubmissionEmailFactory("Volunteer", _configurationRoot["Email Addresses:Volunteers"].ToString());
+		FormMessage message = _emailService.FormSubmissionEmailFactory("Volunteers");
 		if (message == null)
 		{
 			//log exception here
@@ -165,34 +253,23 @@ public class HomeController : Controller
 			return Redirect("Error");
 		}
 
-		/*
-		StringBuilder posList = new StringBuilder();
-		foreach(string s in vvmUpdated.Positions)
-		{
-			posList.Append(s + ", ");
-		}
-		*/		
-
-		message.Body = new TextPart("html")
-		{
-			Text = "<p>This is an automated email message sent through kicevents.com. A new volunteer sign up has occurred.</p>" +
+		message.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new volunteer sign up has occurred.</p>" +
 			"<br />" +
 			"<br />" +
             "<br /><b>Name: </b>" + volUpdated.LegalName +
             "<br /><b>Fet Name: </b>" + volUpdated.FetName +
 			"<br /><b>Club ID: </b>" + volUpdated.ClubId +
-            "<br /><b>Email: </b>" + volUpdated.EmailAddress +
+            "<br /><b>Email: </b>" + volUpdated.Email +
+            "<br /><b>Phone: </b>" + volUpdated.PhoneNumber +
             "<br /><b>Details: </b>" + volUpdated.Details +
-			"<br /><b>Phone: </b>" + volUpdated.PhoneNumber +
-            //"<br /><bPositions: </b>" + posList.ToString() +
             "<br />" +
             "<br />" +
 			"Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
-        };
+        );
 
 		try
 		{
-            _emailService.SendEmail(message, _contextAccessor.HttpContext.Request);
+            _emailService.SendEmail(message);
         }
 		catch (Exception ex)
 		{
@@ -203,29 +280,57 @@ public class HomeController : Controller
 		return Redirect("Success");
 	}
 
-	/// <summary>
-	/// Gets the available positions for which user can volunteer.
-	/// </summary>
-	/// <returns>MultiSelectList</returns>
-	private MultiSelectList GetPositions()
-	{
-		List<Position> positions = new List<Position>()
-		{
-			new Position(){ID=1, Name="Bartender" },
-			new Position(){ID=2, Name="Door"},
-			new Position(){ID=3, Name="DM"},
-			new Position(){ID=4, Name="Corporal"},
-			new Position(){ID=5, Name="Fire"},
-			new Position(){ID=6, Name="Electric"}
-		};
-
-		return new MultiSelectList(positions, "ID", "Name", null);
-	}
-
+	[HttpGet]
 	public IActionResult Contact()
 	{
-		return View();
-	}
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Index");
+        }
+        ViewBag.Error = null;
+		Feedback feedback = new Feedback();
+
+		return View(feedback);
+    }
+
+	[HttpPost]
+	public IActionResult Contact(Feedback feedbackUpdated)
+	{
+		if (!ModelState.IsValid)
+		{
+			ViewBag.Error = "There was a validation issue.";
+			return View("Contact");
+		}
+
+        FormMessage message = _emailService.FormSubmissionEmailFactory("Admin");
+        if (message == null)
+        {
+            //log exception here
+
+            return Redirect("Error");
+        }
+
+        message.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new feedback submission has occurred.</p>" +
+            "<br />" +
+            "<br />" +
+            "<br /><b>Details: </b>" + feedbackUpdated.Text +
+            "<br />" +
+            "<br />" +
+            "Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
+        );
+
+        try
+        {
+            _emailService.SendEmail(message);
+        }
+        catch (Exception ex)
+        {
+            _logger.Log(ex, _contextAccessor.HttpContext.Request);
+            return Redirect("Error");
+        }
+
+        return Redirect("Success");
+    }
 
 	public IActionResult Success()
 	{

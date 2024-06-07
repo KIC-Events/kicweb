@@ -10,12 +10,13 @@ namespace KiCData.Models
         public int Id { get; set; }
         
         [Required]
+        [Display(Name = "Legal First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Legal Last Name")]
         public string LastName { get; set; }
 
-        [Required]
         public string Email { get; set; }
 
         public bool IsVendor { get; set; }

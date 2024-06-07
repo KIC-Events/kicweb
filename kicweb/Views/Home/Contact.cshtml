@@ -1,12 +1,44 @@
-﻿
+﻿@page
+@model KiCWeb.Models.Feedback
 
 <div class="view-body">
-    <p>You can reach us by email with any questions or concerns. </p>
-    <ul>
-        <li>Event Runners: <a href="mailto:admin@kicevents.com">admin@kicevents.com</a></li>
-        <li>Presenter Coordinator: <a href="mailto:presenters@kicevents.com">presenters@kicevents.com</a></li>
-        <li>Vendor Coordinator: <a href="mailto:vendors@kicevents.com">vendors@kicevents.com</a></li>
-        <li>Volunteer Coordinator: <a href="volunteers@kicevents.com">volunteers@kicevents.com</a></li>
-        <li>Webmaster/Technology Team: <a href="mailto:technology@kicevents.com">technology@kicevents.com</a></li>
-    </ul>
+    <div class="row">
+        <h1>Contact Us:</h1>
+    </div>
+    <div class="row">
+        <p>You can reach us by email with any questions or concerns. </p>
+        <ul>
+            <li>Event Runners: <a href="mailto:admin@kicevents.com">admin@kicevents.com</a></li>
+            <li>Presenter Coordinator: <a href="mailto:presenters@kicevents.com">presenters@kicevents.com</a></li>
+            <li>Vendor Coordinator: <a href="mailto:vendors@kicevents.com">vendors@kicevents.com</a></li>
+            <li>Volunteer Coordinator: <a href="mailto:volunteers@kicevents.com">volunteers@kicevents.com</a></li>
+            <li>Webmaster/Technology Team: <a href="mailto:technology@kicevents.com">technology@kicevents.com</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <h3>Anonymous Feedback</h3>
+        <p>You can fill out this form to send feedback to the event runners. Only the owners of KiCEvents will have access to this feedback, and no identifying information will be included.</p>
+        <div class="form-fillable">
+            @using (Html.BeginForm())
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Text)
+                    @Html.TextAreaFor(model => model.Text, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <input type="Submit" value="Send" />
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
+@if (ViewBag.Error is not null)
+{
+    <div id="ValidationErrorModal" class="modal">
+        <div class="modal-content">
+            <p>There was a validation error, please try again.</p>
+        </div>
+    </div>
+}

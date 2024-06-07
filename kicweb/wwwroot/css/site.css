@@ -196,3 +196,13 @@ button.accept-policy
     width: 75px;
     display: inline-block;
 }
+
+.form-group
+{
+    padding-top: 15px;
+}
+
+.text-center{
+    text-align: center;
+    list-style-position: inside;
+}
