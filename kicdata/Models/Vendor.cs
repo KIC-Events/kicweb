@@ -11,21 +11,24 @@ namespace KiCData.Models
 
     {
         [Required]
-        [Display(Name = "Your Fetlife handle. (Put N/A if you don't use Fetlife.")]
-        public string? FetName { get; set; }
-
-        [Required]
         [Display(Name  = "Your business or professional name.")]
         public string? PublicName { get; set; }
-
-        [Required]
-        [Display(Name = "Your email address.")]
-        public string? EmailAddress { get; set; }
 
         [Required]
         [Display(Name = "About your business.")]
         public string? Bio { get; set; }
 
-        public DateOnly? LastAttended { get; set; }
+        public Member FormMember { get; set; }
+
+        public Member Member { get; private set; }
+
+        public void CheckMember()
+        {
+            if (FormMember.ClubID != null)
+            {
+                //Check db for matching member and get ID
+                //Set Member from ID
+            }
+        }
     }
 }
