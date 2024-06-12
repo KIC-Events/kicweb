@@ -19,11 +19,11 @@ namespace KiCData.Models
 
         [Required]
         [Display(Name = "Club ID #")]
-        public string? ClubID { get; set; }
+        public string? ClubId { get; set; }
 
         [Required]
         [Display(Name = "Email Address")]
-        public string? Email { get; set; }
+        public string? EmailAddress { get; set; }
 
         public bool? IsVendor { get; set; }
 

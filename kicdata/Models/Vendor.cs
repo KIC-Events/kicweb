@@ -24,7 +24,7 @@ namespace KiCData.Models
 
         public void CheckMember()
         {
-            if (FormMember.ClubID != null)
+            if (FormMember.ClubId != null)
             {
                 //Check db for matching member and get ID
                 //Set Member from ID
