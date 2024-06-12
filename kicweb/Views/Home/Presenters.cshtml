@@ -12,9 +12,9 @@
             {
                 <div class="col-8">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Presenter.FetName)
-                        @Html.TextBoxFor(model => model.Presenter.FetName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Presenter.FetName, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Presenter.Member.FetName)
+                        @Html.TextBoxFor(model => model.Presenter.Member.FetName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Presenter.Member.FetName, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Presenter.PublicName)
@@ -22,9 +22,9 @@
                         @Html.ValidationMessageFor(model => model.Presenter.PublicName, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Presenter.EmailAddress)
-                        @Html.TextBoxFor(model => model.Presenter.EmailAddress, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Presenter.EmailAddress, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Presenter.Member.EmailAddress)
+                        @Html.TextBoxFor(model => model.Presenter.Member.EmailAddress, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Presenter.Member.EmailAddress, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Presenter.Bio)

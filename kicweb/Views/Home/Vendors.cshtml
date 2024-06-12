@@ -12,9 +12,9 @@
             {
                 <div class="col-8">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.FetName)
-                        @Html.TextBoxFor(model => model.FetName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.FetName, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Member.FetName)
+                        @Html.TextBoxFor(model => model.Member.FetName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Member.FetName, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.PublicName)
@@ -22,9 +22,9 @@
                         @Html.ValidationMessageFor(model => model.PublicName, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.EmailAddress)
-                        @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Member.EmailAddress)
+                        @Html.TextBoxFor(model => model.Member.EmailAddress, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Member.EmailAddress, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Bio)
