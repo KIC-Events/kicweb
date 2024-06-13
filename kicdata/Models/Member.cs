@@ -31,7 +31,7 @@ namespace KiCData.Models
 
         public bool? IsPresenter { get; set; }
 
-        public bool? IsStaff {  get; set; }
+        //public bool? IsStaff {  get; set; }
 
         [Display(Name = "Optional: Phone Number")]
         public string? PhoneNumber { get; set; }
@@ -59,5 +59,10 @@ namespace KiCData.Models
         {
             LastAttended = date;
         }
+
+        public virtual Vendor? Vendor { get; set; }
+        public virtual Volunteer? Volunteer { get; set; }
+        public virtual Presenter? Presenter { get; set; }
+
     }
 }

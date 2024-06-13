@@ -13,12 +13,16 @@ namespace KiCData.Models
         [Display(Name = "A short bio about you or your business.")]
         public string? Bio { get; set; }
 
-        public Member? FormMember { get; set; }
+        //public Member? FormMember { get; set; }
 
-        public Member? Member { get; private set; }
+        public int MemberId { get; set; }
+
+        public virtual Member? Member { get; private set; }
 
         public DateOnly? LastAttended { get; set; }
 
+        public virtual List<Presentation> Presentations { get; set; }
+        /*
         public void CheckMember()
         {
             if(FormMember.ClubID != null)
@@ -27,5 +31,7 @@ namespace KiCData.Models
                 //Set Member from ID
             }
         }
+        */
+
     }
 }

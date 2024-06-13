@@ -5,17 +5,25 @@ namespace KiCData.Models
 {
     public class Volunteer
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? Id { get; set; }
+
         [Display(Name = "Positions you are interested in working.")]
         public List<string>? Positions { get; set; }
 
         [Display(Name = "Anything else we should know?")]
         public string? Details { get; set; }
 
-        public Member FormMember { get; set; }
+        public bool? IsStaff { get; set; }
 
-        public Member Member { get; private set; }
+        public int MemberId { get; set; }
 
-        public void CheckMember()
+        public virtual Member Member { get; private set; }
+
+        /*
+         * public Member FormMember { get; set; }
+         * public void CheckMember()
         {
             if (FormMember.ClubID != null)
             {
@@ -23,5 +31,6 @@ namespace KiCData.Models
                 //Set Member from ID
             }
         }
+        */
     }
 }

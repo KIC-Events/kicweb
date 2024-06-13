@@ -18,6 +18,11 @@ namespace KiCData.Models
         [Display(Name = "About your business.")]
         public string? Bio { get; set; }
 
+        public int MemberId { get; set; }
+
+        public virtual Member Member { get; private set; }
+
+        /*
         public Member FormMember { get; set; }
 
         public Member Member { get; private set; }
@@ -30,5 +35,6 @@ namespace KiCData.Models
                 //Set Member from ID
             }
         }
+        */
     }
 }
