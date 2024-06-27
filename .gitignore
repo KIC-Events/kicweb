@@ -1,14 +1,4 @@
-###################
-# compiled source #
-###################
-*.com
-*.class
-*.dll
-*.exe
-*.pdb
-*.dll.config
-*.cache
-*.suo
+
 # Include dlls if they’re in the NuGet packages directory
 !/packages/*/lib/*.dll
 !/packages/*/lib/*/*.dll
@@ -25,10 +15,6 @@ _UpgradeReport_Files/
 bin/
 obj/
 TestResults/
-###################
-# Web publish log #
-###################
-*.Publish.xml
 #############
 # Resharper #
 #############
@@ -68,9 +54,6 @@ Thumbs.db
 packages
 NuGet.exe
 _[Ss]cripts
-*.exe
-*.dll
-*.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
 *.vsidx
