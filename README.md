@@ -17,4 +17,6 @@
 #### This webapp requires config files not included in this repo to protect sensitive account information. There is a copy in the codespace secrets of this project. To obtain these files contact Malechus at [malechus@fangandclaw.org.](mailto:malechus@fangandclaw.org)  
 
 ### Server info
-#### Prod server 66.228.34.152
+#### Web server 66.228.34.152
+#### Prod site *.kicevents.com
+#### Dev site dev.kicevents.com
