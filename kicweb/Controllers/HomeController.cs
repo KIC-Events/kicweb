@@ -112,6 +112,8 @@ public class HomeController : Controller
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
+    //Issue #86 https://github.com/Malechus/kic/issues/86
+    /*
 	[HttpGet]
 	public IActionResult Presenters()
 	{
@@ -279,8 +281,9 @@ public class HomeController : Controller
 
 		return Redirect("Success");
 	}
+	
 
-	[HttpGet]
+    [HttpGet]
 	public IActionResult Contact()
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
@@ -330,6 +333,25 @@ public class HomeController : Controller
         }
 
         return Redirect("Success");
+    }
+	*/
+
+	public IActionResult Contact()
+	{
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Index");
+        }
+        return View();
+    }
+
+	public IActionResult GetInvolved()
+	{
+        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+        {
+            return Redirect("Index");
+        }
+        return View();
     }
 
 	public IActionResult Success()
