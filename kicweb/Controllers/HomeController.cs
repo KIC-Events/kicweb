@@ -305,7 +305,7 @@ public class HomeController : Controller
         FormMessage message = _emailService.FormSubmissionEmailFactory("Admin");
         if (message == null)
         {
-            //log exception here
+			_logger.Log(new Exception("The message is null."), _contextAccessor.HttpContext.Request);
 
             return Redirect("Error");
         }
