@@ -78,10 +78,11 @@ _[Ss]cripts
 /kicweb/appsettings.json
 /kicweb/appsettings.Development.json
 /kicweb/appsettings.Production.json
-/Publish
-/Publish/*
 /KiCWeb.runtimeconfig.json
 /KiCWeb.deps.json
 /appsettings.Production.json
 /appsettings.json
 /appsettings.Development.json
+*/appsettings.Production.json
+*/appsettings.json
+*/appsettings.Development.json
