@@ -4,17 +4,25 @@
 <div class="view-body">
     <div class="row">
         <h1>Presenter Sign Up</h1>
-        <p>If you would like to share a class or presentation with KIC, please fill out the form below and we will get in touch.</p>
+        @*<p>If you would like to share a class or presentation with KIC, please fill out the form below and we will get in touch.</p>*@
+        <p>This part of the site is under construction. In the meantime, please send an email to <a href="mailto:presenters@kicevents.com">presenters@kicevents.com</a> with the following information:</p>
+        <ul>
+            <li>Your name</li>
+            <li>Your Fetlife name</li>
+            <li>Your bio</li>
+            <li>What classes you want to teach or facilitate</li>
+            <li>Any other info you think we should have</li>
+        </ul>
     </div>
-    <div class="row">
+    @*<div class="row">
         <div class="form-fillable">
             @using (Html.BeginForm())
             {
                 <div class="col-8">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Presenter.FetName)
-                        @Html.TextBoxFor(model => model.Presenter.FetName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Presenter.FetName, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Presenter.Member.FetName)
+                        @Html.TextBoxFor(model => model.Presenter.Member.FetName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Presenter.Member.FetName, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Presenter.PublicName)
@@ -22,9 +30,9 @@
                         @Html.ValidationMessageFor(model => model.Presenter.PublicName, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Presenter.EmailAddress)
-                        @Html.TextBoxFor(model => model.Presenter.EmailAddress, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Presenter.EmailAddress, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Presenter.Member.EmailAddress)
+                        @Html.TextBoxFor(model => model.Presenter.Member.EmailAddress, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Presenter.Member.EmailAddress, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Presenter.Bio)
@@ -52,7 +60,7 @@
                 </div>
             }
         </div>
-    </div>
+    </div>*@
 </div>
 
 @if (ViewBag.Error is not null)

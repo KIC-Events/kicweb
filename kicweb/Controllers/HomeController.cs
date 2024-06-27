@@ -144,9 +144,9 @@ public class HomeController : Controller
         formMessage.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new presentation sign up has occurred.</p>" +
             "<br />" +
             "<br />" +
-            "<br /><b>FetName: </b>" + presUpdated.Presenter.FetName +
+            "<br /><b>FetName: </b>" + presUpdated.Presenter.Member.FetName +
             "<br /><b>Business Name: </b>" + presUpdated.Presenter.PublicName +
-            "<br /><b>Email: </b>" + presUpdated.Presenter.EmailAddress +
+            "<br /><b>Email: </b>" + presUpdated.Presenter.Member.EmailAddress +
             "<br /><b>Presenter Details: </b>" + presUpdated.Presenter.Bio +
 			"<br /><b>Presentation Name: </b>" + presUpdated.Name +
             "<br /><b>Presentation Description: </b>" + presUpdated.Description +
@@ -177,7 +177,7 @@ public class HomeController : Controller
             return Redirect("Index");
         }
 		ViewBag.Error = null;
-		Vendor vendor = new Vendor() { LastAttended = null };
+		Vendor vendor = new Vendor();
 		return View(vendor);
 	}
 
@@ -201,9 +201,9 @@ public class HomeController : Controller
 		formMessage.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new vendor sign up has occurred.</p>" +
             "<br />" +
             "<br />" +
-            "<br /><b>FetName: </b>" + venUpdated.FetName +
+            "<br /><b>FetName: </b>" + venUpdated.Member.FetName +
 			"<br /><b>Business Name: </b>" + venUpdated.PublicName +
-            "<br /><b>Email: </b>" + venUpdated.EmailAddress +
+            "<br /><b>Email: </b>" + venUpdated.Member.EmailAddress +
             "<br /><b>Details: </b>" + venUpdated.Bio +
             "<br />" +
             "<br />" +
@@ -256,11 +256,11 @@ public class HomeController : Controller
 		message.HtmlBuilder.Append("<p>This is an automated email message sent through kicevents.com. A new volunteer sign up has occurred.</p>" +
 			"<br />" +
 			"<br />" +
-            "<br /><b>Name: </b>" + volUpdated.LegalName +
-            "<br /><b>Fet Name: </b>" + volUpdated.FetName +
-			"<br /><b>Club ID: </b>" + volUpdated.ClubId +
-            "<br /><b>Email: </b>" + volUpdated.Email +
-            "<br /><b>Phone: </b>" + volUpdated.PhoneNumber +
+            "<br /><b>Name: </b>" + volUpdated.Member.LegalName +
+            "<br /><b>Fet Name: </b>" + volUpdated.Member.FetName +
+			"<br /><b>Club ID: </b>" + volUpdated.Member.ClubId +
+            "<br /><b>Email: </b>" + volUpdated.Member.EmailAddress +
+            "<br /><b>Phone: </b>" + volUpdated.Member.PhoneNumber +
             "<br /><b>Details: </b>" + volUpdated.Details +
             "<br />" +
             "<br />" +
@@ -305,7 +305,7 @@ public class HomeController : Controller
         FormMessage message = _emailService.FormSubmissionEmailFactory("Admin");
         if (message == null)
         {
-            //log exception here
+			_logger.Log(new Exception("The message is null."), _contextAccessor.HttpContext.Request);
 
             return Redirect("Error");
         }

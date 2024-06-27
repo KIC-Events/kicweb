@@ -4,17 +4,25 @@
 <div class="view-body">
     <div class="row">
         <h1>Vendor Info</h1>
-        <p>If you are interested in vending at a KIC Event, please fill out the form below.</p>
+        @*<p>If you are interested in vending at a KIC Event, please fill out the form below.</p>*@
+        <p>This part of the site is under construction. In the meantime, if you would like to be a vendor at one of our events, please send an email to <a href="mailto:vendors@kicevents.com">vendors@kicevents.com</a> with the following information:</p>
+        <ul>
+            <li>Your name</li>
+            <li>Your business name</li>
+            <li>Your Fetlife profile or other social media</li>
+            <li>Type and price range of products you sell</li>
+            <li>Any other info you think we should have</li>
+        </ul>
     </div>
-    <div class="row">
+    @*<div class="row">
         <div class="form-fillable">
             @using (Html.BeginForm())
             {
                 <div class="col-8">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.FetName)
-                        @Html.TextBoxFor(model => model.FetName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.FetName, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Member.FetName)
+                        @Html.TextBoxFor(model => model.Member.FetName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Member.FetName, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.PublicName)
@@ -22,9 +30,9 @@
                         @Html.ValidationMessageFor(model => model.PublicName, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.EmailAddress)
-                        @Html.TextBoxFor(model => model.EmailAddress, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Member.EmailAddress)
+                        @Html.TextBoxFor(model => model.Member.EmailAddress, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Member.EmailAddress, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Bio)
@@ -37,7 +45,7 @@
                 </div>
             }
         </div>
-    </div>
+    </div>*@
 </div>
 
 @if (ViewBag.Error is not null)
