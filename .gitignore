@@ -86,3 +86,7 @@ _[Ss]cripts
 */appsettings.Production.json
 */appsettings.json
 */appsettings.Development.json
+/Publish/Dev/appsettings.json
+/Publish/Dev/appsettings.*.json
+/Publish/Prod/appsettings.json
+/Publish/Prod/appsettings.*.json
