@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.InteropServices;
 
 namespace KiCData.Models
 {
     public abstract class Member
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        
+        public Guid Id { get; set; }
         
         [Required]
         [Display(Name = "Legal First Name")]
@@ -17,7 +18,21 @@ namespace KiCData.Models
         [Display(Name = "Legal Last Name")]
         public string LastName { get; set; }
 
+        [Required]
+        [Display(Name = "Email Address")]
         public string Email { get; set; }
+
+        [Display(Name = "Birthday")]
+        public DateOnly? DateOfBirth { get; set; }
+
+        [Display(Name = "Fetlife Profile Name")]
+        public string? FetName { get; set; }
+
+        [Display(Name = @"Club425 ID (This was provided on registration.)")]
+        public int? ClubId { get; set; }
+
+        [Display(Name = @"Phone Number (Optional)")]
+        public string? PhoneNumber { get; set; }
 
         public bool IsVendor { get; set; }
 

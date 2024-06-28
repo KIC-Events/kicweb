@@ -21,5 +21,11 @@ namespace KiCData.Models
         {
             DbPath = string.Empty;
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Member>()
+                .UseTptMappingStrategy();
+        }
     }
 }
