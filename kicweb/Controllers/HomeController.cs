@@ -146,7 +146,7 @@ public class HomeController : Controller
             "<br />" +
             "<br /><b>FetName: </b>" + presUpdated.Presenter.FetName +
             "<br /><b>Business Name: </b>" + presUpdated.Presenter.PublicName +
-            "<br /><b>Email: </b>" + presUpdated.Presenter.EmailAddress +
+            "<br /><b>Email: </b>" + presUpdated.Presenter.Email +
             "<br /><b>Presenter Details: </b>" + presUpdated.Presenter.Bio +
 			"<br /><b>Presentation Name: </b>" + presUpdated.Name +
             "<br /><b>Presentation Description: </b>" + presUpdated.Description +
@@ -203,7 +203,7 @@ public class HomeController : Controller
             "<br />" +
             "<br /><b>FetName: </b>" + venUpdated.FetName +
 			"<br /><b>Business Name: </b>" + venUpdated.PublicName +
-            "<br /><b>Email: </b>" + venUpdated.EmailAddress +
+            "<br /><b>Email: </b>" + venUpdated.Email +
             "<br /><b>Details: </b>" + venUpdated.Bio +
             "<br />" +
             "<br />" +

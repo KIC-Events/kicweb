@@ -8,7 +8,7 @@ namespace KiCData.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int VolunteerId { get; set; }
+        public int? VolunteerId { get; set; }
       
         [Display(Name = "Positions you are interested in working.")]
         public List<string>? Positions { get; set; }

@@ -8,7 +8,7 @@ namespace KiCData.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int AttendeeId { get; set; }
+        public int? AttendeeId { get; set; }
 
         [Required]
         [Display(Name = "Sex listed on Government ID")]

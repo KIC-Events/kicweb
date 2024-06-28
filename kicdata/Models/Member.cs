@@ -7,20 +7,19 @@ namespace KiCData.Models
     public abstract class Member
     {
         [Key]
-        
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         
         [Required]
         [Display(Name = "Legal First Name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [Required]
         [Display(Name = "Legal Last Name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [Required]
         [Display(Name = "Email Address")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Display(Name = "Birthday")]
         public DateOnly? DateOfBirth { get; set; }
