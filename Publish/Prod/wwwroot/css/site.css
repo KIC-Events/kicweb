@@ -206,3 +206,7 @@ button.accept-policy
     text-align: center;
     list-style-position: inside;
 }
+
+#countdown{
+    color: #ffcd36;
+}
