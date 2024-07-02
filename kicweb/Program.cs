@@ -10,9 +10,13 @@ if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
 {
 	configBuilder.AddJsonFile("appsettings.Production.json");
 }
-else
+else if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
 {
 	configBuilder.AddJsonFile("appsettings.Development.json");
+}
+else
+{
+	configBuilder.AddJsonFile("appsettings.Debug.json");
 }
 IConfigurationRoot config = configBuilder.Build();
 
