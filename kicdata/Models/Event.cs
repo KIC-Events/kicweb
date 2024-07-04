@@ -6,6 +6,8 @@ namespace KiCData.Models
 {
     public class Event
     {
+        [Key]
+        public Guid? EventId { get; set; }  
 
     }
 }

@@ -15,12 +15,21 @@ namespace KiCData.Models
         public string Sex { get; set; }
 
         [Required]
-        [Display(Name = "Type of Ticket")]
-        public string TicketType { get; set; }
+        
+        public int TicketId { get; set; }
+        public virtual Ticket Ticket { get; set; }
 
         [Required]
         [Display(Name = "Preferred Badge Name")]       
         public string BadgeName { get; set; }
+
+        public bool BackgroundChecked { get; set; }
+
+        public int ConfirmationNumber { get; set; }
+        public bool WaitListed { get; set; }
+        public string? RoomPreference { get; set; }
+
+        public bool IsPaid { get; set; }
     }
         
 }
