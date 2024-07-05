@@ -1,20 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace KiCData.Models
 {
     public class Event
     {
-        [Required]
-        [Display(Name = "Name")]
-        public string Name { get; set; }
+        [Key]
+        public Guid? EventId { get; set; }  
 
-        public DateOnly? Date { get; set; }
-
-        public Location Location { get; set; }
-
-        public void SetLocation(string name)
-        {
-            //Add db query to set loction via name call
-        }
     }
 }
