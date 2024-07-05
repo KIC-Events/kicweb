@@ -18,7 +18,7 @@ jobs:
       run: |
         ISSUE_NUMBER=${{ github.event.issue.number }}
         REPO_NAME=${{ github.repository }}
-        BRANCH_NAME=$(git branch | grep $ISSUE_NUMBER)
+        export BRANCH_NAME="$(git branch --remotes --all --list | grep $ISSUE_NUMBER)"
         echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
         echo "Fetched branch $BRANCH_NAME"
 
