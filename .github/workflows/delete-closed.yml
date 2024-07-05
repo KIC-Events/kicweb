@@ -20,6 +20,7 @@ jobs:
         REPO_NAME=${{ github.repository }}
         BRANCH_NAME=$(gh api repos/$REPO_NAME/issues/$ISSUE_NUMBER | jq -r '.head.ref')
         echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
+        echo "Fetched branch $BRANCH_NAME"
 
     - name: Delete the branch
       env:
