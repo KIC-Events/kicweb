@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace kicweb.Views.Shared
+namespace KiCWeb.Views.Shared
 {
     public class UnderConstruction : PageModel
     {

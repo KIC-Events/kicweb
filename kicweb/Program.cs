@@ -1,5 +1,6 @@
-using kicweb.Services;
-using KiCWeb.Services;
+using KiCData.Services;
+using KiCData.Models;
+using KiCData.Models.WebModels;
 using Microsoft.Extensions.Logging;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
