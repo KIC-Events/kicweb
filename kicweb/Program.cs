@@ -29,6 +29,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICookieService, CookieService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
+builder.Services.AddSingleton<IKICDbService, KICDbService>();
 builder.Services.AddControllersWithViews();
 
 WebApplication app = builder.Build();
