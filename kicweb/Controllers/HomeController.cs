@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using kicweb.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using kicweb.Services;
 using System.Net;
 using MailKit.Security;
 using MailKit.Net.Smtp;
@@ -10,8 +8,9 @@ using MimeKit;
 using System.Text;
 using KiCData;
 using KiCData.Models;
-using KiCWeb.Models;
-using KiCWeb.Services;
+using KiCData.Models;
+using KiCData.Models.WebModels;
+using KiCData.Services;
 using Org.BouncyCastle.Crypto.Fpe;
 
 namespace KiCWeb.Controllers;
