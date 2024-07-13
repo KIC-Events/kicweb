@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KiCData.Models
 {
-    public class Location
+    public class Venue
     {
         public int? Id { get; set; }
 
@@ -15,6 +15,8 @@ namespace KiCData.Models
         public string Address { get; set; }
 
         public string City { get; set; }
+
+        public string State { get; set; }
 
         public int Capacity { get; set; }
     }

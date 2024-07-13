@@ -10,6 +10,10 @@ namespace KiCData.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? PresenterId { get; set; }
 
+        public Guid? MemberId { get; set; }
+        public virtual Member Member { get; set; }
+
+
         [Required]
         [Display(Name = "The name we should use for you or your business in promotional materials.")]
         public string? PublicName { get; set; }
@@ -18,5 +22,11 @@ namespace KiCData.Models
         public string? Bio { get; set; }
 
         public DateOnly? LastAttended { get; set; }
+
+        public string? Requests { get; set; }
+
+        public decimal? Fee { get; set; }
+        public string? Details { get; set; }
+
     }
 }

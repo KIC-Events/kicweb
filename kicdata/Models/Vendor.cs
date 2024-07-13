@@ -16,6 +16,11 @@ namespace KiCData.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? VendorId { get; set; }
 
+        public Guid? MemberId { get; set; }
+
+        public virtual Member Member { get; set; }
+
+
         [Required]
         [Display(Name  = "Your business or professional name.")]
         public string? PublicName { get; set; }
@@ -25,5 +30,12 @@ namespace KiCData.Models
         public string? Bio { get; set; }
 
         public DateOnly? LastAttended { get; set; }
+
+        public string? MerchType { get; set; }
+
+        public decimal? PriceMin { get; set; }
+        public decimal? PriceMax { get; set; }
+        public decimal? PriceAvg { get; set; }
+
     }
 }

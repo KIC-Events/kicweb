@@ -26,6 +26,8 @@ namespace KiCData.Models
         public DateOnly? StartDate { get; set; }
         public DateOnly? EndDate { get; set; }
 
+        public bool? IsComped { get; set; }
+
 
     }
 }

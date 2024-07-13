@@ -10,12 +10,10 @@ namespace KiCData.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? AttendeeId { get; set; }
 
-        [Required]
-        [Display(Name = "Sex listed on Government ID")]
-        public string Sex { get; set; }
+        public Guid? MemberId { get; set; }
 
-        [Required]
-        
+        public virtual Member Member { get; set; }
+
         public int TicketId { get; set; }
         public virtual Ticket Ticket { get; set; }
 
