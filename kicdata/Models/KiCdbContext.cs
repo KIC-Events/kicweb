@@ -4,6 +4,8 @@ using System.Linq;
 using System.Collections.Generic;
 using KiCData.Models;
 using Microsoft.Extensions.Configuration;
+using System.Xml.Serialization;
+using MySqlConnector;
 
 namespace KiCData.Models
 {
@@ -27,7 +29,13 @@ namespace KiCData.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(_config["ConnectionString"], ServerVersion.AutoDetect(_config["ConnectionString"]));
+                MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+                builder.Server = _config["Database:Server"];
+                builder.Port = 3306;
+                builder.UserID = _config["Database:Username"];
+                builder.Password = _config["Database:Password"];
+
+                optionsBuilder.UseMySql(builder.ConnectionString, ServerVersion.AutoDetect(builder.ConnectionString));
             }
         }
 
@@ -35,6 +43,7 @@ namespace KiCData.Models
         {
             modelBuilder.Entity<Member>()
                 .UseTptMappingStrategy();
+            modelBuilder.HasDefaultSchema("Dev");
         }
     }
 }

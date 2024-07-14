@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace KiCData.Models.WebModels.Member
 {
-	public class User
+	public class WebUser
 	{
 
-		public User(RegisterViewModel rvm)
+		public WebUser(RegisterViewModel rvm)
 		{
 			LegalName = rvm.LegalName;
 			EmailAddress = rvm.EmailAddress;

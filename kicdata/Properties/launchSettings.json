@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "KiCData": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Debug"
+      }
+    }
+  }
+}

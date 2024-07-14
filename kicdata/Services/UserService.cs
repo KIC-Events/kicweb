@@ -13,16 +13,16 @@ namespace KiCData.Services
 {
 	public class UserService : IUserService
 	{
-		public User CreateUser(RegisterViewModel rvm)
+		public WebUser CreateUser(RegisterViewModel rvm)
 		{
-			User user = new User(rvm);
+			WebUser user = new WebUser(rvm);
 
 			user.HashedPassword = EncryptPassword(user, rvm.Password);
 
 			return user;
 		}
 
-		private string EncryptPassword(User user, string password)
+		private string EncryptPassword(WebUser user, string password)
 		{
 			string salt = user.EmailAddress.Split('@')[1];
 
