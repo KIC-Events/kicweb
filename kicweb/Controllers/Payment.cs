@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using kicweb.Services;
+using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace kicweb.Controllers
+namespace KiCWeb.Controllers
 {
     [Route("[controller]")]
     public class Payment : Controller

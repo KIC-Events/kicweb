@@ -58,10 +58,10 @@ _[Ss]cripts
 *.dot[Cc]over
 *.vsidx
 /.vs/
-/kicweb/appsettings.json
-/kicweb/appsettings.Development.json
-/kicweb/appsettings.Production.json
-/kicweb/appsettings.Debug.json
+/KiCWeb/appsettings.json
+/KiCWeb/appsettings.Development.json
+/KiCWeb/appsettings.Production.json
+/KiCWeb/appsettings.Debug.json
 /KiCWeb.runtimeconfig.json
 /KiCWeb.deps.json
 /appsettings.Production.json

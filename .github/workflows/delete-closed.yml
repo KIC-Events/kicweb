@@ -1,0 +1,32 @@
+name: Delete Branch on Issue Close
+
+on:
+  issues:
+    types:
+      - closed
+
+jobs:
+  delete-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v2
+
+    - name: Get the branch name linked to the issue
+      id: get-branch
+      run: |
+        ISSUE_NUMBER=${{ github.event.issue.number }}
+        REPO_NAME=${{ github.repository }}
+        export BRANCH_NAME="$(git branch --remotes --all --list | grep $ISSUE_NUMBER)"
+        echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
+        echo "Fetched branch $BRANCH_NAME"
+
+    - name: Delete the branch
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH_NAME: ${{ env.branch_name }}
+      if: env.BRANCH_NAME != 'null' && env.BRANCH_NAME != 'main' && env.BRANCH_NAME != 'dev' 
+      run: |
+        echo "Deleting branch $BRANCH_NAME"
+        gh api -X DELETE repos/${{ github.repository }}/git/refs/heads/$BRANCH_NAME

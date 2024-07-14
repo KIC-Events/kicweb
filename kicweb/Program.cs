@@ -1,5 +1,6 @@
-using kicweb.Services;
-using KiCWeb.Services;
+using KiCData.Services;
+using KiCData.Models;
+using KiCData.Models.WebModels;
 using Microsoft.Extensions.Logging;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICookieService, CookieService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
+builder.Services.AddSingleton<IKICDbService, KICDbService>();
 builder.Services.AddControllersWithViews();
 
 WebApplication app = builder.Build();

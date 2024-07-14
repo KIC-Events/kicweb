@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using kicweb.Models.Member;
-using kicweb.Services;
+using KiCData.Services;
+using KiCData.Models;
+using KiCData.Models.WebModels;
+using KiCData.Models.WebModels.Member;
 
-namespace kicweb.Controllers
+namespace KiCWeb.Controllers
 {
 	[Route("[controller]")]
 	public class Member : Controller
