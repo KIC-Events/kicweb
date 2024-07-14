@@ -17,6 +17,16 @@ namespace KiCData.Models
         public DbSet<Event> Events { get; set; }
         public DbSet<Presenter> Presenters { get; set; }
         public DbSet<Presentation> Presentations { get; set; }
+        public DbSet<ClubMember> ClubMembers { get; set; }
+        public DbSet<Attendee> Attendees { get; set; }
+        public DbSet<EventVendor> EventVendors{ get; set; }
+        public DbSet<EventVolunteer> EventVolunteers { get; set; }
+        public DbSet<Staff> Staff { get; set; }
+        public DbSet<Ticket> Ticket { get; set; }
+        public DbSet<TicketComp> TicketComp { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Venue> Venue { get; set; }
+
 
         public KiCdbContext(IConfigurationRoot config)
         {
