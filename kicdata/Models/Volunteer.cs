@@ -6,13 +6,13 @@ namespace KiCData.Models
     [Table("Volunteers")]
     public class Volunteer : Member
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? VolunteerId { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public int? VolunteerId { get; set; }
 
-        public Guid? MemberId { get; set; }
+        //public Guid? MemberId { get; set; }
 
-        public virtual Member Member { get; set; }
+        //public virtual Member Member { get; set; }
 
       
         [Display(Name = "Positions you are interested in working.")]

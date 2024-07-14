@@ -6,13 +6,13 @@ namespace KiCData.Models
     [Table("Attendees")]
     public class Attendee : Member
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? AttendeeId { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public int? AttendeeId { get; set; }
 
-        public Guid? MemberId { get; set; }
+        //public Guid? MemberId { get; set; }
 
-        public virtual Member Member { get; set; }
+        //public virtual Member Member { get; set; }
 
         public int TicketId { get; set; }
         public virtual Ticket Ticket { get; set; }
