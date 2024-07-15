@@ -44,6 +44,7 @@ namespace KiCData.Models
                 builder.Port = 3306;
                 builder.UserID = _config["Database:Username"];
                 builder.Password = _config["Database:Password"];
+                builder.Database = _config["Database:Database"];
 
                 optionsBuilder.UseMySql(builder.ConnectionString, ServerVersion.AutoDetect(builder.ConnectionString));
             }
