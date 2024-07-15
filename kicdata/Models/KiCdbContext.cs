@@ -54,7 +54,7 @@ namespace KiCData.Models
         {
             modelBuilder.Entity<Member>()
                 .UseTptMappingStrategy();
-            modelBuilder.HasDefaultSchema("Dev");
+            //modelBuilder.HasDefaultSchema("Dev");
         }
     }
 }
