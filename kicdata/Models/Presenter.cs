@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace KiCData.Models
 {
     [Table("Presenters")]
-    public class Presenter : Member
+    public class Presenter 
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int? PresenterId { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? PresenterId { get; set; }
 
-        //public Guid? MemberId { get; set; }
-        //public virtual Member Member { get; set; }
+        public Guid? MemberId { get; set; }
+        public virtual Member Member { get; set; }
 
 
         [Required]

@@ -7,6 +7,7 @@ namespace KiCData.Models
     public abstract class Member
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid? Id { get; set; }
         
         [Required]

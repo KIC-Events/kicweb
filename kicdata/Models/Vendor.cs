@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 namespace KiCData.Models
 {
     [Table("Vendors")]
-    public class Vendor : Member
+    public class Vendor 
 
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int? VendorId { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? VendorId { get; set; }
 
-        //public Guid? MemberId { get; set; }
+        public Guid? MemberId { get; set; }
 
-        //public virtual Member Member { get; set; }
+        public virtual Member Member { get; set; }
 
 
         [Required]
