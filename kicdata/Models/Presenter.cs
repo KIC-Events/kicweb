@@ -8,7 +8,7 @@ namespace KiCData.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? PresenterId { get; set; }
+        public int? Id { get; set; }
 
         public Guid? MemberId { get; set; }
         public virtual Member Member { get; set; }

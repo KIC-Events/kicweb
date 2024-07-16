@@ -54,7 +54,55 @@ namespace KiCData.Models
         {
             modelBuilder.Entity<Member>()
                 .UseTptMappingStrategy();
-            //modelBuilder.HasDefaultSchema("Dev");
+            modelBuilder.HasDefaultSchema("Dev");
+            modelBuilder.Entity<Member>().HasData(new Volunteer
+                        {
+                Id = Guid.NewGuid(),
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "John.Doe@example.com",
+                DateOfBirth = new DateOnly(1980, 1, 1),
+                FetName = "JohnDoe",
+                ClubId = 12345,
+                PhoneNumber = "555-555-5555",
+                PublicId = 54321,
+                AdditionalInfo = "This is a test user.",
+                IsVendor = false,
+                IsVolunteer = true,
+                IsPresenter = false,
+                IsStaff = false,
+                Positions = new List<string> { "Test Position" },
+                Details = "This is a test volunteer."
+            });
+            modelBuilder.Entity<Vendor>().HasData(new Vendor
+            {
+                Id = 1128,
+                PublicName = "Test Vendor",
+                Bio = "This is a test vendor.",
+                LastAttended = new DateOnly(2021, 1, 1),
+                MerchType = "Test Merch",
+                PriceMin = 1.00M,
+                PriceMax = 10.00M,
+                PriceAvg = 5.00M
+                });
+            modelBuilder.Entity<Venue>().HasData(new Venue
+            {
+                Id = 12345,
+                Name = "Test Venue",
+                Address = "123 Test St.",
+                City = "Test City",
+                State = "TS",
+                Capacity = 100
+            });
+            modelBuilder.Entity<Event>().HasData(new Event
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Event",
+                StartDate = new DateOnly(2021, 1, 1),
+                EndDate = new DateOnly(2021, 1, 2),
+                VenueId = 12345,
+                Description = "This is a test event."
+            });
         }
     }
 }

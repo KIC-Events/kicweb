@@ -14,7 +14,7 @@ namespace KiCData.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? VendorId { get; set; }
+        public int? Id { get; set; }
 
         public Guid? MemberId { get; set; }
 
