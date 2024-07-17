@@ -54,12 +54,11 @@ namespace KiCData.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Member>()
-                .UseTptMappingStrategy();
             modelBuilder.HasDefaultSchema("Dev");
+
             modelBuilder.Entity<Member>().HasData(new Member
                         {
-                Id = Guid.NewGuid(),
+                Id = 7725,
                 FirstName = "John",
                 LastName = "Doe",
                 Email = "John.Doe@example.com",
@@ -74,9 +73,21 @@ namespace KiCData.Models
                 IsPresenter = false,
                 IsStaff = false
             });
+            modelBuilder.Entity<Presenter>().HasData(new Presenter
+            {
+                Id = 1234,
+                MemberId = 7725,
+                PublicName = "Test Presenter",
+                Bio = "This is a test presenter.",
+                LastAttended = new DateOnly(2021, 1, 1),
+                Requests = "Test Requests",
+                Fee = 100.00M,
+                Details = "Test Details"
+            });
             modelBuilder.Entity<Vendor>().HasData(new Vendor
             {
                 Id = 1128,
+                MemberId = 7725,
                 PublicName = "Test Vendor",
                 Bio = "This is a test vendor.",
                 LastAttended = new DateOnly(2021, 1, 1),
@@ -84,7 +95,14 @@ namespace KiCData.Models
                 PriceMin = 1.00M,
                 PriceMax = 10.00M,
                 PriceAvg = 5.00M
-                });
+            });
+            modelBuilder.Entity<Volunteer>().HasData(new Volunteer
+            {
+                Id = 1234,
+                MemberId = 7725,
+                Positions = new List<string> { "Test Position" },
+                Details = "Test Details"
+            });
             modelBuilder.Entity<Venue>().HasData(new Venue
             {
                 Id = 12345,
@@ -96,12 +114,41 @@ namespace KiCData.Models
             });
             modelBuilder.Entity<Event>().HasData(new Event
             {
-                Id = Guid.NewGuid(),
+                Id = 1111,
                 Name = "Test Event",
                 StartDate = new DateOnly(2021, 1, 1),
                 EndDate = new DateOnly(2021, 1, 2),
                 VenueId = 12345,
                 Description = "This is a test event."
+            });
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 1234,
+                EventId = 1111,
+                Price = 10.00M,
+                Type = "Test Ticket",
+                Name = "Test Ticket",
+                DatePurchased = new DateOnly(2021, 1, 1),
+                StartDate = new DateOnly(2021, 1, 1),
+                EndDate = new DateOnly(2021, 1, 2),
+                IsComped = false
+            });
+            modelBuilder.Entity<Presentation>().HasData(new Presentation
+            {
+                Name = "Test Presentation",
+                PresenterId = 1234,
+                Description = "This is a test presentation.",
+                EventId = 1111
+            });
+            modelBuilder.Entity<EventVendor>().HasData(new EventVendor
+            {
+                EventId = 1111,
+                VendorId = 1128
+            });
+            modelBuilder.Entity<EventVolunteer>().HasData(new EventVolunteer
+            {
+                EventId = 1111,
+                VolunteerId = 1234
             });
         }
     }

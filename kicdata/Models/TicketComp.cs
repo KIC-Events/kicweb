@@ -11,8 +11,8 @@ namespace KiCData.Models
     public class TicketComp
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? CompId { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? Id { get; set; }
 
         public int? TicketId { get; set; }
         public virtual Ticket? Ticket { get; set; } 

@@ -7,8 +7,10 @@ namespace KiCData.Models
     public class Event
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid? Id { get; set; }  
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public Guid? Id { get; set; }  
+        //int for testing purposes only
+        public int? Id { get; set; }
 
         public string? Name { get; set; }
 

@@ -7,9 +7,11 @@ namespace KiCData.Models
     public class Member
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid? Id { get; set; }
-        
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public Guid? Id { get; set; }
+        // int for testing purposes only
+        public int? Id { get; set; }
+
         [Required]
         [Display(Name = "Legal First Name")]
         public string? FirstName { get; set; }

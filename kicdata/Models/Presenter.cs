@@ -7,10 +7,12 @@ namespace KiCData.Models
     public class Presenter 
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? Id { get; set; }
 
-        public Guid? MemberId { get; set; }
+        //public Guid? MemberId { get; set; }
+        //int for testing purposes only
+        public int? MemberId { get; set; }
         public virtual Member Member { get; set; }
 
 

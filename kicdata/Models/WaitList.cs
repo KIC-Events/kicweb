@@ -12,7 +12,7 @@ namespace KiCData.Models
 
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? Id { get; set; }
         public int AttendeeId { get; set; }
         public virtual Attendee Attendee { get; set; }

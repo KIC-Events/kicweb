@@ -11,7 +11,7 @@ namespace KiCData.Models
     public class EventVolunteer
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? Id { get; set; }
 
         public int VolunteerId { get; set; }
