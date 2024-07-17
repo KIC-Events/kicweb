@@ -14,7 +14,7 @@ namespace KiCData.Models
 
         public virtual Member Member { get; set; }
 
-        public int TicketId { get; set; }
+        public int? TicketId { get; set; }
         public virtual Ticket Ticket { get; set; }
 
         [Required]
@@ -24,7 +24,8 @@ namespace KiCData.Models
         public bool BackgroundChecked { get; set; }
 
         public int ConfirmationNumber { get; set; }
-        public bool WaitListed { get; set; }
+        public bool RoomWaitListed { get; set; }
+        public bool TicketWaitListed { get; set; }
         public string? RoomPreference { get; set; }
 
         public bool IsPaid { get; set; }

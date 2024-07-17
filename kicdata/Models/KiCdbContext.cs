@@ -28,6 +28,8 @@ namespace KiCData.Models
         public DbSet<TicketComp> TicketComp { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Venue> Venue { get; set; }
+        public DbSet<WaitList> WaitList { get; set; }
+
 
 
         public KiCdbContext(IConfigurationRoot config)
@@ -55,7 +57,7 @@ namespace KiCData.Models
             modelBuilder.Entity<Member>()
                 .UseTptMappingStrategy();
             modelBuilder.HasDefaultSchema("Dev");
-            modelBuilder.Entity<Member>().HasData(new Volunteer
+            modelBuilder.Entity<Member>().HasData(new Member
                         {
                 Id = Guid.NewGuid(),
                 FirstName = "John",
@@ -70,9 +72,7 @@ namespace KiCData.Models
                 IsVendor = false,
                 IsVolunteer = true,
                 IsPresenter = false,
-                IsStaff = false,
-                Positions = new List<string> { "Test Position" },
-                Details = "This is a test volunteer."
+                IsStaff = false
             });
             modelBuilder.Entity<Vendor>().HasData(new Vendor
             {

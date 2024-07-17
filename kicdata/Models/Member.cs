@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace KiCData.Models
 {
-    public abstract class Member
+    public class Member
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

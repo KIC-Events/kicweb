@@ -8,20 +8,15 @@ using System.Threading.Tasks;
 
 namespace KiCData.Models
 {
-    public class Venue
+    public class WaitList
+
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? Id { get; set; }
-
-        public string Name { get; set; }
-
-        public string Address { get; set; }
-
-        public string City { get; set; }
-
-        public string State { get; set; }
-
-        public int Capacity { get; set; }
+        public int AttendeeId { get; set; }
+        public virtual Attendee Attendee { get; set; }
+        public DateTime SubmissionDate { get; set; }
+        public string Comments { get; set; }
     }
 }
