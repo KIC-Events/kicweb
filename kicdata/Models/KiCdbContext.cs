@@ -133,8 +133,21 @@ namespace KiCData.Models
                 EndDate = new DateOnly(2021, 1, 2),
                 IsComped = false
             });
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 12354,
+                EventId = 1111,
+                Price = 10.00M,
+                Type = "Test Ticket",
+                Name = "Test Ticket",
+                DatePurchased = new DateOnly(2021, 1, 1),
+                StartDate = new DateOnly(2021, 1, 1),
+                EndDate = new DateOnly(2021, 1, 2),
+                IsComped = false
+            });
             modelBuilder.Entity<Presentation>().HasData(new Presentation
             {
+                Id = 2222,
                 Name = "Test Presentation",
                 PresenterId = 1234,
                 Description = "This is a test presentation.",
@@ -142,14 +155,29 @@ namespace KiCData.Models
             });
             modelBuilder.Entity<EventVendor>().HasData(new EventVendor
             {
+                Id = 3333,
                 EventId = 1111,
                 VendorId = 1128
             });
             modelBuilder.Entity<EventVolunteer>().HasData(new EventVolunteer
             {
+                Id = 3579,
                 EventId = 1111,
                 VolunteerId = 1234
             });
+            modelBuilder.Entity<Attendee>().HasData(new Attendee
+            {
+                Id = 2468,
+                MemberId = 7725,
+                TicketId = 1234,
+                BadgeName = "RandomNessy",
+                BackgroundChecked = true,
+                RoomWaitListed = false,
+                TicketWaitListed = false,
+                RoomPreference = "Special",
+                IsPaid = true
+            });
+
         }
     }
 }
