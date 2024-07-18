@@ -18,6 +18,10 @@ namespace KiCData.Models
         public DbSet<Presenter> Presenters { get; set; }
         public DbSet<Presentation> Presentations { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the KiCdbContext class with the given IConfigurationRoot.
+        /// </summary>
+        /// <param name="config">An IConfigurationRoot object which must expose the connection string for the KiCdbContext.</param>
         public KiCdbContext(IConfigurationRoot config)
         {
             _config = config;

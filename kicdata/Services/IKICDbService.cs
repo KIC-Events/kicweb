@@ -9,6 +9,10 @@ namespace KiCData.Services
 {
     public interface IKICDbService
     {
+        /// <summary>
+        /// Exposes the KiCdbContext carried through the Dependency Injection. 
+        /// </summary>
+        /// <returns>KiCdbContext</returns>
         public KiCdbContext GetDBContext();
     }
 }
