@@ -2,6 +2,7 @@ using KiCData.Services;
 using KiCData.Models;
 using KiCData.Models.WebModels;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +30,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICookieService, CookieService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
-builder.Services.AddSingleton<IKICDbService, KICDbService>();
+builder.Services.AddDbContext<KiCdbContext>(options => options.UseMySql(config["Database:ConnectionString"], ServerVersion.AutoDetect(config["Database:ConnectionString"])));
 builder.Services.AddControllersWithViews();
 
 WebApplication app = builder.Build();

@@ -32,9 +32,9 @@ namespace KiCData.Models
 
 
 
-        public KiCdbContext(IConfigurationRoot config)
+        public KiCdbContext(DbContextOptions<KiCdbContext> options) : base(options)
         {
-            _config = config;
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
