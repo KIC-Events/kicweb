@@ -54,7 +54,7 @@ namespace KiCData.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("Dev");
+            //modelBuilder.HasDefaultSchema("Dev");
 
             modelBuilder.Entity<Member>().HasData(new Member
                         {
