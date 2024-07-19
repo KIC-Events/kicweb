@@ -17,6 +17,6 @@ namespace KiCData.Models
         public int AttendeeId { get; set; }
         public virtual Attendee Attendee { get; set; }
         public DateTime SubmissionDate { get; set; }
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
     }
 }

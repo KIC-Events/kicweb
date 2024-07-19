@@ -17,10 +17,10 @@ namespace KiCData.Models
 
 
         [Required]
-        [Display(Name = "The name we should use for you or your business in promotional materials.")]
+        [Display(Name = @"The name we should use for you or your business in promotional materials.")]
         public string? PublicName { get; set; }
 
-        [Display(Name = "A short bio about you or your business.")]
+        [Display(Name = @"A short bio about you or your business.")]
         public string? Bio { get; set; }
 
         public DateOnly? LastAttended { get; set; }

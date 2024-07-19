@@ -23,5 +23,7 @@ namespace KiCData.Models
         public string State { get; set; }
 
         public int Capacity { get; set; }
+
+        public float? Cost { get; set; }
     }
 }

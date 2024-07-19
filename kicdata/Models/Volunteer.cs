@@ -20,6 +20,9 @@ namespace KiCData.Models
         [Display(Name = "Positions you are interested in working.")]
         public List<string>? Positions { get; set; }
 
+        [Display(Name = "Preferred Shift", Prompt = "Shifts you are available to work.")]
+        public List<string>? Shifts { get; set; }
+
         [Display(Name = "Anything else we should know?")]
         public string? Details { get; set; }
     }
