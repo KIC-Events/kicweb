@@ -4,19 +4,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace KiCData.Models
 {
     [Table("Attendees")]
-    public class Attendee : Member
+    public class Attendee 
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? AttendeeId { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? Id { get; set; }
 
-        [Required]
-        [Display(Name = "Sex listed on Government ID")]
-        public string Sex { get; set; }
+        //public Guid? MemberId { get; set; }
+        //int for testing purposes only
+        public int? MemberId { get; set; }
 
-        [Required]
-        
-        public int TicketId { get; set; }
+        public virtual Member Member { get; set; }
+
+        public int? TicketId { get; set; }
         public virtual Ticket Ticket { get; set; }
 
         [Required]
@@ -26,7 +26,8 @@ namespace KiCData.Models
         public bool BackgroundChecked { get; set; }
 
         public int ConfirmationNumber { get; set; }
-        public bool WaitListed { get; set; }
+        public bool RoomWaitListed { get; set; }
+        public bool TicketWaitListed { get; set; }
         public string? RoomPreference { get; set; }
 
         public bool IsPaid { get; set; }

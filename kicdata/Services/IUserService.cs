@@ -8,6 +8,6 @@ namespace KiCData.Services
 {
 	public interface IUserService
 	{
-		public User CreateUser(RegisterViewModel rvm);
+		public WebUser CreateUser(RegisterViewModel rvm);
 	}
 }

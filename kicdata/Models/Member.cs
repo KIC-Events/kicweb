@@ -4,11 +4,14 @@ using System.Runtime.InteropServices;
 
 namespace KiCData.Models
 {
-    public abstract class Member
+    public class Member
     {
         [Key]
-        public Guid? Id { get; set; }
-        
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public Guid? Id { get; set; }
+        // int for testing purposes only
+        public int? Id { get; set; }
+
         [Required]
         [Display(Name = "Legal First Name")]
         public string? FirstName { get; set; }
@@ -33,6 +36,12 @@ namespace KiCData.Models
         [Display(Name = @"Phone Number (Optional)")]
         public string? PhoneNumber { get; set; }
 
+        [Display(Name = "Member ID")]
+        public int? PublicId { get; set; }
+
+        [Display(Name = "Additional Information")]
+        public string? AdditionalInfo { get; set; }
+
         public bool IsVendor { get; set; }
 
         public bool IsVolunteer { get; set; }
@@ -40,8 +49,6 @@ namespace KiCData.Models
         public bool IsPresenter { get; set; }
 
         public bool IsStaff {  get; set; }
-
-        public string? AdditionalInfo { get; set; }
 
         [NotMapped]
         [Display(Name = "Legal Name")]

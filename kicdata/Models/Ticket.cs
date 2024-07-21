@@ -11,20 +11,24 @@ namespace KiCData.Models
     public class Ticket
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? TicketId { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? Id { get; set; }
 
-        public Guid? EventId { get; set; }
+        //public Guid? EventId { get; set; }
+        //int for testing purposes only
+        public int? EventId { get; set; }
         public virtual Event Event { get; set; }
 
         public decimal Price { get; set; }
 
         public string? Type { get; set; }
 
-        public string? Name { get; set; }
+        public DateOnly? DatePurchased { get; set; }
 
         public DateOnly? StartDate { get; set; }
         public DateOnly? EndDate { get; set; }
+
+        public bool? IsComped { get; set; }
 
 
     }

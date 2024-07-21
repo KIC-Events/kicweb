@@ -7,7 +7,27 @@ namespace KiCData.Models
     public class Event
     {
         [Key]
-        public Guid? EventId { get; set; }  
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public Guid? Id { get; set; }  
+        //int for testing purposes only
+        public int? Id { get; set; }
+
+        public string? Name { get; set; }
+
+        public DateOnly? StartDate { get; set; }
+
+        public DateOnly? EndDate { get; set; }
+        
+        public string? Description { get; set; } 
+        
+        public string? Topic { get; set; }
+
+        public int? VenueId { get; set; }
+        public virtual Venue? Venue { get; set; }
+
+        public string? ImagePath { get; set; }
+
+
 
     }
 }

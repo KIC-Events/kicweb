@@ -10,6 +10,7 @@ namespace KiCData.Models
 {
     public class Presentation
     {
+        [Key]
         public int? Id { get; set; }
 
         [Required]

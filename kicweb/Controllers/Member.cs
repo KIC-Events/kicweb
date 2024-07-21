@@ -57,7 +57,7 @@ namespace KiCWeb.Controllers
 				return View(rvmUpdated);
 			}
 
-			User newUser = _userService.CreateUser(rvmUpdated);
+			WebUser newUser = _userService.CreateUser(rvmUpdated);
 
 			return View("~/Views/Member/RegisterSuccess.cshtml", newUser);
 		}

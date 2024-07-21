@@ -9,12 +9,19 @@ using System.Threading.Tasks;
 namespace KiCData.Models
 {
     [Table("Vendors")]
-    public class Vendor : Member
+    public class Vendor 
 
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? VendorId { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? Id { get; set; }
+
+        //public Guid? MemberId { get; set; }
+        //int for testing purposes only
+        public int? MemberId { get; set; }
+
+        public virtual Member Member { get; set; }
+
 
         [Required]
         [Display(Name  = "Your business or professional name.")]
@@ -25,5 +32,12 @@ namespace KiCData.Models
         public string? Bio { get; set; }
 
         public DateOnly? LastAttended { get; set; }
+
+        public string? MerchType { get; set; }
+
+        public decimal? PriceMin { get; set; }
+        public decimal? PriceMax { get; set; }
+        public decimal? PriceAvg { get; set; }
+
     }
 }
