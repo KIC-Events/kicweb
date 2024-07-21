@@ -73,3 +73,4 @@ _[Ss]cripts
 /Publish/Dev/appsettings.*.json
 /Publish/Prod/appsettings.json
 /Publish/Prod/appsettings.*.json
+/kicweb/appsettings.Debug.json
