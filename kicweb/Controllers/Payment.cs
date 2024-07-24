@@ -15,12 +15,14 @@ namespace KiCWeb.Controllers
         private readonly ILogger<Payment> _logger;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly ICookieService _cookieService;
+        private readonly IConfigurationRoot _configurationRoot;
 
-        public Payment(ILogger<Payment> logger, IHttpContextAccessor contextAccessor, ICookieService cookieService)
+        public Payment(ILogger<Payment> logger, IHttpContextAccessor contextAccessor, ICookieService cookieService, IConfigurationRoot configurationRoot)
         {
             _logger = logger;
             _contextAccessor = contextAccessor;
             _cookieService = cookieService;
+            _configurationRoot = configurationRoot;
         }
 
         [HttpGet("Purchase")]
@@ -34,10 +36,21 @@ namespace KiCWeb.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        //[HttpGet("Merch")]
+        public IActionResult MerchStore()
         {
-            return View("Error!");
+            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+            {
+                return Redirect("Home/Index");
+            }
+
+            return View("Merch");
         }
+
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View("Error!");
+        //}
     }
 }
