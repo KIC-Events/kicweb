@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace KiCData.Models
 {
+    [Table("Member")]
     public class Member
     {
         [Key]

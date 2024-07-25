@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace KiCData.Models
 {
+    [Table("EventVolunteer")]
     public class EventVolunteer
     {
         [Key]

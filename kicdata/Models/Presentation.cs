@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KiCData.Models
 {
+    [Table("Presentation")]
     public class Presentation
     {
         [Key]
@@ -29,5 +31,7 @@ namespace KiCData.Models
 
         public int EventId { get; set; }
         public virtual Event Event { get; set; }
+
+        public string? ImgPath { get; set; }
     }
 }

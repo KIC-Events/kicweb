@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KiCData.Models
 {
+    [Table("Event")]
     public class Event
     {
         [Key]
