@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KiCData.Models
 {
-    [Table("Presenters")]
+    [Table("Presenter")]
     public class Presenter 
     {
         [Key]
@@ -29,6 +29,7 @@ namespace KiCData.Models
 
         public decimal? Fee { get; set; }
         public string? Details { get; set; }
+        public string? ImgPath { get; set; }
 
     }
 }
