@@ -1,3 +1,10 @@
+![Static Badge](https://img.shields.io/badge/Prod_Version-0.1.1-green)  
+![Static Badge](https://img.shields.io/badge/Dev_Version-0.1.2-yellow)  
+![Static Badge](https://img.shields.io/badge/PreRelease_Version-1.0.0.dev.0.1.2-blue)  
+
+
+
+
 ### CI/CD Plan  
 #### Main branch should be forked and merged to only for necessary hotfixes.  
 #### Dev branch will be pushed to production server monthly on the first Friday.
