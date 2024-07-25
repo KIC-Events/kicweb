@@ -94,7 +94,8 @@ namespace KiCData.Models
                 MerchType = "Test Merch",
                 PriceMin = 1.00M,
                 PriceMax = 10.00M,
-                PriceAvg = 5.00M
+                PriceAvg = 5.00M,
+                ImgPath = @"/wwwroot/images/Vendors/image01.jpg"
             });
             modelBuilder.Entity<Volunteer>().HasData(new Volunteer
             {
@@ -151,7 +152,8 @@ namespace KiCData.Models
                 Name = "Test Presentation",
                 PresenterId = 1234,
                 Description = "This is a test presentation.",
-                EventId = 1111
+                EventId = 1111,
+                ImgPath = @"/wwwroot/Presentations/image01.jpg"
             });
             modelBuilder.Entity<EventVendor>().HasData(new EventVendor
             {
