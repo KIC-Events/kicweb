@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KiCData.Models
 {
-    [Table("Vendors")]
+    [Table("Vendor")]
     public class Vendor 
 
     {
@@ -38,6 +38,8 @@ namespace KiCData.Models
         public decimal? PriceMin { get; set; }
         public decimal? PriceMax { get; set; }
         public decimal? PriceAvg { get; set; }
+
+        public string? ImgPath { get; set; }
 
     }
 }

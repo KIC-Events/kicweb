@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KiCData.Models
 {
-    [Table("Volunteers")]
+    [Table("Volunteer")]
     public class Volunteer 
     {
         [Key]
