@@ -26,6 +26,11 @@ namespace KiCData.Services
             this._logger = logger;
         }
 
+        /// <summary>
+        /// Creates a form message with the necessary details to be serialized into an email.
+        /// </summary>
+        /// <param name="rep">The member of staff to whom the email should be sent.</param>
+        /// <returns>FormMessage</returns>
         public FormMessage FormSubmissionEmailFactory(string rep)
         {
             FormMessage message = new FormMessage();
@@ -37,6 +42,12 @@ namespace KiCData.Services
             return message;
         }
 
+        /// <summary>
+        /// Sends the given message as an email.
+        /// </summary>
+        /// <param name="message">The FormMessage to be sent.</param>
+        /// <returns>Task</returns>
+        /// <exception cref="Exception"></exception>
         public async Task SendEmail(FormMessage message)
         {
             if(message.Html is null && message.HtmlBuilder is null)
