@@ -93,15 +93,6 @@ public class HomeController : Controller
         return View();
 	}
 
-	public IActionResult Events()
-	{
-        if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-        {
-            return Redirect("Index");
-        }
-        return View("/Views/Shared/UnderConstruction.cshtml");
-	}
-
 	public IActionResult Purchase()
 	{
         if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
