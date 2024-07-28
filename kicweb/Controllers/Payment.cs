@@ -30,7 +30,7 @@ namespace KiCWeb.Controllers
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
             {
-                return Redirect("Home/Index");
+                return Redirect("~/Home/Index");
             }
 
             return View();
@@ -41,7 +41,7 @@ namespace KiCWeb.Controllers
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
             {
-                return Redirect("Home/Index");
+                return Redirect("~/Home/Index");
             }
 
             return View("Merch");
