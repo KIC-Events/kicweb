@@ -36,7 +36,8 @@ namespace KiCWeb.Controllers
             return View();
         }
 
-        //[HttpGet("Merch")]
+        [HttpGet("Merch")]
+        [Route("/Merch")]
         public IActionResult MerchStore()
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
