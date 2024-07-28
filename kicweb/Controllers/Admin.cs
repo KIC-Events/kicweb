@@ -17,10 +17,10 @@ namespace KiCWeb.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public IActionResult Login()
-        {
-
-        }
+        //[HttpGet]
+        //public IActionResult Login()
+        //{
+        //
+        //}
     }
 }
