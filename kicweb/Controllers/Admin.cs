@@ -16,9 +16,11 @@ namespace KiCWeb.Controllers
             _logger = logger;
             _userService = userService;
         }
-        public IActionResult Index()
+
+        [HttpGet]
+        public IActionResult Login()
         {
-            return View();
+
         }
     }
 }
