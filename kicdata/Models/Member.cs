@@ -1,14 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.InteropServices;
 
 namespace KiCData.Models
 {
+    [Table("Member")]
     public class Member
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public Guid? Id { get; set; }
+        // int for testing purposes only
         public int? Id { get; set; }
-        
+
         [Required]
         [Display(Name = "Legal First Name")]
         public string? FirstName { get; set; }
@@ -18,32 +22,34 @@ namespace KiCData.Models
         public string? LastName { get; set; }
 
         [Required]
-        [Display(Name = "Club ID #")]
-        public string? ClubId { get; set; }
-
-        [Required]
         [Display(Name = "Email Address")]
-        public string? EmailAddress { get; set; }
+        public string? Email { get; set; }
 
-        public bool? IsVendor { get; set; }
+        [Display(Name = "Birthday")]
+        public DateOnly? DateOfBirth { get; set; }
 
-        public bool? IsVolunteer { get; set; }
-
-        public bool? IsPresenter { get; set; }
-
-        //public bool? IsStaff {  get; set; }
-
-        [Display(Name = "Optional: Phone Number")]
-        public string? PhoneNumber { get; set; }
-
-        [Required]
-        [Display(Name = "Your FetLife name. If none, put N/A.")]
+        [Display(Name = "Fetlife Profile Name")]
         public string? FetName { get; set; }
 
-        public DateOnly? LastAttended { get; private set; }
+        [Display(Name = @"Club425 ID (This was provided on registration.)")]
+        public int? ClubId { get; set; }
 
-        [Display(Name = "Additional Info")]
+        [Display(Name = @"Phone Number (Optional)")]
+        public string? PhoneNumber { get; set; }
+
+        [Display(Name = "Member ID")]
+        public int? PublicId { get; set; }
+
+        [Display(Name = "Additional Information")]
         public string? AdditionalInfo { get; set; }
+
+        public bool IsVendor { get; set; }
+
+        public bool IsVolunteer { get; set; }
+
+        public bool IsPresenter { get; set; }
+
+        public bool IsStaff {  get; set; }
 
         [NotMapped]
         [Display(Name = "Legal Name")]
@@ -55,14 +61,7 @@ namespace KiCData.Models
             }
         }
 
-        public void UpdateLastAttended(DateOnly date)
-        {
-            LastAttended = date;
-        }
 
-        public virtual Vendor? Vendor { get; set; }
-        public virtual Volunteer? Volunteer { get; set; }
-        public virtual Presenter? Presenter { get; set; }
 
     }
 }

@@ -1,3 +1,10 @@
+![Static Badge](https://img.shields.io/badge/Prod_Version-0.1.1-green)  
+![Static Badge](https://img.shields.io/badge/Dev_Version-0.1.3-yellow)  
+![Static Badge](https://img.shields.io/badge/PreRelease_Version-1.0.0.dev.0.1.3-blue)  
+
+
+
+
 ### CI/CD Plan  
 #### Main branch should be forked and merged to only for necessary hotfixes.  
 #### Dev branch will be pushed to production server monthly on the first Friday.
@@ -15,6 +22,7 @@
 
 ### App config
 #### This webapp requires config files not included in this repo to protect sensitive account information. There is a copy in the codespace secrets of this project. To obtain these files contact Malechus at [malechus@fangandclaw.org.](mailto:malechus@fangandclaw.org)  
+#### To manually creat DB connections with this code, you must first create an environment variable of ASPNETCORE_ENVIRONMENT=Debug
 
 ### Server info
 #### Web server 66.228.34.152

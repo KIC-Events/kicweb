@@ -1,20 +1,34 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace KiCData.Models
 {
+    [Table("Event")]
     public class Event
     {
-        [Required]
-        [Display(Name = "Name")]
-        public string Name { get; set; }
+        [Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public Guid? Id { get; set; }  
+        //int for testing purposes only
+        public int? Id { get; set; }
 
-        public DateOnly? Date { get; set; }
+        public string? Name { get; set; }
 
-        public Location Location { get; set; }
+        public DateOnly? StartDate { get; set; }
 
-        public void SetLocation(string name)
-        {
-            //Add db query to set loction via name call
-        }
+        public DateOnly? EndDate { get; set; }
+        
+        public string? Description { get; set; } 
+        
+        public string? Topic { get; set; }
+
+        public int? VenueId { get; set; }
+        public virtual Venue? Venue { get; set; }
+
+        public string? ImagePath { get; set; }
+
+
+
     }
 }

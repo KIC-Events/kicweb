@@ -1,6 +1,8 @@
-using kicweb.Services;
-using KiCWeb.Services;
+using KiCData.Services;
+using KiCData.Models;
+using KiCData.Models.WebModels;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +12,13 @@ if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
 {
 	configBuilder.AddJsonFile("appsettings.Production.json");
 }
-else
+else if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
 {
 	configBuilder.AddJsonFile("appsettings.Development.json");
+}
+else
+{
+	configBuilder.AddJsonFile("appsettings.Debug.json");
 }
 IConfigurationRoot config = configBuilder.Build();
 
@@ -24,6 +30,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICookieService, CookieService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
+builder.Services.AddDbContext<KiCdbContext>(options => options.UseMySql(config["Database:ConnectionString"], ServerVersion.AutoDetect(config["Database:ConnectionString"])));
 builder.Services.AddControllersWithViews();
 
 WebApplication app = builder.Build();

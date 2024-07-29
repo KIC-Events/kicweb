@@ -1,37 +1,35 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KiCData.Models
 {
-    public class Presenter
+    [Table("Presenter")]
+    public class Presenter 
     {
+        [Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? Id { get; set; }
 
+        //public Guid? MemberId { get; set; }
+        //int for testing purposes only
+        public int? MemberId { get; set; }
+        public virtual Member Member { get; set; }
+
+
         [Required]
-        [Display(Name = "The name we should use for you or your business in promotional materials.")]
+        [Display(Name = @"The name we should use for you or your business in promotional materials.")]
         public string? PublicName { get; set; }
 
-        [Display(Name = "A short bio about you or your business.")]
+        [Display(Name = @"A short bio about you or your business.")]
         public string? Bio { get; set; }
-
-        //public Member? FormMember { get; set; }
-
-        public int MemberId { get; set; }
-
-        public virtual Member? Member { get; private set; }
 
         public DateOnly? LastAttended { get; set; }
 
-        public virtual List<Presentation> Presentations { get; set; }
-        /*
-        public void CheckMember()
-        {
-            if(FormMember.ClubID != null)
-            {
-                //Check db for matching member and get ID
-                //Set Member from ID
-            }
-        }
-        */
+        public string? Requests { get; set; }
+
+        public decimal? Fee { get; set; }
+        public string? Details { get; set; }
+        public string? ImgPath { get; set; }
 
     }
 }

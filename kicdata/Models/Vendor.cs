@@ -1,15 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KiCData.Models
 {
-    public class Vendor
+    [Table("Vendor")]
+    public class Vendor 
 
     {
+        [Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? Id { get; set; }
+
+        //public Guid? MemberId { get; set; }
+        //int for testing purposes only
+        public int? MemberId { get; set; }
+
+        public virtual Member Member { get; set; }
+
+
         [Required]
         [Display(Name  = "Your business or professional name.")]
         public string? PublicName { get; set; }
@@ -18,23 +31,15 @@ namespace KiCData.Models
         [Display(Name = "About your business.")]
         public string? Bio { get; set; }
 
-        public int MemberId { get; set; }
+        public DateOnly? LastAttended { get; set; }
 
-        public virtual Member Member { get; private set; }
+        public string? MerchType { get; set; }
 
-        /*
-        public Member FormMember { get; set; }
+        public decimal? PriceMin { get; set; }
+        public decimal? PriceMax { get; set; }
+        public decimal? PriceAvg { get; set; }
 
-        public Member Member { get; private set; }
+        public string? ImgPath { get; set; }
 
-        public void CheckMember()
-        {
-            if (FormMember.ClubId != null)
-            {
-                //Check db for matching member and get ID
-                //Set Member from ID
-            }
-        }
-        */
     }
 }

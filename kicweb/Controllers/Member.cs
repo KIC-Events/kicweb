@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using kicweb.Models.Member;
-using kicweb.Services;
+using KiCData.Services;
+using KiCData.Models;
+using KiCData.Models.WebModels;
+using KiCData.Models.WebModels.Member;
 
-namespace kicweb.Controllers
+namespace KiCWeb.Controllers
 {
 	[Route("[controller]")]
 	public class Member : Controller
@@ -23,42 +25,37 @@ namespace kicweb.Controllers
 			_userService = userService;
 		}
 
-		public IActionResult Index()
-		{
-			return View();
-		}
-
-		[HttpGet]
-		public IActionResult Register()
-		{
-			RegisterViewModel rvm = new RegisterViewModel()
-			{
-				LegalName = "",
-				EmailAddress = "",
-				FetName = "",
-				UserName = "",
-				Password = "",
-				Password2 = ""
-			};
-
-			return View(rvm);
-		}
-
-		[HttpPost]
-		public IActionResult Register(RegisterViewModel rvmUpdated)
-		{
-			if (rvmUpdated.Password != rvmUpdated.Password2)
-			{
-				ViewBag.ErrorMessage = "Passwords do not match.";
-				rvmUpdated.Password = "";
-				rvmUpdated.Password2 = "";
-				return View(rvmUpdated);
-			}
-
-			User newUser = _userService.CreateUser(rvmUpdated);
-
-			return View("~/Views/Member/RegisterSuccess.cshtml", newUser);
-		}
+		//[HttpGet]
+		//public IActionResult Register()
+		//{
+		//	RegisterViewModel rvm = new RegisterViewModel()
+		//	{
+		//		LegalName = "",
+		//		EmailAddress = "",
+		//		FetName = "",
+		//		UserName = "",
+		//		Password = "",
+		//		Password2 = ""
+		//	};
+		//
+		//	return View(rvm);
+		//}
+		//
+		//[HttpPost]
+		//public IActionResult Register(RegisterViewModel rvmUpdated)
+		//{
+		//	if (rvmUpdated.Password != rvmUpdated.Password2)
+		//	{
+		//		ViewBag.ErrorMessage = "Passwords do not match.";
+		//		rvmUpdated.Password = "";
+		//		rvmUpdated.Password2 = "";
+		//		return View(rvmUpdated);
+		//	}
+		//
+		//	WebUser newUser = _userService.CreateUser(rvmUpdated);
+		//
+		//	return View("~/Views/Member/RegisterSuccess.cshtml", newUser);
+		//}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

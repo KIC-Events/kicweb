@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace kicweb.Views.Home
+namespace KiCWeb.Views.Home
 {
     public class Club425 : PageModel
     {
