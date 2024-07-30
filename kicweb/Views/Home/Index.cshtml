@@ -38,7 +38,21 @@
                 <h5>Upcoming Events</h5>
                 <br />
             </div>
-            <div class="container row" style="align-items:center; padding-left: 10%;">
+            <div class="container row" style="align-items:center; padding-left:10%;">
+                @foreach (Event e in ViewBag.Events)
+                {
+                    <div class="container col-sm-4">
+                        <div class="ad-card">
+                            <img src=@e.ImagePath alt=@e.Name onerror="this.style.display='none'" style="width:100%;" />
+                            <div style="padding:20px;">
+                                <p class="ad-card">@e.Name</p>
+                                <a target="_blank" href=@e.Link class="ad-card">Check It Out</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @*<div class="container row" style="align-items:center; padding-left: 10%;">
                 <div class="container col-sm-4">
                     <div class="ad-card">
                         <img src="~/css/images/august-party.png" alt="KIC August Party" onerror="this.style.display='none'" style="width: 100%;">
@@ -84,7 +98,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
     <br />
