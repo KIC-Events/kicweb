@@ -28,7 +28,7 @@ namespace KiCData.Models
 
         public string? ImagePath { get; set; }
 
-
+        public string? Link { get; set; }
 
     }
 }
