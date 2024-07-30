@@ -30,18 +30,19 @@ namespace KiCWeb.Controllers
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
             {
-                return Redirect("Home/Index");
+                return Redirect("~/Home/Index");
             }
 
             return View();
         }
 
-        //[HttpGet("Merch")]
+        [HttpGet("Merch")]
+        [Route("/Merch")]
         public IActionResult MerchStore()
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
             {
-                return Redirect("Home/Index");
+                return Redirect("~/Home/Index");
             }
 
             return View("Merch");
