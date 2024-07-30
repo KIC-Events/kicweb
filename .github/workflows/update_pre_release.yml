@@ -1,0 +1,32 @@
+name: update_pre_release
+
+on: 
+  pull_request:
+    branches:
+      dev
+    types:
+      closed
+  push:
+    branches:
+      dev
+
+env:
+  REPO: https://malechus:${{secrets.GITHUB_TOKEN}}@github.com/malechus/kic.git
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: update_pre_release
+      run: |
+        git clone ${{env.REPO}} -b hotel-registration tmp
+        cd tmp
+        git config user.name "downmerge action"
+        git config user.email "garrett@malechus.com"
+        git config pull.rebase false
+        git pull ${{env.REPO}} dev
+        git push
