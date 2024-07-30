@@ -219,6 +219,7 @@ div.ad-card {
     align-items: center;
     width: 259px;
     min-height: 425px;
+    max-height: 425px;
     background: #FFCB37;
     color: #000000;
     border: 1px solid rgba(0, 0, 0, 0.1);

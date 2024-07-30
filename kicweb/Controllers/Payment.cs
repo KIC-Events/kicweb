@@ -30,21 +30,22 @@ namespace KiCWeb.Controllers
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
             {
-                return Redirect("Home/Index");
+                return Redirect("~/Home/Index");
             }
 
             return View();
         }
 
-        //[HttpGet("Merch")]
+        [HttpGet("Merch")]
+        [Route("/Merch")]
         public IActionResult MerchStore()
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
             {
-                return Redirect("Home/Index");
+                return Redirect("~/Home/Index");
             }
 
-            return View("Merch");
+            return Redirect("https://kic-events.square.site/shop/apparel/INJSIHWIBYY7LG4HENI4NYFL");
         }
 
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
