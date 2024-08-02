@@ -57,12 +57,12 @@ namespace KiCData.Models.WebModels
         [Required(ErrorMessage ="Please Select the event.")]
         [Display(Name ="Event")]
         public int? EventId { get; set; }
-        public List<Event>? Events { get; set; }
+        public IEnumerable<Event>? Events { get; set; }
 
         [Required(ErrorMessage ="Please Select the vendor.")]
         [Display(Name ="Vendor")]
         public int? VendorId { get; set; }
-        public List<Vendor>? Vendors { get; set; }
+        public IEnumerable<Vendor>? Vendors { get; set; }
 
         public bool IsPaid { get; set; } = false;
 
@@ -75,12 +75,12 @@ namespace KiCData.Models.WebModels
         [Required(ErrorMessage = "Please Select the event.")]
         [Display(Name = "Event")]
         public int? EventId { get; set; }
-        public List<Event>? Events { get; set; }
+        public IEnumerable<Event>? Events { get; set; }
 
         [Required(ErrorMessage = "Please Select the volunteer.")]
         [Display(Name = "Volunteer")]
         public int? VolunteerId { get; set; }
-        public List<Volunteer>? Volunteers { get; set; }
+        public IEnumerable<Volunteer>? Volunteers { get; set; }
 
         public int? ShiftNumber { get; set; }
 
