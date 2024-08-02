@@ -14,7 +14,7 @@ namespace KiCData.Models.WebModels
         public int? EventId { get; set; }
 
         //Lists all events for the user to select from
-        public List<Event>? Events { get; set; }
+        public IEnumerable<Event>? Events { get; set; }
 
         [Required(ErrorMessage = "Please provide a price for this ticket.")]
         [Display(Name = "Price")]
