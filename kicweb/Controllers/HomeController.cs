@@ -12,6 +12,7 @@ using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Services;
 using Org.BouncyCastle.Crypto.Fpe;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KiCWeb.Controllers;
 
@@ -109,6 +110,12 @@ public class HomeController : Controller
             return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
+	}
+
+	[Authorize(Roles = "Admin,Contributor")]
+	public IActionResult Admin()
+	{
+		return View(); 
 	}
 
     //Issue #86 https://github.com/Malechus/kic/issues/86
