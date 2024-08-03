@@ -17,6 +17,8 @@ namespace KiCData.Models
         public int? TicketId { get; set; }
         public virtual Ticket? Ticket { get; set; } 
 
+        public decimal? CompAmount { get; set; }
+
         public string? CompReason { get; set; }
 
         public string AuthorizingUser { get; set; }
