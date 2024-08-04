@@ -16,6 +16,9 @@ namespace KiCData.Models.WebModels
         //Lists all events for the user to select from
         public List<Event>? Events { get; set; }
 
+        [Required(ErrorMessage = "Enter quantity of tickets")]
+        public int QtyTickets { get; set; }
+
         [Required(ErrorMessage = "Please provide a price for this ticket.")]
         [Display(Name = "Price")]
         public decimal Price { get; set; }
@@ -24,31 +27,26 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Type")]
         public string? Type { get; set; }
 
-        [Required(ErrorMessage = "Please select the date purchased.")]
-        [Display(Name = "Date Purchased")]
-        public DateTime? DatePurchased { get; set; }
-
+        
         [Required(ErrorMessage = "Please select the start date.")]
         [Display(Name = "Start Date")]
-        public DateTime? StartDate { get; set; }
+        public DateOnly? StartDate { get; set; }
 
         [Required(ErrorMessage = "Please select the end date.")]
         [Display(Name = "End Date")]
-        public DateTime? EndDate { get; set; }
+        public DateOnly? EndDate { get; set; }
 
-        [Required(ErrorMessage = "Please select if this ticket is comped.")]
-        [Display(Name = "Comped")]
-        public bool? IsComped { get; set; }
+        
 
-        public TicketViewModel(int eventId, decimal price, string type, DateTime datePurchased, DateTime startDate, DateTime endDate, bool isComped)
+        public TicketViewModel(int eventId, decimal price, string type, int qtyTickets, DateOnly startDate, DateOnly endDate)
         {
             EventId = eventId;
+            QtyTickets = qtyTickets;
             Price = price;
             Type = type;
-            DatePurchased = datePurchased;
             StartDate = startDate;
             EndDate = endDate;
-            IsComped = isComped;
+            
         }
 
         public TicketViewModel()

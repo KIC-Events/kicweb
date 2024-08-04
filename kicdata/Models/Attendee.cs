@@ -31,6 +31,8 @@ namespace KiCData.Models
         public string? RoomPreference { get; set; }
 
         public bool IsPaid { get; set; }
+
+        public bool isRegistered { get; set; }
     }
         
 }
