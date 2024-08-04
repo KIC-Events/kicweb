@@ -34,5 +34,7 @@ namespace KiCData.Models
 
         public bool isRegistered { get; set; }
     }
+
+
         
 }

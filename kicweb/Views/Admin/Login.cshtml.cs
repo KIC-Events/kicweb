@@ -5,8 +5,10 @@ using KiCData.Models;
 
 namespace KiCWeb.Views.Admin
 {
+    
     public class LoginModel : PageModel
     {
+        private KiCdbContext _context;
         [BindProperty]
         public LoginViewModel Login { get; set; }
         //private readonly ILogger<LoginViewModel> _logger;
@@ -21,12 +23,18 @@ namespace KiCWeb.Views.Admin
 
         public void OnPost(LoginViewModel login)
         {
-            KiCdbContext context = new KiCdbContext();
-            User user = context.User.Where(b => b.Username.Equals(login.UserName)).FirstOrDefault();
-            if (login.UserName == login.UserName)
+            if(!ModelState.IsValid)
             {
-
+                return;
             }
+            User user = _context.User.Where(b => b.Username.Equals(login.UserName) && b.Password.Equals(login.Password)).FirstOrDefault();
+            if (user == null)
+            {
+                ModelState.AddModelError("Login", "Invalid login attempt.");
+                return;
+            }
+            return;
+
         }
     }
 }

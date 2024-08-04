@@ -24,5 +24,8 @@ namespace KiCData.Models
         public bool IsPaid { get; set; }
 
         public int ConfirmationNumber { get; set; }
+
+        //public string VendorSpace { get; set; }
+
     }
 }

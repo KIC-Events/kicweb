@@ -25,8 +25,9 @@ namespace KiCData.Models
         [Display(Name = "Email Address")]
         public string? Email { get; set; }
 
+        [Required]
         [Display(Name = "Birthday")]
-        public DateOnly? DateOfBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
 
         [Display(Name = "Fetlife Profile Name")]
         public string? FetName { get; set; }

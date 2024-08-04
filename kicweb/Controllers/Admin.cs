@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using KiCData.Models.WebModels;
 using KiCData.Models;
+
+
 namespace KiCWeb.Controllers
 {
     [Route("[controller]")]
@@ -11,6 +13,7 @@ namespace KiCWeb.Controllers
         private readonly ILogger<Admin> _logger;
 
         private readonly IUserService _userService;
+        private KiCdbContext _context;
 
         public Admin(ILogger<Admin> logger, IUserService userService)
         {
@@ -22,10 +25,39 @@ namespace KiCWeb.Controllers
             return View();
         }
 
+        [HttpGet]
         [Route("Registration",Name ="Registration")]
         public IActionResult Registration()
         {
             return View();
+        }
+
+        [HttpPost] 
+        [Route("Registration",Name ="Registration")]
+        public IActionResult Registration(RegistrationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                KiCData.Models.Member registrant = _context.Members.FirstOrDefault(m => m.FirstName == model.FirstName && m.LastName == model.LastName && m.DateOfBirth == model.DateofBirth);
+                if (registrant == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                Attendee attendee = _context.Attendees.FirstOrDefault(a => a.MemberId == registrant.Id);
+                if (attendee == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                ConfirmationViewModel confirmation = new ConfirmationViewModel
+                {
+                    FirstName = registrant.FirstName,
+                    LastName = registrant.LastName,
+                    DateofBirth = registrant.DateOfBirth,
+                    BadgeName = attendee.BadgeName
+                };
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
 
         [HttpGet]
@@ -38,22 +70,19 @@ namespace KiCWeb.Controllers
         public IActionResult TicketManagement(TicketViewModel ticket)
         {
 
-            using (var context = new KiCdbContext(options))
-            { 
-
-                for (int i = 0; i < ticket.QtyTickets; i++)
+            for (int i = 0; i < ticket.QtyTickets; i++)
+            {
+                Ticket newTicket = new Ticket
                 {
-                    Ticket newTicket = new Ticket
-                    {
-                        Price = ticket.Price,
-                        StartDate = ticket.StartDate,
-                        EndDate = ticket.EndDate,
-                        Type = ticket.Type
-                    };
-                    context.Tickets.add(newTicket);
-                }
-                context.SaveChanges();
+                    Price = ticket.Price,
+                    StartDate = ticket.StartDate,
+                    EndDate = ticket.EndDate,
+                    Type = ticket.Type
+                };
+                _context.Ticket.Add(newTicket);
             }
+            _context.SaveChanges();
+
             return RedirectToAction("TicketManagement");
         }
     }
