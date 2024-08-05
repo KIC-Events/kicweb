@@ -30,6 +30,7 @@ namespace KiCData.Models
         public DbSet<Venue> Venue { get; set; }
         public DbSet<WaitList> WaitList { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<PendingVolunteer> PendingVolunteers { get; set; }
 
 
 
