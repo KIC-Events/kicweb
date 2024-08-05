@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using KiCData.Models.WebModels;
 using KiCData.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 namespace KiCWeb.Controllers
@@ -63,7 +64,12 @@ namespace KiCWeb.Controllers
         [HttpGet]
         public IActionResult TicketManagement()
         {
-            return View();
+            TicketViewModel ticket = new TicketViewModel
+            {
+                Events = _context.Events.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Name }).ToList(
+                )
+            };
+            return View(ticket);
         }
 
         [HttpPost]
@@ -74,6 +80,7 @@ namespace KiCWeb.Controllers
             {
                 Ticket newTicket = new Ticket
                 {
+                    EventId = ticket.EventId,
                     Price = ticket.Price,
                     StartDate = ticket.StartDate,
                     EndDate = ticket.EndDate,

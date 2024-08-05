@@ -20,7 +20,7 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Additional Information", Prompt = "Please provide any additional information you would like us to know.")]
         public string? Details{ get; set; }
 
-        public VolunteerViewModel(string firstname, string lastname, string email, DateTime dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, List<string> positions, List<string> shifts, string details)
+        public VolunteerViewModel(string firstname, string lastname, string email, DateOnly dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, List<string> positions, List<string> shifts, string details)
         {
             FirstName = firstname;
             LastName = lastname;

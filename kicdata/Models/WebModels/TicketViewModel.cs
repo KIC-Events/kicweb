@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace KiCData.Models.WebModels
 {
@@ -14,7 +16,7 @@ namespace KiCData.Models.WebModels
         public int? EventId { get; set; }
 
         //Lists all events for the user to select from
-        public List<Event>? Events { get; set; }
+        public List<SelectListItem>? Events { get; set; }
 
         [Required(ErrorMessage = "Enter quantity of tickets")]
         public int QtyTickets { get; set; }
