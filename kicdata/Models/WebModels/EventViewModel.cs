@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,11 +16,11 @@ namespace KiCData.Models.WebModels
         
         [Required(ErrorMessage = "Please provide a start date for this event.")]
         [Display(Name = "Start Date")]
-        public DateTime? StartDate { get; set; }
+        public DateOnly? StartDate { get; set; }
         
         [Required(ErrorMessage = "Please provide an end date for this event.")]
         [Display(Name = "End Date")]
-        public DateTime? EndDate { get; set; }
+        public DateOnly? EndDate { get; set; }
         
         [Required(ErrorMessage = "Please provide a topic for this event.")]
         [Display(Name = "Topic")]
@@ -34,10 +35,10 @@ namespace KiCData.Models.WebModels
         public int? VenueId { get; set; }
 
         //Lists all venues for the user to select from
-        public List<Venue>? Venues { get; set; }
+        public List<SelectListItem>? Venues { get; set; }
 
 
-        public EventViewModel(string name, DateTime startDate, DateTime endDate, string topic, string description, int venueId)
+        public EventViewModel(string name, DateOnly startDate, DateOnly endDate, string topic, string description, int venueId)
         {
             Name = name;
             StartDate = startDate;

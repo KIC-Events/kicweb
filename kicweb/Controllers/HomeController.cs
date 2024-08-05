@@ -117,12 +117,7 @@ public class HomeController : Controller
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
-	[Authorize(Roles = "Admin,Contributor")]
-	public IActionResult Admin()
-	{
-		return View(); 
-	}
-
+	
     //Issue #86 https://github.com/Malechus/kic/issues/86
     /*
 	[HttpGet]

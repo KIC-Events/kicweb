@@ -30,5 +30,7 @@ namespace KiCData.Models
 
         public string? Link { get; set; }
 
+        public virtual ICollection<Ticket> Tickets { get; set; }
+
     }
 }
