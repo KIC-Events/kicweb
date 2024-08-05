@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using KiCData.Models.WebModels;
 using KiCData.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace KiCWeb.Controllers
@@ -29,6 +30,7 @@ namespace KiCWeb.Controllers
             _cookieService = cookieService;
         }
 
+        
         [HttpGet]
         [Route("Admin")]
         public IActionResult AdminServices()
@@ -37,7 +39,7 @@ namespace KiCWeb.Controllers
             {
                 return Redirect("Home/Index");
             }
-
+            
             return View();
         }
 
@@ -59,6 +61,31 @@ namespace KiCWeb.Controllers
                     }).ToList()
             };
             return View(ticket);
+        }
+        [HttpPost]
+        public IActionResult AdminTickets(TicketViewModel ticket)
+        {
+            if (ModelState.IsValid)
+            {
+                for (int i = 0; i < ticket.QtyTickets; i++)
+                {
+                    Ticket ticket1 = new Ticket
+                    {
+                        Price = ticket.Price,
+                        StartDate = ticket.StartDate,
+                        EndDate = ticket.EndDate,
+                        Type = ticket.Type
+                    };
+                    _context.Ticket.Add(ticket1);
+                    _context.SaveChanges();
+                    
+                }
+            }
+            else
+            {
+                return View(ticket);
+            }
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
