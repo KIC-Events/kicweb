@@ -12,6 +12,7 @@ using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Services;
 using Org.BouncyCastle.Crypto.Fpe;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KiCWeb.Controllers;
 
@@ -22,14 +23,16 @@ public class HomeController : Controller
 	private readonly ICookieService _cookieService;
 	private readonly IEmailService _emailService;
 	private readonly IConfigurationRoot _configurationRoot;
+	private KiCdbContext _kdbContext;
 
-	public HomeController(IKiCLogger logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot)
+	public HomeController(IKiCLogger logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext)
 	{
 		_logger = logger;
 		_contextAccessor = httpContextAccessor;
 		_cookieService = cookieService;
 		_emailService = emailService;
 		_configurationRoot = configurationRoot;
+		_kdbContext = kiCdbContext;
 	}
 
 	[HttpGet]
@@ -46,6 +49,12 @@ public class HomeController : Controller
 			ViewBag.AgeGateCookieAccepted = false;
 		}
 		else { ViewBag.AgeGateCookieAccepted = true; }
+
+		List<Event> events = _kdbContext.Events
+			.Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
+			.ToList();
+		ViewBag.Events = events;
+
         return View(ivm);
 	}
 
@@ -56,8 +65,14 @@ public class HomeController : Controller
 		{
 			ViewBag.AgeGateCookieAccepted = true;
 			CookieOptions cookieOptions = _cookieService.AgeGateCookieFactory();
-			_contextAccessor.HttpContext.Response.Cookies.Append("Age_Gate", "true", cookieOptions);
-			return View();
+			_contextAccessor.HttpContext.Response.Cookies.Append("Age_Gate", "true", cookieOptions); 
+			
+			List<Event> events = _kdbContext.Events
+				.Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
+				.ToList();
+
+            ViewBag.Events = events;
+            return View();
 		}
 		else
 		{
@@ -100,6 +115,12 @@ public class HomeController : Controller
             return Redirect("Index");
         }
         return View("/Views/Shared/UnderConstruction.cshtml");
+	}
+
+	[Authorize(Roles = "Admin,Contributor")]
+	public IActionResult Admin()
+	{
+		return View(); 
 	}
 
     //Issue #86 https://github.com/Malechus/kic/issues/86

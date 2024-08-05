@@ -29,7 +29,7 @@ namespace KiCData.Models
         public DbSet<User> User { get; set; }
         public DbSet<Venue> Venue { get; set; }
         public DbSet<WaitList> WaitList { get; set; }
-        public DbSet<PendingVolunteer> PendingVolunteers { get; set; }  
+        public DbSet<Group> Groups { get; set; }
 
 
 
@@ -181,6 +181,28 @@ namespace KiCData.Models
                 IsPaid = true
             });
 
+            modelBuilder.Entity<Group>().HasData(new Group
+            {
+                Id = new Guid(),
+                Name = "Admin",
+                Description = "Admin Group"
+            });
+
+            //modelBuilder.Entity<Group>().HasData(new Group
+            //{
+            //    Id = new Guid(),
+            //    Name = "Contributor",
+            //    Description = "Vendor and Presenter Coordinator Group"
+            //});
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = new Guid(),
+                MemberId = 7725,
+                Username = "admin",
+                Password = "password",
+                
+            });
         }
     }
 }

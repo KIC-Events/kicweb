@@ -16,46 +16,65 @@ namespace KiCWeb.Controllers
 	public class Member : Controller
 	{
 		private readonly ILogger<Member> _logger;
-
+		private readonly ICookieService _cookieService;
+		private readonly IHttpContextAccessor _contextAccessor;
 		private readonly IUserService _userService;
 
-		public Member(ILogger<Member> logger, IUserService userService)
+		public Member(ILogger<Member> logger, IUserService userService, ICookieService cookieService, IHttpContextAccessor contextAccessor)
 		{
 			_logger = logger;
 			_userService = userService;
+			_cookieService = cookieService;
+			_contextAccessor = contextAccessor;
 		}
 
-		//[HttpGet]
-		//public IActionResult Register()
-		//{
-		//	RegisterViewModel rvm = new RegisterViewModel()
-		//	{
-		//		LegalName = "",
-		//		EmailAddress = "",
-		//		FetName = "",
-		//		UserName = "",
-		//		Password = "",
-		//		Password2 = ""
-		//	};
-		//
-		//	return View(rvm);
-		//}
-		//
-		//[HttpPost]
-		//public IActionResult Register(RegisterViewModel rvmUpdated)
-		//{
-		//	if (rvmUpdated.Password != rvmUpdated.Password2)
-		//	{
-		//		ViewBag.ErrorMessage = "Passwords do not match.";
-		//		rvmUpdated.Password = "";
-		//		rvmUpdated.Password2 = "";
-		//		return View(rvmUpdated);
-		//	}
-		//
-		//	WebUser newUser = _userService.CreateUser(rvmUpdated);
-		//
-		//	return View("~/Views/Member/RegisterSuccess.cshtml", newUser);
-		//}
+		[HttpGet]
+		public IActionResult Register()
+		{
+            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+            {
+                return Redirect("Home/Index");
+            }
+
+            RegisterViewModel rvm = new RegisterViewModel()
+			{
+				LegalName = "",
+				EmailAddress = "",
+				FetName = "",
+				UserName = "",
+				Password = "",
+				Password2 = ""
+			};
+		
+			return View(rvm);
+		}
+		
+		[HttpPost]
+		public IActionResult Register(RegisterViewModel rvmUpdated)
+		{
+			if (rvmUpdated.Password != rvmUpdated.Password2)
+			{
+				ViewBag.ErrorMessage = "Passwords do not match.";
+				rvmUpdated.Password = "";
+				rvmUpdated.Password2 = "";
+				return View(rvmUpdated);
+			}
+		
+			WebUser newUser = _userService.CreateUser(rvmUpdated);
+		
+			return View("~/Views/Member/RegisterSuccess.cshtml", newUser);
+		}
+
+		[HttpGet]
+		public IActionResult Login()
+		{
+            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+            {
+                return Redirect("Home/Index");
+            }
+
+			return View();
+        }
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
