@@ -19,6 +19,7 @@ else if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Develop
 else
 {
 	configBuilder.AddJsonFile("appsettings.Debug.json");
+	Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
 }
 IConfigurationRoot config = configBuilder.Build();
 
@@ -50,11 +51,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseStatusCodePages();
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
