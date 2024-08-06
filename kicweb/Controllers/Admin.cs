@@ -2,11 +2,11 @@
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
 using KiCData.Models.WebModels;
-using KiCData.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace KiCWeb.Controllers
@@ -102,7 +102,7 @@ namespace KiCWeb.Controllers
             {
                 return Redirect("Home/Index");
             }
-            IEnumerable<Event> events = _context.Events.ToList();
+            IEnumerable<Event> events = _context.Events.Include(b => b.Venue).ToList();
             return View(events);
         }
 
@@ -116,6 +116,8 @@ namespace KiCWeb.Controllers
                 return Redirect("Home/Index");
             }
             Event events = _context.Events.Where(a => a.Id == id).FirstOrDefault();
+            events.Venue = _context.Venue.Where(a => a.Id == events.VenueId).FirstOrDefault();
+            events.Tickets = _context.Ticket.Where(a => a.EventId == id).ToList();
             return View(events);
         }
 
@@ -142,6 +144,7 @@ namespace KiCWeb.Controllers
             return View(evm);
             
         }
+        //Post request for adding a new event to the database
         [HttpPost]
         public IActionResult AdminEventCreate(EventViewModel model) { 
             if (ModelState.IsValid)

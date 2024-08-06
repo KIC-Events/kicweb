@@ -1,6 +1,6 @@
 ﻿@model KiCData.Models.Event
 @{
-    ViewData["Title"] = Model.Name + " Details";
+    //ViewData["Title"] = "Event Details";
 }
 
 <h1>@Model.Name Details</h1>
@@ -24,25 +24,32 @@
     <div class="col-6">
         <h3>Event Tickets</h3>
         <hr />
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var ticket in Model.Tickets)
-                {
-                    <tr>                   
-                        <td>@ticket.Type</td>
-                        <td>@ticket.StartDate</td>
-                        <td>@ticket.EndDate</td>
-                        <td>@ticket.Price</td>
+        @if (Model.Tickets.Count == 0)
+        {
+            <p>No tickets available for this event</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Price</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>                   
+                            <td>@ticket.Type</td>
+                            <td>@ticket.StartDate</td>
+                            <td>@ticket.EndDate</td>
+                            <td>@ticket.Price</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
