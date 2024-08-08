@@ -27,9 +27,11 @@
         @if (Model.Tickets.Count == 0)
         {
             <p>No tickets available for this event</p>
+            <a asp-area="" asp-controller="Admin" asp-action="AdminTickets">Add tickets for this event</a>
         }
         else
         {
+            <a asp-area="" asp-controller="Admin" asp-action="AdminTickets">Add tickets for this event</a>
             <table class="table">
                 <thead>
                     <tr>

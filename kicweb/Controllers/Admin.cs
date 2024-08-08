@@ -168,6 +168,16 @@ namespace KiCWeb.Controllers
             }
         }
 
+
+        public IActionResult Volunteers()
+        {
+            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+            {
+                return Redirect("Home/Index");
+            }
+            IEnumerable<PendingVolunteer> pending = _context.PendingVolunteers.ToList();
+            return View(pending);
+        }
         //[HttpGet]
         //public IActionResult Login()
         //{

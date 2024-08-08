@@ -30,6 +30,6 @@ namespace KiCData.Models
 
         public bool? IsComped { get; set; }
 
-
+        public virtual Attendee Attendee { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,7 +21,10 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Additional Information", Prompt = "Please provide any additional information you would like us to know.")]
         public string? Details{ get; set; }
 
-        public VolunteerViewModel(string firstname, string lastname, string email, DateOnly dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, List<string> positions, List<string> shifts, string details)
+        public int EventId { get; set; }
+        public List<SelectListItem>? Events { get; set; }
+
+        public VolunteerViewModel(string firstname, string lastname, string email, DateOnly dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, List<string> positions, List<string> shifts, string details, int eventId)
         {
             FirstName = firstname;
             LastName = lastname;
@@ -33,6 +37,8 @@ namespace KiCData.Models.WebModels
             Positions = positions;
             Shifts = shifts;
             Details = details;
+            EventId = eventId;
+            
         }
 
         public VolunteerViewModel()

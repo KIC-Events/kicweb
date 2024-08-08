@@ -22,6 +22,16 @@ namespace KiCData.Models
         [Required]
         public string? PreferredPositions { get; set; }
 
+        public virtual Volunteer Volunteer { get; set; }
+        public virtual Event Event { get; set; }
+        public PendingVolunteer(int volunteerID, int eventId, int? preferredShift, string? preferredPositions)
+        {
+            VolunteerID = volunteerID;
+            EventId = eventId;
+            PreferredShift = preferredShift;
+            PreferredPositions = preferredPositions;
+        }
+
 
     }
 }

@@ -1,0 +1,73 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model KiCData.Models.WebModels.VolunteerViewModel
+
+<div class="view-body">
+    <h1 class="main-title">Volunteer Registration</h1>
+    <hr />
+    <p>Thank you for your interest in volunteering with KiC. Please complete the form below to register as a </p>
+    <hr />
+    <form asp-action="VolunteerRegistration" method="post">
+        <div class="form-group">
+            <label asp-for="EventId"></label>
+            <input asp-for="EventId" asp-items="Events" class="form-control" />
+            <span asp-validation-for="EventId" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateOfBirth"></label>
+            <input asp-for="DateOfBirth" class="form-control" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="FetName"></label>
+            <input asp-for="FetName" class="form-control" />
+            <span asp-validation-for="FetName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ClubId"></label>
+            <input asp-for="ClubId" class="form-control" />
+            <span asp-validation-for="ClubId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Details"></label>
+            <input asp-for="Details" class="form-control" />
+            <span asp-validation-for="Details" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Positions"></label>
+            <input asp-for="Positions"  asp-items="Positions" class="form-control" multiple="multiple" />
+            <span asp-validation-for="Positions" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Shifts"></label>
+            <input asp-for="Shifts" asp-items="Shifts" class="form-control" />
+            <span asp-validation-for="Shifts" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Register" class="btn btn-secondary" />
+    </form>
+</div>

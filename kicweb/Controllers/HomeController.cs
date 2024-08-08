@@ -117,6 +117,43 @@ public class HomeController : Controller
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
+	public IActionResult Volunteers()
+	{
+		if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+		{
+			return Redirect("Index");
+		}
+		VolunteerViewModel volunteer = new VolunteerViewModel 
+		{ 
+			Events = _kdbContext.Events.Select
+			(a => new SelectListItem
+                {
+                    Value = a.Id.ToString(),
+                    Text = a.Name
+                }).ToList(),
+			Positions = new List<string>
+			{
+			"Dungeon Monitor",
+			"Door Person/Greeter",
+			"Bartender",
+			"Service Top - Fire",
+			"Service Top - Electricity",
+			"Service Top - Corporal",
+			"Special Events - Registration"
+			},
+			Shifts = new List<string>
+			{ 
+				"Friday 8pm - 10pm",
+                "Friday 10pm - 12am",
+                "Saturday 12am - 2am",
+                "Special Events 2hr shift",
+				"Special Events 4hr shift",
+				"Special Events 8hr shift"
+			}
+		};
+		return View(volunteer);
+	}
+
 	
     //Issue #86 https://github.com/Malechus/kic/issues/86
     /*
