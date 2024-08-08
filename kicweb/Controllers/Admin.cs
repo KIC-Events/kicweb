@@ -34,6 +34,11 @@ namespace KiCWeb.Controllers
                 return Redirect("Home/Index");
             }
 
+            if (!_cookieService.AuthTokenCookie(_contextAccessor.HttpContext.Request))
+            {
+                return Redirect("Member/Login");
+            }
+
             return View();
         }
 

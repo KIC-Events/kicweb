@@ -63,7 +63,7 @@ public class HomeController : Controller
 		if (ivmUpdated.Consent == true)
 		{
 			ViewBag.AgeGateCookieAccepted = true;
-			CookieOptions cookieOptions = _cookieService.AgeGateCookieFactory();
+			CookieOptions cookieOptions = _cookieService.NewCookieFactory();
 			_contextAccessor.HttpContext.Response.Cookies.Append("Age_Gate", "true", cookieOptions); 
 			
 			List<Event> events = _kdbContext.Events
