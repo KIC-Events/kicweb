@@ -84,18 +84,28 @@ namespace KiCWeb.Controllers
         }
 
 		[HttpPost]
+		[Route("~/Member/Login")]
 		public IActionResult Login(UserViewModel uvmUpdated)
 		{
-			int? memberId = _context.User
-				.Where(u => u.Username == uvmUpdated.UserName)
-				.FirstOrDefault()
-				.MemberId;
+			int? memberId;
 
-			if (memberId == null)
+			try
+			{
+                memberId = _context.User
+                .Where(u => u.Username == uvmUpdated.UserName)
+                .FirstOrDefault()
+                .MemberId;
+            }
+			catch(NullReferenceException ex)
 			{
 				ViewBag.Error = "Username Incorrect.";
 				return View(uvmUpdated);
 			}
+			catch(Exception ex)
+			{
+                ViewBag.Error = "There was a problem, please contact your system administrator.";
+				return View(uvmUpdated);
+            }
 
 			string hash = HashPassword(uvmUpdated.Password, memberId);
 

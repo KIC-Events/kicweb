@@ -1,9 +1,37 @@
-﻿
+﻿@model UserViewModel
 
 <div class="view-body">
     <h2 class="main-title">Login</h2>
     <hr />
     <div class="container row">
-        
+        <div class="form-fillable">
+            @using (Html.BeginForm())
+            {
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName)
+                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password)
+                        @Html.TextBoxFor(model => model.Password, new { @class = "form-control", placeholder = "Password", @type = "password" }) 
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <input type="Submit" value="Submit" formmethod="post" />
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>
+
+@if (ViewBag.Error is not null)
+{
+    <div id="ValidationErrorModal" class="modal">
+        <div class="modal-content">
+            <p>@ViewBag.Error.ToString()</p>
+        </div>
+    </div>
+}
