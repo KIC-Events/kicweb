@@ -16,11 +16,7 @@ else if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Develop
 {
 	configBuilder.AddJsonFile("appsettings.Development.json");
 }
-else
-{
-	configBuilder.AddJsonFile("appsettings.Debug.json");
-	Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
-}
+else { throw new Exception("Bad environment variable."); }
 IConfigurationRoot config = configBuilder.Build();
 
 // Add services to the container.
