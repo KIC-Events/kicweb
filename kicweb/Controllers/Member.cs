@@ -70,6 +70,7 @@ namespace KiCWeb.Controllers
 		}
 
 		[HttpGet]
+		[Route("~/Member/Login")]
 		public IActionResult Login()
 		{
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
