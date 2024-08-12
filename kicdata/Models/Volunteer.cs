@@ -26,4 +26,6 @@ namespace KiCData.Models
         [Display(Name = "Anything else we should know?")]
         public string? Details { get; set; }
     }
+
+    
 }

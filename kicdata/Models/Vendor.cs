@@ -42,4 +42,5 @@ namespace KiCData.Models
         public string? ImgPath { get; set; }
 
     }
+    
 }
