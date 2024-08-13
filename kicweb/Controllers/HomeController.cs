@@ -125,7 +125,7 @@ public class HomeController : Controller
 		}
 		VolunteerViewModel volunteer = new VolunteerViewModel 
 		{ 
-			Events = _kdbContext.Events.Select
+			Events = _kdbContext.Events.Where(a=> a.StartDate > DateOnly.FromDateTime(DateTime.Now)).Select
 			(a => new SelectListItem
                 {
                     Value = a.Id.ToString(),
@@ -137,7 +137,7 @@ public class HomeController : Controller
 			"Door Person/Greeter",
 			"Bartender",
 			"Service Top - Fire",
-			"Service Top - Electricity",
+			"Service Top - Electric",
 			"Service Top - Corporal",
 			"Special Events - Registration"
 			},

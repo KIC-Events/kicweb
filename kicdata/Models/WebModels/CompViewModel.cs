@@ -23,5 +23,20 @@ namespace KiCData.Models.WebModels
         [Required(ErrorMessage = "Please enter the user authorizing the comps")]
         [Display(Name = "Authorizing User")]
         public string AuthorizingUser { get; set; }
+
+        public string DiscountCode { get
+            {
+                string result = string.Empty;
+                string str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                int size = 10;
+                Random res = new Random();
+                for (int i = 0; i < size; i++)
+                {
+                    int x = res.Next(str.Length);
+                    result += str[x];
+                }
+
+                return result;
+            } }
     }
 }

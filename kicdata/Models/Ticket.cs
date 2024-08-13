@@ -41,7 +41,7 @@ namespace KiCData.Models
 
         [Required]
         public string? DiscountCode { get; set; }
-
+            
         public int? TicketId { get; set; }
         public virtual Ticket? Ticket { get; set; }
 
@@ -50,6 +50,8 @@ namespace KiCData.Models
         public string? CompReason { get; set; }
 
         public string? AuthorizingUser { get; set; }
+
+
 
     }
 }

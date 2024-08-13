@@ -13,9 +13,9 @@
     <p><b>KiC Events</b></p>
     <p>Click on the event name to view more details</p>
     <hr />
-
+    <p><b>@ViewBag.ErrorMessage</b></p>
     <a asp-area="" asp-controller="Owner" asp-action="CompAdd">Add Ticket Comps</a>
-    @if (Model.Count() == 0)
+    @if (Model.Count() == 0 || Model == null)
     {
         <tr>
             <td colspan="5">No ticket comps available</td>
@@ -31,6 +31,9 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Ticket.Event.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DiscountCode)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.CompAmount)
@@ -54,6 +57,9 @@
                             @Html.DisplayFor(modelItem => item.Ticket.Event.Name)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.DiscountCode)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.CompAmount)
                         </td>
                         <td>
@@ -61,7 +67,8 @@
 
                         </td>
                         <td>
-                            <a asp-area="" asp-controller="Admin" asp-action="AdminEventDetails" asp-route-id="@item.Id">Details</a>
+                            <a asp-area="" asp-controller="Owner" asp-action="CompEdit" asp-route-id="@item.Id">Edit</a>
+                            <a asp-area="" asp-controller="Owner" asp-action="CompDelete" asp-route-id="@item.Id">Delete</a>
                         </td>
 
                     </tr>

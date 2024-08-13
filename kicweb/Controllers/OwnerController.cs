@@ -44,7 +44,7 @@ namespace KiCWeb.Controllers
                 return Redirect("Home/Index");
             }
             IEnumerable<TicketComp> comps = _context.TicketComp.ToList();
-            return View();
+            return View(comps);
         }
 
         [HttpGet]
@@ -68,12 +68,14 @@ namespace KiCWeb.Controllers
             {
                 for (int i = 0; i < comp.CompQuantity; i++)
                 {
-                    _context.TicketComp.Add(new TicketComp { CompAmount = comp.CompAmount, CompReason = comp.CompReason, AuthorizingUser = comp.AuthorizingUser});
+                    _context.TicketComp.Add(new TicketComp { CompAmount = comp.CompAmount, CompReason = comp.CompReason, AuthorizingUser = comp.AuthorizingUser, DiscountCode = comp.DiscountCode});
                     _context.SaveChanges();
-                    return RedirectToAction("CompIndex");
+                    
                 }
+                
             }
-            return View(comp);
+            return RedirectToAction("CompIndex");
+            //return View(comp);
         }
 
         [HttpGet]
@@ -107,7 +109,7 @@ namespace KiCWeb.Controllers
             return View(comp);
         }
 
-        [HttpPost]
+        //[HttpPost]
         public IActionResult CompDelete(int id) 
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
@@ -121,7 +123,7 @@ namespace KiCWeb.Controllers
                 _context.SaveChanges();
                 RedirectToAction("CompIndex"); 
             }
-            
+            ViewBag.ErrorMessage = "Comp not found";
             return RedirectToAction("CompIndex");
 
         }
