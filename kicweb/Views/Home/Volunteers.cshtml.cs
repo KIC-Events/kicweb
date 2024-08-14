@@ -19,6 +19,7 @@ namespace KiCWeb.Views.Home
 
         public void OnGet()
         {
+            
         }
     }
 }

@@ -163,12 +163,12 @@ namespace KiCData.Models
                 EventId = 1111,
                 VendorId = 1128
             });
-            modelBuilder.Entity<EventVolunteer>().HasData(new EventVolunteer
-            {
-                Id = 3579,
-                EventId = 1111,
-                VolunteerId = 1234
-            });
+            //modelBuilder.Entity<EventVolunteer>().HasData(new EventVolunteer
+            //{
+            //    Id = 3579,
+            //    EventId = 1111,
+            //    VolunteerId = 1234
+            //});
             modelBuilder.Entity<Attendee>().HasData(new Attendee
             {
                 Id = 2468,

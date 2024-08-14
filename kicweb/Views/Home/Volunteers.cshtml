@@ -1,4 +1,7 @@
-@page
+
+@{
+    ViewData["Title"] = "Get Involved - Volunteers";
+}
 @model KiCData.Models.WebModels.VolunteerViewModel
 
 <div class="view-body">
@@ -16,15 +19,17 @@
             <li>Dungeon Monitors - Actively walk the main play space, outside patio, and sexy time area to help ensure attendees are following the rules of the event and engaging in safe consensual play.</li>
             <li>Service Top (fire, electric, or corporal) - Effectively, safely, and consensually discuss, talk about, and/or perform scenes for attendees who are wanting to explore and experience what is being offered.</li>
         </ul>
-        <p>If you're interested in any of the above opportunities to volunteer, send an email to <a href="mailto:volunteers@kicevents.com">volunteers@kicevents.com</a>. In your email please include what area(s) you would be interesting in volunteering for, and if applicable, your level of knowledge and experience.</p>
+        <p>Please fill out the form below with your details to be added to the mailing list for volunteer shifts.</p>
     </div>
     <div class="row">
         <div class="form-fillable">
 
-                <form asp-action="VolunteerRegistration" method="post">
+                <form asp-action="Volunteers" method="post">
                     <div class="form-group">
                         <label asp-for="EventId"></label>
-                        <input asp-for="EventId" asp-items="Events" class="form-control" />
+                        <select asp-for="EventId" asp-items="@Model.Events" class="form-control">
+                            <option value="0">Select the Event</option>
+                        </select>
                         <span asp-validation-for="EventId" class="text-danger"></span>
                     </div>
 
@@ -45,7 +50,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="DateOfBirth"></label>
-                        <input asp-for="DateOfBirth" class="form-control" />
+                        <input asp-for="DateOfBirth" type="date" class="form-control" />
                         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -70,13 +75,8 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Positions"></label>
-                        <input asp-for="Positions"  asp-items="Positions" class="form-control" multiple="multiple" />
+                        <select asp-for="Positions"  asp-items="@Model.Positions" class="form-control" multiple="multiple"> </select>
                         <span asp-validation-for="Positions" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Shifts"></label>
-                        <input asp-for="Shifts" asp-items="Shifts" class="form-control" />
-                        <span asp-validation-for="Shifts" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                     <input type="submit" value="Register" class="btn btn-secondary" />

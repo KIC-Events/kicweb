@@ -20,12 +20,32 @@ namespace KiCData.Models
         [Display(Name = "Positions you are interested in working.")]
         public List<string>? Positions { get; set; }
 
-        [Display(Name = "Preferred Shift", Prompt = "Shifts you are available to work.")]
-        public List<string>? Shifts { get; set; }
-
         [Display(Name = "Anything else we should know?")]
         public string? Details { get; set; }
     }
 
-    
+    public class PendingVolunteer
+    {
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [Required]
+        public int VolunteerID { get; set; }
+        [Required]
+        public int EventId { get; set; }
+
+        [Required]
+        public string? PreferredPositions { get; set; }
+
+        public virtual Volunteer? Volunteer { get; set; }
+        public virtual Event? Event { get; set; }
+        public PendingVolunteer(int volunteerID, int eventId, string? preferredPositions)
+        {
+            VolunteerID = volunteerID;
+            EventId = eventId;
+            PreferredPositions = preferredPositions;
+        }
+
+
+    }
 }

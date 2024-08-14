@@ -168,14 +168,43 @@ namespace KiCWeb.Controllers
             }
         }
 
-
-        public IActionResult Volunteers()
+        [HttpGet]
+        [Route("Volunteers")]
+        public IActionResult PendingVolunteerIndex()
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
             {
                 return Redirect("Home/Index");
             }
             IEnumerable<PendingVolunteer> pending = _context.PendingVolunteers.ToList();
+            return View(pending);
+        }
+
+        [HttpGet]
+        [Route("Volunteers/Approve/{id}")]
+        public IActionResult VolunteerApproval(int id)
+        {
+            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+            {
+                return Redirect("Home/Index");
+            }
+            PendingVolunteer pending = _context.PendingVolunteers.Where(a => a.Id == id).FirstOrDefault();
+            if (pending == null)
+            {
+                return RedirectToAction("PendingVolunteerIndex");
+            }
+            else
+            {
+                EventVolunteerViewModel eVVm = new EventVolunteerViewModel
+                {
+                    VolunteerId = pending.VolunteerID,
+                    VolunteerName = pending.Volunteer.Member.FetName,
+                    EventId = pending.EventId,
+                    EventName = pending.Event.Name,
+                    Positions = pending.PreferredPositions.Split(',').Select(a => new SelectListItem { Value = a, Text = a }).ToList()
+                };
+            }
+            
             return View(pending);
         }
         //[HttpGet]

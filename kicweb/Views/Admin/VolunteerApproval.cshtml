@@ -2,65 +2,34 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Volunteer Approval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model IEnumerable<KiCData.Models.PendingVolunteer>
+@model KiCData.Models.WebModels.EventVolunteerViewModel
 
-    <div class="view-body">
-    <h1 class="main-title">Volunteer Approval</h1>
-    <hr />
-    <p><b>Volunteer Requests</b></p>
-    <p>Click on a volunteer to review and approve their request</p>
-
-    <hr />
-    @if(Model.Count() == 0)
-    {
-        <p>No volunteer requests at this time </p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Volunteer.Member.FetName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Event.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PreferredPositions)
-                    </th>
-                    <th>
-                        Venue @Html.DisplayNameFor(model => model.PreferredShift)
-                    </th>
-                    <th>
-                        Options
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Volunteer.Member.FetName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Event.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PreferredPositions)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PreferredShift)
-
-                        </td>
-                        <td>
-                            <a asp-area="" asp-controller="Admin" asp-action="AssignVolunteer" asp-route-id="@item.Id">Approve and Assign</a> | <a asp-area="" asp-controller="Admin" asp-action="RejectVolunteer" asp-route-id="@item.Id">Reject</a>
-                        </td>
-
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+<div class="form-fillable">
+    <form asp-action="VolunteerApproval" method="post">
+        <div class="form-group">
+            <label asp-for="EventId"></label>
+            @Html.HiddenFor(m => m.EventId)
+            <input asp-for="EventName" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+            <label asp-for="VolunteerId"></label>
+            @Html.HiddenFor(m => m.VolunteerId)
+            <input asp-for="VolunteerName" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+            <label asp-for="Position"></label>
+            <select asp-for="Position" asp-items="@Model.Positions">
+                <option value="0">Select the Position</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Shift"></label>
+            <select asp-for="Shift" asp-items="@Model.PotentialShifts">
+                <option value="0">Select the Shift</option>
+            </select>
+        </div>
+    </form>
+</div>

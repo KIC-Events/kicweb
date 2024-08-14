@@ -27,7 +27,7 @@ namespace KiCData.Models
 
         [Required]
         [Display(Name = "Birthday")]
-        public DateOnly DateOfBirth { get; set; }
+        public DateOnly? DateOfBirth { get; set; }
 
         [Display(Name = "Fetlife Profile Name")]
         public string? FetName { get; set; }

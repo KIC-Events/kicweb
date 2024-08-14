@@ -73,19 +73,37 @@ namespace KiCData.Models.WebModels
 
     public class EventVolunteerViewModel
     {
-        [Required(ErrorMessage = "Please Select the event.")]
+        [Required]
         [Display(Name = "Event")]
         public int? EventId { get; set; }
-        public IEnumerable<Event>? Events { get; set; }
-
-        [Required(ErrorMessage = "Please Select the volunteer.")]
+        public string? EventName { get; set; }
+        [Required]
         [Display(Name = "Volunteer")]
         public int? VolunteerId { get; set; }
-        public IEnumerable<Volunteer>? Volunteers { get; set; }
-
-        public int? ShiftNumber { get; set; }
-
-        public string? Position { get; set; }
+        public string? VolunteerName { get; set; }
+        [Required]
+        [Display(Name = "Position", Prompt = "Select the position for our Volunteer")]
+        public string Position { get; set; }
+        [Required]
+        [Display(Name = "Shift", Prompt = "Select the shift for our Volunteer")]
+        public string Shift { get; set; }
+        public List<SelectListItem> PotentialShifts
+        {
+            get
+            {
+                List<SelectListItem> shifts = new List<SelectListItem>()
+                {
+                    new SelectListItem() { Value = "1", Text = "Friday 8pm - 10pm" },
+                    new SelectListItem() { Value = "2", Text = "Friday 10pm - 12am" },
+                    new SelectListItem() { Value = "3", Text = "Saturday 12am - 2am" },
+                    new SelectListItem() { Value = "SE2", Text = "Special Events 2hr shift" },
+                    new SelectListItem() { Value = "SE4", Text = "Special Events 4hr shift" },
+                    new SelectListItem() { Value = "SE", Text = "Special Events 8hr shift" }
+                };
+                return shifts;
+            }
+        }
+        public List<SelectListItem> Positions { get; set; }
     }
 
 }
