@@ -56,3 +56,12 @@
         </tbody>
     </table>
 </div>
+
+@if (ViewBag.Error is not null)
+{
+    <div id="ValidationErrorModal" class="modal">
+        <div class="modal-content">
+            <p>@ViewBag.Error</p>
+        </div>
+    </div>
+}

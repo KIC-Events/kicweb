@@ -44,13 +44,19 @@ namespace KiCData.Models
         [Display(Name = "Additional Information")]
         public string? AdditionalInfo { get; set; }
 
-        public bool IsVendor { get; set; }
+        public int? VendorId { get; set; }
 
-        public bool IsVolunteer { get; set; }
+        public Vendor? Vendor { get; set; }
 
-        public bool IsPresenter { get; set; }
+        public Volunteer? Volunteer { get; set; }
+        public Staff? Staff { get; set; }
 
-        public bool IsStaff {  get; set; }
+        public int? PresenterId { get; set; }
+        public Presenter? Presenter { get; set; }
+
+        public User? User { get; set; }
+        public Attendee? Attendee { get; set; }
+       
 
         [NotMapped]
         [Display(Name = "Legal Name")]

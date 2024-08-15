@@ -70,15 +70,10 @@ namespace KiCData.Models
                 PhoneNumber = "555-555-5555",
                 PublicId = 54321,
                 AdditionalInfo = "This is a test user.",
-                IsVendor = false,
-                IsVolunteer = true,
-                IsPresenter = false,
-                IsStaff = false
             });
             modelBuilder.Entity<Presenter>().HasData(new Presenter
             {
                 Id = 1234,
-                MemberId = 7725,
                 PublicName = "Test Presenter",
                 Bio = "This is a test presenter.",
                 LastAttended = new DateOnly(2021, 1, 1),
@@ -89,7 +84,6 @@ namespace KiCData.Models
             modelBuilder.Entity<Vendor>().HasData(new Vendor
             {
                 Id = 1128,
-                MemberId = 7725,
                 PublicName = "Test Vendor",
                 Bio = "This is a test vendor.",
                 LastAttended = new DateOnly(2021, 1, 1),

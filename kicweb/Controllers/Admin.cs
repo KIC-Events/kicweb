@@ -167,7 +167,10 @@ namespace KiCWeb.Controllers
                 return View(model);
             }
         }
-
+        /*
+         * Section for Volunteers, assigning pending volunteers to specific roles/shifts
+         * add volunteer to event, remove volunteer from event
+         */
         //Lists all volunteers that submitted for a specific event
         [HttpGet]
         [Route("Volunteers")]
@@ -228,15 +231,34 @@ namespace KiCWeb.Controllers
                 };
                 return RedirectToAction("PendingVolunteerIndex");
             }
-            ViewBag.ErrorMessage = "There is a problem validating this information. Please review";
+            ViewBag.Error = "There is a problem validating this information. Please review";
             return View(eventVolunteer);
         }
+        // end of volunteer section //
 
+
+        /*
+         * Section for Vendors, Index, Details, Create, Edit, Delete
+         */
         public IActionResult VendorIndex()
         {
             IEnumerable<Vendor> vendors = _context.Vendors.ToList();
             return View(vendors);
         }
+
+        public IActionResult VendorDetails(int id)
+        {
+            Vendor vendor = _context.Vendors.Where(a => a.Id == id).FirstOrDefault();
+            if (vendor == null) 
+            {
+                ViewBag.Error = "Vendor not found";
+                return RedirectToAction("VendorIndex");
+            }
+            return View(vendor);
+        }
+
+
+        // End of Vendor Section //
         //[HttpGet]
         //public IActionResult Login()
         //{
