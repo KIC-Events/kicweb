@@ -168,6 +168,7 @@ namespace KiCWeb.Controllers
             }
         }
 
+        //Lists all volunteers that submitted for a specific event
         [HttpGet]
         [Route("Volunteers")]
         public IActionResult PendingVolunteerIndex()
@@ -180,6 +181,7 @@ namespace KiCWeb.Controllers
             return View(pending);
         }
 
+        //Approves and assigns a volunteer to a specific role/shift
         [HttpGet]
         [Route("Volunteers/Approve/{id}")]
         public IActionResult VolunteerApproval(int id)
@@ -206,6 +208,34 @@ namespace KiCWeb.Controllers
             }
             
             return View(pending);
+        }
+        [HttpPost]
+        public IActionResult VolunteerApproval(EventVolunteerViewModel eventVolunteer)
+        {
+            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+            {
+                return Redirect("Home/Index");
+            }
+            if(ModelState.IsValid)
+            {
+                EventVolunteer volunteer = new EventVolunteer
+                {
+                    VolunteerId = eventVolunteer.VolunteerId,
+                    EventId = eventVolunteer.EventId,
+                    Position = eventVolunteer.Position,
+                    ShiftStart = eventVolunteer.ShiftStart,
+                    ShiftEnd = eventVolunteer.ShiftEnd
+                };
+                return RedirectToAction("PendingVolunteerIndex");
+            }
+            ViewBag.ErrorMessage = "There is a problem validating this information. Please review";
+            return View(eventVolunteer);
+        }
+
+        public IActionResult VendorIndex()
+        {
+            IEnumerable<Vendor> vendors = _context.Vendors.ToList();
+            return View(vendors);
         }
         //[HttpGet]
         //public IActionResult Login()

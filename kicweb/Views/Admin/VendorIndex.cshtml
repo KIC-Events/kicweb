@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<KiCData.Models.Vendor>
+@{
+    ViewData["Title"] = "Vendors";
+}
+<div class="view-body">
+    <h1 class="main-title">Vendors</h1>
+    <hr />
+    <p><b>KiC Vendors</b></p>
+    <hr />
+    <p>Click the name of the vendor for more details</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PublicName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MerchType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PriceAvg)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastAttended)
+                </th>
+                <th>
+                    Options
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>p
+                    <td>
+                        <a asp-area="" asp-controller="Admin" asp-action="VendorDetails" asp-route-id="@item.Id" >@Html.DisplayFor(modelItem => item.PublicName)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MerchType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PriceAvg)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastAttended)
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="Admin" asp-action="EventVendor" asp-route-id="@item.Id" > Add vendor to event </a> |
+                        <a asp-area="" asp-controller="Admin" asp-action="VendorUpdate" asp-route-id="@item.Id"> Edit </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

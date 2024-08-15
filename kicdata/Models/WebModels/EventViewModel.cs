@@ -85,24 +85,11 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Position", Prompt = "Select the position for our Volunteer")]
         public string Position { get; set; }
         [Required]
-        [Display(Name = "Shift", Prompt = "Select the shift for our Volunteer")]
-        public string Shift { get; set; }
-        public List<SelectListItem> PotentialShifts
-        {
-            get
-            {
-                List<SelectListItem> shifts = new List<SelectListItem>()
-                {
-                    new SelectListItem() { Value = "1", Text = "Friday 8pm - 10pm" },
-                    new SelectListItem() { Value = "2", Text = "Friday 10pm - 12am" },
-                    new SelectListItem() { Value = "3", Text = "Saturday 12am - 2am" },
-                    new SelectListItem() { Value = "SE2", Text = "Special Events 2hr shift" },
-                    new SelectListItem() { Value = "SE4", Text = "Special Events 4hr shift" },
-                    new SelectListItem() { Value = "SE", Text = "Special Events 8hr shift" }
-                };
-                return shifts;
-            }
-        }
+        [Display(Name = "Shift Start", Prompt = "Select the start of shift for our Volunteer")]
+        public DateTime ShiftStart { get; set; }
+        [Required]
+        [Display(Name ="Shift End", Prompt = "Select the end of shift for our Volunteer")]
+        public DateTime ShiftEnd { get; set; }
         public List<SelectListItem> Positions { get; set; }
     }
 

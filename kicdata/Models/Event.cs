@@ -88,8 +88,12 @@ namespace KiCData.Models
         public int? EventId { get; set; }
         public virtual Event? Event { get; set; }
 
-        public string Shift { get; set; }
+        public DateTime ShiftStart { get; set; }
+
+        public DateTime ShiftEnd { get; set; }
 
         public string? Position { get; set; }
+
+        
     }
 }
