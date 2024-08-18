@@ -78,7 +78,8 @@ namespace KiCData.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId");
+                    b.HasIndex("MemberId")
+                        .IsUnique();
 
                     b.HasIndex("TicketId")
                         .IsUnique();
@@ -796,8 +797,8 @@ namespace KiCData.Migrations
             modelBuilder.Entity("KiCData.Models.Attendee", b =>
                 {
                     b.HasOne("KiCData.Models.Member", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId");
+                        .WithOne("Attendee")
+                        .HasForeignKey("KiCData.Models.Attendee", "MemberId");
 
                     b.HasOne("KiCData.Models.Ticket", "Ticket")
                         .WithOne("Attendee")
@@ -969,6 +970,8 @@ namespace KiCData.Migrations
 
             modelBuilder.Entity("KiCData.Models.Member", b =>
                 {
+                    b.Navigation("Attendee");
+
                     b.Navigation("Staff");
 
                     b.Navigation("User");
