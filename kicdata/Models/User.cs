@@ -26,5 +26,7 @@ namespace KiCData.Models
 
         public virtual ICollection<Group>? Groups { get; set; }
 
+        public string? Token { get; set; }
+
     }
 }
