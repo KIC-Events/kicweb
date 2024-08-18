@@ -26,11 +26,20 @@ namespace KiCData.Services
             else { return false; }
         }
 
+        public bool AuthTokenCookie(HttpRequest context)
+        {
+            var cookie = context.Cookies["kic_auth"];
+
+            if (cookie == null) { return false; }
+            else if (cookie == "true") { return true; }
+            else { return false; }
+        }
+
         /// <summary>
         /// Builds a CookieOptions configured to store the user's acceptance of the age gate disclaimer.
         /// </summary>
         /// <returns>CookieOptions</returns>
-        public CookieOptions AgeGateCookieFactory()
+        public CookieOptions NewCookieFactory()
         {
             CookieOptions cookie = new CookieOptions();
             cookie.Path = "/";
