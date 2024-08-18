@@ -1,5 +1,8 @@
-@page
-@model KiCData.Models.Volunteer
+
+@{
+    ViewData["Title"] = "Get Involved - Volunteers";
+}
+@model KiCData.Models.WebModels.VolunteerViewModel
 
 <div class="view-body">
     <div class="row">
@@ -16,55 +19,71 @@
             <li>Dungeon Monitors - Actively walk the main play space, outside patio, and sexy time area to help ensure attendees are following the rules of the event and engaging in safe consensual play.</li>
             <li>Service Top (fire, electric, or corporal) - Effectively, safely, and consensually discuss, talk about, and/or perform scenes for attendees who are wanting to explore and experience what is being offered.</li>
         </ul>
-        <p>If you're interested in any of the above opportunities to volunteer, send an email to <a href="mailto:volunteers@kicevents.com">volunteers@kicevents.com</a>. In your email please include what area(s) you would be interesting in volunteering for, and if applicable, your level of knowledge and experience.</p>
+        <p>Please fill out the form below with your details to be added to the mailing list for volunteer shifts.</p>
     </div>
-    @*<div class="row">
+    <div class="row">
         <div class="form-fillable">
-            @using (Html.BeginForm())
-            {
-                <div class="col-8">
+
+                <form asp-action="Volunteers" method="post">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Member.FirstName)
-                        @Html.TextBoxFor(model => model.Member.FirstName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Member.FirstName, "", new { @class = "text-danger" })
+                        <label asp-for="EventId"></label>
+                        <select asp-for="EventId" asp-items="@Model.Events" class="form-control">
+                            <option value="0">Select the Event</option>
+                        </select>
+                        <span asp-validation-for="EventId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Member.LastName)
-                        @Html.TextBoxFor(model => model.Member.LastName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Member.LastName, "", new { @class = "text-danger" })
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Member.FetName)
-                        @Html.TextBoxFor(model => model.Member.FetName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Member.FetName, "", new { @class = "text-danger" })
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Member.ClubId)
-                        @Html.TextBoxFor(model => model.Member.ClubId, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Member.ClubId, "", new { @class = "text-danger" })
+                        <label asp-for="DateOfBirth"></label>
+                        <input asp-for="DateOfBirth" type="date" class="form-control" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Member.EmailAddress)
-                        @Html.TextBoxFor(model => model.Member.EmailAddress, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Member.EmailAddress, "", new { @class = "text-danger" })
+                        <label asp-for="FetName"></label>
+                        <input asp-for="FetName" class="form-control" />
+                        <span asp-validation-for="FetName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Member.PhoneNumber)
-                        @Html.TextBoxFor(model => model.Member.PhoneNumber, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Member.PhoneNumber, "", new { @class = "text-danger" })
+                        <label asp-for="ClubId"></label>
+                        <input asp-for="ClubId" class="form-control" />
+                        <span asp-validation-for="ClubId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Details)
-                        @Html.TextAreaFor(model => model.Details, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+                        <label asp-for="PhoneNumber"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input type="Submit" value="Send" />
+                        <label asp-for="Details"></label>
+                        <input asp-for="Details" class="form-control" />
+                        <span asp-validation-for="Details" class="text-danger"></span>
                     </div>
-                </div>
-            }
+                    <div class="form-group">
+                        <label asp-for="Positions"></label>
+                        <select asp-for="Positions"  asp-items="@Model.Positions" class="form-control" multiple="multiple"> </select>
+                        <span asp-validation-for="Positions" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                    <input type="submit" value="Register" class="btn btn-secondary" />
+                    </div>
+                </form>
         </div>
-    </div>*@
+    </div>
 </div>
 
 @if(ViewBag.Error is not null)

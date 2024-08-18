@@ -8,7 +8,6 @@ using MimeKit;
 using System.Text;
 using KiCData;
 using KiCData.Models;
-using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Services;
 using Org.BouncyCastle.Crypto.Fpe;
@@ -117,12 +116,91 @@ public class HomeController : Controller
         return View("/Views/Shared/UnderConstruction.cshtml");
 	}
 
-	[Authorize(Roles = "Admin,Contributor")]
-	public IActionResult Admin()
+	[HttpGet]
+	[Route("Volunteers/Register")]
+	public IActionResult Volunteers()
 	{
-		return View(); 
+		if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+		{
+			return Redirect("Index");
+		}
+		VolunteerViewModel volunteer = new VolunteerViewModel 
+		{ 
+			Events = _kdbContext.Events.Where(a=> a.StartDate > DateOnly.FromDateTime(DateTime.Now)).Select
+			(a => new SelectListItem
+                {
+                    Value = a.Id.ToString(),
+                    Text = a.Name
+                }).ToList(),
+			Positions = new List<SelectListItem>()
+			{
+			new SelectListItem(){ Value = "DM", Text ="Dungeon Monitor" },
+			new SelectListItem(){ Value = "Door", Text =  "Door Person/Greeter" },
+			new SelectListItem(){ Value = "Bar", Text = "Bartender" },
+            new SelectListItem(){ Value = "Fire", Text = "Service Top - Fire" },
+            new SelectListItem(){ Value = "Electric", Text = "Service Top - Electric" },
+            new SelectListItem(){ Value = "Corporal", Text = "Service Top - Corporal" },
+            new SelectListItem(){ Value = "Reg", Text = "Special Events - Registration" }
+			},
+
+		};
+        
+        return View(volunteer);
+	}
+	[HttpPost]
+    [Route("Volunteers/Register")]
+    public IActionResult Volunteers(VolunteerViewModel volUpdated)
+	{
+		if (!ModelState.IsValid)
+        {
+            ViewBag.Error = "There was a validation issue.";
+            return View(volUpdated);
+        }
+		else
+		{
+			KiCData.Models.Member member = new KiCData.Models.Member
+			{
+                FirstName = volUpdated.FirstName,
+                LastName = volUpdated.LastName,
+                Email = volUpdated.Email,
+                DateOfBirth = volUpdated.DateOfBirth,
+                FetName = volUpdated.FetName,
+                ClubId = volUpdated.ClubId,
+                PhoneNumber = volUpdated.PhoneNumber
+            };
+			_kdbContext.Members.Add(member);
+			_kdbContext.SaveChanges();
+            List<string> list = new List<string>();
+            foreach (var item in volUpdated.Positions)
+            {
+                if (item.Selected)
+                {
+                    list.Add(item.Value);
+                }
+            }
+
+            Volunteer volunteer = new Volunteer
+            {
+                MemberId = member.Id,
+                Details = volUpdated.AdditionalInfo,
+                Positions = list
+            };
+            _kdbContext.Volunteers.Add(volunteer);
+            _kdbContext.SaveChanges();
+            if (volUpdated.EventId != 0)
+			{
+				PendingVolunteer pendingVolunteer = new((int)volunteer.Id, volUpdated.EventId, volunteer.Positions.ToString());
+                _kdbContext.PendingVolunteers.Add(pendingVolunteer);
+				_kdbContext.SaveChanges();
+                return RedirectToAction("SubmissionSuccess", "People", new { v = "Volunteer" });
+            }
+		}
+
+        return RedirectToAction("SubmissionSuccess", "People", new { v = "Volunteer" });
 	}
 
+
+	
     //Issue #86 https://github.com/Malechus/kic/issues/86
     /*
 	[HttpGet]

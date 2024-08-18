@@ -27,7 +27,7 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Details", Prompt = "Please enter any additional details.")]
         public string? Details { get; set; }
 
-        public PresenterViewModel(string firstname, string lastname, string email, DateTime dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, string publicname, string bio, string requests, decimal fee, string details)
+        public PresenterViewModel(string firstname, string lastname, string email, DateOnly dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, string publicname, string bio, string requests, decimal fee, string details)
         {
             FirstName = firstname;
             LastName = lastname;

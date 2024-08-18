@@ -4,6 +4,7 @@ using KiCData.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KiCData.Migrations
 {
     [DbContext(typeof(KiCdbContext))]
-    partial class KiCdbContextModelSnapshot : ModelSnapshot
+    [Migration("20240812154058_TicketCompDiscountCodeAdd")]
+    partial class TicketCompDiscountCodeAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,11 +238,8 @@ namespace KiCData.Migrations
                     b.Property<string>("Position")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("ShiftEnd")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("ShiftStart")
-                        .HasColumnType("datetime(6)");
+                    b.Property<int?>("ShiftNumber")
+                        .HasColumnType("int");
 
                     b.Property<int?>("VolunteerId")
                         .HasColumnType("int");
@@ -251,6 +251,14 @@ namespace KiCData.Migrations
                     b.HasIndex("VolunteerId");
 
                     b.ToTable("EventVolunteer");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3579,
+                            EventId = 1111,
+                            VolunteerId = 1234
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.Group", b =>
@@ -292,8 +300,7 @@ namespace KiCData.Migrations
                     b.Property<int?>("ClubId")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("DateOfBirth")
-                        .IsRequired()
+                    b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
 
                     b.Property<string>("Email")
@@ -307,6 +314,18 @@ namespace KiCData.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsPresenter")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsStaff")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsVendor")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsVolunteer")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -314,20 +333,10 @@ namespace KiCData.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("PresenterId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("PublicId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("VendorId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PresenterId");
-
-                    b.HasIndex("VendorId");
 
                     b.ToTable("Member");
 
@@ -341,6 +350,10 @@ namespace KiCData.Migrations
                             Email = "John.Doe@example.com",
                             FetName = "JohnDoe",
                             FirstName = "John",
+                            IsPresenter = false,
+                            IsStaff = false,
+                            IsVendor = false,
+                            IsVolunteer = true,
                             LastName = "Doe",
                             PhoneNumber = "555-555-5555",
                             PublicId = 54321
@@ -361,6 +374,10 @@ namespace KiCData.Migrations
                     b.Property<string>("PreferredPositions")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int?>("PreferredShift")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<int>("VolunteerID")
                         .HasColumnType("int");
@@ -445,6 +462,9 @@ namespace KiCData.Migrations
                     b.Property<DateOnly?>("LastAttended")
                         .HasColumnType("date");
 
+                    b.Property<int?>("MemberId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PublicName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -453,6 +473,8 @@ namespace KiCData.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
 
                     b.ToTable("Presenter");
 
@@ -464,6 +486,7 @@ namespace KiCData.Migrations
                             Details = "Test Details",
                             Fee = 100.00m,
                             LastAttended = new DateOnly(2021, 1, 1),
+                            MemberId = 7725,
                             PublicName = "Test Presenter",
                             Requests = "Test Requests"
                         });
@@ -487,8 +510,7 @@ namespace KiCData.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId")
-                        .IsUnique();
+                    b.HasIndex("MemberId");
 
                     b.ToTable("Staff");
                 });
@@ -597,17 +619,13 @@ namespace KiCData.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Token")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId")
-                        .IsUnique();
+                    b.HasIndex("MemberId");
 
                     b.ToTable("User");
 
@@ -639,6 +657,9 @@ namespace KiCData.Migrations
                     b.Property<DateOnly?>("LastAttended")
                         .HasColumnType("date");
 
+                    b.Property<int?>("MemberId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MerchType")
                         .HasColumnType("longtext");
 
@@ -657,6 +678,8 @@ namespace KiCData.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MemberId");
+
                     b.ToTable("Vendor");
 
                     b.HasData(
@@ -666,6 +689,7 @@ namespace KiCData.Migrations
                             Bio = "This is a test vendor.",
                             ImgPath = "/wwwroot/images/Vendors/image01.jpg",
                             LastAttended = new DateOnly(2021, 1, 1),
+                            MemberId = 7725,
                             MerchType = "Test Merch",
                             PriceAvg = 5.00m,
                             PriceMax = 10.00m,
@@ -737,10 +761,12 @@ namespace KiCData.Migrations
                     b.Property<string>("Positions")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Shifts")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId")
-                        .IsUnique();
+                    b.HasIndex("MemberId");
 
                     b.ToTable("Volunteer");
 
@@ -851,21 +877,6 @@ namespace KiCData.Migrations
                     b.Navigation("Volunteer");
                 });
 
-            modelBuilder.Entity("KiCData.Models.Member", b =>
-                {
-                    b.HasOne("KiCData.Models.Presenter", "Presenter")
-                        .WithMany("Members")
-                        .HasForeignKey("PresenterId");
-
-                    b.HasOne("KiCData.Models.Vendor", "Vendor")
-                        .WithMany("Members")
-                        .HasForeignKey("VendorId");
-
-                    b.Navigation("Presenter");
-
-                    b.Navigation("Vendor");
-                });
-
             modelBuilder.Entity("KiCData.Models.PendingVolunteer", b =>
                 {
                     b.HasOne("KiCData.Models.Event", "Event")
@@ -904,11 +915,20 @@ namespace KiCData.Migrations
                     b.Navigation("Presenter");
                 });
 
+            modelBuilder.Entity("KiCData.Models.Presenter", b =>
+                {
+                    b.HasOne("KiCData.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("KiCData.Models.Staff", b =>
                 {
                     b.HasOne("KiCData.Models.Member", "Member")
-                        .WithOne("Staff")
-                        .HasForeignKey("KiCData.Models.Staff", "MemberId")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -936,8 +956,17 @@ namespace KiCData.Migrations
             modelBuilder.Entity("KiCData.Models.User", b =>
                 {
                     b.HasOne("KiCData.Models.Member", "Member")
-                        .WithOne("User")
-                        .HasForeignKey("KiCData.Models.User", "MemberId");
+                        .WithMany()
+                        .HasForeignKey("MemberId");
+
+                    b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("KiCData.Models.Vendor", b =>
+                {
+                    b.HasOne("KiCData.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId");
 
                     b.Navigation("Member");
                 });
@@ -945,8 +974,8 @@ namespace KiCData.Migrations
             modelBuilder.Entity("KiCData.Models.Volunteer", b =>
                 {
                     b.HasOne("KiCData.Models.Member", "Member")
-                        .WithOne("Volunteer")
-                        .HasForeignKey("KiCData.Models.Volunteer", "MemberId");
+                        .WithMany()
+                        .HasForeignKey("MemberId");
 
                     b.Navigation("Member");
                 });
@@ -967,28 +996,9 @@ namespace KiCData.Migrations
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("KiCData.Models.Member", b =>
-                {
-                    b.Navigation("Staff");
-
-                    b.Navigation("User");
-
-                    b.Navigation("Volunteer");
-                });
-
-            modelBuilder.Entity("KiCData.Models.Presenter", b =>
-                {
-                    b.Navigation("Members");
-                });
-
             modelBuilder.Entity("KiCData.Models.Ticket", b =>
                 {
                     b.Navigation("Attendee");
-                });
-
-            modelBuilder.Entity("KiCData.Models.Vendor", b =>
-                {
-                    b.Navigation("Members");
                 });
 #pragma warning restore 612, 618
         }

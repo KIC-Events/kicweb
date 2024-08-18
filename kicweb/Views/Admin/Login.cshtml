@@ -1,0 +1,29 @@
+﻿@page
+@model KiCWeb.Views.Admin.LoginModel
+@{
+}
+
+
+<div class="container border" style="padding:20px">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Login.UserName"></label>
+            </div>
+           <div class="col-5">
+                <input asp-for="Login.UserName" class="form-control" />
+                <span asp-validation-for="Login.UserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Login.Password"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Login.Password" class="form-control" />
+                <span asp-validation-for="Login.Password" class="text-danger"></span>
+            </div>
+        </div>
+    </form>
+</div>
