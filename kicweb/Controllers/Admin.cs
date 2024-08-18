@@ -34,7 +34,7 @@ namespace KiCWeb.Controllers
 
         //Shows Basic Admin Tasks for Registration, Tickets, Vendors, Volunteers, and Presenters
         [HttpGet]
-        [Route("Admin")]
+        [Route("~/Admin/AdminServices")]
         public IActionResult AdminServices()
         {
             if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))

@@ -128,7 +128,7 @@ namespace KiCWeb.Controllers
 			if (authToken != null)
 			{
 				SetAuthToken(authToken, _contextAccessor.HttpContext);
-				return Redirect("Admin/adminServices");
+				return Redirect("~/Admin/AdminServices");
 			}
 			else
 			{
@@ -155,7 +155,8 @@ namespace KiCWeb.Controllers
 				HashAlgorithmName.SHA512,
 				64);
 
-			return hash.ToString();
+			string hashedPassword = Convert.ToBase64String(hash);
+			return hashedPassword;
 		}
 
 		private void SetAuthToken(string authToken, HttpContext context)
@@ -164,7 +165,7 @@ namespace KiCWeb.Controllers
 
 			CookieOptions cookieOptions = _cookieService.NewCookieFactory();
 
-			context.Response.Cookies.Append("kic_auth", authToken, cookieOptions);
+			context.Response.Cookies.Append("kic_auth", "true", cookieOptions);
 		}
 	}
 }
