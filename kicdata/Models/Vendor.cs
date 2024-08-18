@@ -18,10 +18,7 @@ namespace KiCData.Models
 
         //public Guid? MemberId { get; set; }
         //int for testing purposes only
-        public int? MemberId { get; set; }
-
-        public virtual Member Member { get; set; }
-
+        
 
         [Required]
         [Display(Name  = "Your business or professional name.")]
@@ -41,5 +38,8 @@ namespace KiCData.Models
 
         public string? ImgPath { get; set; }
 
+        public ICollection<Member> Members { get; set; } = new List<Member>();
+
     }
+    
 }
