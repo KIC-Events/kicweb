@@ -42,19 +42,18 @@ namespace KiCData.Models.WebModels
 
     }
 
-    public class RegistrationViewModel
+    public class RegistrationViewModel : AttendeeViewModel
     {
-        [Required(ErrorMessage = "Please enter Registrant's legal first name.")]
-        [Display(Name = "First Name")]
-        public string? FirstName { get; set; }
+        [Required]
+        [Display(Name = "Ticket Level")]
+        public string? TicketType { get; set; }
 
-        [Required(ErrorMessage = "Please enter Registant's legal last name.")]
-        [Display(Name = "Last Name")]
-        public string? LastName { get; set; }
+        [Display(Name = "Room Type (This does not guarentee the selected room type will be available, but indicates preference.")]
+        public string? RoomType { get; set; }
 
-        [Required(ErrorMessage = "Enter Date of Birth")]
-        [Display(Name = "Date of Birth")]
-        public DateOnly DateofBirth { get; set; }
+        [Required]
+        [Display(Name = "Check this if you would like to reserve a room at the host hotel.")]
+        public bool? isStaying { get; set; }
     }
 
     public class PeopleViewModel

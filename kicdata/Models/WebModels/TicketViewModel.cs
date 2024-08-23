@@ -25,7 +25,7 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Price")]
         public decimal Price { get; set; }
 
-        [Required(ErrorMessage = "Please selet the ticket type.")]
+        [Required(ErrorMessage = "Please select the ticket type.")]
         [Display(Name = "Type")]
         public string? Type { get; set; }
 
