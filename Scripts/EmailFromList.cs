@@ -7,6 +7,7 @@ using KiCData.Models;
 using KiCData.Services;
 using IronXL;
 using System.Net;
+using KiCData.Models.WebModels;
 
 namespace Scripts
 {
@@ -28,7 +29,11 @@ namespace Scripts
 
                 Mailer mailer = new Mailer(fName, lName, email);
 
-                mailers.Add(mailer);
+                if (email.Contains('@'))
+                {
+                    Console.WriteLine("Adding record for " + fName + " " + lName);
+                    mailers.Add(mailer);
+                }
             }
         }
 
@@ -46,8 +51,8 @@ namespace Scripts
 
                 TicketComp ticketComp = new TicketComp()
                 {
-                    Id = compCode,
-                    CompReason = "KIC Volunteer",
+                    DiscountCode = compCode,
+                    CompReason = "2025 Volunteer",
                     AuthorizingUser = "System"
                 };
 
@@ -57,6 +62,40 @@ namespace Scripts
             }
             Console.WriteLine("Comp Code Generation Complete....");
         }
+
+        public void BuildEmails()
+        {
+            Console.WriteLine("Generating email messages.");
+            foreach(Mailer mailer in mailers)
+            {
+                Console.WriteLine("Generating email for " + mailer.FirstName + " " + mailer.LastName);
+
+                FormMessage formMessage = new FormMessage();
+                formMessage.To.Add(mailer.Email);
+                formMessage.Subject = "KIC EVENTS | A special discount for CURE 2025!";
+                formMessage.HtmlBuilder.Append(
+                        "<h3>A special discount code has been generated for you!</h3>" 
+                        + "<h4><b>" + mailer.CompCode + "</b></h4>" 
+                        + "<p>This code will get you $25 off your ticket purchase for CURE 2025.</p>"
+                        + "<p>We wanted to thank you for your help in building our community.</p>" 
+                        + "<p>We look forward to seeing you at CURE!</p>"
+                    );
+
+                mailer.FormMessage = formMessage;
+            }
+            Console.WriteLine("Email generation complete.");
+        }
+
+        public void SendEmails(IEmailService emailService)
+        {
+            Console.WriteLine("Sending emails...");
+            foreach (Mailer mailer in mailers)
+            {
+                Console.WriteLine("Sending email to " + mailer.FirstName + " " + mailer.LastName);
+                emailService.SendEmail(mailer.FormMessage);
+            }
+            Console.WriteLine("Sending emails complete...");
+        }
     }
 
     public class Mailer
@@ -65,6 +104,7 @@ namespace Scripts
         public string LastName { get; private set; }
         public string Email { get; private set; }
         public string? CompCode { get; set; }
+        public FormMessage? FormMessage { get; set; }
 
         public Mailer(string firstName, string lastName, string email)
         {
@@ -72,4 +112,5 @@ namespace Scripts
             LastName = lastName;
             Email = email;
         }
+    }
 }
