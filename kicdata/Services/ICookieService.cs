@@ -11,10 +11,12 @@ namespace KiCData.Services
         /// <returns>bool</returns>
         public bool AgeGateCookieAccepted(HttpRequest context);
 
+        public bool AuthTokenCookie(HttpRequest context);
+
         /// <summary>
         /// Builds a CookieOptions configured to store the user's acceptance of the age gate disclaimer.
         /// </summary>
         /// <returns>CookieOptions</returns>
-        public CookieOptions AgeGateCookieFactory();
+        public CookieOptions NewCookieFactory();
     }
 }

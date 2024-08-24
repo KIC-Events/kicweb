@@ -36,7 +36,7 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Average Price")]
         public decimal? PriceAvg { get; set; }
 
-        public VendorViewModel(string firstname, string lastname, string email, DateTime dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, string publicname, string bio, DateTime lastattended, string merchtype, decimal minprice, decimal maxprice, decimal avgprice)
+        public VendorViewModel(string firstname, string lastname, string email, DateOnly dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, string publicname, string bio, DateTime lastattended, string merchtype, decimal minprice, decimal maxprice, decimal avgprice)
         {
             FirstName = firstname;
             LastName = lastname;

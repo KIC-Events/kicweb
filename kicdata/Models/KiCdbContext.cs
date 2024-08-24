@@ -29,6 +29,8 @@ namespace KiCData.Models
         public DbSet<User> User { get; set; }
         public DbSet<Venue> Venue { get; set; }
         public DbSet<WaitList> WaitList { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<PendingVolunteer> PendingVolunteers { get; set; }
 
 
 
@@ -68,15 +70,10 @@ namespace KiCData.Models
                 PhoneNumber = "555-555-5555",
                 PublicId = 54321,
                 AdditionalInfo = "This is a test user.",
-                IsVendor = false,
-                IsVolunteer = true,
-                IsPresenter = false,
-                IsStaff = false
             });
             modelBuilder.Entity<Presenter>().HasData(new Presenter
             {
                 Id = 1234,
-                MemberId = 7725,
                 PublicName = "Test Presenter",
                 Bio = "This is a test presenter.",
                 LastAttended = new DateOnly(2021, 1, 1),
@@ -87,7 +84,6 @@ namespace KiCData.Models
             modelBuilder.Entity<Vendor>().HasData(new Vendor
             {
                 Id = 1128,
-                MemberId = 7725,
                 PublicName = "Test Vendor",
                 Bio = "This is a test vendor.",
                 LastAttended = new DateOnly(2021, 1, 1),
@@ -161,12 +157,12 @@ namespace KiCData.Models
                 EventId = 1111,
                 VendorId = 1128
             });
-            modelBuilder.Entity<EventVolunteer>().HasData(new EventVolunteer
-            {
-                Id = 3579,
-                EventId = 1111,
-                VolunteerId = 1234
-            });
+            //modelBuilder.Entity<EventVolunteer>().HasData(new EventVolunteer
+            //{
+            //    Id = 3579,
+            //    EventId = 1111,
+            //    VolunteerId = 1234
+            //});
             modelBuilder.Entity<Attendee>().HasData(new Attendee
             {
                 Id = 2468,
@@ -180,6 +176,28 @@ namespace KiCData.Models
                 IsPaid = true
             });
 
+            modelBuilder.Entity<Group>().HasData(new Group
+            {
+                Id = new Guid(),
+                Name = "Admin",
+                Description = "Admin Group"
+            });
+
+            //modelBuilder.Entity<Group>().HasData(new Group
+            //{
+            //    Id = new Guid(),
+            //    Name = "Contributor",
+            //    Description = "Vendor and Presenter Coordinator Group"
+            //});
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = new Guid(),
+                MemberId = 7725,
+                Username = "admin",
+                Password = "password",
+                
+            });
         }
     }
 }

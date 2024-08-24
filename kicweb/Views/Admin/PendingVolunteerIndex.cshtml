@@ -1,0 +1,59 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Pending Volunteer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<KiCData.Models.PendingVolunteer>
+
+<div class="view-body">
+    <h1 class="main-title">Event Volunteers</h1>
+    <hr />
+    <p><b>KiC Events</b></p>
+    @* <p>Click on the event name to view more details</p> *@
+    <hr />
+    @* <a asp-area="" asp-controller="Admin" asp-action="AdminEventCreate">New Event</a> *@
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => m.Event.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Volunteer.Member.FetName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PreferredPositions)
+                </th>
+                <th>
+                    Options
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-area="" asp-controller="Admin" asp-action="AdminEventDetails" asp-route-id="@item.EventId">@Html.DisplayFor(modelItem => item.Event.Name)</a>
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="Admin" asp-action="AdminEventDetails" asp-route-id="@item.VolunteerID">@Html.DisplayFor(modelItem => item.Volunteer.Member.FetName)</a>
+                    </td>
+                    @foreach (var position in item.PreferredPositions)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => position)
+                        </td>
+                    }
+                    <td>
+                        <a asp-area="" asp-controller="Admin" asp-action="VolunteerApproval" asp-route-id="@item.Id">Approve and Assign</a>
+                        <a asp-area="" asp-controller="Admin" asp-action="VolunteerDenied" asp-route-id="@item.Id">Deny</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

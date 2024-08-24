@@ -14,14 +14,14 @@ namespace KiCData.Models
         //int for testing purposes only
         public int? MemberId { get; set; }
 
-        public virtual Member Member { get; set; }
+        public virtual Member? Member { get; set; }
 
         public int? TicketId { get; set; }
-        public virtual Ticket Ticket { get; set; }
+        public virtual Ticket? Ticket { get; set; }
 
         [Required]
         [Display(Name = "Preferred Badge Name")]       
-        public string BadgeName { get; set; }
+        public string? BadgeName { get; set; }
 
         public bool BackgroundChecked { get; set; }
 
@@ -31,6 +31,10 @@ namespace KiCData.Models
         public string? RoomPreference { get; set; }
 
         public bool IsPaid { get; set; }
+
+        public bool isRegistered { get; set; }
     }
+
+
         
 }

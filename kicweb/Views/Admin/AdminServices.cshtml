@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "AdminServices";
+}
+
+<div class="view-body">
+    <h1 class="main-title">Admin Services</h1>
+    <hr />
+    <p><b>Choose an admin task below</b></p>
+    <ol>
+        <b>
+        <li><a asp-area="" asp-controller="Admin" asp-action="Index">Registration</a></li>
+        <li><a asp-area="" asp-controller="Admin" asp-action="PendingVolunteerIndex">Volunteer Management</a></li>
+        <li><a asp-area="" asp-controller="Admin" asp-action="VendorIndex">Vendor Management</a></li>
+        <li><a asp-area="" asp-controller="Admin" asp-action="Index">Presenter Management</a></li>
+        <li><a asp-area="" asp-controller="Admin" asp-action="Tickets">Ticket Management</a></li>
+        <li><a asp-area="" asp-controller="Owner" asp-action="Index">Owner Tasks</a></li>
+        </b>
+    </ol>
+</div>
+
