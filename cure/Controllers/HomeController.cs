@@ -52,6 +52,7 @@ namespace cure.Controllers
             return RedirectToAction("ComingSoon");
         }
 
+        [Route("~/Register")]
         [HttpGet]
         public IActionResult Registration()
         {
