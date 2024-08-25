@@ -52,14 +52,19 @@ namespace Scripts
                 Console.WriteLine("That didn't work. Try again.");
                 return;
             }
+            Console.WriteLine("Please enter the reason for the discount.");
+            string reason = Console.ReadLine();
+            Console.WriteLine("Please enter the discount amount (in the form of dd.cc):");
+            string amt = Console.ReadLine();
+            double compAmount = double.Parse(amt);
             EmailFromList emailFromList = new EmailFromList(fPath);
             Console.WriteLine("connecting to DB...");
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder();
             builder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
             DbContextOptions<KiCdbContext> options = (DbContextOptions<KiCdbContext>)builder.Options;
             KiCdbContext context = new KiCdbContext(options);
-            emailFromList.GetCompCodes(context);
-            emailFromList.BuildEmails();
+            emailFromList.GetCompCodes(context, reason, compAmount);
+            emailFromList.BuildEmails(compAmount);
             emailFromList.SendEmails(emailService);
             Console.WriteLine("Press any key to continue.");
             Console.ReadLine();

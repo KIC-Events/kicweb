@@ -37,7 +37,7 @@ namespace Scripts
             }
         }
 
-        public void GetCompCodes(KiCdbContext context)
+        public void GetCompCodes(KiCdbContext context, string compReason, double compAmount)
         {
             Console.WriteLine("Generating Comp Codes...");
             int i = 0;
@@ -52,8 +52,9 @@ namespace Scripts
                 TicketComp ticketComp = new TicketComp()
                 {
                     DiscountCode = compCode,
-                    CompReason = "2025 Volunteer",
-                    AuthorizingUser = "System"
+                    CompReason = compReason,
+                    AuthorizingUser = "System",
+                    CompAmount = (int)compAmount
                 };
 
                 Console.WriteLine("Adding comp to database...");
@@ -63,7 +64,7 @@ namespace Scripts
             Console.WriteLine("Comp Code Generation Complete....");
         }
 
-        public void BuildEmails()
+        public void BuildEmails(double compAmount)
         {
             Console.WriteLine("Generating email messages.");
             foreach(Mailer mailer in mailers)
@@ -76,7 +77,7 @@ namespace Scripts
                 formMessage.HtmlBuilder.Append(
                         "<h3>A special discount code has been generated for you!</h3>" 
                         + "<h4><b>" + mailer.CompCode + "</b></h4>" 
-                        + "<p>This code will get you $25 off your ticket purchase for CURE 2025.</p>"
+                        + "<p>This code will get you $" + compAmount + " off your ticket purchase for CURE 2025.</p>"
                         + "<p>We wanted to thank you for your help in building our community.</p>" 
                         + "<p>We look forward to seeing you at CURE!</p>"
                     );
