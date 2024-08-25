@@ -23,7 +23,7 @@ namespace KiCData.Models.WebModels
 
         [Required(ErrorMessage = "Please provide a price for this ticket.")]
         [Display(Name = "Price")]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         [Required(ErrorMessage = "Please select the ticket type.")]
         [Display(Name = "Type")]
@@ -40,7 +40,7 @@ namespace KiCData.Models.WebModels
 
         
 
-        public TicketViewModel(int eventId, decimal price, string type, int qtyTickets, DateOnly startDate, DateOnly endDate)
+        public TicketViewModel(int eventId, double price, string type, int qtyTickets, DateOnly startDate, DateOnly endDate)
         {
             EventId = eventId;
             QtyTickets = qtyTickets;

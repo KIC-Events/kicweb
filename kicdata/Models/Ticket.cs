@@ -19,7 +19,7 @@ namespace KiCData.Models
         public int? EventId { get; set; }
         public virtual Event? Event { get; set; }
 
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         public string? Type { get; set; }
 
@@ -45,13 +45,13 @@ namespace KiCData.Models
         public int? TicketId { get; set; }
         public virtual Ticket? Ticket { get; set; }
 
-        public decimal? CompAmount { get; set; }
+        public double? CompAmount { get; set; }
 
         public string? CompReason { get; set; }
 
         public string? AuthorizingUser { get; set; }
 
-
+        public double? CompPct { get; set; }
 
     }
 }
