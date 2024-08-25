@@ -15,7 +15,7 @@ namespace KiCData.Models.WebModels
 
         [Required(ErrorMessage = "Please enter the amount off of the ticket price to be comp")]
         [Display(Name = "Comp Amount")]
-        public decimal? CompAmount { get; set; }
+        public double? CompAmount { get; set; }
 
         [Display(Name = "Comp Reason")]
         public string? CompReason { get; set; }

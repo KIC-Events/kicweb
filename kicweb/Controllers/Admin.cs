@@ -123,6 +123,7 @@ namespace KiCWeb.Controllers
             Event events = _context.Events.Where(a => a.Id == id).FirstOrDefault();
             events.Venue = _context.Venue.Where(a => a.Id == events.VenueId).FirstOrDefault();
             events.Tickets = _context.Ticket.Where(a => a.EventId == id).ToList();
+            
             return View(events);
         }
 
@@ -171,6 +172,20 @@ namespace KiCWeb.Controllers
             {
                 return View(model);
             }
+        }
+
+        //Request for editing an event in the database
+        [HttpGet]
+        [Route("Events/Edit/{id}")]
+        public IActionResult AdminEventEdit(int id)
+        {
+            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+            {
+                return Redirect("Home/Index");
+            }
+            Event events = _context.Events.Where(a => a.Id == id).FirstOrDefault();
+            
+            return View(events);
         }
         /*
          * Section for Volunteers, assigning pending volunteers to specific roles/shifts
@@ -245,6 +260,7 @@ namespace KiCWeb.Controllers
         /*
          * Section for Vendors, Index, Details, Create, Edit, Delete
          */
+        [Route("Vendors")]
         public IActionResult VendorIndex()
         {
             IEnumerable<Vendor> vendors = _context.Vendors.ToList();
