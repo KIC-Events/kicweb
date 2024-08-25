@@ -23,6 +23,10 @@ html {
     border-color: antiquewhite;
 }
 
+.button-box {
+    padding: 5px 5px 5px 5px;
+}
+
 .flat-btn:hover,
 .btn-primary:hover {
     color: rgba(255, 255, 255, .8) !important;

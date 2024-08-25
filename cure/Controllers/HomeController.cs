@@ -23,24 +23,33 @@ namespace cure.Controllers
             return View();
         }
 
+        public IActionResult ComingSoon()
+        {
+            return View();         
+        }
+
         public IActionResult Presenters()
         {
-            return View();
+            //return View();
+            return RedirectToAction("ComingSoon");
         }
 
         public IActionResult Vendors()
         {
-            return View();
+            //return View();
+            return RedirectToAction("ComingSoon");
         }
 
         public IActionResult Rules()
         {
-            return View();
+            //return View();
+            return RedirectToAction("ComingSoon");
         }
 
         public IActionResult Schedule()
         {
-            return View();
+            //return View();
+            return RedirectToAction("ComingSoon");
         }
 
         [HttpGet]
