@@ -48,7 +48,7 @@
                             <td>@ticket.Type</td>
                             <td>@ticket.StartDate</td>
                             <td>@ticket.EndDate</td>
-                            <td>@ticket.Price</td>
+                            <td>$@String.Format("{0:0.00}", ticket.Price)</td>
                         </tr>
                     }
                 </tbody>

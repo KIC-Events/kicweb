@@ -38,7 +38,7 @@
             {
                 <tr>
                     <td>
-                        <a asp-area="" asp-controller="Admin" asp-action="AdminEventDetails">@Html.DisplayFor(modelItem => item.Name)</a>
+                        <a asp-area="" asp-controller="Admin" asp-action="AdminEventDetails" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.StartDate)
@@ -51,7 +51,7 @@
                   
                     </td>
                     <td>
-                        <a asp-area="" asp-controller="Admin" asp-action="AdminEventDetails" asp-route-id="@item.Id">Details</a>
+                        <a asp-area="" asp-controller="Admin" asp-action="AdminEventEdit" asp-route-id="@item.Id">Edit</a>
                     </td>
 
                 </tr>

@@ -122,7 +122,7 @@ namespace KiCData.Models
             {
                 Id = 1234,
                 EventId = 1111,
-                Price = 10.00M,
+                Price = 10.00,
                 Type = "Test Ticket",
                 //Name = "Test Ticket",
                 DatePurchased = new DateOnly(2021, 1, 1),
@@ -134,7 +134,7 @@ namespace KiCData.Models
             {
                 Id = 12354,
                 EventId = 1111,
-                Price = 10.00M,
+                Price = 10.00,
                 Type = "Test Ticket",
                 //Name = "Test Ticket",
                 DatePurchased = new DateOnly(2021, 1, 1),
