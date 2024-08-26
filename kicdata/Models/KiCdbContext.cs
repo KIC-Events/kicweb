@@ -56,6 +56,7 @@ namespace KiCData.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            /*
             //modelBuilder.HasDefaultSchema("Dev");
 
             modelBuilder.Entity<Member>().HasData(new Member
@@ -198,6 +199,7 @@ namespace KiCData.Models
                 Password = "password",
                 
             });
+            */
         }
     }
 }
