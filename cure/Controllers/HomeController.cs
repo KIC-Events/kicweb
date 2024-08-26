@@ -42,8 +42,8 @@ namespace cure.Controllers
 
         public IActionResult Rules()
         {
-            //return View();
-            return RedirectToAction("ComingSoon");
+            return View();
+            //return RedirectToAction("ComingSoon");
         }
 
         public IActionResult Schedule()
