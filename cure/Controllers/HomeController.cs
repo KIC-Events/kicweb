@@ -1,6 +1,7 @@
 using cure.Models;
 using KiCData.Models;
 using KiCData.Models.WebModels;
+using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -10,10 +11,12 @@ namespace cure.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IPaymentService _paymentService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPaymentService paymentService)
         {
             _logger = logger;
+            _paymentService = paymentService;
         }
 
         [Route("~/")]
@@ -57,6 +60,8 @@ namespace cure.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
+            ViewBag.SilverCount = _paymentService.CheckInventory("Silver");
+            ViewBag.GoldCount = _paymentService.CheckInventory("GOLD");
             RegistrationViewModel reg = new RegistrationViewModel();
             return View(reg);
         }
