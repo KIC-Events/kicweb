@@ -4,6 +4,7 @@ using KiCData.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KiCData.Migrations
 {
     [DbContext(typeof(KiCdbContext))]
-    partial class KiCdbContextModelSnapshot : ModelSnapshot
+    [Migration("20240826160240_8-26-24_0.1.4_Prod")]
+    partial class _82624_014_Prod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,6 +88,22 @@ namespace KiCData.Migrations
                         .IsUnique();
 
                     b.ToTable("Attendee");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2468,
+                            BackgroundChecked = true,
+                            BadgeName = "RandomNessy",
+                            ConfirmationNumber = 0,
+                            IsPaid = true,
+                            MemberId = 7725,
+                            RoomPreference = "Special",
+                            RoomWaitListed = false,
+                            TicketId = 1234,
+                            TicketWaitListed = false,
+                            isRegistered = false
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.ClubMember", b =>
@@ -154,6 +173,17 @@ namespace KiCData.Migrations
                     b.HasIndex("VenueId");
 
                     b.ToTable("Event");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1111,
+                            Description = "This is a test event.",
+                            EndDate = new DateOnly(2021, 1, 2),
+                            Name = "Test Event",
+                            StartDate = new DateOnly(2021, 1, 1),
+                            VenueId = 12345
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.EventVendor", b =>
@@ -183,6 +213,16 @@ namespace KiCData.Migrations
                     b.HasIndex("VendorId");
 
                     b.ToTable("EventVendor");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3333,
+                            ConfirmationNumber = 0,
+                            EventId = 1111,
+                            IsPaid = false,
+                            VendorId = 1128
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.EventVolunteer", b =>
@@ -232,6 +272,14 @@ namespace KiCData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Description = "Admin Group",
+                            Name = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.Member", b =>
@@ -286,6 +334,21 @@ namespace KiCData.Migrations
                     b.HasIndex("VendorId");
 
                     b.ToTable("Member");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 7725,
+                            AdditionalInfo = "This is a test user.",
+                            ClubId = 12345,
+                            DateOfBirth = new DateOnly(1980, 1, 1),
+                            Email = "John.Doe@example.com",
+                            FetName = "JohnDoe",
+                            FirstName = "John",
+                            LastName = "Doe",
+                            PhoneNumber = "555-555-5555",
+                            PublicId = 54321
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.PendingVolunteer", b =>
@@ -350,6 +413,17 @@ namespace KiCData.Migrations
                     b.HasIndex("PresenterId");
 
                     b.ToTable("Presentation");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2222,
+                            Description = "This is a test presentation.",
+                            EventId = 1111,
+                            ImgPath = "/wwwroot/Presentations/image01.jpg",
+                            Name = "Test Presentation",
+                            PresenterId = 1234
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.Presenter", b =>
@@ -385,6 +459,18 @@ namespace KiCData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Presenter");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1234,
+                            Bio = "This is a test presenter.",
+                            Details = "Test Details",
+                            Fee = 100.00m,
+                            LastAttended = new DateOnly(2021, 1, 1),
+                            PublicName = "Test Presenter",
+                            Requests = "Test Requests"
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.Staff", b =>
@@ -445,6 +531,30 @@ namespace KiCData.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("Ticket");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1234,
+                            DatePurchased = new DateOnly(2021, 1, 1),
+                            EndDate = new DateOnly(2021, 1, 2),
+                            EventId = 1111,
+                            IsComped = false,
+                            Price = 10.0,
+                            StartDate = new DateOnly(2021, 1, 1),
+                            Type = "Test Ticket"
+                        },
+                        new
+                        {
+                            Id = 12354,
+                            DatePurchased = new DateOnly(2021, 1, 1),
+                            EndDate = new DateOnly(2021, 1, 2),
+                            EventId = 1111,
+                            IsComped = false,
+                            Price = 10.0,
+                            StartDate = new DateOnly(2021, 1, 1),
+                            Type = "Test Ticket"
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.TicketComp", b =>
@@ -507,6 +617,15 @@ namespace KiCData.Migrations
                         .IsUnique();
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            MemberId = 7725,
+                            Password = "password",
+                            Username = "admin"
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.Vendor", b =>
@@ -546,6 +665,20 @@ namespace KiCData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vendor");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1128,
+                            Bio = "This is a test vendor.",
+                            ImgPath = "/wwwroot/images/Vendors/image01.jpg",
+                            LastAttended = new DateOnly(2021, 1, 1),
+                            MerchType = "Test Merch",
+                            PriceAvg = 5.00m,
+                            PriceMax = 10.00m,
+                            PriceMin = 1.00m,
+                            PublicName = "Test Vendor"
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.Venue", b =>
@@ -581,6 +714,17 @@ namespace KiCData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Venue");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 12345,
+                            Address = "123 Test St.",
+                            Capacity = 100,
+                            City = "Test City",
+                            Name = "Test Venue",
+                            State = "TS"
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.Volunteer", b =>
@@ -606,6 +750,15 @@ namespace KiCData.Migrations
                         .IsUnique();
 
                     b.ToTable("Volunteer");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1234,
+                            Details = "Test Details",
+                            MemberId = 7725,
+                            Positions = "[\"Test Position\"]"
+                        });
                 });
 
             modelBuilder.Entity("KiCData.Models.WaitList", b =>
