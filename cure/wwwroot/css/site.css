@@ -24,7 +24,8 @@ html {
 }
 
 img.flat-btn,
-img.flat-btn-blocked {
+img.flat-btn-blocked,
+img.responsive {
     height: auto;
     max-width: 100%;
 }
