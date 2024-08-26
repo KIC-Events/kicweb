@@ -4,6 +4,7 @@ using KiCData.Models.WebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
+
 namespace cure.Controllers
 {
     public class HomeController : Controller
