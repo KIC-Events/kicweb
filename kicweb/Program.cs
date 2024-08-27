@@ -16,10 +16,7 @@ else if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Develop
 {
 	configBuilder.AddJsonFile("appsettings.Development.json");
 }
-else
-{
-	configBuilder.AddJsonFile("appsettings.Debug.json");
-}
+else { throw new Exception("Bad environment variable."); }
 IConfigurationRoot config = configBuilder.Build();
 
 // Add services to the container.
@@ -50,11 +47,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseStatusCodePages();
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");

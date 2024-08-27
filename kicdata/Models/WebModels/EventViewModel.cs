@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,11 +16,11 @@ namespace KiCData.Models.WebModels
         
         [Required(ErrorMessage = "Please provide a start date for this event.")]
         [Display(Name = "Start Date")]
-        public DateTime? StartDate { get; set; }
+        public DateOnly? StartDate { get; set; }
         
         [Required(ErrorMessage = "Please provide an end date for this event.")]
         [Display(Name = "End Date")]
-        public DateTime? EndDate { get; set; }
+        public DateOnly? EndDate { get; set; }
         
         [Required(ErrorMessage = "Please provide a topic for this event.")]
         [Display(Name = "Topic")]
@@ -34,10 +35,10 @@ namespace KiCData.Models.WebModels
         public int? VenueId { get; set; }
 
         //Lists all venues for the user to select from
-        public List<Venue>? Venues { get; set; }
+        public List<SelectListItem>? Venues { get; set; }
 
 
-        public EventViewModel(string name, DateTime startDate, DateTime endDate, string topic, string description, int venueId)
+        public EventViewModel(string name, DateOnly startDate, DateOnly endDate, string topic, string description, int venueId)
         {
             Name = name;
             StartDate = startDate;
@@ -57,12 +58,12 @@ namespace KiCData.Models.WebModels
         [Required(ErrorMessage ="Please Select the event.")]
         [Display(Name ="Event")]
         public int? EventId { get; set; }
-        public List<Event>? Events { get; set; }
+        public IEnumerable<Event>? Events { get; set; }
 
         [Required(ErrorMessage ="Please Select the vendor.")]
         [Display(Name ="Vendor")]
         public int? VendorId { get; set; }
-        public List<Vendor>? Vendors { get; set; }
+        public IEnumerable<Vendor>? Vendors { get; set; }
 
         public bool IsPaid { get; set; } = false;
 
@@ -72,19 +73,24 @@ namespace KiCData.Models.WebModels
 
     public class EventVolunteerViewModel
     {
-        [Required(ErrorMessage = "Please Select the event.")]
+        [Required]
         [Display(Name = "Event")]
         public int? EventId { get; set; }
-        public List<Event>? Events { get; set; }
-
-        [Required(ErrorMessage = "Please Select the volunteer.")]
+        public string? EventName { get; set; }
+        [Required]
         [Display(Name = "Volunteer")]
         public int? VolunteerId { get; set; }
-        public List<Volunteer>? Volunteers { get; set; }
-
-        public int? ShiftNumber { get; set; }
-
-        public string? Position { get; set; }
+        public string? VolunteerName { get; set; }
+        [Required]
+        [Display(Name = "Position", Prompt = "Select the position for our Volunteer")]
+        public string Position { get; set; }
+        [Required]
+        [Display(Name = "Shift Start", Prompt = "Select the start of shift for our Volunteer")]
+        public DateTime ShiftStart { get; set; }
+        [Required]
+        [Display(Name ="Shift End", Prompt = "Select the end of shift for our Volunteer")]
+        public DateTime ShiftEnd { get; set; }
+        public List<SelectListItem> Positions { get; set; }
     }
 
 }

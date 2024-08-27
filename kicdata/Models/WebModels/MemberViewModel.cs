@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KiCData.Models;
 
 namespace KiCData.Models.WebModels
 {
@@ -24,7 +25,7 @@ namespace KiCData.Models.WebModels
 
         [Required(ErrorMessage = "Please enter your birthday")]
         [Display(Name = "Date of Birth")]
-        public DateTime? DateOfBirth { get; set; }
+        public DateOnly? DateOfBirth { get; set; }
 
         [Display(Name = "Fetlife Profile Name", Prompt = "Enter your fetlife profile name, if available")]
         public string? FetName { get; set; }
@@ -39,5 +40,39 @@ namespace KiCData.Models.WebModels
         public string? AdditionalInfo { get; set; }
 
 
+    }
+
+    public class RegistrationViewModel : AttendeeViewModel
+    {
+        [Required]
+        [Display(Name = "Ticket Level")]
+        public string? TicketType { get; set; }
+
+        [Display(Name = "Room Type (This does not guarentee the selected room type will be available, but indicates preference.")]
+        public string? RoomType { get; set; }
+
+        [Required]
+        [Display(Name = "Check this if you would like to reserve a room at the host hotel.")]
+        public bool? isStaying { get; set; }
+    }
+
+    public class PeopleViewModel
+    {
+        public List<KiCData.Models.Member> members { get; set; }
+        public List<Volunteer> volunteers { get; set; }
+        public List<PendingVolunteer> pendingVolunteers { get; set; }
+        public List<Vendor> vendors { get; set; }
+        public List<Staff> staff { get; set; }
+        public List<Presenter> presenters { get; set; }
+
+        public PeopleViewModel(List<KiCData.Models.Member> members, List<Volunteer> volunteers, List<PendingVolunteer> pendingVolunteers, List<Vendor> vendors, List<Staff> staff, List<Presenter> presenters)
+        {
+            this.members = members;
+            this.volunteers = volunteers;
+            this.pendingVolunteers = pendingVolunteers;
+            this.vendors = vendors;
+            this.staff = staff;
+            this.presenters = presenters;
+        }
     }
 }

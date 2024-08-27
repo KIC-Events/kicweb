@@ -10,11 +10,6 @@ namespace KiCData.Models
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? Id { get; set; }
 
-        //public Guid? MemberId { get; set; }
-        //int for testing purposes only
-        public int? MemberId { get; set; }
-        public virtual Member Member { get; set; }
-
 
         [Required]
         [Display(Name = @"The name we should use for you or your business in promotional materials.")]
@@ -30,6 +25,8 @@ namespace KiCData.Models
         public decimal? Fee { get; set; }
         public string? Details { get; set; }
         public string? ImgPath { get; set; }
+
+        public ICollection<Member> Members { get; set; } = new List<Member>();
 
     }
 }

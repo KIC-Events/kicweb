@@ -14,7 +14,7 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Badge Name")]
         public string? BadgeName { get; set; }
 
-        public AttendeeViewModel(string firstname, string lastname, string email, DateTime dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, string badgename)
+        public AttendeeViewModel(string firstname, string lastname, string email, DateOnly dateofbirth, string fetname, int clubid, string phonenumber, string additionalinfo, string badgename)
         {
             FirstName = firstname;
             LastName = lastname;
@@ -31,5 +31,22 @@ namespace KiCData.Models.WebModels
         {
             
         }
+
+
+    }
+
+    public class ConfirmationViewModel
+    {
+        [Display(Name ="First Name")]
+        public string? FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string? LastName { get; set; }
+
+        [Display(Name = "Date of Birth")]
+        public DateOnly DateofBirth { get; set; }
+
+        [Display(Name = "Badge Name")]
+        public string? BadgeName { get; set; }
     }
 }

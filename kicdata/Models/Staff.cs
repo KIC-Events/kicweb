@@ -21,4 +21,7 @@ namespace KiCData.Models
         [Required]
         public string? Position { get; set; }
     }
+
+    
+    
 }

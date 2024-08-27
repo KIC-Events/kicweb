@@ -24,5 +24,9 @@ namespace KiCData.Models
         [Required]
         public string? Password { get; set; }
 
+        public virtual ICollection<Group>? Groups { get; set; }
+
+        public string? Token { get; set; }
+
     }
 }

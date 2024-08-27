@@ -11,7 +11,7 @@
                 <h5>We are Kinky In Columbus</h5>
                 <hr />
                 <p>Kinky In Columbus is your home for sex positive kink parties and events in Columbus, Ohio.</p>
-                <p>We host monthly parties that combine education and fetish fun with a focus on community building. We also host weekend long intesives, New To Kink classes and munches, and showcase area vendors.</p>
+                <p>We host monthly parties that combine education and fetish fun with a focus on community building. We also host weekend long intensives, New To Kink classes and munches, and showcase area vendors.</p>
                 <p>We believe strongly in building and maintaining a safe, informed, and healthy community. We are inclusive of all identities and lifestyles, and consent is the basis for everything we do. We offer education on a variety of topics, and offer experiential demonstrations of corporal play, electric play, and fire play.</p>
                 <p>Learn about who we are and what we do on our <a asp-area="" asp-controller="Home" asp-action="About">About</a> page.</p>
                 <p>Learn how to attend our events and purchase tickets <a asp-area="" asp-controller="Payment" asp-action="Purchase">here.</a></p>
@@ -38,7 +38,21 @@
                 <h5>Upcoming Events</h5>
                 <br />
             </div>
-            <div class="container row" style="align-items:center; padding-left: 10%;">
+            <div class="container row" style="align-items:center; padding-left:10%;">
+                @foreach (Event e in ViewBag.Events)
+                {
+                    <div class="container col-sm-4">
+                        <div class="ad-card">
+                            <img src=@e.ImagePath alt=@e.Name onerror="this.style.display='none'" style="width:100%;" />
+                            <div style="padding:20px;">
+                                <p class="ad-card">@e.Name</p>
+                                <a target="_blank" href=@e.Link class="ad-card">Check It Out</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @*<div class="container row" style="align-items:center; padding-left: 10%;">
                 <div class="container col-sm-4">
                     <div class="ad-card">
                         <img src="~/css/images/august-party.png" alt="KIC August Party" onerror="this.style.display='none'" style="width: 100%;">
@@ -84,7 +98,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
     <br />
