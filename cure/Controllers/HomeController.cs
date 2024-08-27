@@ -62,8 +62,8 @@ namespace cure.Controllers
         {
             try
             {
-                ViewBag.SilverCount = _paymentService.CheckInventory("Silver");
-                ViewBag.GoldCount = _paymentService.CheckInventory("Gold");
+                ViewBag.SilverCount = _paymentService.CheckInventory("CURE Event Ticket", "Silver");
+                ViewBag.GoldCount = _paymentService.CheckInventory("CURE Event Ticket", "Gold");
             }
             catch (Exception ex)
             {
