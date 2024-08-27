@@ -1,9 +1,10 @@
-using cure.Models;
 using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using cure.Models;
+using Cure.Models;
 
 
 namespace cure.Controllers
@@ -12,19 +13,38 @@ namespace cure.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IPaymentService _paymentService;
+        private readonly IConfigurationRoot _config;
 
-        public HomeController(ILogger<HomeController> logger, IPaymentService paymentService)
+        public HomeController(ILogger<HomeController> logger, IPaymentService paymentService, IConfigurationRoot configuration)
         {
             _logger = logger;
             _paymentService = paymentService;
+            _config = configuration;
         }
 
         [Route("~/")]
         [Route("~/Home")]
         [Route("~/Home/Index")]
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            BetaViewModel bvm = new BetaViewModel();
+            return View(bvm);
+        }
+
+        [HttpPost]
+        public IActionResult Index(BetaViewModel bvmUpdated)
+        {
+            if(bvmUpdated.BetaCode == _config["AppData:Beta_Code"])
+            {
+                ViewBag.Beta = true;
+            }
+            else
+            {
+                ViewBag.Beta = false;
+            }
+
+            return View(bvmUpdated);
         }
 
         public IActionResult ComingSoon()
