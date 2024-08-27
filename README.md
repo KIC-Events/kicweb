@@ -26,5 +26,5 @@
 
 ### Server info
 #### Web server 66.228.34.152
-#### Prod site *.kicevents.com
-#### Dev site dev.kicevents.com
+#### Prod site *.kicevents.com, cure.kicevents.com
+#### Dev site dev.kicevents.com, dev.cure.kicevents.com
