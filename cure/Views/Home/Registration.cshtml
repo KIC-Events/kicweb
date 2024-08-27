@@ -17,8 +17,13 @@
             <img src="~/css/images/ticket-3.png" alt="Ticket types" class="responsive" />
         </div>
     </div>
-    <div class="container row">
-        
+    @if(ViewBag.SilverCount >= 0 || ViewBag.GoldCount >= 0)
+    {
+        <hr />
+        <p>Gold tickets: @ViewBag.GoldCount.ToString()</p>
+        <p>Silver tickets: @ViewBag.SilverCount.ToString()</p>
+    }
+    <div class="container row">        
         <div class="form-fillable">
             @using (Html.BeginForm())
             {
@@ -61,7 +66,6 @@
                     </div>
                 </div>
             }
-        </div>
-        
+        </div>        
     </div>
 </div>

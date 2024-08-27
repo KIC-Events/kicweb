@@ -60,8 +60,17 @@ namespace cure.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
-            ViewBag.SilverCount = _paymentService.CheckInventory("Silver");
-            ViewBag.GoldCount = _paymentService.CheckInventory("GOLD");
+            try
+            {
+                ViewBag.SilverCount = _paymentService.CheckInventory("Silver");
+                ViewBag.GoldCount = _paymentService.CheckInventory("Gold");
+            }
+            catch (Exception ex)
+            {
+                return Redirect("Error");
+                //TODO Log exception
+            }
+            
             RegistrationViewModel reg = new RegistrationViewModel();
             return View(reg);
         }

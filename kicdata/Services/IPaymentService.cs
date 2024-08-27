@@ -8,6 +8,6 @@ namespace KiCData.Services
 {
     public interface IPaymentService
     {
-        public int CheckInventory(string objectSearchTerm);
+        public int CheckInventory(string objectSearchTerm, string variationSearchTerm);
     }
 }

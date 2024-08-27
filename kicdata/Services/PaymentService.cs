@@ -32,13 +32,21 @@ namespace KiCData.Services
                 .Build();
         }
 
-        public int CheckInventory(string objectSearchTerm)
+        public int CheckInventory(string objectSearchTerm, string variationSearchTerm)
         {
-            int response = checkInventory(objectSearchTerm);
-            return response;
+            try
+            {
+                int response = checkInventory(objectSearchTerm, variationSearchTerm);
+                return response;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            
         }
 
-        private int checkInventory(string objectSearchTerm)
+        private int checkInventory(string objectSearchTerm, string variationSearchTerm)
         {
             ListCatalogResponse catResponse = _client.CatalogApi.ListCatalog();
             CatalogObject obj = catResponse.Objects
@@ -50,16 +58,21 @@ namespace KiCData.Services
                 throw new Exception("Object not found.");
             }
 
-            RetrieveInventoryCountResponse countResponse = _client.InventoryApi.RetrieveInventoryCount(obj.Id);
+            string varId = obj.ItemData.Variations
+                .Where(v => v.ItemVariationData.Name.Contains(variationSearchTerm))
+                .FirstOrDefault()
+                .Id;
 
-            if (countResponse == null)
+            RetrieveInventoryCountResponse countResponse = _client.InventoryApi.RetrieveInventoryCount(varId);
+
+            if (countResponse.Counts == null)
             {
-                throw new Exception("No count for " + objectSearchTerm + " found.");
+                throw new Exception("No count for " + variationSearchTerm + " found.");
             }
 
             if(countResponse.Counts.Count > 1)
             {
-                throw new Exception("Found multiple counts for " + objectSearchTerm + ".");
+                throw new Exception("Found multiple counts for " + variationSearchTerm + ".");
             }
 
             InventoryCount count = countResponse.Counts.FirstOrDefault();
