@@ -77,3 +77,11 @@ _[Ss]cripts
 /Publish/Prod/appsettings.json
 /Publish/Prod/appsettings.*.json
 /kicweb/appsettings.Debug.json
+/Publish/CureDev/appsettings.json
+/Publish/CureDev/appsettings.Development.json
+/Publish/CureDev/appsettings.Production.json
+/Publish/CureProd/appsettings.json
+/Publish/CureProd/appsettings.Development.json
+/Publish/CureProd/appsettings.Production.json
+/Publish/*/appsettings.json
+/Publish/*/appsettings.*.json
