@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/Prod_Version-0.1.3-green)  
+![Static Badge](https://img.shields.io/badge/Prod_Version-0.1.4-green)  
 ![Static Badge](https://img.shields.io/badge/Dev_Version-0.1.4-yellow)  
 ![Static Badge](https://img.shields.io/badge/PreRelease_Version-1.0.0.dev.0.1.4-blue)  
 
@@ -22,9 +22,8 @@
 
 ### App config
 #### This webapp requires config files not included in this repo to protect sensitive account information. There is a copy in the codespace secrets of this project. To obtain these files contact Malechus at [malechus@fangandclaw.org.](mailto:malechus@fangandclaw.org)  
-#### To manually creat DB connections with this code, you must first create an environment variable of ASPNETCORE_ENVIRONMENT=Debug
 
 ### Server info
 #### Web server 66.228.34.152
-#### Prod site *.kicevents.com
-#### Dev site dev.kicevents.com
+#### Prod site *.kicevents.com, cure.kicevents.com
+#### Dev site dev.kicevents.com, dev.cure.kicevents.com

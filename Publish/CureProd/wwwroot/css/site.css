@@ -23,6 +23,12 @@ html {
     border-color: antiquewhite;
 }
 
+img.flat-btn,
+img.flat-btn-blocked {
+    height: auto;
+    max-width: 100%;
+}
+
 .button-box {
     padding: 5px 5px 5px 5px;
 }
