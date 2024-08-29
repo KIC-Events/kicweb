@@ -2,6 +2,7 @@ using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using cure.Models;
 using Cure.Models;
@@ -80,10 +81,12 @@ namespace cure.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
+            int goldCount = 0;
+            int silverCount = 0;
             try
             {
-                ViewBag.SilverCount = _paymentService.CheckInventory("CURE Event Ticket", "Silver");
-                ViewBag.GoldCount = _paymentService.CheckInventory("CURE Event Ticket", "Gold");
+                silverCount = _paymentService.CheckInventory("CURE Event Ticket", "Silver");
+                goldCount = _paymentService.CheckInventory("CURE Event Ticket", "Gold");
             }
             catch (Exception ex)
             {
@@ -92,6 +95,19 @@ namespace cure.Controllers
             }
             
             RegistrationViewModel reg = new RegistrationViewModel();
+            reg.TicketTypes = new List<SelectListItem>();
+            reg.TicketTypes.Add(new SelectListItem("Gold - " + goldCount.ToString() + " Remaining", "Gold"));
+            reg.TicketTypes.Add(new SelectListItem("Silver- " + silverCount.ToString() + " Remaining", "Silver"));
+            reg.TicketTypes.Add(new SelectListItem("Early Pricing - Standard", "Standard"));
+            reg.RoomTypes = new List<SelectListItem>();
+            reg.RoomTypes.Add(new SelectListItem("One King", "One King"));
+            reg.RoomTypes.Add(new SelectListItem("Two Doubles", "Two Doubles"));
+            reg.RoomTypes.Add(new SelectListItem("I will not be staying at the host hotel.", "I will not be staying at the host hotel."));
+            reg.VolunteerPositions = new List<VolunteerPositionSelection>();
+            reg.VolunteerPositions.Add(new VolunteerPositionSelection("DM"));
+            reg.VolunteerPositions.Add(new VolunteerPositionSelection("Hallway Monitor"));
+            reg.VolunteerPositions.Add(new VolunteerPositionSelection("Registration"));
+            reg.VolunteerPositions.Add(new VolunteerPositionSelection("I do not wish to volunteer."));
             return View(reg);
         }
 
