@@ -15,6 +15,7 @@ namespace Scripts
 
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1. Send emails from an excel sheet.");
+            Console.WriteLine("2. Create comps from excel sheet.");
             Console.WriteLine("100. Exit.");
             string response = Console.ReadLine();
 
