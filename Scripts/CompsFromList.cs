@@ -10,7 +10,7 @@ namespace Scripts
 {
     public class CompsFromList
     {
-        private List<TicketComp> comps;
+        private List<TicketComp> comps = new List<TicketComp>();
 
         public CompsFromList(string filePath)
         {
@@ -28,9 +28,23 @@ namespace Scripts
                 string status = row.Columns[4].ToString();
                 string compReason = row.Columns[5].ToString();
 
+                Console.WriteLine("Processing " + fName + " " + lName);
+
+                Console.WriteLine("Creating ticket comp.");
                 TicketComp comp = new TicketComp();
                 if(status == "Comp Code")
                 {
+                    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    var stringChars = new char[15];
+                    var random = new Random();
+
+                    for (int i = 0; i < stringChars.Length; i++)
+                    {
+                        stringChars[i] = chars[random.Next(chars.Length)];
+                    }
+
+                    comp.DiscountCode = new String(stringChars);
+
                     comp.CompPct = 100;
                     comp.Ticket = new Ticket()
                     {
@@ -44,12 +58,14 @@ namespace Scripts
                             isRegistered = true,
                             RoomWaitListed = true,
                             TicketWaitListed = true,
+                            BadgeName = "TBD",
                             Member = new Member()
                             {
                                 FirstName = fName,
                                 LastName = lName,
                                 Email = email,
-                                FetName = fetName
+                                FetName = fetName,
+                                DateOfBirth = new DateOnly(1900, 01, 01)
                             }
                         }
                     };
@@ -59,6 +75,22 @@ namespace Scripts
             }
         }
 
-
+        public void WriteToDB(KiCdbContext kiCdbContext)
+        {
+            Console.WriteLine("Saving comps to database");
+            foreach(TicketComp comp in comps)
+            {
+                Console.WriteLine("Creating records for " + comp.Ticket.Attendee.Member.LegalName);
+                Console.WriteLine("Creating member record.");
+                kiCdbContext.Members.Add(comp.Ticket.Attendee.Member);
+                Console.WriteLine("Creating attendee record.");
+                kiCdbContext.Attendees.Add(comp.Ticket.Attendee);
+                Console.WriteLine("Creating ticket record.");
+                kiCdbContext.Ticket.Add(comp.Ticket);
+                Console.WriteLine("Creating ticket comp.");
+                kiCdbContext.TicketComp.Add(comp);
+            }
+            kiCdbContext.SaveChanges();
+        }
     }
 }

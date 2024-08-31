@@ -10,12 +10,21 @@ namespace Scripts
         static void Main(string[] args)
         {
             IConfigurationBuilder builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
+            if (Environment.GetEnvironmentVariable("AASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                builder.AddJsonFile("appsettings.Production.json");
+            }
+            else
+            {
+                builder.AddJsonFile("appsettings.Development.json");
+            }
             IConfigurationRoot configuration = builder.Build();
             IEmailService emailService = new EmailService(configuration, null, null);
 
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1. Send emails from an excel sheet.");
             Console.WriteLine("2. Create comps from excel sheet.");
+            Console.WriteLine("3. Invite to closed beta from excel sheet.");
             Console.WriteLine("100. Exit.");
             string response = Console.ReadLine();
 
@@ -23,6 +32,12 @@ namespace Scripts
             {
                 case "1":
                     SendEmailFromList(configuration, emailService);
+                    break;
+                case "2":
+                    CreateCompsFromList(configuration);
+                    break;
+                case "3":
+                    InviteToBeta(configuration);
                     break;
                 case "100":
                     Console.WriteLine("Goodbye.");
@@ -53,23 +68,45 @@ namespace Scripts
                 Console.WriteLine("That didn't work. Try again.");
                 return;
             }
-            Console.WriteLine("Please enter the reason for the discount.");
-            string reason = Console.ReadLine();
-            Console.WriteLine("Please enter the discount amount (in the form of dd.cc):");
-            string amt = Console.ReadLine();
-            double compAmount = double.Parse(amt);
             EmailFromList emailFromList = new EmailFromList(fPath);
             Console.WriteLine("connecting to DB...");
-            DbContextOptionsBuilder builder = new DbContextOptionsBuilder();
+            DbContextOptionsBuilder<KiCdbContext> builder = new DbContextOptionsBuilder<KiCdbContext>();
             builder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
-            DbContextOptions<KiCdbContext> options = (DbContextOptions<KiCdbContext>)builder.Options;
-            KiCdbContext context = new KiCdbContext(options);
-            emailFromList.GetCompCodes(context, reason, compAmount);
-            emailFromList.BuildEmails(compAmount);
+            KiCdbContext context = new KiCdbContext(builder.Options);
+            emailFromList.GetCompCodes(context);
+            emailFromList.BuildEmails();
             emailFromList.SendEmails(emailService);
             Console.WriteLine("Press any key to continue.");
             Console.ReadLine();
             return;
+        }
+
+        private static void CreateCompsFromList(IConfigurationRoot configuration)
+        {
+            Console.WriteLine("You have chosen to send an email batch from an excel file. If this is incorrect, exit the program and start over.");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Please enter the full path to the file.");
+            string fPath = Console.ReadLine();
+            Console.WriteLine("Setting up...");
+            if (!File.Exists(fPath))
+            {
+                Console.WriteLine("That didn't work. Try again.");
+                return;
+            }
+            DbContextOptionsBuilder<KiCdbContext> builder = new DbContextOptionsBuilder<KiCdbContext>();
+            builder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
+            //DbContextOptions<KiCdbContext> options = (DbContextOptions<KiCdbContext>)builder.Options;
+            KiCdbContext context = new KiCdbContext(builder.Options);
+            CompsFromList compsFromList = new CompsFromList(fPath);
+            compsFromList.WriteToDB(context);
+            Console.WriteLine("Complete");
+            return;
+        }
+
+        private static void InviteToBeta(IConfigurationRoot configuration)
+        {
+
         }
     }
 }

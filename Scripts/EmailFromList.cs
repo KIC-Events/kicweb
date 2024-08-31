@@ -8,6 +8,7 @@ using KiCData.Services;
 using IronXL;
 using System.Net;
 using KiCData.Models.WebModels;
+using MimeKit.Encodings;
 
 namespace Scripts
 {
@@ -37,34 +38,35 @@ namespace Scripts
             }
         }
 
-        public void GetCompCodes(KiCdbContext context, string compReason, double compAmount)
+        public void GetCompCodes(KiCdbContext context)
         {
-            Console.WriteLine("Generating Comp Codes...");
-            int i = 0;
+            Console.WriteLine("Retrieving Comp Codes...");
             foreach(Mailer mailer in mailers)
             {
-                Console.WriteLine("Generating Comp Code for " + mailer.FirstName +  " " + mailer.LastName);
-                string compCode = "KICVOL2025-" + i.ToString();
+                Console.WriteLine("Retrieving Comp Code for " + mailer.FirstName +  " " + mailer.LastName);
+                Member member = context.Members
+                    .Where(m => m.FirstName == mailer.FirstName && m.LastName == mailer.LastName)
+                    .FirstOrDefault();
+                Attendee attendee = context.Attendees
+                    .Where(a => a.MemberId == member.Id)
+                    .FirstOrDefault();
+                Ticket ticket = context.Ticket
+                    .Where(t => t.Id == attendee.TicketId)
+                    .FirstOrDefault();
+                TicketComp? comp = context.TicketComp
+                    .Where(c => c.TicketId == ticket.Id)
+                    .FirstOrDefault();
+                string compCode;
+                if (comp is not null) { compCode = comp.DiscountCode; }
+                else { throw new KeyNotFoundException(); }
                 Console.WriteLine("Comp Code is " + compCode);
 
                 mailer.CompCode = compCode;
-
-                TicketComp ticketComp = new TicketComp()
-                {
-                    DiscountCode = compCode,
-                    CompReason = compReason,
-                    AuthorizingUser = "System",
-                    CompAmount = (int)compAmount
-                };
-
-                Console.WriteLine("Adding comp to database...");
-                context.TicketComp.Add(ticketComp);
-                context.SaveChanges();
             }
-            Console.WriteLine("Comp Code Generation Complete....");
+            Console.WriteLine("Comp Code Retrieval Complete....");
         }
 
-        public void BuildEmails(double compAmount)
+        public void BuildEmails()
         {
             Console.WriteLine("Generating email messages.");
             foreach(Mailer mailer in mailers)
@@ -77,7 +79,7 @@ namespace Scripts
                 formMessage.HtmlBuilder.Append(
                         "<h3>A special discount code has been generated for you!</h3>" 
                         + "<h4><b>" + mailer.CompCode + "</b></h4>" 
-                        + "<p>This code will get you $" + compAmount + " off your ticket purchase for CURE 2025.</p>"
+                        + "<p>This code will get you 100% off your ticket purchase for CURE 2025.</p>"
                         + "<p>We wanted to thank you for your help in building our community.</p>" 
                         + "<p>We look forward to seeing you at CURE!</p>"
                     );
