@@ -5,6 +5,7 @@ using Square.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -80,6 +81,47 @@ namespace KiCData.Services
             int response = int.Parse(count.Quantity);
 
             return response;
+        }
+
+        public string CreatePaymentLink()
+        {
+            string paymentLink = createPaymentLink();
+
+            return paymentLink;
+        }
+
+        private string createPaymentLink()
+        {
+            var catalog = _client.CatalogApi.ListCatalog();
+            var catObj = catalog.Objects
+                .Where(o => o.ItemData.Name.Contains("CURE"))
+                .FirstOrDefault();
+            string id = catObj.Id;
+
+            Order order = new Order.Builder("temp")
+                .LineItems(new List<OrderLineItem>
+                {
+                    new OrderLineItem.Builder("1")
+                    .CatalogObjectId(id)
+                    .Build()
+                })
+                .Build();
+            CreateOrderRequest orderRequest = new CreateOrderRequest.Builder()
+                .IdempotencyKey(Guid.NewGuid().ToString())
+                .Order(order)
+                .Build();
+
+            var orderResponse = _client.OrdersApi.CreateOrder(orderRequest).Order;
+
+            CreatePaymentLinkRequest paymentRequest = new CreatePaymentLinkRequest.Builder()
+                .Order(order)
+                .Build();
+
+            CreatePaymentLinkResponse response = _client.CheckoutApi.CreatePaymentLink(paymentRequest);
+
+            string paymentLink;
+
+            return paymentLink;
         }
     }
 }

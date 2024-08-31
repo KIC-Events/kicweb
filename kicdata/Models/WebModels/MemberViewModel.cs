@@ -62,9 +62,6 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Check this if you would like to reserve a room at the host hotel.")]
         public bool IsStaying = false;
 
-        [Display(Name = "Choose the positions for which you would like to volunteer.")]
-        public List<VolunteerPositionSelection>? VolunteerPositions { get; set; }
-
         [Required]
         [Display(Name = "Check here if you are interested in volunteering at the event.")]
         public bool WillVolunteer = false;

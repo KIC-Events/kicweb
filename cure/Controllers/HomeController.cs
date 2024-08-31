@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using cure.Models;
 using Cure.Models;
+using Square;
 
 
 namespace cure.Controllers
@@ -103,11 +104,6 @@ namespace cure.Controllers
             reg.RoomTypes.Add(new SelectListItem("One King", "One King"));
             reg.RoomTypes.Add(new SelectListItem("Two Doubles", "Two Doubles"));
             reg.RoomTypes.Add(new SelectListItem("I will not be staying at the host hotel.", "I will not be staying at the host hotel."));
-            reg.VolunteerPositions = new List<VolunteerPositionSelection>();
-            reg.VolunteerPositions.Add(new VolunteerPositionSelection("DM"));
-            reg.VolunteerPositions.Add(new VolunteerPositionSelection("Hallway Monitor"));
-            reg.VolunteerPositions.Add(new VolunteerPositionSelection("Registration"));
-            reg.VolunteerPositions.Add(new VolunteerPositionSelection("I do not wish to volunteer."));
             return View(reg);
         }
 
@@ -120,7 +116,9 @@ namespace cure.Controllers
                 return View(regUpdated);
             }
 
-            return Redirect("Success");
+            SquareClient squareClient = SquareClient.Builder.
+
+            return Redirect("Payment");
         }
 
         public IActionResult Privacy()
