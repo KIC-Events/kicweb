@@ -1,6 +1,6 @@
 ![Static Badge](https://img.shields.io/badge/Prod_Version-0.1.4-green)  
-![Static Badge](https://img.shields.io/badge/Dev_Version-0.1.4-yellow)  
-![Static Badge](https://img.shields.io/badge/PreRelease_Version-1.0.0.dev.0.1.4-blue)  
+![Static Badge](https://img.shields.io/badge/Dev_Version-0.1.5-yellow)  
+![Static Badge](https://img.shields.io/badge/PreRelease_Version-1.0.0.dev.0.1.5-blue)  
 
 
 
