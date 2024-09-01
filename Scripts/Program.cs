@@ -37,7 +37,7 @@ namespace Scripts
                     CreateCompsFromList(configuration);
                     break;
                 case "3":
-                    InviteToBeta(configuration);
+                    InviteToBeta(configuration, emailService);
                     break;
                 case "100":
                     Console.WriteLine("Goodbye.");
@@ -104,9 +104,26 @@ namespace Scripts
             return;
         }
 
-        private static void InviteToBeta(IConfigurationRoot configuration)
+        private static void InviteToBeta(IConfigurationRoot configuration, IEmailService emailService)
         {
-
+            Console.WriteLine("You have chosen to send an email beta invite from an excel file. If this is incorrect, exit the program and start over.");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Please enter the full path to the file.");
+            string fPath = Console.ReadLine();
+            Console.WriteLine("Setting up...");
+            if (!File.Exists(fPath))
+            {
+                Console.WriteLine("That didn't work. Try again.");
+                return;
+            }
+            DbContextOptionsBuilder<KiCdbContext> builder = new DbContextOptionsBuilder<KiCdbContext>();
+            builder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
+            //DbContextOptions<KiCdbContext> options = (DbContextOptions<KiCdbContext>)builder.Options;
+            KiCdbContext context = new KiCdbContext(builder.Options);
+            BetaInviteFromList betaInviteFromList = new BetaInviteFromList(fPath);
+            betaInviteFromList.BuildEmails();
+            betaInviteFromList.SendEmails(emailService);
         }
     }
 }

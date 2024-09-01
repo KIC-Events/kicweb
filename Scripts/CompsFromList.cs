@@ -32,7 +32,7 @@ namespace Scripts
 
                 Console.WriteLine("Creating ticket comp.");
                 TicketComp comp = new TicketComp();
-                if(status == "Comp Code")
+                if(status == "Attendee")
                 {
                     var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
                     var stringChars = new char[15];
@@ -45,7 +45,7 @@ namespace Scripts
 
                     comp.DiscountCode = new String(stringChars);
 
-                    comp.CompPct = 100;
+                    comp.CompAmount = 25;
                     comp.Ticket = new Ticket()
                     {
                         EventId = 1112,
@@ -55,7 +55,7 @@ namespace Scripts
                         Attendee = new Attendee()
                         {
                             IsPaid = false,
-                            isRegistered = true,
+                            isRegistered = false,
                             RoomWaitListed = true,
                             TicketWaitListed = true,
                             BadgeName = "TBD",

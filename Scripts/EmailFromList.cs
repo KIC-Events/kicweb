@@ -30,6 +30,8 @@ namespace Scripts
 
                 Mailer mailer = new Mailer(fName, lName, email);
 
+                if (email is null) { break; }
+
                 if (email.Contains('@'))
                 {
                     Console.WriteLine("Adding record for " + fName + " " + lName);
@@ -62,6 +64,7 @@ namespace Scripts
                 Console.WriteLine("Comp Code is " + compCode);
 
                 mailer.CompCode = compCode;
+                mailer.CompAmt = comp.CompAmount;
             }
             Console.WriteLine("Comp Code Retrieval Complete....");
         }
@@ -79,8 +82,8 @@ namespace Scripts
                 formMessage.HtmlBuilder.Append(
                         "<h3>A special discount code has been generated for you!</h3>" 
                         + "<h4><b>" + mailer.CompCode + "</b></h4>" 
-                        + "<p>This code will get you 100% off your ticket purchase for CURE 2025.</p>"
-                        + "<p>We wanted to thank you for your help in building our community.</p>" 
+                        + "<p>This code will get you $" + mailer.CompAmt.ToString() + " off your ticket purchase for CURE 2025.</p>"
+                        + "<p>You are receiving this code early, please hold onto it, and more information will follow.</p>" 
                         + "<p>We look forward to seeing you at CURE!</p>"
                     );
 
@@ -107,6 +110,7 @@ namespace Scripts
         public string LastName { get; private set; }
         public string Email { get; private set; }
         public string? CompCode { get; set; }
+        public double? CompAmt { get; set; }
         public FormMessage? FormMessage { get; set; }
 
         public Mailer(string firstName, string lastName, string email)
