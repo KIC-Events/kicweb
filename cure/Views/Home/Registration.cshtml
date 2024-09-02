@@ -4,6 +4,12 @@
     <div class="container row">
         <h2 class="main-title">Register for CURE</h2>
     </div>
+    @if(ViewBag.SoldOut == true)
+    {
+        <div class="container row">
+            <h2 class="main-title">SOLD OUT - All tickets have been sold, but you can still register and join the waitlist.</h2>
+        </div>
+    }
     <div class="container row">
         <h4 class="main-title">Ticket Types</h4>
         <p><b>There are several types of tickets available.</b></p>
@@ -17,81 +23,176 @@
             <img src="~/css/images/ticket-3.png" alt="Ticket types" class="responsive" />
         </div>
     </div>
-    <div class="container row">        
-        <div class="col-sm-6">
-            <div class="form-group">
-                <div class="form-group">
-                    <label asp-for="FirstName"></label>
-                    <input asp-for="FirstName" class="form-control" />
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="LastName"></label>
-                    <input asp-for="LastName" class="form-control" />
-                    <span asp-validation-for="LastName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="DateOfBirth"></label>
-                    <input asp-for="DateOfBirth" class="form-control" />
-                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="SexOnID"></label>
-                    <input asp-for="SexOnID" class="form-control" />
-                    <span asp-validation-for="SexOnID" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="FetName"></label>
-                    <input asp-for="FetName" class="form-control" />
-                    <span asp-validation-for="FetName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ClubId"></label>
-                    <input asp-for="ClubId" class="form-control" />
-                    <span asp-validation-for="ClubId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="PhoneNumber"></label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="BadgeName"></label>
-                    <input asp-for="BadgeName" class="form-control" />
-                    <span asp-validation-for="BadgeName" class="text-danger"></span>
-                </div>
+    <div class="container row">
+        <div class="container">
+            <h5 class="main-title">This form collects some personal information. This information is intended only for internal use and for performing actions related to event safety, namely background checks. The data collected here will be securely stored and never sold. We recognize that privacy is of paramount concern for an event of this type, and we will take all reasonable steps to secure and protect your data.</h5>
+        </div>
+        @if(ViewBag.Error is not null)
+        {
+            <div class="container">
+                <h4 class="text-danger">@ViewBag.Error</h4>
             </div>
+        }
+        <div style="height: 20px;"></div>
+        <div class="form-box">
+            <form>
+                <label asp-for="DiscountCode">If you have a discount code, enter it here:</label>
+                <input asp-for="DiscountCode" class="form-control" />
+            </form>
         </div>
         <div class="col-sm-6">
+            <div class="form-box">
+                <p>This information is used for the background check, and must match your identification exactly. Avoid nicknames, abbreviates, etc. This information will be checked against your ID at the time of the event.</p>
+                <form>
+                    <div class="form-group">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EmailConf"></label>
+                        <input asp-for="EmailConf" class="form-control" />
+                        <span asp-validation-for="EmailConf" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DateOfBirth"></label>
+                        <input asp-for="DateOfBirth" class="form-control" type="date" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SexOnID"></label>
+                        <input asp-for="SexOnID" class="form-control" />
+                        <span asp-validation-for="SexOnID" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="City"></label>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="State"></label>
+                        <select asp-for="State" class="form-control">
+                            <option value="" disabled selected>Select State</option>
+                            <option value="Alabama">Alabama</option>
+                            <option value="Alaska">Alaska</option>
+                            <option value="Arizona">Arizona</option>
+                            <option value="Arkansas">Arkansas</option>
+                            <option value="California">California</option>
+                            <option value="Colorado">Colorado</option>
+                            <option value="Connecticut">Connecticut</option>
+                            <option value="Delaware">Delaware</option>
+                            <option value="Florida">Florida</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Hawaii">Hawaii</option>
+                            <option value="Idaho">Idaho</option>
+                            <option value="Illinois">Illinois</option>
+                            <option value="Indiana">Indiana</option>
+                            <option value="Iowa">Iowa</option>
+                            <option value="Kansas">Kansas</option>
+                            <option value="Kentucky">Kentucky</option>
+                            <option value="Louisiana">Louisiana</option>
+                            <option value="Maine">Maine</option>
+                            <option value="Maryland">Maryland</option>
+                            <option value="Massachusetts">Massachusetts</option>
+                            <option value="Michigan">Michigan</option>
+                            <option value="Minnesota">Minnesota</option>
+                            <option value="Mississippi">Mississippi</option>
+                            <option value="Missouri">Missouri</option>
+                            <option value="Montana">Montana</option>
+                            <option value="Nebraska">Nebraska</option>
+                            <option value="Nevada">Nevada</option>
+                            <option value="New Hampshire">New Hampshire</option>
+                            <option value="New Jersey">New Jersey</option>
+                            <option value="New Mexico">New Mexico</option>
+                            <option value="New York">New York</option>
+                            <option value="North Carolina">North Carolina</option>
+                            <option value="North Dakota">North Dakota</option>
+                            <option value="Ohio">Ohio</option>
+                            <option value="Oklahoma">Oklahoma</option>
+                            <option value="Oregon">Oregon</option>
+                            <option value="Pennsylvania">Pennsylvania</option>
+                            <option value="Rhode Island">Rhode Island</option>
+                            <option value="South Carolina">South Carolina</option>
+                            <option value="South Dakota">South Dakota</option>
+                            <option value="Tennessee">Tennessee</option>
+                            <option value="Texas">Texas</option>
+                            <option value="Utah">Utah</option>
+                            <option value="Vermont">Vermont</option>
+                            <option value="Virginia">Virginia</option>
+                            <option value="Washington">Washington</option>
+                            <option value="West Virginia">West Virginia</option>
+                            <option value="Wisconsin">Wisconsin</option>
+                            <option value="Wyoming">Wyoming</option>
+                        </select>
+                    </div>
+                </form>
+            </div>            
+        </div>
+        <div class="col-sm-6">
+            <div class="form-box">
+                <form>
+                    <div class="form-group">
+                        <label asp-for="TicketType"></label>
+                        <select asp-for="TicketType" class="form-control" asp-items="@Model.TicketTypes">
+                            <option value="" disabled selected>Select Ticket Type</option>
+                        </select>
+                        <span asp-validation-for="TicketType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FetName"></label>
+                        <input asp-for="FetName" class="form-control" />
+                        <span asp-validation-for="FetName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ClubId"></label>
+                        <input asp-for="ClubId" class="form-control" />
+                        <span asp-validation-for="ClubId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BadgeName"></label>
+                        <input asp-for="BadgeName" class="form-control" />
+                        <span asp-validation-for="BadgeName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="roomTypeSelect">
+                        <label asp-for="RoomType"></label>
+                        <select asp-for="RoomType" class="form-control" asp-items="@Model.RoomTypes">
+                            <option value="" disabled selected>Select Room Type</option>
+                        </select>
+                        <span asp-validation-for="RoomType"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="WillVolunteer" type="checkbox">
+                        <label asp-for="WillVolunteer">Check here if you are interested in volunteering at the event.</label>
+                        </input>
+                        <span asp-validation-for="WillVolunteer"></span>
+                    </div>
+                    <div class="row" style="min-height: 30px;"></div>                    
+                </form>
+            </div>            
+        </div>  
+        <div class="form-box">
             <div class="form-group">
-                <div class="form-group">
-                    <label asp-for="TicketType"></label>
-                    <select asp-for="TicketType" class="form-control" asp-items="@Model.TicketTypes">
-                        <option value="">Select Ticket Type</option>
-                    </select>
-                    <span asp-validation-for="TicketType" class="text-danger"></span>
-                </div>
-                @*<div class="form-group">
-                    <label asp-for="IsStaying">Check this if you would like to eserve a /room at the host hotel.</label>
-                    <input asp-for="IsStaying" type="checkbox" id="isStayingBox" />
-                </div>*@
-                <div class="form-group" id="roomTypeSelect">
-                    <label asp-for="RoomType"></label>
-                    <select asp-for="RoomType" class="form-control" asp-items="@Model.RoomTypes">
-                        <option value="">Select Room Type</option>
-                    </select>
-                    <span asp-validation-for="RoomType"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="WillVolunteer"></label>
-                    <input asp-for="WillVolunteer" class="form-control" type="checkbox" />
-                    <span asp-validation-for="WillVolunteer"></span>
-                </div>
+                <input asp-for="CreateMore" type="checkbox">
+                <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout.</label>
+                </input>
+            </div>
+            <div class="form-group">
+                <button class="flat-btn" type="submit" value="Submit">Submit</button>
             </div>
         </div>
     </div>

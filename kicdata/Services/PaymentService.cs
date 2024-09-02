@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using KiCData.Models.WebModels;
+using Microsoft.Extensions.Configuration;
 using Square;
 using Square.Authentication;
 using Square.Models;
@@ -83,43 +84,95 @@ namespace KiCData.Services
             return response;
         }
 
-        public string CreatePaymentLink()
+        public string CreatePaymentLink(List<RegistrationViewModel> regList)
         {
-            string paymentLink = createPaymentLink();
+            string paymentLink = createPaymentLink(regList);
 
             return paymentLink;
         }
 
-        private string createPaymentLink()
+        private string createPaymentLink(List<RegistrationViewModel> regList)
         {
-            var catalog = _client.CatalogApi.ListCatalog();
-            var catObj = catalog.Objects
-                .Where(o => o.ItemData.Name.Contains("CURE"))
-                .FirstOrDefault();
-            string id = catObj.Id;
+            List<OrderLineItem> orderLineItems = new List<OrderLineItem>();
+            List<OrderLineItemDiscount> orderDiscounts = new List<OrderLineItemDiscount>();
 
-            Order order = new Order.Builder("temp")
-                .LineItems(new List<OrderLineItem>
+            var locations = _client.LocationsApi.ListLocations();
+            string locationID = locations.Locations.FirstOrDefault().Id;
+
+            foreach (RegistrationViewModel reg in regList)
+            {
+                ListCatalogResponse catalog = _client.CatalogApi.ListCatalog();
+                CatalogObject catObj = catalog.Objects
+                    .Where(o => o.ItemData.Name == "CURE Event Ticket")
+                    .FirstOrDefault();
+                string id = catObj.Id;
+                CatalogObject variation = catObj.ItemData.Variations.Where(v => v.ItemVariationData.Name == reg.TicketType).FirstOrDefault();
+                string varId = variation.Id;
+
+                var appliedDiscounts = new List<OrderLineItemAppliedDiscount>();
+
+                if(reg.DiscountCode != null)
                 {
-                    new OrderLineItem.Builder("1")
-                    .CatalogObjectId(id)
-                    .Build()
-                })
+                    OrderLineItemAppliedDiscount orderLineItemAppliedDiscount = new OrderLineItemAppliedDiscount.Builder(discountUid: reg.DiscountCode)
+                        .Build();
+                    appliedDiscounts.Add(orderLineItemAppliedDiscount);
+
+                    Money discountAmount = new Money.Builder()
+                        .Amount((long)reg.TicketComp.CompAmount * 10)
+                        .Currency("USD")
+                        .Build();
+
+                    OrderLineItemDiscount orderLineItemDiscount = new OrderLineItemDiscount.Builder()
+                        .Uid(reg.DiscountCode)
+                        .Name(reg.TicketComp.CompReason)
+                        .AmountMoney(discountAmount)
+                        .Scope("LINE_ITEM")
+                        .Build();
+
+                    orderDiscounts.Add(orderLineItemDiscount);
+                }
+
+                OrderLineItem orderLineItem = new OrderLineItem.Builder(quantity: "1")
+                    .CatalogObjectId(varId)
+                    .AppliedDiscounts(appliedDiscounts)
+                    .Build();
+
+                orderLineItems.Add(orderLineItem);
+            }
+
+            OrderServiceCharge orderServiceCharge = new OrderServiceCharge.Builder()
+                .Name("Handling Fee")
+                .Percentage("3")
+                .CalculationPhase("SUBTOTAL_PHASE")
                 .Build();
+
+            List<OrderServiceCharge> serviceCharges = new List<OrderServiceCharge>();
+            serviceCharges.Add(orderServiceCharge);
+
+            OrderPricingOptions pricingOptions = new OrderPricingOptions.Builder()
+                .AutoApplyTaxes(true)
+                .Build();
+
+            Order order = new Order.Builder(locationId: locationID)
+                .LineItems(orderLineItems)
+                .PricingOptions(pricingOptions)
+                .ServiceCharges(serviceCharges)
+                .Build();
+
             CreateOrderRequest orderRequest = new CreateOrderRequest.Builder()
                 .IdempotencyKey(Guid.NewGuid().ToString())
                 .Order(order)
                 .Build();
 
-            var orderResponse = _client.OrdersApi.CreateOrder(orderRequest).Order;
+            CreateOrderResponse orderResponse = _client.OrdersApi.CreateOrder(orderRequest);
 
             CreatePaymentLinkRequest paymentRequest = new CreatePaymentLinkRequest.Builder()
-                .Order(order)
+                .Order(orderResponse.Order)
                 .Build();
 
             CreatePaymentLinkResponse response = _client.CheckoutApi.CreatePaymentLink(paymentRequest);
 
-            string paymentLink;
+            string paymentLink = response.PaymentLink.ToString();
 
             return paymentLink;
         }

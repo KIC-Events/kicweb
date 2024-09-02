@@ -13,11 +13,11 @@ namespace KiCData.Models.WebModels
     {
 
         [Required(ErrorMessage = "Please enter your legal first name.")]
-        [Display(Name = "First Name")]
+        [Display(Name = "Legal First Name (as it appears on your ID)")]
         public string? FirstName { get; set; }
 
         [Required(ErrorMessage = "Please enter your legal last name.")]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Legal Last Name (as it appears on your ID)")]
         public string? LastName { get; set; }
 
         [Required(ErrorMessage = "Please enter your email address.")]
@@ -28,10 +28,10 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Date of Birth")]
         public DateOnly? DateOfBirth { get; set; }
 
-        [Display(Name = "Fetlife Profile Name", Prompt = "Enter your fetlife profile name, if available")]
+        [Display(Name = "Fetlife Profile Name (Optional)")]
         public string? FetName { get; set; }
 
-        [Display(Name = @"If you are a member of Club425, where are monthly parties are held, please enter your member number here. (This number was provided on registration.)")]
+        [Display(Name = @"If you are a member of Club425, where our monthly parties are held, please enter your member number here. (This number was provided on registration.)")]
         public int? ClubId { get; set; }
 
         [Display(Name = @"Phone Number (Optional)")]
@@ -65,6 +65,26 @@ namespace KiCData.Models.WebModels
         [Required]
         [Display(Name = "Check here if you are interested in volunteering at the event.")]
         public bool WillVolunteer = false;
+
+        [Required]
+        [Display(Name = "Re-enter your email address to confirm.")]
+        public string EmailConf { get; set; }
+
+        public bool CreateMore = false;
+
+        public string? DiscountCode { get; set; }
+
+        public TicketComp? TicketComp { get; set; }
+
+        [Required]
+        [Display(Name = "City of Residence")]
+        public string? City { get; set; }
+
+        [Required]
+        [Display(Name = "State of Residence")]
+        public string? State { get; set; }
+
+        public bool WaitList { get; set; } = false;
     }
 
     public class VolunteerPositionSelection

@@ -39,6 +39,13 @@ namespace KiCData.Models
 
         public virtual Volunteer? Volunteer { get; set; }
         public virtual Event? Event { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+
+        public PendingVolunteer() { }
+
         public PendingVolunteer(int volunteerID, int eventId, string? preferredPositions)
         {
             VolunteerID = volunteerID;
