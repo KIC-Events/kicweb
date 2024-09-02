@@ -10,7 +10,7 @@ namespace KiCData.Models.WebModels
     public class AttendeeViewModel : MemberViewModel
 
     {
-        [Required(ErrorMessage = "Please provide a name you would like on your event badge.")]
+        [Required(ErrorMessage = "Please provide the name you would like on your event badge.")]
         [Display(Name = "Badge Name")]
         public string? BadgeName { get; set; }
 

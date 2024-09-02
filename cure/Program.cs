@@ -28,6 +28,7 @@ builder.Services.AddSingleton<ICookieService, CookieService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
 builder.Services.AddDbContext<KiCdbContext>(options => options.UseMySql(config["Database:ConnectionString"], ServerVersion.AutoDetect(config["Database:ConnectionString"])));
+builder.Services.AddSingleton<IPaymentService, PaymentService>();
 builder.Services.AddControllersWithViews();
 
 WebApplication app = builder.Build();

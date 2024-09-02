@@ -1,17 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model Cure.Models.BetaViewModel
+
 
 <div class="view-body">
     <div class="container row">
         <h1 class="main-title">Registration Opens In</h1>
-        <h2 id="countdown"></h2>
+        <h2 id="countdown"></h2>        
     </div>
     <div class="conainer row" style="height:50px;"></div>
     <div class="container row">
-        <div class="col-sm-6 button-box">
-            <img class="flat-btn-blocked" src="~/css/images/reg_button.png" alt="Button linking to registration page." width="400px" height="400px"/>
-        </div>
+        @if(ViewBag.Beta == true)
+        {
+            <div class="col-sm-6 button-box">
+                <a asp-area="" asp-controller="Home" asp-action="Registration">
+                    <img class="flat-btn-blocked" src="~/css/images/reg_button.png" alt="Button linking to registration page." width="400px" height="400px" />
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-6 button-box">
+                <img class="flat-btn-blocked" src="~/css/images/reg_button.png" alt="Button linking to registration page." width="400px" height="400px" />
+            </div>
+        }
         <div class="col-sm-6 button-box">
             <a href="https://kic-events.square.site/shop/apparel/INJSIHWIBYY7LG4HENI4NYFL" target="_blank">
                 <img class="flat-btn" src="~/css/images/merch_button.png" alt="Button linking to merch store." width="400px" height="400px" />
@@ -42,6 +52,21 @@
         </div>
     </div>
     <div class="conainer row" style="height:50px;"></div>
+    <div class="container row">
+        <div class="form-fillable" style="max-width: 400px; text-align: center; margin: 0 auto;">
+            @using (Html.BeginForm())
+            {
+                <div class="form-control flat-btn">
+                    @Html.LabelFor(m => m.BetaCode)
+                    @Html.TextBoxFor(m => m.BetaCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.BetaCode, "", new { @class = "test-danger" })
+                </div>
+                <div class="form-control flat-btn">
+                    <input class="flat-btn" type="Submit" value="Submit" />
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 <script>
