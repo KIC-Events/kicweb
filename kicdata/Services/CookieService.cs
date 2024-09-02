@@ -48,5 +48,13 @@ namespace KiCData.Services
 
             return cookie;
         }
+
+        public void DeleteCookie(HttpRequest context, string key)
+        {
+            if (context.Cookies.ContainsKey(key))
+            {
+                context.HttpContext.Response.Cookies.Delete(key);
+            }
+        }
     }
 }

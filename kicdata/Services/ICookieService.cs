@@ -18,5 +18,7 @@ namespace KiCData.Services
         /// </summary>
         /// <returns>CookieOptions</returns>
         public CookieOptions NewCookieFactory();
+
+        public void DeleteCookie(HttpRequest context, string key);
     }
 }
