@@ -27,23 +27,21 @@
         <div class="container">
             <h5 class="main-title">This form collects some personal information. This information is intended only for internal use and for performing actions related to event safety, namely background checks. The data collected here will be securely stored and never sold. We recognize that privacy is of paramount concern for an event of this type, and we will take all reasonable steps to secure and protect your data.</h5>
         </div>
-        @if(ViewBag.Error is not null)
+        @if(ViewBag.Error != null)
         {
             <div class="container">
                 <h4 class="text-danger">@ViewBag.Error</h4>
             </div>
         }
         <div style="height: 20px;"></div>
-        <div class="form-box">
-            <form>
+        <form method="post" asp-area="" asp-controller="Home" asp-action="Registration">
+            <div class="form-box">
                 <label asp-for="DiscountCode">If you have a discount code, enter it here:</label>
                 <input asp-for="DiscountCode" class="form-control" />
-            </form>
-        </div>
-        <div class="col-sm-6">
-            <div class="form-box">
-                <p>This information is used for the background check, and must match your identification exactly. Avoid nicknames, abbreviates, etc. This information will be checked against your ID at the time of the event.</p>
-                <form>
+            </div>
+            <div class="col">
+                <div class="form-box">
+                    <p>This information is used for the background check, and must match your identification exactly. Avoid nicknames, abbreviates, etc. This information will be checked against your ID at the time of the event.</p>
                     <div class="form-group">
                         <label asp-for="FirstName"></label>
                         <input asp-for="FirstName" class="form-control" />
@@ -140,12 +138,10 @@
                             <option value="Wyoming">Wyoming</option>
                         </select>
                     </div>
-                </form>
-            </div>            
-        </div>
-        <div class="col-sm-6">
-            <div class="form-box">
-                <form>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-box">
                     <div class="form-group">
                         <label asp-for="TicketType"></label>
                         <select asp-for="TicketType" class="form-control" asp-items="@Model.TicketTypes">
@@ -181,19 +177,19 @@
                         </input>
                         <span asp-validation-for="WillVolunteer"></span>
                     </div>
-                    <div class="row" style="min-height: 30px;"></div>                    
-                </form>
-            </div>            
-        </div>  
-        <div class="form-box">
-            <div class="form-group">
-                <input asp-for="CreateMore" type="checkbox">
-                <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout.</label>
-                </input>
+                    <div class="row" style="min-height: 30px;"></div>
+                </div>
             </div>
-            <div class="form-group">
-                <button class="flat-btn" type="submit" value="Submit">Submit</button>
+            <div class="form-box">
+                <div class="form-group">
+                    <input asp-for="CreateMore" type="checkbox">
+                    <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout.</label>
+                    </input>
+                </div>
+                <div class="form-group">
+                    <button class="flat-btn" type="submit" value="Submit">Submit</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>

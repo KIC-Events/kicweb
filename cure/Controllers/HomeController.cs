@@ -107,10 +107,12 @@ namespace cure.Controllers
             }
             
             RegistrationViewModel reg = new RegistrationViewModel();
+
             reg.TicketTypes = new List<SelectListItem>();
             if (goldCount > 0) { reg.TicketTypes.Add(new SelectListItem("Gold - " + goldCount.ToString() + " Remaining", "Gold")); }
             if (silverCount > 0) { reg.TicketTypes.Add(new SelectListItem("Silver - " + silverCount.ToString() + " Remaining", "Silver")); }
-            reg.TicketTypes.Add(new SelectListItem("Early Pricing - Standard - " + regularCount.ToString(), "Standard"));
+            reg.TicketTypes.Add(new SelectListItem("Early Pricing - Regular - " + regularCount.ToString(), "Regular"));
+
             reg.RoomTypes = new List<SelectListItem>();
             reg.RoomTypes.Add(new SelectListItem("One King", "One King"));
             reg.RoomTypes.Add(new SelectListItem("Two Doubles", "Two Doubles"));
@@ -125,6 +127,7 @@ namespace cure.Controllers
             return View(reg);
         }
 
+        [Route("~/Register")]
         [HttpPost]
         public IActionResult Registration(RegistrationViewModel regUpdated)
         {
@@ -169,9 +172,11 @@ namespace cure.Controllers
             }            
         }
 
+        [Route("~/Payment")]
         public IActionResult Payment()
         {
             List<RegistrationViewModel> regList = GetRegFromCookies();
+            _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
             WriteRegToDB(regList);
             string paymentURL = _paymentService.CreatePaymentLink(regList);
             return Redirect(paymentURL);

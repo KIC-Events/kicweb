@@ -56,7 +56,7 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Room Type (This does not guarentee the selected room type will be available, but indicates preference.")]
         public string? RoomType { get; set; }
 
-        public List<SelectListItem> RoomTypes { get; set; }
+        public List<SelectListItem>? RoomTypes { get; set; }
 
         [Required]
         [Display(Name = "Check this if you would like to reserve a room at the host hotel.")]

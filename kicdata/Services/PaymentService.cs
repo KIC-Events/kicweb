@@ -166,13 +166,19 @@ namespace KiCData.Services
 
             CreateOrderResponse orderResponse = _client.OrdersApi.CreateOrder(orderRequest);
 
+            CheckoutOptions options = new CheckoutOptions.Builder()
+                .RedirectUrl("https://cure.kicevents.com/")
+                .Build();
+
             CreatePaymentLinkRequest paymentRequest = new CreatePaymentLinkRequest.Builder()
-                .Order(orderResponse.Order)
+                .IdempotencyKey(Guid.NewGuid().ToString())
+                .Order(order)
+                .CheckoutOptions(options)
                 .Build();
 
             CreatePaymentLinkResponse response = _client.CheckoutApi.CreatePaymentLink(paymentRequest);
 
-            string paymentLink = response.PaymentLink.ToString();
+            string paymentLink = response.PaymentLink.Url;
 
             return paymentLink;
         }
