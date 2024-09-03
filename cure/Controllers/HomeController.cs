@@ -134,35 +134,16 @@ namespace cure.Controllers
         {
             if (!ModelState.IsValid)
             {
-                int goldCount = 0;
-                int silverCount = 0;
-                int regularCount = 0;
-                try
-                {
-                    silverCount = _paymentService.CheckInventory("CURE Event Ticket", "Silver");
-                    goldCount = _paymentService.CheckInventory("CURE Event Ticket", "Gold");
-                    regularCount = _paymentService.CheckInventory("CURE Event Ticket", "Regular");
-                }
-                catch (Exception ex)
-                {
-                    return Redirect("Error");
-                    //TODO Log exception
-                }
-
-                regUpdated.TicketTypes = new List<SelectListItem>();
-                if (goldCount > 0) { regUpdated.TicketTypes.Add(new SelectListItem("Gold - " + goldCount.ToString() + " Remaining", "Gold")); }
-                if (silverCount > 0) { regUpdated.TicketTypes.Add(new SelectListItem("Silver - " + silverCount.ToString() + " Remaining", "Silver")); }
-                regUpdated.TicketTypes.Add(new SelectListItem("Early Pricing - Regular - " + regularCount.ToString(), "Regular"));
 
 
                 ViewBag.Error = "Missing required info.";
-                return View(regUpdated);
+                return View();
             }
 
             if(regUpdated.Email != regUpdated.EmailConf)
             {
                 ViewBag.Error = "Email does not match.";
-                return View(regUpdated);
+                return View();
             }
 
             if(regUpdated.DiscountCode is not null)
@@ -262,19 +243,23 @@ namespace cure.Controllers
 
         private void WriteRegToDB(List<RegistrationViewModel> regList)
         {
-            KiCData.Models.Event CURE = _kdbContext.Events.Where(e => e.Id == 1111).First();
+            //KiCData.Models.Event? CURE = _kdbContext.Events.Where(e => e.Id == 1112).FirstOrDefault();
+            //if(CURE == null)
+            //{
+            //
+            //}
             foreach(var reg in regList)
             {
                 if(reg.TicketComp is null)
                 {
                     Ticket ticket = new Ticket()
                     {
-                        EventId = 1111,
-                        Event = CURE,
+                        EventId = 1112,
+                        //Event = CURE,
                         Type = reg.TicketType,
                         DatePurchased = DateOnly.FromDateTime(DateTime.Now),
-                        StartDate = CURE.StartDate,
-                        EndDate = CURE.EndDate,
+                        //StartDate = CURE.StartDate,
+                        //EndDate = CURE.EndDate,
                         IsComped = reg.TicketComp is not null ? true : false,
                         Attendee = new Attendee()
                         {
@@ -321,8 +306,8 @@ namespace cure.Controllers
                     ticket.Price = 160;
                     ticket.Type = reg.TicketType;
                     ticket.DatePurchased = DateOnly.FromDateTime(DateTime.Now);
-                    ticket.StartDate = CURE.StartDate;
-                    ticket.EndDate = CURE.EndDate;
+                    //ticket.StartDate = CURE.StartDate;
+                    //ticket.EndDate = CURE.EndDate;
                     ticket.IsComped = true;
 
                     attendee.MemberId = member.Id;
@@ -354,8 +339,8 @@ namespace cure.Controllers
                         FirstName = reg.FirstName,
                         LastName = reg.LastName,
                         Email = reg.Email,
-                        Event = CURE,
-                        EventId = 1111
+                        //Event = CURE,
+                        EventId = 1112
                     };
 
                     _kdbContext.PendingVolunteers.Add(pVol);
