@@ -38,7 +38,13 @@ namespace KiCData.Services
 
         private void InitLogFile()
         {
-            fileName = DateTime.Now.Date.ToString() + ".log";
+            DateTime now = DateTime.Now.Date;
+            fileName = now.Year.ToString() + "-" + now.Month.ToString() + "-" + now.Day.ToString() + ".log";
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
             if(!File.Exists(path + fileName))
             {
