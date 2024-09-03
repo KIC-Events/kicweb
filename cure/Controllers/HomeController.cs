@@ -10,6 +10,7 @@ using Square;
 using KiCData.Models.WebModels.Member;
 using Newtonsoft.Json;
 using Square.Models;
+using Org.BouncyCastle.Ocsp;
 
 
 namespace cure.Controllers
@@ -133,6 +134,27 @@ namespace cure.Controllers
         {
             if (!ModelState.IsValid)
             {
+                int goldCount = 0;
+                int silverCount = 0;
+                int regularCount = 0;
+                try
+                {
+                    silverCount = _paymentService.CheckInventory("CURE Event Ticket", "Silver");
+                    goldCount = _paymentService.CheckInventory("CURE Event Ticket", "Gold");
+                    regularCount = _paymentService.CheckInventory("CURE Event Ticket", "Regular");
+                }
+                catch (Exception ex)
+                {
+                    return Redirect("Error");
+                    //TODO Log exception
+                }
+
+                regUpdated.TicketTypes = new List<SelectListItem>();
+                if (goldCount > 0) { regUpdated.TicketTypes.Add(new SelectListItem("Gold - " + goldCount.ToString() + " Remaining", "Gold")); }
+                if (silverCount > 0) { regUpdated.TicketTypes.Add(new SelectListItem("Silver - " + silverCount.ToString() + " Remaining", "Silver")); }
+                regUpdated.TicketTypes.Add(new SelectListItem("Early Pricing - Regular - " + regularCount.ToString(), "Regular"));
+
+
                 ViewBag.Error = "Missing required info.";
                 return View(regUpdated);
             }
