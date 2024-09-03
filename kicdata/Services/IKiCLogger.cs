@@ -4,6 +4,6 @@ namespace KiCData.Services
 {
     public interface IKiCLogger
     {
-        void Log(Exception exception, HttpRequest context);
+        void Log(Exception exception);
     }
 }
