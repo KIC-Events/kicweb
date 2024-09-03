@@ -159,12 +159,12 @@ namespace KiCData.Services
                 .ServiceCharges(serviceCharges)
                 .Build();
 
-            CreateOrderRequest orderRequest = new CreateOrderRequest.Builder()
-                .IdempotencyKey(Guid.NewGuid().ToString())
-                .Order(order)
-                .Build();
-
-            CreateOrderResponse orderResponse = _client.OrdersApi.CreateOrder(orderRequest);
+            //CreateOrderRequest orderRequest = new CreateOrderRequest.Builder()
+            //    .IdempotencyKey(Guid.NewGuid().ToString())
+            //    .Order(order)
+            //    .Build();
+            //
+            //CreateOrderResponse orderResponse = _client.OrdersApi.CreateOrder(orderRequest);
 
             CheckoutOptions options = new CheckoutOptions.Builder()
                 .RedirectUrl("https://cure.kicevents.com/")
