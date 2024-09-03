@@ -300,7 +300,7 @@ namespace cure.Controllers
                         .FirstOrDefault();
 
                     Member member = _kdbContext.Members
-                        .Where(m => m.Id == reg.TicketComp.Ticket.Attendee.Member.Id)
+                        .Where(m => m.Id == attendee.MemberId)
                         .FirstOrDefault();
 
                     ticket.Price = 160;
