@@ -245,7 +245,7 @@ namespace cure.Controllers
 
         private void WriteRegToDB(List<RegistrationViewModel> regList)
         {
-            KiCData.Models.Event? CURE = _kdbContext.Events.Where(e => e.Name == "Test Event").FirstOrDefault();
+            KiCData.Models.Event? CURE = _kdbContext.Events.Where(e => e.Name == "CURE").FirstOrDefault();
             foreach(var reg in regList)
             {
                 if(reg.TicketComp is null)
