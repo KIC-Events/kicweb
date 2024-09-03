@@ -243,7 +243,11 @@ namespace cure.Controllers
 
         private void WriteRegToDB(List<RegistrationViewModel> regList)
         {
-            KiCData.Models.Event CURE = _kdbContext.Events.Where(e => e.Id == 1112).First();
+            //KiCData.Models.Event? CURE = _kdbContext.Events.Where(e => e.Id == 1112).FirstOrDefault();
+            //if(CURE == null)
+            //{
+            //
+            //}
             foreach(var reg in regList)
             {
                 if(reg.TicketComp is null)
@@ -251,11 +255,11 @@ namespace cure.Controllers
                     Ticket ticket = new Ticket()
                     {
                         EventId = 1112,
-                        Event = CURE,
+                        //Event = CURE,
                         Type = reg.TicketType,
                         DatePurchased = DateOnly.FromDateTime(DateTime.Now),
-                        StartDate = CURE.StartDate,
-                        EndDate = CURE.EndDate,
+                        //StartDate = CURE.StartDate,
+                        //EndDate = CURE.EndDate,
                         IsComped = reg.TicketComp is not null ? true : false,
                         Attendee = new Attendee()
                         {
@@ -302,8 +306,8 @@ namespace cure.Controllers
                     ticket.Price = 160;
                     ticket.Type = reg.TicketType;
                     ticket.DatePurchased = DateOnly.FromDateTime(DateTime.Now);
-                    ticket.StartDate = CURE.StartDate;
-                    ticket.EndDate = CURE.EndDate;
+                    //ticket.StartDate = CURE.StartDate;
+                    //ticket.EndDate = CURE.EndDate;
                     ticket.IsComped = true;
 
                     attendee.MemberId = member.Id;
@@ -335,7 +339,7 @@ namespace cure.Controllers
                         FirstName = reg.FirstName,
                         LastName = reg.LastName,
                         Email = reg.Email,
-                        Event = CURE,
+                        //Event = CURE,
                         EventId = 1112
                     };
 
