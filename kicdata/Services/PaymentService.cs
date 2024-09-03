@@ -120,8 +120,10 @@ namespace KiCData.Services
                         .Build();
                     appliedDiscounts.Add(orderLineItemAppliedDiscount);
 
+                    long discountAmt = ((long)reg.TicketComp.CompAmount * 10);
+
                     Money discountAmount = new Money.Builder()
-                        .Amount((long)reg.TicketComp.CompAmount * 10)
+                        .Amount(discountAmt)
                         .Currency("USD")
                         .Build();
 
@@ -180,6 +182,12 @@ namespace KiCData.Services
                 .Build();
 
             string paymentLink = "";
+
+            if(paymentRequest.Order.TotalMoney.Amount == 0)
+            {
+                paymentLink = "https://cure.kicevents.com/Success";
+                return paymentLink;
+            }
 
             try
             {

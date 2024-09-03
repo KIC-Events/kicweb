@@ -190,12 +190,14 @@ namespace cure.Controllers
             return View();
         }
 
+        [Route("~/Error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new cure.Models.ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [Route("~/Success")]
         public IActionResult Success()
         {
             return View();
