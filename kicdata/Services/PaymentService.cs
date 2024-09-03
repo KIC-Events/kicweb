@@ -1,5 +1,6 @@
 ﻿using KiCData.Models.WebModels;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Square;
 using Square.Authentication;
 using Square.Models;
@@ -15,8 +16,9 @@ namespace KiCData.Services
     public class PaymentService : IPaymentService
     {
         private SquareClient _client;
+        private ILogger _logger;
 
-        public PaymentService(IConfigurationRoot configuration)
+        public PaymentService(IConfigurationRoot configuration, ILogger logger)
         {
             Square.Environment env = Square.Environment.Production;
 
@@ -32,6 +34,7 @@ namespace KiCData.Services
                 )
                 .Environment(env)
                 .Build();
+            _logger = logger;
         }
 
         public int CheckInventory(string objectSearchTerm, string variationSearchTerm)
@@ -176,9 +179,19 @@ namespace KiCData.Services
                 .CheckoutOptions(options)
                 .Build();
 
-            CreatePaymentLinkResponse response = _client.CheckoutApi.CreatePaymentLink(paymentRequest);
+            string paymentLink = "";
 
-            string paymentLink = response.PaymentLink.Url;
+            try
+            {
+                CreatePaymentLinkResponse response = _client.CheckoutApi.CreatePaymentLink(paymentRequest);
+
+                paymentLink = response.PaymentLink.Url;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Trace, ex.InnerException.Message);
+                paymentLink = "https://cure.kicevents.com/Error";
+            }
 
             return paymentLink;
         }
