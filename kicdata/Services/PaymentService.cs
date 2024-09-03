@@ -16,9 +16,9 @@ namespace KiCData.Services
     public class PaymentService : IPaymentService
     {
         private SquareClient _client;
-        private ILogger _logger;
+        private IKiCLogger _logger;
 
-        public PaymentService(IConfigurationRoot configuration, ILogger logger)
+        public PaymentService(IConfigurationRoot configuration, IKiCLogger logger)
         {
             Square.Environment env = Square.Environment.Production;
 
@@ -189,7 +189,7 @@ namespace KiCData.Services
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Trace, ex.InnerException.Message);
+                _logger.Log(ex);
                 paymentLink = "https://cure.kicevents.com/Error";
             }
 

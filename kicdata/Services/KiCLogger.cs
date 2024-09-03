@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Org.BouncyCastle.Crypto.Engines;
 
 namespace KiCData.Services
 {
@@ -14,7 +15,7 @@ namespace KiCData.Services
             path = Environment.CurrentDirectory.ToString() + @"/Logs/";
         }
 
-        public void Log(Exception exception, HttpRequest context)
+        public void Log(Exception exception)
         {
             InitLogFile();
 
@@ -24,6 +25,10 @@ namespace KiCData.Services
             //sw.WriteLine(context.Headers.Host.ToString());
             //sw.WriteLine(context.Headers.UserAgent.ToString());
             //sw.WriteLine(context.Headers.Cookie.ToString());
+            sw.WriteLine();
+            sw.WriteLine();
+            sw.WriteLine("Inner Exception");
+            sw.WriteLine(exception.InnerException.ToString());
             sw.WriteLine();
             sw.WriteLine();
 
