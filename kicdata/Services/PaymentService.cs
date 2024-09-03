@@ -116,6 +116,10 @@ namespace KiCData.Services
 
                 if(reg.DiscountCode != null)
                 {
+                    if (reg.TicketComp.CompPct == 100)
+                    {
+                        break;
+                    }
                     OrderLineItemAppliedDiscount orderLineItemAppliedDiscount = new OrderLineItemAppliedDiscount.Builder(discountUid: reg.DiscountCode)
                         .Build();
                     appliedDiscounts.Add(orderLineItemAppliedDiscount);
@@ -143,6 +147,14 @@ namespace KiCData.Services
                     .Build();
 
                 orderLineItems.Add(orderLineItem);
+            }
+
+            string paymentLink = "";
+
+            if(orderLineItems.Count == 0)
+            {
+                paymentLink = "https://cure.kicevents.com/Success";
+                return paymentLink;
             }
 
             OrderServiceCharge orderServiceCharge = new OrderServiceCharge.Builder()
@@ -180,14 +192,6 @@ namespace KiCData.Services
                 .Order(order)
                 .CheckoutOptions(options)
                 .Build();
-
-            string paymentLink = "";
-
-            if(paymentRequest.Order.TotalMoney.Amount == 0)
-            {
-                paymentLink = "https://cure.kicevents.com/Success";
-                return paymentLink;
-            }
 
             try
             {

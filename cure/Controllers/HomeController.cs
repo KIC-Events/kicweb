@@ -245,23 +245,19 @@ namespace cure.Controllers
 
         private void WriteRegToDB(List<RegistrationViewModel> regList)
         {
-            //KiCData.Models.Event? CURE = _kdbContext.Events.Where(e => e.Id == 1112).FirstOrDefault();
-            //if(CURE == null)
-            //{
-            //
-            //}
+            KiCData.Models.Event? CURE = _kdbContext.Events.Where(e => e.Name == "Test Event").FirstOrDefault();
             foreach(var reg in regList)
             {
                 if(reg.TicketComp is null)
                 {
                     Ticket ticket = new Ticket()
                     {
-                        EventId = 1112,
-                        //Event = CURE,
+                        EventId = CURE.Id,
+                        Event = CURE,
                         Type = reg.TicketType,
                         DatePurchased = DateOnly.FromDateTime(DateTime.Now),
-                        //StartDate = CURE.StartDate,
-                        //EndDate = CURE.EndDate,
+                        StartDate = CURE.StartDate,
+                        EndDate = CURE.EndDate,
                         IsComped = reg.TicketComp is not null ? true : false,
                         Attendee = new Attendee()
                         {
@@ -308,8 +304,8 @@ namespace cure.Controllers
                     ticket.Price = 160;
                     ticket.Type = reg.TicketType;
                     ticket.DatePurchased = DateOnly.FromDateTime(DateTime.Now);
-                    //ticket.StartDate = CURE.StartDate;
-                    //ticket.EndDate = CURE.EndDate;
+                    ticket.StartDate = CURE.StartDate;
+                    ticket.EndDate = CURE.EndDate;
                     ticket.IsComped = true;
 
                     attendee.MemberId = member.Id;
@@ -341,7 +337,7 @@ namespace cure.Controllers
                         FirstName = reg.FirstName,
                         LastName = reg.LastName,
                         Email = reg.Email,
-                        //Event = CURE,
+                        Event = CURE,
                         EventId = 1112
                     };
 
