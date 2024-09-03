@@ -28,10 +28,14 @@ namespace KiCData.Services
             //sw.WriteLine(context.Headers.Cookie.ToString());
             sw.WriteLine();
             sw.WriteLine();
-            sw.WriteLine("Inner Exception");
-            sw.WriteLine(exception.InnerException.ToString());
-            sw.WriteLine();
-            sw.WriteLine();
+            if(exception.InnerException != null)
+            {
+                sw.WriteLine("Inner Exception");
+                sw.WriteLine(exception.InnerException.ToString());
+                sw.WriteLine();
+                sw.WriteLine();
+            }
+            
 
             sw.Close();
         }
