@@ -37,6 +37,7 @@ namespace cure.Controllers
         [Route("~/")]
         [Route("~/Home")]
         [Route("~/Home/Index")]
+        [Route("**")]
         [HttpGet]
         public IActionResult Index()
         {

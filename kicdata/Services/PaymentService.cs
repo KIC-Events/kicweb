@@ -116,29 +116,39 @@ namespace KiCData.Services
 
                 if(reg.DiscountCode != null)
                 {
-                    if (reg.TicketComp.CompPct == 100)
+                    string discountName = "";
+                    switch (reg.TicketComp.CompReason)
                     {
-                        break;
+                        case "Event Staff or Volunteer":
+                            discountName = "Staff Comp";
+                            break;
+                        case "Key Volunteer":
+                            discountName = "Staff Comp";
+                            break;
+                        case "425 Early Access":
+                            discountName = "Club 425 Member";
+                            break;
+                        default:
+                            throw new Exception("Bad discount code.");
+                            break;
                     }
-                    OrderLineItemAppliedDiscount orderLineItemAppliedDiscount = new OrderLineItemAppliedDiscount.Builder(discountUid: reg.DiscountCode)
-                        .Build();
-                    appliedDiscounts.Add(orderLineItemAppliedDiscount);
 
-                    long discountAmt = ((long)reg.TicketComp.CompAmount * 10);
+                    var discount = catalog.Objects.Where(o => o.Type == "DISCOUNT" && o.DiscountData.Name == discountName).FirstOrDefault();
 
-                    Money discountAmount = new Money.Builder()
-                        .Amount(discountAmt)
-                        .Currency("USD")
+                    OrderLineItemAppliedDiscount orderLineItemAppliedDiscount = new OrderLineItemAppliedDiscount.Builder(discountUid: discount.Id)
                         .Build();
 
-                    OrderLineItemDiscount orderLineItemDiscount = new OrderLineItemDiscount.Builder()
-                        .Uid(reg.DiscountCode)
-                        .Name(reg.TicketComp.CompReason)
-                        .AmountMoney(discountAmount)
+                    OrderLineItemDiscount lineItemDiscount = new OrderLineItemDiscount.Builder()
+                        .Uid(discount.Id)
+                        .Name(discount.DiscountData.Name)
                         .Scope("LINE_ITEM")
+                        .AppliedMoney(discount.DiscountData.AmountMoney)
+                        .AmountMoney(discount.DiscountData.AmountMoney)
                         .Build();
 
-                    orderDiscounts.Add(orderLineItemDiscount);
+                    orderDiscounts.Add(lineItemDiscount);
+
+                    appliedDiscounts.Add(orderLineItemAppliedDiscount);
                 }
 
                 OrderLineItem orderLineItem = new OrderLineItem.Builder(quantity: "1")
@@ -153,7 +163,7 @@ namespace KiCData.Services
 
             if(orderLineItems.Count == 0)
             {
-                paymentLink = "https://cure.kicevents.com/Success";
+                paymentLink = "https://cure.kicevents.com/Error";
                 return paymentLink;
             }
 
@@ -174,6 +184,7 @@ namespace KiCData.Services
                 .LineItems(orderLineItems)
                 .PricingOptions(pricingOptions)
                 .ServiceCharges(serviceCharges)
+                .Discounts(orderDiscounts)
                 .Build();
 
             //CreateOrderRequest orderRequest = new CreateOrderRequest.Builder()
@@ -184,7 +195,7 @@ namespace KiCData.Services
             //CreateOrderResponse orderResponse = _client.OrdersApi.CreateOrder(orderRequest);
 
             CheckoutOptions options = new CheckoutOptions.Builder()
-                .RedirectUrl("https://cure.kicevents.com/")
+                .RedirectUrl("https://cure.kicevents.com/Home")
                 .Build();
 
             CreatePaymentLinkRequest paymentRequest = new CreatePaymentLinkRequest.Builder()

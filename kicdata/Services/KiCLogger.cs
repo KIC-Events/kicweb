@@ -13,7 +13,7 @@ namespace KiCData.Services
 
         public KiCLogger()
         {
-            path = Environment.CurrentDirectory.ToString() + @"/Logs/";
+            path = System.Environment.CurrentDirectory.ToString() + @"/Logs/";
             InitLogFile();
         }
 
