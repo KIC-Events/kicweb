@@ -110,9 +110,9 @@ namespace cure.Controllers
             RegistrationViewModel reg = new RegistrationViewModel();
 
             reg.TicketTypes = new List<SelectListItem>();
-            if (goldCount > 0) { reg.TicketTypes.Add(new SelectListItem("Gold - " + goldCount.ToString() + " Remaining", "Gold")); }
-            if (silverCount > 0) { reg.TicketTypes.Add(new SelectListItem("Silver - " + silverCount.ToString() + " Remaining", "Silver")); }
-            reg.TicketTypes.Add(new SelectListItem("Early Pricing - Regular - " + regularCount.ToString(), "Regular"));
+            if (goldCount > 0) { reg.TicketTypes.Add(new SelectListItem("Gold", "Gold")); }
+            if (silverCount > 0) { reg.TicketTypes.Add(new SelectListItem("Silver", "Silver")); }
+            reg.TicketTypes.Add(new SelectListItem("Early Pricing - Regular", "Regular"));
 
             reg.RoomTypes = new List<SelectListItem>();
             reg.RoomTypes.Add(new SelectListItem("One King", "One King"));
