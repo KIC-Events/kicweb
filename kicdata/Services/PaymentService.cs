@@ -212,7 +212,7 @@ namespace KiCData.Services
             }
             catch(Square.Exceptions.ApiException ex)
             {
-                _logger.Log(ex);
+                _logger.LogSquareEx(ex);
                 paymentLink = "https://cure.kicevents.com/Error";
             }
             catch (Exception ex)

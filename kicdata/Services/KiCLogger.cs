@@ -41,7 +41,7 @@ namespace KiCData.Services
             sw.Close();
         }
 
-        public void Log(Square.Exceptions.ApiException exception)
+        public void LogSquareEx(Square.Exceptions.ApiException exception)
         {
             InitLogFile();
 
