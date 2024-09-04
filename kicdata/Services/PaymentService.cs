@@ -199,6 +199,11 @@ namespace KiCData.Services
 
                 paymentLink = response.PaymentLink.Url;
             }
+            catch(Square.Exceptions.ApiException ex)
+            {
+                _logger.Log(ex);
+                paymentLink = "https://cure.kicevents.com/Error";
+            }
             catch (Exception ex)
             {
                 _logger.Log(ex);
