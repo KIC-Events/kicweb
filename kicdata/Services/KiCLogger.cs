@@ -48,15 +48,12 @@ namespace KiCData.Services
             StreamWriter sw = File.AppendText(path + fileName);
             sw.WriteLine("An exception has occurred.");
             sw.WriteLine(exception.ToString());
-            //sw.WriteLine(context.Headers.Host.ToString());
-            //sw.WriteLine(context.Headers.UserAgent.ToString());
-            //sw.WriteLine(context.Headers.Cookie.ToString());
             sw.WriteLine();
             sw.WriteLine();
             if (exception.HttpContext.Response.Body != null)
             {
-                sw.WriteLine("Inner Exception");
-                sw.WriteLine(exception.HttpContext.Response.Body.ToString());
+                sw.WriteLine("Response Body");
+                sw.WriteLine(exception.HttpContext.Response.Body);
                 sw.WriteLine();
                 sw.WriteLine();
             }
