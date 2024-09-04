@@ -195,7 +195,7 @@ namespace KiCData.Services
             //CreateOrderResponse orderResponse = _client.OrdersApi.CreateOrder(orderRequest);
 
             CheckoutOptions options = new CheckoutOptions.Builder()
-                .RedirectUrl("https://cure.kicevents.com/Home")
+                .RedirectUrl("https://cure.kicevents.com/RegistrationSuccessful")
                 .Build();
 
             CreatePaymentLinkRequest paymentRequest = new CreatePaymentLinkRequest.Builder()

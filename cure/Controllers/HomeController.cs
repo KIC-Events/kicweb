@@ -199,7 +199,15 @@ namespace cure.Controllers
         }
 
         [Route("~/Success")]
+        [Route("~/Success/**")]
         public IActionResult Success()
+        {
+            return View();
+        }
+
+        [Route("~/RegistrationSuccessful")]
+        [Route("~/RegistrationSuccessful/**")]
+        public IActionResult RegSuccess()
         {
             return View();
         }
