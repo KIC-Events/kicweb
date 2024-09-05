@@ -226,6 +226,12 @@ namespace cure.Controllers
             return View();
         }
 
+        [Route("~/TicketTypes")]
+        public IActionResult TicketTypes()
+        {
+            return View();
+        }
+
         private void AddRegToCookies(RegistrationViewModel rvm)
         {
             var context = _contextAccessor.HttpContext;
