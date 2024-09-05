@@ -176,7 +176,19 @@
                         <span asp-validation-for="RoomType"></span>
                     </div>
                     <div class="container">
+                        <hr />
                         <p>This event cannot function without the many volunteers that work to make it possible. </p>
+                        <p>There are a lot of opportunities for you to be part of this event above and beyond just attending.</p>
+                        <p>We know that the Columbus community is service oriented and we have the volunteer positions to fill that need.</p>
+                        <p>Position Descriptions:</p>
+                        <ul style="list-style-type: none;">
+                            <li>Credential Checker (two hour shift):</li>
+                            <p>Responsible for ensuring that only event attendees are allowed access to event spaces.  You will be sitting at one of the access points, checking wristbands and badges of all people wishing to enter areas dedicated to event activities</p>
+                            <li>Dungeon Monitor (two hour shift):</li>
+                            <p>Responsible for actively walking the main play space and the secondary play rooms to ensure attendees are following the rules of the event and engaging in safe consensual play, including ensuring that play equipment is cleaned between scenes and that scenes do not exceed 40 minutes. </p>
+                            <li>Shifting:</li>
+                            <p>Responsible for moving chairs and furniture between classes and opening/closing ceremonies and the play parties.  This will also include set up and tear down.</p>
+                        </ul>
                     </div>
                     <div class="form-group">
                         <input asp-for="WillVolunteer" type="checkbox">
@@ -190,7 +202,7 @@
             <div class="form-box">
                 <div class="form-group">
                     <input asp-for="CreateMore" type="checkbox">
-                    <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout.</label>
+                    <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout. This form will be reset when you click submit, and you can create another ticket before proceeding to checkout.</label>
                     </input>
                 </div>
                 <div class="form-group">

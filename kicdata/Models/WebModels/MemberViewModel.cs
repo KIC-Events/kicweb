@@ -70,7 +70,7 @@ namespace KiCData.Models.WebModels
         [Display(Name = "Re-enter your email address to confirm.")]
         public string EmailConf { get; set; }
 
-        public bool CreateMore = false;
+        public bool CreateMore { get; set; }
 
         public string? DiscountCode { get; set; }
 
