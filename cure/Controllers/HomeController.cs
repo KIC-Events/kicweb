@@ -113,7 +113,7 @@ namespace cure.Controllers
             reg.TicketTypes = new List<SelectListItem>();
             if (goldCount > 0) { reg.TicketTypes.Add(new SelectListItem("Gold", "Gold")); }
             if (silverCount > 0) { reg.TicketTypes.Add(new SelectListItem("Silver", "Silver")); }
-            reg.TicketTypes.Add(new SelectListItem("Early Pricing - Regular", "Regular"));
+            reg.TicketTypes.Add(new SelectListItem("Early Pricing - Standard", "Regular"));
 
             reg.RoomTypes = new List<SelectListItem>();
             reg.RoomTypes.Add(new SelectListItem("One King", "One King"));
@@ -169,12 +169,25 @@ namespace cure.Controllers
 
             if(regUpdated.CreateMore == false)
             {
+                if(regUpdated.WaitList == true)
+                {
+                    return Redirect("Waitlist");
+                }
                 return Redirect("Payment");
             }
             else
             {
                 return Redirect("Register");
             }            
+        }
+
+        [Route("~/Waitlist")]
+        public IActionResult Waitlist()
+        {
+            List<RegistrationViewModel> regList = GetRegFromCookies();
+            _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
+            WriteRegToDB(regList);
+            return View();
         }
 
         [Route("~/Payment")]
