@@ -119,6 +119,7 @@ namespace cure.Controllers
             reg.RoomTypes.Add(new SelectListItem("One King", "One King"));
             reg.RoomTypes.Add(new SelectListItem("Two Doubles", "Two Doubles"));
             reg.RoomTypes.Add(new SelectListItem("I will not be staying at the host hotel.", "I will not be staying at the host hotel."));
+            reg.RoomTypes.Add(new SelectListItem("I am staying in someone else's room.", "I am staying in someone else's room."));
 
             if (goldCount == 0 && silverCount == 0 && regularCount == 0)
             {
