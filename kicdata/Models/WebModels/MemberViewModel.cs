@@ -84,7 +84,7 @@ namespace KiCData.Models.WebModels
         [Display(Name = "State of Residence")]
         public string? State { get; set; }
 
-        public bool WaitList { get; set; } = false;
+        public bool WaitList { get; set; }
     }
 
     public class VolunteerPositionSelection
