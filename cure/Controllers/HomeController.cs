@@ -11,6 +11,7 @@ using KiCData.Models.WebModels.Member;
 using Newtonsoft.Json;
 using Square.Models;
 using Org.BouncyCastle.Ocsp;
+using Org.BouncyCastle.Asn1.Mozilla;
 
 
 namespace cure.Controllers
@@ -173,7 +174,7 @@ namespace cure.Controllers
                 {
                     return Redirect("Waitlist");
                 }
-                return Redirect("Payment");
+                return Redirect("InterstitialWait");
             }
             else
             {
@@ -187,6 +188,12 @@ namespace cure.Controllers
             List<RegistrationViewModel> regList = GetRegFromCookies();
             _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
             WriteRegToDB(regList);
+            return View();
+        }
+
+        [Route("~/InterstitialWait")]
+        public IActionResult InterstitialWait()
+        {
             return View();
         }
 
