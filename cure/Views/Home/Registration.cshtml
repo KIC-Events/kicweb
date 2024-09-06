@@ -178,10 +178,11 @@
                     </div>
                     <div class="container">
                         <hr />
+                        <p>Please indicate whether you will be staying at the host hotel, and if so, what type of room you would like.</p>
                         <p>If you are attending as a group, only one person PER ROOM needs to select a room type for their ticket.</p>
+                        <p>Due to the limited number of rooms at the host hotel, all rooms are being assigned by order of request. Selection of room preference does not guarantee room placement. To handle this, everyone will be added to a queue and room selection will be processed in the order tickets were purchased.</p>
                     </div>
                     <div class="form-group" id="roomTypeSelect">
-                        <label asp-for="RoomType"></label>
                         <select asp-for="RoomType" class="form-control" asp-items="@Model.RoomTypes">
                             <option value="" disabled selected>Select Room Type</option>
                         </select>
@@ -189,9 +190,8 @@
                     </div>
                     <div class="container">
                         <hr />
-                        <p>This event cannot function without the many volunteers that work to make it possible. </p>
-                        <p>There are a lot of opportunities for you to be part of this event above and beyond just attending.</p>
-                        <p>We know that the Columbus community is service oriented and we have the volunteer positions to fill that need.</p>
+                        <p>This event cannot function without the many volunteers that work to make it possible. There are a lot of opportunities for you to be part of this event above and beyond just attending. We know that the Columbus community is service oriented and we have the volunteer positions to fill that need. 
+                            
                         <p>Position Descriptions:</p>
                         <ul style="list-style-type: none;">
                             <li>Credential Checker (two hour shift):</li>

@@ -53,7 +53,6 @@ namespace KiCData.Models.WebModels
 
         public List<SelectListItem>? TicketTypes { get; set; }
 
-        [Display(Name = "Room Type (This does not guarentee the selected room type will be available, but indicates preference.")]
         public string? RoomType { get; set; }
 
         public List<SelectListItem>? RoomTypes { get; set; }
