@@ -80,8 +80,7 @@ namespace cure.Controllers
 
         public IActionResult Rules()
         {
-            //return View();
-            return RedirectToAction("ComingSoon");
+            return View();
         }
 
         public IActionResult Schedule()
