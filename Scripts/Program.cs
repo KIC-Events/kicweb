@@ -25,6 +25,8 @@ namespace Scripts
             Console.WriteLine("1. Send emails from an excel sheet.");
             Console.WriteLine("2. Create comps from excel sheet.");
             Console.WriteLine("3. Invite to closed beta from excel sheet.");
+            Console.WriteLine("4. Delete duplicates from DB.");
+            Console.WriteLine("5. Send emails from DB");
             Console.WriteLine("100. Exit.");
             string response = Console.ReadLine();
 
@@ -39,6 +41,12 @@ namespace Scripts
                 case "3":
                     InviteToBeta(configuration, emailService);
                     break;
+                case "4":
+                    DeleteDuplicates(configuration);
+                    break;
+                case "5":
+                    SendEmailsFromDB(configuration, emailService);
+                    break;
                 case "100":
                     Console.WriteLine("Goodbye.");
                     Environment.Exit(0);
@@ -49,6 +57,27 @@ namespace Scripts
             }
 
             Main(args);
+        }
+
+        private static void SendEmailsFromDB(IConfigurationRoot configuration, IEmailService emailService)
+        {
+            Console.WriteLine("Sending emails from DB");
+            DbContextOptionsBuilder<KiCdbContext> builder = new DbContextOptionsBuilder<KiCdbContext>();
+            builder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
+            KiCdbContext context = new KiCdbContext(builder.Options);
+            EmailFromDB emailFromDB = new EmailFromDB(configuration, context, emailService);
+            emailFromDB.SendEmailsFromDB();
+        }
+
+        private static void DeleteDuplicates(IConfigurationRoot configuration)
+        {
+            Console.WriteLine("Deleting dupes.");
+            Console.WriteLine("Buckle up.");
+            DbContextOptionsBuilder<KiCdbContext> builder = new DbContextOptionsBuilder<KiCdbContext>();
+            builder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
+            KiCdbContext context = new KiCdbContext(builder.Options);
+            DeleteDuplicatesFromDB deleteDuplicatesFromDB = new DeleteDuplicatesFromDB(context);
+            deleteDuplicatesFromDB.RunDelete();
         }
 
         private static void SendEmailFromList(IConfigurationRoot configuration, IEmailService emailService)
@@ -98,7 +127,7 @@ namespace Scripts
             builder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
             //DbContextOptions<KiCdbContext> options = (DbContextOptions<KiCdbContext>)builder.Options;
             KiCdbContext context = new KiCdbContext(builder.Options);
-            CompsFromList compsFromList = new CompsFromList(fPath);
+            CompsFromList compsFromList = new CompsFromList(fPath, context);
             compsFromList.WriteToDB(context);
             Console.WriteLine("Complete");
             return;

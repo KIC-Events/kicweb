@@ -12,7 +12,7 @@ namespace Scripts
     {
         private List<TicketComp> comps = new List<TicketComp>();
 
-        public CompsFromList(string filePath)
+        public CompsFromList(string filePath, KiCdbContext kiCdbContext)
         {
             Console.WriteLine("Accessing workbook...");
             WorkBook _workbook = new WorkBook(filePath);
@@ -25,53 +25,59 @@ namespace Scripts
                 string lName = row.Columns[1].ToString();
                 string email = row.Columns[2].ToString();
                 string fetName = row.Columns[3].ToString();
-                string status = row.Columns[4].ToString();
                 string compReason = row.Columns[5].ToString();
+                string authUser = row.Columns[6].ToString();
 
                 Console.WriteLine("Processing " + fName + " " + lName);
 
                 Console.WriteLine("Creating ticket comp.");
                 TicketComp comp = new TicketComp();
-                if(status == "Attendee")
+                var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                var stringChars = new char[15];
+                var random = new Random();
+
+                for (int i = 0; i < stringChars.Length; i++)
                 {
-                    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                    var stringChars = new char[15];
-                    var random = new Random();
-
-                    for (int i = 0; i < stringChars.Length; i++)
-                    {
-                        stringChars[i] = chars[random.Next(chars.Length)];
-                    }
-
-                    comp.DiscountCode = new String(stringChars);
-
-                    comp.CompAmount = 25;
-                    comp.Ticket = new Ticket()
-                    {
-                        EventId = 1112,
-                        Price = 180,
-                        Type = "Comp",
-                        IsComped = true,
-                        Attendee = new Attendee()
-                        {
-                            IsPaid = false,
-                            isRegistered = false,
-                            RoomWaitListed = true,
-                            TicketWaitListed = true,
-                            BadgeName = "TBD",
-                            Member = new Member()
-                            {
-                                FirstName = fName,
-                                LastName = lName,
-                                Email = email,
-                                FetName = fetName,
-                                DateOfBirth = new DateOnly(1900, 01, 01)
-                            }
-                        }
-                    };
-
-                    comps.Add(comp);
+                    stringChars[i] = chars[random.Next(chars.Length)];
                 }
+
+                comp.DiscountCode = new String(stringChars);
+
+                comp.CompAmount = 160;
+                comp.CompReason = compReason;
+                comp.AuthorizingUser = authUser;
+                comp.CompPct = 100;
+
+                Event CURE = kiCdbContext.Events
+                    .Where(e => e.Name.Contains("CURE"))
+                    .First();
+
+                comp.Ticket = new Ticket()
+                {
+                    EventId = CURE.Id,
+                    Event = CURE,
+                    Price = 180,
+                    Type = "Comp",
+                    IsComped = true,
+                    Attendee = new Attendee()
+                    {
+                        IsPaid = false,
+                        isRegistered = false,
+                        RoomWaitListed = true,
+                        TicketWaitListed = true,
+                        BadgeName = "TBD",
+                        Member = new Member()
+                        {
+                            FirstName = fName,
+                            LastName = lName,
+                            Email = email,
+                            DateOfBirth = new DateOnly(1900, 01, 01),
+                            FetName = fetName
+                        }
+                    }
+                };
+
+                comps.Add(comp);
             }
         }
 

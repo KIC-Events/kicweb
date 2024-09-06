@@ -37,4 +37,8 @@
     <None Include="Views\People\Index.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\images\Events\" />
+  </ItemGroup>
+
 </Project>
