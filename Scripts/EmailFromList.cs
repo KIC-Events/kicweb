@@ -9,6 +9,10 @@ using IronXL;
 using System.Net;
 using KiCData.Models.WebModels;
 using MimeKit.Encodings;
+using Org.BouncyCastle.Crypto;
+using Square.Models;
+using System.Net.NetworkInformation;
+using System.Reflection.Metadata;
 
 namespace Scripts
 {
@@ -78,13 +82,13 @@ namespace Scripts
 
                 FormMessage formMessage = new FormMessage();
                 formMessage.To.Add(mailer.Email);
-                formMessage.Subject = "KIC EVENTS | A special discount for CURE 2025!";
-                formMessage.HtmlBuilder.Append(
-                        "<h3>A special discount code has been generated for you!</h3>" 
-                        + "<h4><b>" + mailer.CompCode + "</b></h4>" 
-                        + "<p>This code will get you $" + mailer.CompAmt.ToString() + " off your ticket purchase for CURE 2025.</p>"
-                        + "<p>You are receiving this code early, please hold onto it, and more information will follow.</p>" 
-                        + "<p>We look forward to seeing you at CURE!</p>"
+                formMessage.Subject = "Exciting News from Kinky In Columbus (KIC)";
+                formMessage.HtmlBuilder.Append("<h1>Exciting News from Kinky In Columbus (KIC)</h1> 
+                        + "<p> In case you were not at our August play party or saw the event posting that was put up shortly thereafter on Fet, Kinky In Columbus(KIC) will be hosting a hotel event in the Columbus Metropolitan area on January 10th & 11th, 2025.</p>" 
+                        + "<p>As a thank you for attending every party, some of the parties, or just signing up to be a Club 425 member, we are offering you a $" + mailer.CompAmt.ToString() + " discount off the purchase of a ticket just by putting in the code below at checkout. Please be aware that tickets and hotel rooms are sold on a first come, first served basis, so do not miss out on your opportunity to attend.</p>" 
+                        + "<p>We sincerely hope you will join us at our inaugural event titled<strong> Columbus’ Ultimate Relationship Exploratorium 2025 (CURE 2025)</strong>. This will be a great way to spend a weekend surrounded by like-minded individuals, learning new topics and skills from fantastic presenters, and upgrading your toy bag(s) with new wares from our awesome vendors.</p>" 
+                        + "<p>We look forward to KIC’ing off the new year with you,</p>" 
+                        + "<p>Mike and Ashley<br> KIC Events</p>"
                     );
 
                 mailer.FormMessage = formMessage;
