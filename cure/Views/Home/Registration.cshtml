@@ -34,13 +34,6 @@
         }
         <div style="height: 20px;"></div>
     <form method="post" asp-area="" asp-controller="Home" asp-action="Registration">
-        @if (ViewBag.SoldOut == true)
-        {
-            <div class="container row">
-                <h2 class="main-title text-danger">SOLD OUT - All tickets have been sold, but you can still register and join the waitlist.</h2>
-            </div>
-            <input asp-for="WaitList" type="checkbox" checked hidden />
-        }
         <div class="container row">
             <div class="form-box">
                 <label asp-for="DiscountCode">If you have a discount code, enter it here:</label>
