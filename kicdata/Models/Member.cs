@@ -56,6 +56,10 @@ namespace KiCData.Models
 
         public User? User { get; set; }
         public Attendee? Attendee { get; set; }
+
+        public string? SexOnID { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
        
 
         [NotMapped]

@@ -305,7 +305,10 @@ namespace cure.Controllers
                                 DateOfBirth = reg.DateOfBirth,
                                 FetName = reg.FetName,
                                 ClubId = reg.ClubId,
-                                PhoneNumber = reg.PhoneNumber
+                                PhoneNumber = reg.PhoneNumber,
+                                SexOnID = reg.SexOnID,
+                                City = reg.City,
+                                State = reg.State
                             }
                         }
                     };
@@ -355,6 +358,9 @@ namespace cure.Controllers
                     member.FetName = reg.FetName;
                     member.ClubId = reg.ClubId;
                     member.PhoneNumber = reg.PhoneNumber;
+                    member.SexOnID = reg.SexOnID;
+                    member.City = reg.City;
+                    member.State = reg.State;
 
                     _kdbContext.SaveChanges();
                 }

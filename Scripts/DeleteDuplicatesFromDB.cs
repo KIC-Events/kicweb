@@ -28,7 +28,7 @@ namespace Scripts
                 {
                     if(member.FirstName == m.FirstName && member.LastName == m.LastName)
                     {
-                        if(m.DateOfBirth == new DateOnly(1900, 01, 01) && member.DateOfBirth != new DateOnly(1900, 01, 01))
+                        if(member.Id != m.Id)
                         {
                             Attendee? at = attendees
                                 .Where(a => a.MemberId == m.Id)

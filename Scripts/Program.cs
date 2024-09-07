@@ -27,6 +27,7 @@ namespace Scripts
             Console.WriteLine("3. Invite to closed beta from excel sheet.");
             Console.WriteLine("4. Delete duplicates from DB.");
             Console.WriteLine("5. Send emails from DB");
+            Console.WriteLine("6. Delete Dupes from list");
             Console.WriteLine("100. Exit.");
             string response = Console.ReadLine();
 
@@ -47,6 +48,9 @@ namespace Scripts
                 case "5":
                     SendEmailsFromDB(configuration, emailService);
                     break;
+                case "6":
+                    DeleteDupesFromList(configuration);
+                    break;
                 case "100":
                     Console.WriteLine("Goodbye.");
                     Environment.Exit(0);
@@ -57,6 +61,25 @@ namespace Scripts
             }
 
             Main(args);
+        }
+
+        private static void DeleteDupesFromList(IConfigurationRoot configuration)
+        {
+            Console.WriteLine("Please enter the full path to the file.");
+            string fPath = Console.ReadLine();
+            Console.WriteLine("Setting up...");
+            if (!File.Exists(fPath))
+            {
+                Console.WriteLine("That didn't work. Try again.");
+                return;
+            }
+            Console.WriteLine("Deleting dupes.");
+            Console.WriteLine("Buckle up.");
+            DbContextOptionsBuilder<KiCdbContext> builder = new DbContextOptionsBuilder<KiCdbContext>();
+            builder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
+            KiCdbContext context = new KiCdbContext(builder.Options);
+            DeleteDuplicatesFromList deleteDuplicatesFromList = new DeleteDuplicatesFromList(context);
+            deleteDuplicatesFromList.RunDelete(fPath);
         }
 
         private static void SendEmailsFromDB(IConfigurationRoot configuration, IEmailService emailService)
