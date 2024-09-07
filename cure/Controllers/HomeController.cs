@@ -338,6 +338,7 @@ namespace cure.Controllers
                     attendee.RoomPreference = reg.RoomType;
                     attendee.IsPaid = false;
                     attendee.isRegistered = true;
+                    attendee.Pronouns = reg.Pronouns;
 
                     member.FirstName = reg.FirstName;
                     member.LastName = reg.LastName;
