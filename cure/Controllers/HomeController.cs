@@ -42,6 +42,7 @@ namespace cure.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
             return View();
         }
 
@@ -186,7 +187,14 @@ namespace cure.Controllers
             List<RegistrationViewModel> regList = GetRegFromCookies();
             _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
             WriteRegToDB(regList);
-            string paymentURL = _paymentService.CreatePaymentLink(regList);
+            string paymentURL = "";
+            try
+            {
+                paymentURL = _paymentService.CreatePaymentLink(regList);
+            }catch (Exception ex)
+            {
+                return Redirect("Error");
+            }
             return Redirect(paymentURL);
         }
 
