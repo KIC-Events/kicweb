@@ -3,25 +3,16 @@
 
 <div class="view-body">
     <div class="container row">
-        <h1 class="main-title">Registration Opens In</h1>
+        <h1 class="main-title" id="regTitle">Registration Opens In</h1>
         <h2 id="countdown"></h2>        
     </div>
     <div class="conainer row" style="height:50px;"></div>
     <div class="container row">
-        @if(ViewBag.Beta == true)
-        {
-            <div class="col-sm-6 button-box">
-                <a asp-area="" asp-controller="Home" asp-action="Registration">
-                    <img class="flat-btn-blocked" src="~/css/images/reg_button.png" alt="Button linking to registration page." width="400px" height="400px" />
-                </a>
-            </div>
-        }
-        else
-        {
-            <div class="col-sm-6 button-box">
+        <div class="col-sm-6 button-box">
+            <a asp-area="" asp-controller="Home" asp-action="Registration" onclick="return regClickable()">
                 <img class="flat-btn-blocked" src="~/css/images/reg_button.png" alt="Button linking to registration page." width="400px" height="400px" />
-            </div>
-        }
+            </a>
+        </div>
         <div class="col-sm-6 button-box">
             <a href="https://kic-events.square.site/shop/apparel/GC4LGESG3OVGP6H7PHDCO6PY" target="_blank">
                 <img class="flat-btn" src="~/css/images/merch_button.png" alt="Button linking to merch store." width="400px" height="400px" />
@@ -51,27 +42,13 @@
             </a>
         </div>
     </div>
-    <div class="conainer row" style="height:50px;"></div>
-    <div class="container row">
-        <div class="form-fillable" style="max-width: 400px; text-align: center; margin: 0 auto;">
-            @using (Html.BeginForm())
-            {
-                <div class="form-control flat-btn">
-                    @Html.LabelFor(m => m.BetaCode)
-                    @Html.TextBoxFor(m => m.BetaCode, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.BetaCode, "", new { @class = "test-danger" })
-                </div>
-                <div class="form-control flat-btn">
-                    <input class="flat-btn" type="Submit" value="Submit" />
-                </div>
-            }
-        </div>
-    </div>
 </div>
 
 <script>
     // Set the date we're counting down to
-    var countDownDate = new Date("Sep 7, 2024 00:00:00").getTime();
+    var countDownDate = new Date(Date.UTC(2024, 8, 7, 3, 59, 59)).getTime();
+
+    var regOpen = false;
 
     // Update the count down every 1 second
     var x = setInterval(function () {
@@ -96,6 +73,19 @@
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("countdown").innerHTML = "Registration Now Open";
+
+            regOpen = true;
+
+            document.getElementById("regTitle").hidden = true;
         }
     }, 1000);
+
+    function regClickable() {
+        if (regOpen == false) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
 </script>

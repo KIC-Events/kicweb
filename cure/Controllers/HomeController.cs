@@ -42,23 +42,7 @@ namespace cure.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            BetaViewModel bvm = new BetaViewModel();
-            return View(bvm);
-        }
-
-        [HttpPost]
-        public IActionResult Index(BetaViewModel bvmUpdated)
-        {
-            if(bvmUpdated.BetaCode == _config["AppData:Beta_Code"])
-            {
-                ViewBag.Beta = true;
-            }
-            else
-            {
-                ViewBag.Beta = false;
-            }
-
-            return View(bvmUpdated);
+            return View();
         }
 
         public IActionResult ComingSoon()
