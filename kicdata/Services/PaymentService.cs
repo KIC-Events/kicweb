@@ -125,6 +125,12 @@ namespace KiCData.Services
                         case "Key Volunteer":
                             discountName = "Staff Comp";
                             break;
+                        case "Comp - Gratuity":
+                            discountName = "Staff Comp";
+                            break;
+                        case "Club 425 Member Discount":
+                            discountName = "Club 425 Member";
+                            break;
                         case "425 Early Access":
                             discountName = "Club 425 Member";
                             break;
