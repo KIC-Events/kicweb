@@ -84,6 +84,8 @@ namespace KiCData.Models.WebModels
         public string? State { get; set; }
 
         public bool WaitList { get; set; }
+
+        public string? Pronouns { get; set; }
     }
 
     public class VolunteerPositionSelection

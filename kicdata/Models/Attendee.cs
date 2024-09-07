@@ -23,6 +23,8 @@ namespace KiCData.Models
         [Display(Name = "Preferred Badge Name")]       
         public string? BadgeName { get; set; }
 
+        public string? Pronouns { get; set; }
+
         public bool BackgroundChecked { get; set; }
 
         public int ConfirmationNumber { get; set; }

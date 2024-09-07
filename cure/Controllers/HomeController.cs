@@ -288,6 +288,7 @@ namespace cure.Controllers
                             RoomPreference = reg.RoomType,
                             IsPaid = false,
                             isRegistered = true,
+                            Pronouns = reg.Pronouns,
                             Member = new Member()
                             {
                                 FirstName = reg.FirstName,
