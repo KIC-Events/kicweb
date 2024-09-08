@@ -32,7 +32,7 @@ namespace KiCData.Models
         [Required]
         public int VolunteerID { get; set; }
         [Required]
-        public int EventId { get; set; }
+        public int? EventId { get; set; }
 
         [Required]
         public string? PreferredPositions { get; set; }

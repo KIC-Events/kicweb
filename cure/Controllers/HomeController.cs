@@ -373,7 +373,7 @@ namespace cure.Controllers
                         LastName = reg.LastName,
                         Email = reg.Email,
                         Event = CURE,
-                        EventId = 1112
+                        EventId = CURE.Id
                     };
 
                     _kdbContext.PendingVolunteers.Add(pVol);
