@@ -220,14 +220,14 @@ namespace KiCWeb.Controllers
             }
             else
             {
-                EventVolunteerViewModel eVVm = new EventVolunteerViewModel
-                {
-                    VolunteerId = pending.VolunteerID,
-                    VolunteerName = pending.Volunteer.Member.FetName,
-                    EventId = pending.EventId,
-                    EventName = pending.Event.Name,
-                    Positions = pending.PreferredPositions.Split(',').Select(a => new SelectListItem { Value = a, Text = a }).ToList()
-                };
+                //EventVolunteerViewModel eVVm = new EventVolunteerViewModel
+                //{
+                //    VolunteerId = pending.VolunteerID,
+                //    VolunteerName = pending.Volunteer.Member.FetName,
+                //    EventId = pending.EventId,
+                //    EventName = pending.Event.Name,
+                //    Positions = pending.PreferredPositions.Split(',').Select(a => new SelectListItem { Value = a, Text = a }).ToList()
+                //};
             }
             
             return View(pending);

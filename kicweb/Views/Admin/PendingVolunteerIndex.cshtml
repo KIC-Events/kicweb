@@ -20,9 +20,9 @@
                 <th>
                     @Html.DisplayNameFor(m => m.Event.Name)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.Volunteer.Member.FetName)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.PreferredPositions)
                 </th>
@@ -38,9 +38,9 @@
                     <td>
                         <a asp-area="" asp-controller="Admin" asp-action="AdminEventDetails" asp-route-id="@item.EventId">@Html.DisplayFor(modelItem => item.Event.Name)</a>
                     </td>
-                    <td>
+                    @*<td>
                         <a asp-area="" asp-controller="Admin" asp-action="AdminEventDetails" asp-route-id="@item.VolunteerID">@Html.DisplayFor(modelItem => item.Volunteer.Member.FetName)</a>
-                    </td>
+                    </td>*@
                     @foreach (var position in item.PreferredPositions)
                     {
                         <td>

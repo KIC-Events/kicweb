@@ -30,14 +30,10 @@ namespace KiCData.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
-        public int VolunteerID { get; set; }
-        [Required]
         public int? EventId { get; set; }
 
         [Required]
         public string? PreferredPositions { get; set; }
-
-        public virtual Volunteer? Volunteer { get; set; }
         public virtual Event? Event { get; set; }
 
         public string FirstName { get; set; }
@@ -48,7 +44,6 @@ namespace KiCData.Models
 
         public PendingVolunteer(int volunteerID, int eventId, string? preferredPositions)
         {
-            VolunteerID = volunteerID;
             EventId = eventId;
             PreferredPositions = preferredPositions;
         }

@@ -63,7 +63,7 @@ namespace Scripts
                             Console.WriteLine("Deleting Member " + m.Id.ToString());
 
                             _context.Members.Remove(m);
-                            _context.SaveChanges();
+                            //_context.SaveChanges();
                         }
                     }
                 }
