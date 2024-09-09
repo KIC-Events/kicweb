@@ -39,6 +39,8 @@ namespace KiCWeb.Controllers
             PeopleViewModel pVM = new PeopleViewModel(members, volunteers, pendings, vendors, staff, presenters);
             return View(pVM);
         }
+
+
         public IActionResult SubmissionSuccess(string personType)
         {
             ViewBag.PersonType = personType;
