@@ -171,7 +171,7 @@ namespace cure.Controllers
         {
             List<RegistrationViewModel> regList = GetRegFromCookies();
             _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
-            WriteRegToDB(regList);
+            WriteRegToDB(regList, null, null);
             return View();
         }
 
@@ -186,8 +186,7 @@ namespace cure.Controllers
         {
             List<RegistrationViewModel> regList = GetRegFromCookies();
             _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
-            WriteRegToDB(regList);
-            string paymentURL = "";
+            PaymentLink paymentURL;
             try
             {
                 paymentURL = _paymentService.CreatePaymentLink(regList);
@@ -195,7 +194,10 @@ namespace cure.Controllers
             {
                 return Redirect("Error");
             }
-            return Redirect(paymentURL);
+
+            WriteRegToDB(regList, paymentURL.OrderId, paymentURL.Id);
+
+            return Redirect(paymentURL.Url);
         }
 
         public IActionResult Privacy()
@@ -221,6 +223,23 @@ namespace cure.Controllers
         [Route("~/RegistrationSuccessful/**")]
         public IActionResult RegSuccess()
         {
+            List<RegistrationViewModel> registrationList = GetRegFromCookies();
+            foreach (RegistrationViewModel registration in registrationList)
+            {
+                Member? member = _kdbContext.Members
+                    .Where(m => m.FirstName == registration.FirstName && m.LastName == registration.LastName && m.DateOfBirth == registration.DateOfBirth)
+                    .FirstOrDefault();
+
+                if (member is not null)
+                {
+                    Attendee? attendee = _kdbContext.Attendees
+                        .Where(a => a.MemberId == member.Id)
+                        .FirstOrDefault();
+
+                    if (attendee is not null) { attendee.IsPaid = true; }
+                }
+            }
+
             return View();
         }
 
@@ -270,7 +289,7 @@ namespace cure.Controllers
             }
         }
 
-        private void WriteRegToDB(List<RegistrationViewModel> regList)
+        private void WriteRegToDB(List<RegistrationViewModel> regList, string orderID, string paymentLinkID)
         {
             KiCData.Models.Event? CURE = _kdbContext.Events.Where(e => e.Name == "CURE").FirstOrDefault();
             foreach(var reg in regList)
@@ -297,6 +316,8 @@ namespace cure.Controllers
                             IsPaid = false,
                             isRegistered = true,
                             Pronouns = reg.Pronouns,
+                            OrderID = orderID,
+                            PaymentLinkID = paymentLinkID,
                             Member = new Member()
                             {
                                 FirstName = reg.FirstName,
@@ -350,6 +371,8 @@ namespace cure.Controllers
                     attendee.IsPaid = false;
                     attendee.isRegistered = true;
                     attendee.Pronouns = reg.Pronouns;
+                    attendee.OrderID = orderID;
+                    attendee.PaymentLinkID = paymentLinkID;
 
                     member.FirstName = reg.FirstName;
                     member.LastName = reg.LastName;
