@@ -1,4 +1,5 @@
-﻿using KiCData.Models.WebModels;
+﻿using KiCData.Models;
+using KiCData.Models.WebModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Square;
@@ -87,14 +88,14 @@ namespace KiCData.Services
             return response;
         }
 
-        public string CreatePaymentLink(List<RegistrationViewModel> regList)
+        public PaymentLink CreatePaymentLink(List<RegistrationViewModel> regList)
         {
-            string paymentLink = createPaymentLink(regList);
+            PaymentLink paymentLink = createPaymentLink(regList);
 
             return paymentLink;
         }
 
-        private string createPaymentLink(List<RegistrationViewModel> regList)
+        private PaymentLink createPaymentLink(List<RegistrationViewModel> regList)
         {
             List<OrderLineItem> orderLineItems = new List<OrderLineItem>();
             List<OrderLineItemDiscount> orderDiscounts = new List<OrderLineItemDiscount>();
@@ -165,14 +166,6 @@ namespace KiCData.Services
                 orderLineItems.Add(orderLineItem);
             }
 
-            string paymentLink = "";
-
-            if(orderLineItems.Count == 0)
-            {
-                paymentLink = "https://cure.kicevents.com/Error";
-                return paymentLink;
-            }
-
             OrderServiceCharge orderServiceCharge = new OrderServiceCharge.Builder()
                 .Name("Handling Fee")
                 .Percentage("3")
@@ -210,21 +203,23 @@ namespace KiCData.Services
                 .CheckoutOptions(options)
                 .Build();
 
+            PaymentLink paymentLink;
+
             try
             {
                 CreatePaymentLinkResponse response = _client.CheckoutApi.CreatePaymentLink(paymentRequest);
 
-                paymentLink = response.PaymentLink.Url;
+                paymentLink = response.PaymentLink;
             }
             catch(Square.Exceptions.ApiException ex)
             {
                 _logger.LogSquareEx(ex);
-                paymentLink = "https://cure.kicevents.com/Error";
+                throw ex;
             }
             catch (Exception ex)
             {
                 _logger.Log(ex);
-                paymentLink = "https://cure.kicevents.com/Error";
+                throw ex;
             }
 
             return paymentLink;

@@ -1,4 +1,5 @@
 ﻿using KiCData.Models.WebModels;
+using Square.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace KiCData.Services
     public interface IPaymentService
     {
         public int CheckInventory(string objectSearchTerm, string variationSearchTerm);
-        public string CreatePaymentLink(List<RegistrationViewModel> regList);
+        public PaymentLink CreatePaymentLink(List<RegistrationViewModel> regList);
     }
 }
