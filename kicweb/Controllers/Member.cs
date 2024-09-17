@@ -15,16 +15,18 @@ using System.Security.Cryptography;
 namespace KiCWeb.Controllers
 {
 	[Route("[controller]")]
-	public class Member : Controller
+	public class Member : KICController
 	{
+		private readonly IConfigurationRoot _config;
 		private readonly ILogger<Member> _logger;
 		private readonly ICookieService _cookieService;
 		private readonly IHttpContextAccessor _contextAccessor;
 		private readonly IUserService _userService;
 		private readonly KiCdbContext _context;
 
-		public Member(ILogger<Member> logger, IUserService userService, ICookieService cookieService, IHttpContextAccessor contextAccessor, KiCdbContext kiCdbContext)
+		public Member(IConfigurationRoot configurationRoot, ILogger<Member> logger, IUserService userService, ICookieService cookieService, IHttpContextAccessor contextAccessor, KiCdbContext kiCdbContext) : base(configurationRoot, userService: null, contextAccessor, kiCdbContext, cookieService)
 		{
+			_config = configurationRoot;
 			_logger = logger;
 			_userService = userService;
 			_cookieService = cookieService;
@@ -35,12 +37,7 @@ namespace KiCWeb.Controllers
 		[HttpGet]
 		public IActionResult Register()
 		{
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
-
-            RegisterViewModel rvm = new RegisterViewModel()
+			RegisterViewModel rvm = new RegisterViewModel()
 			{
 				LegalName = "",
 				EmailAddress = "",
@@ -73,12 +70,7 @@ namespace KiCWeb.Controllers
 		[Route("~/Member/Login")]
 		public IActionResult Login()
 		{
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
-
-			UserViewModel uvm = new UserViewModel();
+            UserViewModel uvm = new UserViewModel();
 
 			return View(uvm);
         }
@@ -87,14 +79,13 @@ namespace KiCWeb.Controllers
 		[Route("~/Member/Login")]
 		public IActionResult Login(UserViewModel uvmUpdated)
 		{
-			int? memberId;
+			User? user;
 
 			try
 			{
-                memberId = _context.User
-                .Where(u => u.Username == uvmUpdated.UserName)
-                .FirstOrDefault()
-                .MemberId;
+				user = _context.User
+				.Where(u => u.Username == uvmUpdated.UserName)
+				.FirstOrDefault();
             }
 			catch(NullReferenceException ex)
 			{
@@ -107,12 +98,15 @@ namespace KiCWeb.Controllers
 				return View(uvmUpdated);
             }
 
-			string hash = HashPassword(uvmUpdated.Password, memberId);
+			if(user is null)
+			{
+                ViewBag.Error = "Username Incorrect.";
+                return View(uvmUpdated);
+            }
 
-			string compareHash = _context.User
-				.Where(u => u.MemberId == memberId)
-				.FirstOrDefault()
-				.Password;
+			string hash = HashPassword(uvmUpdated.Password, user.MemberId);
+
+			string compareHash = user.Password;
 
 			if(compareHash != hash)
 			{
@@ -120,14 +114,12 @@ namespace KiCWeb.Controllers
 				return View(uvmUpdated);
 			}
 
-			string authToken = _context.User
-				.Where(u => u.MemberId == memberId)
-				.FirstOrDefault()
-				.Token;
+			string? userName = user.Username;
+			string? authToken = user.Token;
 
-			if (authToken != null)
+			if (authToken != null && userName != null)
 			{
-				SetAuthToken(authToken, _contextAccessor.HttpContext);
+				SetAuthToken(userName, authToken, _contextAccessor.HttpContext);
 				return Redirect("~/Admin/AdminServices");
 			}
 			else
@@ -145,27 +137,35 @@ namespace KiCWeb.Controllers
 
 		private string HashPassword(string password, int? memberId)
 		{
-			byte[] salt = Encoding.UTF8.GetBytes(memberId.ToString());
-			byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+			string salted = password + memberId.ToString();
 
-			byte[] hash = Rfc2898DeriveBytes.Pbkdf2(
-				passwordBytes,
-				salt,
-				350000,
-				HashAlgorithmName.SHA512,
-				64);
+			var bytes = Encoding.UTF8.GetBytes(salted);
 
-			string hashedPassword = Convert.ToBase64String(hash);
-			return hashedPassword;
+			using(var hash = SHA512.Create())
+			{
+				var hashedBytes = hash.ComputeHash(bytes);
+
+                var hashPW = BitConverter.ToString(hashedBytes).Replace("-", "");
+
+                return hashPW;
+			}
 		}
 
-		private void SetAuthToken(string authToken, HttpContext context)
+		private void SetAuthToken(string userName, string authToken, HttpContext context)
 		{
 			_contextAccessor.HttpContext = context;
 
 			CookieOptions cookieOptions = _cookieService.NewCookieFactory();
 
-			context.Response.Cookies.Append("kic_auth", "true", cookieOptions);
+			context.Response.Cookies.Append("KICAuth", "true", cookieOptions);
+
+			cookieOptions = _cookieService.NewCookieFactory();
+
+			context.Response.Cookies.Append("UserName", userName, cookieOptions);
+
+			cookieOptions = _cookieService.NewCookieFactory();
+
+			context.Response.Cookies.Append("AuthToken", authToken, cookieOptions);
 		}
 	}
 }
