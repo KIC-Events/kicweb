@@ -1,6 +1,7 @@
 ﻿using KiCData.Models;
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.HostFiltering;
 using KiCData.Models.WebModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace KiCWeb.Controllers
 {
     [Route("[controller]")]
-    public class Admin : Controller
+    public class Admin : KICAuthController
     {
 
         private readonly ILogger<Admin> _logger;
@@ -22,7 +23,7 @@ namespace KiCWeb.Controllers
         private readonly KiCdbContext _context;
         private readonly ICookieService _cookieService;
 
-        public Admin(ILogger<Admin> logger, IConfigurationRoot configurationRoot, IUserService userService, IHttpContextAccessor httpContextAccessor, KiCdbContext kiCdbContext, ICookieService cookieService)
+        public Admin(ILogger<Admin> logger, IConfigurationRoot configurationRoot, IUserService userService, IHttpContextAccessor httpContextAccessor, KiCdbContext kiCdbContext, ICookieService cookieService) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _logger = logger;
             _userService = userService;
@@ -37,16 +38,6 @@ namespace KiCWeb.Controllers
         [Route("~/Admin/AdminServices")]
         public IActionResult AdminServices()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~/Home/Index");
-            }
-
-            if (!_cookieService.AuthTokenCookie(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~/Member/Login");
-            }
-            
             return View();
         }
 
@@ -55,10 +46,8 @@ namespace KiCWeb.Controllers
         [Route("Tickets")]
         public IActionResult AdminTickets()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
+
+
             TicketViewModel ticket = new TicketViewModel
             {
                 Events = _context.Events.Select(
@@ -103,10 +92,6 @@ namespace KiCWeb.Controllers
         [Route("Events")]
         public IActionResult AdminEvents()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             IEnumerable<Event> events = _context.Events.Include(b => b.Venue).ToList();
             return View(events);
         }
@@ -116,10 +101,6 @@ namespace KiCWeb.Controllers
         [Route("Events/{id}")]
         public IActionResult AdminEventDetails(int id)
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             Event events = _context.Events.Where(a => a.Id == id).FirstOrDefault();
             events.Venue = _context.Venue.Where(a => a.Id == events.VenueId).FirstOrDefault();
             events.Tickets = _context.Ticket.Where(a => a.EventId == id).ToList();
@@ -132,11 +113,6 @@ namespace KiCWeb.Controllers
         [Route("Events/Create")]
         public IActionResult AdminEventCreate()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
-            
             EventViewModel evm = new EventViewModel
             {
                 Venues = _context.Venue.Select(
@@ -152,7 +128,8 @@ namespace KiCWeb.Controllers
         }
         //Post request for adding a new event to the database
         [HttpPost]
-        public IActionResult AdminEventCreate(EventViewModel model) { 
+        public IActionResult AdminEventCreate(EventViewModel model) 
+        {
             if (ModelState.IsValid)
             {
                 Event ev = new Event
@@ -179,10 +156,6 @@ namespace KiCWeb.Controllers
         [Route("Events/Edit/{id}")]
         public IActionResult AdminEventEdit(int id)
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             Event events = _context.Events.Where(a => a.Id == id).FirstOrDefault();
             
             return View(events);
@@ -196,10 +169,6 @@ namespace KiCWeb.Controllers
         [Route("Volunteers")]
         public IActionResult PendingVolunteerIndex()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             IEnumerable<PendingVolunteer> pending = _context.PendingVolunteers.ToList();
             return View(pending);
         }
@@ -209,10 +178,6 @@ namespace KiCWeb.Controllers
         [Route("Volunteers/Approve/{id}")]
         public IActionResult VolunteerApproval(int id)
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             PendingVolunteer pending = _context.PendingVolunteers.Where(a => a.Id == id).FirstOrDefault();
             if (pending == null)
             {
@@ -235,11 +200,7 @@ namespace KiCWeb.Controllers
         [HttpPost]
         public IActionResult VolunteerApproval(EventVolunteerViewModel eventVolunteer)
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 EventVolunteer volunteer = new EventVolunteer
                 {

@@ -21,13 +21,16 @@ IConfigurationRoot config = configBuilder.Build();
 
 // Add services to the container.
 builder.Services.AddSingleton(config);
+DbContextOptionsBuilder<KiCdbContext> dbOptionsBuilder = new DbContextOptionsBuilder<KiCdbContext>();
+dbOptionsBuilder.UseMySql(config["Database:ConnectionString"], ServerVersion.AutoDetect(config["Database:ConnectionString"]));
+DbContextOptions<KiCdbContext> options = dbOptionsBuilder.Options;
+builder.Services.AddSingleton<KiCdbContext>(new KiCdbContext(options));
 builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICookieService, CookieService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
-builder.Services.AddDbContext<KiCdbContext>(options => options.UseMySql(config["Database:ConnectionString"], ServerVersion.AutoDetect(config["Database:ConnectionString"])));
 builder.Services.AddControllersWithViews();
 
 WebApplication app = builder.Build();

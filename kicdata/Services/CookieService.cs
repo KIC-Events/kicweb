@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using KiCData.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace KiCData.Services
@@ -6,10 +7,12 @@ namespace KiCData.Services
     public class CookieService : ICookieService
     {
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly KiCdbContext _dbContext;
 
-        public CookieService(IHttpContextAccessor contextAccessor)
+        public CookieService(IHttpContextAccessor contextAccessor, KiCdbContext kiCdbContext)
         {
             _contextAccessor = contextAccessor;
+            _dbContext = kiCdbContext;
         }
 
         /// <summary>
@@ -28,10 +31,26 @@ namespace KiCData.Services
 
         public bool AuthTokenCookie(HttpRequest context)
         {
-            var cookie = context.Cookies["kic_auth"];
+            var cookies = context.Cookies;
 
-            if (cookie == null) { return false; }
-            else if (cookie == "true") { return true; }
+            if (cookies["KICAuth"] == null) { return false; }
+            else if (cookies["KICAuth"] == "true")
+            {
+                if (cookies["UserName"]  != null && cookies["AuthToken"] != null)
+                {
+                    User? user = _dbContext.User
+                        .Where(u => u.Username == cookies["UserName"])
+                        .FirstOrDefault();
+
+                    if(user is not null)
+                    {
+                        if (user.Token == cookies["AuthToken"]) { return true; }
+                        else { return false; }
+                    }
+                    else { return false; }
+                }
+                else { return false; } 
+            }
             else { return false; }
         }
 

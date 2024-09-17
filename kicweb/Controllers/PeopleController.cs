@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KiCWeb.Controllers
 {
     [Route("[controller]")]
-    public class PeopleController : Controller
+    public class PeopleController : KICAuthController
     {
         private readonly IKiCLogger _logger;
         private readonly IHttpContextAccessor _contextAccessor;
@@ -15,7 +15,7 @@ namespace KiCWeb.Controllers
         private readonly IConfigurationRoot _configurationRoot;
         private KiCdbContext _kdbContext;
 
-        public PeopleController(IKiCLogger logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext)
+        public PeopleController(IKiCLogger logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext) : base(configurationRoot, userService: null, httpContextAccessor, kiCdbContext, cookieService)
         {
             _logger = logger;
             _contextAccessor = httpContextAccessor;
@@ -26,10 +26,6 @@ namespace KiCWeb.Controllers
         }
         public IActionResult Index()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             List<PendingVolunteer> pendings = _kdbContext.PendingVolunteers.Take(10).ToList();
             List<Volunteer> volunteers = _kdbContext.Volunteers.Take(10).ToList();
             List<KiCData.Models.Member> members = _kdbContext.Members.Take(10).ToList();
