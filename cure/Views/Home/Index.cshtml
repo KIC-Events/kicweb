@@ -3,7 +3,6 @@
 
 <div class="view-body">
     <div class="container row">
-        <h1 class="main-title" id="regTitle">Registration Opens In</h1>
         <h2 id="countdown"></h2>        
     </div>
     <div class="conainer row" style="height:50px;"></div>
@@ -74,7 +73,7 @@
 
 <script>
     // Set the date we're counting down to
-    var countDownDate = new Date(Date.UTC(2024, 8, 7, 3, 59, 59)).getTime();
+    var countDownDate = new Date(Date.UTC(2025, 0, 10, 14, 0, 0)).getTime();
 
     var regOpen = false;
 
@@ -94,7 +93,7 @@
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Display the result in the element with id="countdown"
-        document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+        document.getElementById("countdown").innerHTML = "CURE begins in " + days + "d " + hours + "h "
             + minutes + "m " + seconds + "s ";
 
         // If the count down is finished, write some text
