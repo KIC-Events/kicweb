@@ -223,7 +223,17 @@ namespace cure.Controllers
         [Route("~/RegistrationSuccessful/**")]
         public IActionResult RegSuccess()
         {
-            List<RegistrationViewModel> registrationList = GetRegFromCookies();
+            List<RegistrationViewModel> registrationList = new List<RegistrationViewModel>();
+
+            try
+            {
+                registrationList = GetRegFromCookies();
+            }
+            catch(ArgumentNullException ex)
+            {
+                //TODO: log
+            }
+
             foreach (RegistrationViewModel registration in registrationList)
             {
                 Member? member = _kdbContext.Members
