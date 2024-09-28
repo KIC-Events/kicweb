@@ -53,8 +53,8 @@ namespace cure.Controllers
 
         public IActionResult Presenters()
         {
-            //return View();
-            return RedirectToAction("ComingSoon");
+            return View();
+            //return RedirectToAction("ComingSoon");
         }
 
         public IActionResult Vendors()
