@@ -58,6 +58,9 @@ namespace KiCData.Migrations
                     b.Property<bool>("IsPaid")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool?>("IsRefunded")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int?>("MemberId")
                         .HasColumnType("int");
 
