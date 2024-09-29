@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KiCData.Migrations
 {
     [DbContext(typeof(KiCdbContext))]
-    [Migration("20240902204115_0.1.5Beta")]
-    partial class _015Beta
+    [Migration("20240929183737_9-29")]
+    partial class _929
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,8 +61,20 @@ namespace KiCData.Migrations
                     b.Property<bool>("IsPaid")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool?>("IsRefunded")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int?>("MemberId")
                         .HasColumnType("int");
+
+                    b.Property<string>("OrderID")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PaymentLinkID")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Pronouns")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("RoomPreference")
                         .HasColumnType("longtext");
@@ -248,6 +260,9 @@ namespace KiCData.Migrations
                     b.Property<string>("AdditionalInfo")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("City")
+                        .HasColumnType("longtext");
+
                     b.Property<int?>("ClubId")
                         .HasColumnType("int");
 
@@ -279,6 +294,12 @@ namespace KiCData.Migrations
                     b.Property<int?>("PublicId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SexOnID")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("State")
+                        .HasColumnType("longtext");
+
                     b.Property<int?>("VendorId")
                         .HasColumnType("int");
 
@@ -303,7 +324,8 @@ namespace KiCData.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("EventId")
+                    b.Property<int?>("EventId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
@@ -318,14 +340,9 @@ namespace KiCData.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("VolunteerID")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
-
-                    b.HasIndex("VolunteerID");
 
                     b.ToTable("PendingVolunteers");
                 });
@@ -743,15 +760,7 @@ namespace KiCData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("KiCData.Models.Volunteer", "Volunteer")
-                        .WithMany()
-                        .HasForeignKey("VolunteerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Event");
-
-                    b.Navigation("Volunteer");
                 });
 
             modelBuilder.Entity("KiCData.Models.Presentation", b =>

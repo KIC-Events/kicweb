@@ -319,12 +319,12 @@ namespace cure.Controllers
                         {
                             BadgeName = reg.BadgeName,
                             BackgroundChecked = false,
-                            ConfirmationNumber = Guid.NewGuid().GetHashCode(),
+                            ConfirmationNumber = 0,
                             RoomWaitListed = true,
                             TicketWaitListed = reg.WaitList,
                             RoomPreference = reg.RoomType,
                             IsPaid = false,
-                            isRegistered = true,
+                            isRegistered = false,
                             Pronouns = reg.Pronouns,
                             OrderID = orderID,
                             PaymentLinkID = paymentLinkID,
@@ -374,12 +374,12 @@ namespace cure.Controllers
                     attendee.TicketId = ticket.Id;
                     attendee.BadgeName = reg.BadgeName;
                     attendee.BackgroundChecked = false;
-                    attendee.ConfirmationNumber = Guid.NewGuid().GetHashCode();
+                    attendee.ConfirmationNumber = 0;
                     attendee.RoomWaitListed = true;
                     attendee.TicketWaitListed = reg.WaitList;
                     attendee.RoomPreference = reg.RoomType;
                     attendee.IsPaid = false;
-                    attendee.isRegistered = true;
+                    attendee.isRegistered = false;
                     attendee.Pronouns = reg.Pronouns;
                     attendee.OrderID = orderID;
                     attendee.PaymentLinkID = paymentLinkID;

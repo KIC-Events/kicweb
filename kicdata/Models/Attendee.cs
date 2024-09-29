@@ -34,6 +34,8 @@ namespace KiCData.Models
 
         public bool IsPaid { get; set; }
 
+        public bool? IsRefunded { get; set; }
+
         public string? OrderID { get; set; }
 
         public string? PaymentLinkID { get; set; }

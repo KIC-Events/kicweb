@@ -5,24 +5,23 @@
 namespace KiCData.Migrations
 {
     /// <inheritdoc />
-    public partial class _1_0 : Migration
+    public partial class _929 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Pronouns",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsRefunded",
                 table: "Attendee",
-                type: "longtext",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
+                type: "tinyint(1)",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Pronouns",
+                name: "IsRefunded",
                 table: "Attendee");
         }
     }
