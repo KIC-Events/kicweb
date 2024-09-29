@@ -1,7 +1,11 @@
 ﻿@page
 
 <div class="view-body">
-    <img src="~/css/images/wait-meme.jpg" alt="A kermit meme that says 'payment link loading'" style="height: auto; width: auto;" />
+    <img class="responsive" src="~/css/images/wait-meme.jpg" alt="A kermit meme that says 'payment link loading'" style="height: auto; width: auto;" />
+    <div class="container row">
+        <h4 class="main-title">Your payment link is being genreated. This may take a moment.</h4>
+        <p>Sometimes, this page redirects to an error. This happens when the payment processor's website doesn't move as fast as ours. If that happens, just wait a few seconds and hit refresh to get to your payment information. </p>
+    </div>
 </div>
 
 <script>
@@ -9,5 +13,5 @@
         window.location.href = "Payment";
     }
 
-    window.setTimeout(delayer, 3000);
+    window.setTimeout(delayer, 8000);
 </script>
