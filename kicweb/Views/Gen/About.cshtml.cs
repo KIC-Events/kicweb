@@ -6,20 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace KiCWeb.Views.Home
+namespace KiCWeb.Views.Gen
 {
-    public class Volunteers : PageModel
+    public class About : PageModel
     {
-        private readonly ILogger<Volunteers> _logger;
+        private readonly ILogger<About> _logger;
 
-        public Volunteers(ILogger<Volunteers> logger)
+        public About(ILogger<About> logger)
         {
             _logger = logger;
         }
 
         public void OnGet()
         {
-            
         }
     }
 }

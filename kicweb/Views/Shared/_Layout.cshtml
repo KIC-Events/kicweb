@@ -26,7 +26,7 @@
                             <a class="flat-btn nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="flat-btn nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                            <a class="flat-btn nav-link" asp-area="" asp-controller="Gen" asp-action="About">About</a>
                         </li>
                         @*<li class="nav-item">
                             <a class="nav-link flat-btn" target="_blank" href="https://kic-events.square.site/shop/apparel/INJSIHWIBYY7LG4HENI4NYFL">Merch</a>
@@ -37,7 +37,7 @@
                                 asp-action="Purchase">Purchase Tickets</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link flat-btn" asp-area="" asp-controller="Home" asp-action="GetInvolved">Get Involved</a>
+                            <a class="nav-link flat-btn" asp-area="" asp-controller="Gen" asp-action="GetInvolved">Get Involved</a>
                         </li>
                         @*Issue #86 https://github.com/Malechus/kic/issues/86*@
                         @*
@@ -55,7 +55,7 @@
                         </li>
                         *@
                         <li class="nav-item">
-                            <a class="nav-link flat-btn" asp-area="" asp-controller="Home"
+                            <a class="nav-link flat-btn" asp-area="" asp-controller="Gen"
                                 asp-action="Privacy">Privacy</a>
                         </li>
                        @if (User.IsInRole("Admin") || User.IsInRole("Contributor"))
@@ -80,7 +80,7 @@
                         asp-action="Login">Login</a>
                         </li>*@
                         <li class="nav-item">
-                            <a class="nav-link flat-btn" asp-area="" asp-controller="Home" asp-action="Club425">Club 425 Sign Up</a>
+                            <a class="nav-link flat-btn" asp-area="" asp-controller="Gen" asp-action="Club425">Club 425 Sign Up</a>
                         </li>
                     </ul>
                 </div>
@@ -95,7 +95,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - KIC Events LLC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a> - <a asp-area="" asp-controller="Admin" asp-action="AdminServices">Admin Services</a>
+            &copy; 2023 - KIC Events LLC - <a asp-area="" asp-controller="Gen" asp-action="Privacy">Privacy</a> - <a asp-area="" asp-controller="Gen" asp-action="Contact">Contact</a> - <a asp-area="" asp-controller="Admin" asp-action="AdminServices">Admin Services</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
