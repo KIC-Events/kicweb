@@ -1,4 +1,4 @@
-﻿@page
+﻿
 @model KiCData.Models.WebModels.IndexViewModel
 
 <div class="view-body">
@@ -139,24 +139,15 @@
             <p>This site is intended only for persons 18 years of age or older.</p>
             <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
             <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
-            @using (Html.BeginForm())
-            {
-                @Html.HiddenFor(model => model.Consent, true)
-                
-                <p>
-                    <button id="age-gate-button-accept" type="submit">Accept</button>
-                    <button id="age-gate-button-decline">Decline</button>
-                </p>
-            }            
+            <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
+                <div class="form-group">
+                    <input asp-for="Consent" type="checkbox" />
+                    <label asp-for="Consent">Check here if you consent.</label>
+                </div>
+                <div class="form-grou">
+                    <button class="flat-btn" type="submit" value="Accept">Accept</button>
+                </div>
+            </form>
         </div>
     </div>
 }
-
-<script>
-    var acceptBtn = document.getElementById("age-gate-button-accept");
-    var declineBtn = document.getElementById("age-gate-button-decline");
-
-    declineBtn.onclick = function(){
-        window.location=('https://google.com')
-    }
-</script>

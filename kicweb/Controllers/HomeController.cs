@@ -39,7 +39,7 @@ public class HomeController : Controller
 	{
 		IndexViewModel ivm = new IndexViewModel()
 		{
-			Consent = true
+			Consent = false
 		};
 
 		if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
@@ -76,7 +76,14 @@ public class HomeController : Controller
 		else
 		{
 			ViewBag.AgeGateCookieAccepted = false;
-			return View();
+
+            List<Event> events = _kdbContext.Events
+                .Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
+                .ToList();
+
+            ViewBag.Events = events;
+
+            return View();
 		}
 	}
 

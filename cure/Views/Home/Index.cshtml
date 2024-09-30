@@ -1,4 +1,4 @@
-﻿@model Cure.Models.BetaViewModel
+﻿@model KiCData.Models.WebModels.IndexViewModel
 
 
 <div class="view-body">
@@ -8,7 +8,7 @@
     <div class="conainer row" style="height:50px;"></div>
     <div class="container row">
         <div class="col-sm-6 button-box">
-            <a asp-area="" asp-controller="Home" asp-action="Registration" onclick="return regClickable()">
+            <a asp-area="" asp-controller="GenController" asp-action="Registration">
                 <img class="flat-btn-blocked" src="~/css/images/reg_button.png" alt="Button linking to registration page." width="400px" height="400px" />
             </a>
         </div>
@@ -21,22 +21,22 @@
     <div class="conainer row" style="height:50px;"></div>
     <div class="container row">
         <div class="col-sm-3 button-box">
-            <a asp-area="" asp-controller="Home" asp-action="Presenters">
+            <a asp-area="" asp-controller="GenController" asp-action="Presenters">
                 <img class="flat-btn" src="~/css/images/pres_button.png" alt="Button linking to presenters list." width="200px" height="200px" />
             </a>
         </div>
         <div class="col-sm-3 button-box">
-            <a asp-area="" asp-controller="Home" asp-action="Vendors">
+            <a asp-area="" asp-controller="GenController" asp-action="Vendors">
                 <img class ="flat-btn" src="~/css/images/vend_button.png" alt="Button linking to vendors list." width="200px" height="200px" />
             </a>
         </div>
         <div class="col-sm-3 button-box3">
-            <a asp-area="" asp-controller="Home" asp-action="Schedule">
+            <a asp-area="" asp-controller="GenController" asp-action="Schedule">
                 <img class="flat-btn" src="~/css/images/sched_button.png" alt="Button linking to event schedule." width="200px" height="200px" />
             </a>
         </div>
         <div class="col-sm-3 button-box">
-            <a asp-area="" asp-controller="Home" asp-action="Rules">
+            <a asp-area="" asp-controller="GenController" asp-action="Rules">
                 <img class="flat-btn" src="~/css/images/rules_button.png" alt="Button linking to event rules." width="200px" height="200px" />
             </a>
         </div>
@@ -74,6 +74,26 @@
         </div>
     </div>
 </div>
+
+@if (!ViewBag.AgeGateCookieAccepted)
+{
+    <div id="AgeGateModal" class="modal">
+        <div class="modal-content">
+            <p>This site is intended only for persons 18 years of age or older.</p>
+            <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
+            <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
+            <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
+                <div class="form-group">
+                    <input asp-for="Consent" type="checkbox" />
+                    <label asp-for="Consent">Check here if you consent.</label>
+                </div>
+                <div class="form-grou">
+                    <button class="flat-btn" type="submit" value="Accept">Accept</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
 
 <script>
     // Set the date we're counting down to
