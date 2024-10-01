@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KiCWeb.Controllers
 {
-    public class OwnerController : Controller
+    public class OwnerController : KICAuthController
     {
         private readonly ILogger<Admin> _logger;
         private readonly IConfigurationRoot _configurationRoot;
@@ -19,7 +19,7 @@ namespace KiCWeb.Controllers
         private readonly KiCdbContext _context;
         private readonly ICookieService _cookieService;
 
-        public OwnerController(ILogger<Admin> logger, IConfigurationRoot configurationRoot, IUserService userService, IHttpContextAccessor httpContextAccessor, KiCdbContext kiCdbContext, ICookieService cookieService)
+        public OwnerController(ILogger<Admin> logger, IConfigurationRoot configurationRoot, IUserService userService, IHttpContextAccessor httpContextAccessor, KiCdbContext kiCdbContext, ICookieService cookieService) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _logger = logger;
             _userService = userService;
@@ -30,19 +30,11 @@ namespace KiCWeb.Controllers
         }
         public IActionResult Index()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             return View();
         }
 
         public IActionResult CompIndex()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             IEnumerable<TicketComp> comps = _context.TicketComp.ToList();
             return View(comps);
         }
@@ -50,20 +42,12 @@ namespace KiCWeb.Controllers
         [HttpGet]
         public IActionResult CompAdd()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             return View();
         }
 
         [HttpPost]
         public IActionResult CompAdd(CompViewModel comp)
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             if (ModelState.IsValid)
             {
                 for (int i = 0; i < comp.CompQuantity; i++)
@@ -81,10 +65,6 @@ namespace KiCWeb.Controllers
         [HttpGet]
         public IActionResult CompEdit(int id)
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             var comp = _context.TicketComp.Find(id);
             if (comp == null)
             {
@@ -96,10 +76,6 @@ namespace KiCWeb.Controllers
         [HttpPost]
         public IActionResult CompEdit(TicketComp comp)
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             if (ModelState.IsValid)
             {
                 _context.TicketComp.Update(comp);
@@ -112,10 +88,6 @@ namespace KiCWeb.Controllers
         //[HttpPost]
         public IActionResult CompDelete(int id) 
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("Home/Index");
-            }
             TicketComp comp = _context.TicketComp.Find(id);
             if (comp != null) 
             {

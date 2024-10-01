@@ -68,16 +68,6 @@
                         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="SexOnID"></label>
-                        <select asp-for="SexOnID" class="form-control">
-                            <option value="" disabled selected>Sex on ID Card</option>
-                            <option value="M">M/Male</option>
-                            <option value="F">F/Female</option>
-                            <option value="X">X</option>
-                        </select>
-                        <span asp-validation-for="SexOnID" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
                         <label asp-for="PhoneNumber"></label>
                         <input asp-for="PhoneNumber" class="form-control" />
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
@@ -89,7 +79,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="State"></label>
-                        <select asp-for="State" class="form-control">
+                        <select asp-for="State" id="state" class="form-control">
                             <option value="" disabled selected>Select State</option>
                             <option value="Alabama">Alabama</option>
                             <option value="Alaska">Alaska</option>
@@ -138,11 +128,22 @@
                             <option value="Vermont">Vermont</option>
                             <option value="Virginia">Virginia</option>
                             <option value="Washington">Washington</option>
+                            <option value="Washington, D.C.">Washington, D.C.</option>
                             <option value="West Virginia">West Virginia</option>
                             <option value="Wisconsin">Wisconsin</option>
                             <option value="Wyoming">Wyoming</option>
                             <option value="Outside the United States or other Territory">Outside the United States or other Territory</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SexOnID"></label>
+                        <select asp-for="SexOnID" class="form-control">
+                            <option value="" disabled selected>Sex on ID Card</option>
+                            <option value="M">M/Male</option>
+                            <option value="F">F/Female</option>
+                            <option id="IdOther" value="X">X</option>
+                        </select>
+                        <span asp-validation-for="SexOnID" class="text-danger"></span>
                     </div>
                 </div>
             </div>

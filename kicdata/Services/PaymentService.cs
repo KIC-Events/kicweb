@@ -161,7 +161,7 @@ namespace KiCData.Services
                 OrderLineItem orderLineItem = new OrderLineItem.Builder(quantity: "1")
                     .CatalogObjectId(varId)
                     .AppliedDiscounts(appliedDiscounts)
-                    .Note(reg.FirstName + reg.LastName)
+                    .Note(reg.FirstName + " " + reg.LastName)
                     .Build();
 
                 orderLineItems.Add(orderLineItem);

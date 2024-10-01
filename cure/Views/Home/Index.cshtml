@@ -1,15 +1,14 @@
-﻿@model Cure.Models.BetaViewModel
+﻿@model KiCData.Models.WebModels.IndexViewModel
 
 
 <div class="view-body">
     <div class="container row">
-        <h1 class="main-title" id="regTitle">Registration Opens In</h1>
         <h2 id="countdown"></h2>        
     </div>
     <div class="conainer row" style="height:50px;"></div>
     <div class="container row">
         <div class="col-sm-6 button-box">
-            <a asp-area="" asp-controller="Home" asp-action="Registration" onclick="return regClickable()">
+            <a asp-area="" asp-controller="GenController" asp-action="Registration">
                 <img class="flat-btn-blocked" src="~/css/images/reg_button.png" alt="Button linking to registration page." width="400px" height="400px" />
             </a>
         </div>
@@ -22,22 +21,22 @@
     <div class="conainer row" style="height:50px;"></div>
     <div class="container row">
         <div class="col-sm-3 button-box">
-            <a asp-area="" asp-controller="Home" asp-action="Presenters">
+            <a asp-area="" asp-controller="GenController" asp-action="Presenters">
                 <img class="flat-btn" src="~/css/images/pres_button.png" alt="Button linking to presenters list." width="200px" height="200px" />
             </a>
         </div>
         <div class="col-sm-3 button-box">
-            <a asp-area="" asp-controller="Home" asp-action="Vendors">
+            <a asp-area="" asp-controller="GenController" asp-action="Vendors">
                 <img class ="flat-btn" src="~/css/images/vend_button.png" alt="Button linking to vendors list." width="200px" height="200px" />
             </a>
         </div>
         <div class="col-sm-3 button-box3">
-            <a asp-area="" asp-controller="Home" asp-action="Schedule">
+            <a asp-area="" asp-controller="GenController" asp-action="Schedule">
                 <img class="flat-btn" src="~/css/images/sched_button.png" alt="Button linking to event schedule." width="200px" height="200px" />
             </a>
         </div>
         <div class="col-sm-3 button-box">
-            <a asp-area="" asp-controller="Home" asp-action="Rules">
+            <a asp-area="" asp-controller="GenController" asp-action="Rules">
                 <img class="flat-btn" src="~/css/images/rules_button.png" alt="Button linking to event rules." width="200px" height="200px" />
             </a>
         </div>
@@ -53,6 +52,10 @@
             <p><b>January 10-11, 2025</b></p>
             <br />
             <br />
+            <h5><a href="https://discord.gg/mRMPabafgc">CLICK HERE</a> or scan the QR code to join the KIC Events Discord Server, for all the latest information!</h5>
+            <div style="padding: 25px;">
+                <img style="max-width: 250px; height: auto; color: rgba(255, 255, 255, .8) !important; box-shadow: 0px 0px 20px 10px #FFCD36;" src="/css/images/KICDiscord.png" alt="QR Code representing https://discord.gg/mRMPabafgc" />
+            </div>
             <h4>What Makes This KIC Event Different From a Monthly KIC Event?</h4>
             <ul style="list-style: none;">
                 <li><strong>This event will take place at a HOTEL!!!</strong> If you decide to reserve a room, you won’t have to worry about driving home after an evening of playing. You could literally go to a class, play, take a nap, and possibly do it all over again. How awesome is that!</li>
@@ -72,9 +75,29 @@
     </div>
 </div>
 
+@if (!ViewBag.AgeGateCookieAccepted)
+{
+    <div id="AgeGateModal" class="modal">
+        <div class="modal-content">
+            <p>This site is intended only for persons 18 years of age or older.</p>
+            <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
+            <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
+            <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
+                <div class="form-group">
+                    <input asp-for="Consent" type="checkbox" />
+                    <label asp-for="Consent">Check here if you consent.</label>
+                </div>
+                <div class="form-grou">
+                    <button class="flat-btn" type="submit" value="Accept">Accept</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
 <script>
     // Set the date we're counting down to
-    var countDownDate = new Date(Date.UTC(2024, 8, 7, 3, 59, 59)).getTime();
+    var countDownDate = new Date(Date.UTC(2025, 0, 10, 19, 0, 0)).getTime();
 
     var regOpen = false;
 
@@ -94,7 +117,7 @@
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Display the result in the element with id="countdown"
-        document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+        document.getElementById("countdown").innerHTML = "CURE begins in " + days + "d " + hours + "h "
             + minutes + "m " + seconds + "s ";
 
         // If the count down is finished, write some text

@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace KiCWeb.Views.Home
+namespace KiCWeb.Views.Gen
 {
-    public class About : PageModel
+    public class Club425 : PageModel
     {
-        private readonly ILogger<About> _logger;
+        private readonly ILogger<Club425> _logger;
 
-        public About(ILogger<About> logger)
+        public Club425(ILogger<Club425> logger)
         {
             _logger = logger;
         }
