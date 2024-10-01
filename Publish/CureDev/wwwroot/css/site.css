@@ -62,7 +62,7 @@ html {
 body {
     margin-bottom: 60px;
     background-color: black;
-    background-image: url('images/Web Background.png');
+    /*background-image: url('images/Web Background.png');*/
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: contain;
@@ -244,7 +244,7 @@ form{
 .form-box{
     border: 2px solid white;
     border-spacing: 2px;
-    background: rgba(112, 7, 130, 0.2);
+    background: rgba(112, 7, 130, 0.5);
     color: rgba(255, 205, 54, 1);
     margin-bottom: 5px;
 }
@@ -252,4 +252,11 @@ form{
 .form-control{
     background: rgba(0, 0, 0, 0.9);
     color: rgba(255, 205, 54, 1);
+}
+
+.product-card {
+    color: rgba(255, 255, 255, .8) !important;
+    box-shadow: 0px 0px 20px 10px #FFCD36;
+    height: auto;
+    max-width: 100%;
 }
