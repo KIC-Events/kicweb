@@ -326,7 +326,8 @@ namespace KiCWeb.Controllers
             return Redirect("Success");
         }
         */
-
+        [Route("~/Contact")]
+        [Route("/Gen/Contact")]
         [HttpGet]
         public IActionResult Contact()
         {
@@ -340,6 +341,8 @@ namespace KiCWeb.Controllers
             return View(feedback);
         }
 
+        [Route("~/Contact")]
+        [Route("/Gen/Contact")]
         [HttpPost]
         public IActionResult Contact(Feedback feedbackUpdated)
         {
