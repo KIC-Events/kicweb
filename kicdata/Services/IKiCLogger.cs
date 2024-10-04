@@ -6,6 +6,8 @@ namespace KiCData.Services
     {
         void Log(Exception exception);
 
+        void LogText(string text);
+
         void LogSquareEx(Square.Exceptions.ApiException exception);
     }
 }

@@ -71,6 +71,8 @@ namespace KiCData.Services
 
             try
             {
+                _logger.LogText("Sending email.");
+
                 using (SmtpClient client = new SmtpClient())
                 {
                     client.Connect("smtp.forwardemail.net", 465, true);
