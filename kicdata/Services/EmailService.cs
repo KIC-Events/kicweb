@@ -83,6 +83,7 @@ namespace KiCData.Services
             }
             catch (Exception ex)
             {
+                _logger.Log(ex);
                 throw ex;
             }
         }
