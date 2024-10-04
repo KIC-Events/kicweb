@@ -76,7 +76,7 @@ namespace KiCData.Services
                 using (SmtpClient client = new SmtpClient())
                 {
                     _logger.LogText("Client created.");
-                    client.Connect("smtp.forwardemail.net", 465, true);
+                    client.Connect("smtp.forwardemail.net", 587, false);
                     _logger.LogText("Client connected.");
                     client.Authenticate(_config["Credentials:Mailbot:Username"], _config["Credentials:Mailbot:Password"]);
                     _logger.LogText("Client authenticated");
