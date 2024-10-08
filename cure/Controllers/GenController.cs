@@ -167,7 +167,7 @@ namespace Cure.Controllers
             }
             else
             {
-                return Redirect("Register");
+                return Redirect("~/Register");
             }
         }
 
