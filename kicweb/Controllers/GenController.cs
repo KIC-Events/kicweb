@@ -326,6 +326,9 @@ namespace KiCWeb.Controllers
             return Redirect("Success");
         }
         */
+
+        //https://github.com/Malechus/kic/issues/86
+        /*
         [Route("~/Contact")]
         [Route("/Gen/Contact")]
         [HttpGet]
@@ -390,19 +393,13 @@ namespace KiCWeb.Controllers
 
             return Redirect("Success");
         }
-
-        /*
+        */
         [Route("~/Contact")]
         [Route("/Gen/Contact")]
         public IActionResult Contact()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             return View();
         }
-        */
 
         [Route("~/GetInvolved")]
         [Route("/Gen/GetInvolved")]
