@@ -52,6 +52,13 @@ namespace Cure.Controllers
         [Route("/GenController/Vendors")]
         public IActionResult Vendors()
         {
+            ViewBag.Images = new List<string>();
+            foreach(string file in Directory.EnumerateFiles("wwwroot/css/images/Vendors/"))
+            {
+                string fileToAdd = file.Substring(27);
+                fileToAdd = fileToAdd.Trim('/');
+                ViewBag.Images.Add(fileToAdd);
+            }
             return View();
             //return RedirectToAction("ComingSoon");
         }
