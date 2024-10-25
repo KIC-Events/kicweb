@@ -50,6 +50,7 @@ namespace Cure.Controllers
                 fileToAdd = fileToAdd.Trim('/');
                 ViewBag.Images.Add(fileToAdd);
             }
+            ViewBag.Images.Sort();
             return View();
             //return RedirectToAction("ComingSoon");
         }
@@ -66,6 +67,7 @@ namespace Cure.Controllers
                 fileToAdd = fileToAdd.Trim('/');
                 ViewBag.Images.Add(fileToAdd);
             }
+            ViewBag.Images.Sort();
             return View();
             //return RedirectToAction("ComingSoon");
         }
