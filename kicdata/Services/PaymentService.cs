@@ -7,6 +7,7 @@ using Square.Authentication;
 using Square.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -88,14 +89,24 @@ namespace KiCData.Services
             return response;
         }
 
-        public PaymentLink CreatePaymentLink(List<RegistrationViewModel> regList)
+        /*
+         * 10-24-2024 194-add-ticket-purchase-for-blashphemy
+         * https://github.com/Malechus/kic/issues/194
+         * This method should be a reusable method with injectable data
+         * but since we are two and half months away from the event
+         * rather than risk a refactor I am just renaming this method
+         * from CreatePaymentLink to CreateCurePaymentLink and building a new
+         * reusable CreatePaymentLink method.
+         * Malechus
+         */
+        public PaymentLink CreateCurePaymentLink(List<RegistrationViewModel> regList)
         {
-            PaymentLink paymentLink = createPaymentLink(regList);
+            PaymentLink paymentLink = createCurePaymentLink(regList);
 
             return paymentLink;
         }
 
-        private PaymentLink createPaymentLink(List<RegistrationViewModel> regList)
+        private PaymentLink createCurePaymentLink(List<RegistrationViewModel> regList)
         {
             List<OrderLineItem> orderLineItems = new List<OrderLineItem>();
             List<OrderLineItemDiscount> orderDiscounts = new List<OrderLineItemDiscount>();
@@ -224,6 +235,27 @@ namespace KiCData.Services
             }
 
             return paymentLink;
+        }
+
+        public PaymentLink CreatePaymentLink(List<RegistrationViewModel> regList, KiCData.Models.Event kicEvent, string[] discountCodes = null, string redirectUrl = null)
+        {
+            PaymentLink paymentLink = createPaymentLink(regList, kicEvent, discountCodes, redirectUrl);
+
+            return paymentLink;
+        }
+
+        private PaymentLink createPaymentLink(List<RegistrationViewModel> regList, KiCData.Models.Event kicEvent, string[] discountCodes = null, string redirectUrl = null)
+        {
+            List<OrderLineItem> orderLineItems = new List<OrderLineItem>();
+            List<OrderLineItemDiscount> orderDiscounts = new List<OrderLineItemDiscount>();
+
+            var locations = _client.LocationsApi.ListLocations();
+            string locationID = locations.Locations.FirstOrDefault().Id;
+
+            foreach(RegistrationViewModel reg in regList)
+            {
+
+            }
         }
     }
 }
