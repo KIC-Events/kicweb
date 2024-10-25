@@ -1,1 +1,45 @@
-﻿
+﻿@model KiCData.Models.WebModels.RegistrationViewModel
+
+<div class="view-body">
+    <div id="blasphemy-description" class="container row">
+        <p>
+            Our annual fundraiser is just around the corner, and this year’s event promises to be more exciting than ever. We are thrilled to bring together our community for an evening filled with entertainment, networking, and philanthropy. The fundraiser will feature live performances from local artists, a silent auction with unique items and experiences, and a catered dinner showcasing some of the best culinary delights. All proceeds from the event will go directly toward supporting our ongoing programs, helping us make a lasting impact in the lives of those who need it most.
+        </p>
+        <p>
+            This year, we have set an ambitious goal to raise $100,000, which will allow us to expand our services and reach even more individuals in need. Whether you are a long-time supporter or a first-time attendee, your participation in this event will make a tangible difference. During the fundraiser, we will also be honoring several key members of our community whose contributions have played a vital role in furthering our mission. From supporting local outreach programs to funding educational initiatives, every donation counts and helps us continue our important work.
+        </p>
+        <p>
+            We invite you to join us for a night of generosity and fun, as we come together to make a real difference. Tickets are available now, and we encourage early registration as seating is limited. Even if you’re unable to attend in person, there are plenty of ways to get involved, from sponsoring the event to contributing items to the silent auction. Together, we can surpass our fundraising goal and create a brighter future for the community. Don’t miss this opportunity to be a part of something truly special!
+        </p>
+    </div>
+    <hr />
+    <div class="container row" id="blasphemy-purchase-form">
+        <form method="post" asp-area="" asp-controller="Payment" asp-action="Blasphemy">
+            <div class="col-sm-6">
+                <div class="form-box">
+                    <div class="form-group">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DateOfBirth"></label>
+                        <input asp-for="DateOfBirth" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-box">
+                    <div class="form-group">
+                        <input asp-for="CreateMore" type="checkbox" />
+                        <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout. this form will be reset when you click submit, and you can create another ticket before proceeding to checkout.</label>
+                    </div>
+                    <div class="form-group">
+                        <button class="flat-btn" type="submit" value="Submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
