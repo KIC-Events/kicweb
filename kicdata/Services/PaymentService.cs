@@ -237,6 +237,14 @@ namespace KiCData.Services
             return paymentLink;
         }
 
+        /// <summary>
+        /// Generates a dynamic Square payment link for the requested items.
+        /// </summary>
+        /// <param name="regList">List<RegistrationViewModel> containing the registrants purchasing event tickets.</param>
+        /// <param name="kicEvent">The KiCData.Models.Event object for which tickets are being purchased.</param>
+        /// <param name="discountCodes">String[] array of discount codes that could apply.</param>
+        /// <param name="redirectUrl">Url for redirect after payment complete (merch, etc.) leave empty for generic success page.</param>
+        /// <returns>PaymentLink</returns>
         public PaymentLink CreatePaymentLink(List<RegistrationViewModel> regList, KiCData.Models.Event kicEvent, string[] discountCodes = null, string redirectUrl = null)
         {
             PaymentLink paymentLink = createPaymentLink(regList, kicEvent, discountCodes, redirectUrl);
@@ -246,6 +254,7 @@ namespace KiCData.Services
 
         private PaymentLink createPaymentLink(List<RegistrationViewModel> regList, KiCData.Models.Event kicEvent, string[] discountCodes = null, string redirectUrl = null)
         {
+            if(redirectUrl is null) redirectUrl = "https://www.kicevents.com/success";
             List<OrderLineItem> orderLineItems = new List<OrderLineItem>();
             List<OrderLineItemDiscount> orderDiscounts = new List<OrderLineItemDiscount>();
 
@@ -254,8 +263,87 @@ namespace KiCData.Services
 
             foreach(RegistrationViewModel reg in regList)
             {
+                ListCatalogResponse catalogResponse = _client.CatalogApi.ListCatalog();
+                CatalogObject? catalogObject = catalogResponse.Objects
+                    .Where(o => o.ItemData.Name == kicEvent.Name)
+                    .FirstOrDefault();
 
+                if(catalogObject is null)
+                {
+                    _logger.LogText("Could not find Catalog Object " + kicEvent.Name);
+                    throw new Exception("Catalog object not found.");
+                }
+
+                string id = catalogObject.Id;
+
+                CatalogObject? variation = catalogObject.ItemData.Variations.Where(v => v.ItemVariationData.Name == reg.TicketType).FirstOrDefault();
+
+                if(variation is null)
+                {
+                    _logger.LogText("Could not find Item Variation " + reg.TicketType);
+                    throw new Exception("Item variation not found.");
+                }
+
+                string varId = variation.Id;
+
+                OrderLineItem orderLineItem = new OrderLineItem.Builder(quantity: "1")
+                    .CatalogObjectId(varId)
+                    .Note(reg.FirstName + " " + reg.LastName)
+                    .Build();
+
+                orderLineItems.Add(orderLineItem);
             }
+
+            OrderServiceCharge orderServiceCharge = new OrderServiceCharge.Builder()
+                .Name("Handling Fee")
+                .Percentage("3")
+                .CalculationPhase("SUBTOTAL_PHASE")
+                .Build();
+
+            List<OrderServiceCharge> serviceCharges = new List<OrderServiceCharge>();
+            serviceCharges.Add(orderServiceCharge);
+
+            OrderPricingOptions pricingOptions = new OrderPricingOptions.Builder()
+                .AutoApplyTaxes(true)
+                .Build();
+
+            Order order = new Order.Builder(locationId: locationID)
+                .LineItems(orderLineItems)
+                .PricingOptions(pricingOptions)
+                .ServiceCharges(serviceCharges)
+                .Discounts(orderDiscounts)
+                .Build();
+
+            CheckoutOptions options = new CheckoutOptions.Builder()
+                .RedirectUrl(redirectUrl)
+                .Build();
+
+            CreatePaymentLinkRequest paymentRequest = new CreatePaymentLinkRequest.Builder()
+                .IdempotencyKey(Guid.NewGuid().ToString())
+                .Order(order)
+                .CheckoutOptions(options)
+                .Build();
+
+            PaymentLink paymentLink;
+
+            try
+            {
+                CreatePaymentLinkResponse response = _client.CheckoutApi.CreatePaymentLink(paymentRequest);
+
+                paymentLink = response.PaymentLink;
+            }
+            catch (Square.Exceptions.ApiException ex)
+            {
+                _logger.LogSquareEx(ex);
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                throw ex;
+            }
+
+            return paymentLink;
         }
     }
 }

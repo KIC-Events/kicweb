@@ -41,6 +41,14 @@ namespace KiCWeb.Controllers
             return Redirect("https://kic-events.square.site/shop/apparel/INJSIHWIBYY7LG4HENI4NYFL");
         }
 
+        [HttpGet("Blasphemy")]
+        [Route("/Blasphemy")]
+        [Route("~/Blasphemy")]
+        public IActionResult Blasphemy()
+        {
+            return View();
+        }
+
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         //public IActionResult Error()
         //{
