@@ -18,14 +18,16 @@ namespace KiCWeb.Controllers
         private readonly ICookieService _cookieService;
         private readonly IConfigurationRoot _configurationRoot;
         private readonly KiCdbContext _context;
+        private readonly IPaymentService _paymentService;
 
-        public Payment(ILogger<Payment> logger, IHttpContextAccessor contextAccessor, ICookieService cookieService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext) : base(configurationRoot, userService: null, contextAccessor, kiCdbContext, cookieService)
+        public Payment(ILogger<Payment> logger, IHttpContextAccessor contextAccessor, ICookieService cookieService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext, IPaymentService paymentService) : base(configurationRoot, userService: null, contextAccessor, kiCdbContext, cookieService)
         {
             _logger = logger;
             _contextAccessor = contextAccessor;
             _cookieService = cookieService;
             _configurationRoot = configurationRoot;
             _context = kiCdbContext;
+            _paymentService = paymentService;
         }
 
         [HttpGet("Purchase")]
@@ -46,6 +48,19 @@ namespace KiCWeb.Controllers
         [Route("~/Blasphemy")]
         public IActionResult Blasphemy()
         {
+            ViewBag.SalesActive = true;
+
+            if (DateTime.Now >= new DateTime(2024, 12, 15, 10, 0, 0))
+            {
+                ViewBag.SalesActive = false;
+            }
+
+            int standardCnt = _paymentService.CheckInventory("Blasphemy Ticket", "Standard");
+            int vipCnt = _paymentService.CheckInventory("Blasphemy Ticket", "VIP");
+
+            ViewBag.StandardCount = standardCnt;
+            ViewBag.VIPCount = vipCnt;
+
             return View();
         }
 

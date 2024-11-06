@@ -13,33 +13,36 @@
         </p>
     </div>
     <hr />
-    <div class="container row" id="blasphemy-purchase-form">
-        <form method="post" asp-area="" asp-controller="Payment" asp-action="Blasphemy">
-            <div class="col-sm-6">
-                <div class="form-box">
-                    <div class="form-group">
-                        <label asp-for="FirstName"></label>
-                        <input asp-for="FirstName" class="form-control" />
+    @if(ViewBag.SalesActive == true)
+    {
+        <div class="container row" id="blasphemy-purchase-form">
+            <form method="post" asp-area="" asp-controller="Payment" asp-action="Blasphemy">
+                <div class="col-sm-6">
+                    <div class="form-box">
+                        <div class="form-group">
+                            <label asp-for="FirstName"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LastName"></label>
+                            <input asp-for="LastName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DateOfBirth"></label>
+                            <input asp-for="DateOfBirth" class="form-control" />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="LastName"></label>
-                        <input asp-for="LastName" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="DateOfBirth"></label>
-                        <input asp-for="DateOfBirth" class="form-control" />
+                    <div class="form-box">
+                        <div class="form-group">
+                            <input asp-for="CreateMore" type="checkbox" />
+                            <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout. this form will be reset when you click submit, and you can create another ticket before proceeding to checkout.</label>
+                        </div>
+                        <div class="form-group">
+                            <button class="flat-btn" type="submit" value="Submit">Submit</button>
+                        </div>
                     </div>
                 </div>
-                <div class="form-box">
-                    <div class="form-group">
-                        <input asp-for="CreateMore" type="checkbox" />
-                        <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout. this form will be reset when you click submit, and you can create another ticket before proceeding to checkout.</label>
-                    </div>
-                    <div class="form-group">
-                        <button class="flat-btn" type="submit" value="Submit">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+    }
 </div>
