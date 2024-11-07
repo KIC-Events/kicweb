@@ -6,7 +6,7 @@ namespace KiCData.Services
 {
     public interface IEmailService
     {
-        public Task SendEmail(FormMessage message);
+        public void SendEmail(FormMessage message);
         public FormMessage FormSubmissionEmailFactory(string rep);
     }
 }
