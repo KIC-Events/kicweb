@@ -67,7 +67,7 @@ namespace KiCData.Services
                 message.BuildHtml();
             }
 
-            _logger.LogText("Sending email. " + );
+            _logger.LogText("Sending email. ");
 
             List<KeyValuePair<string, string>> keyValuePairs = new List<KeyValuePair<string, string>>();
 
