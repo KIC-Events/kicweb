@@ -328,7 +328,7 @@ namespace KiCWeb.Controllers
         */
 
         //https://github.com/Malechus/kic/issues/86
-        /*
+        
         [Route("~/Contact")]
         [Route("/Gen/Contact")]
         [HttpGet]
@@ -393,14 +393,14 @@ namespace KiCWeb.Controllers
 
             return Redirect("Success");
         }
-        */
+        /*
         [Route("~/Contact")]
         [Route("/Gen/Contact")]
         public IActionResult Contact()
         {
             return View();
         }
-
+        */
         [Route("~/GetInvolved")]
         [Route("/Gen/GetInvolved")]
         public IActionResult GetInvolved()
