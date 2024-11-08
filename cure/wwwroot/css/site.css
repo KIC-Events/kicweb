@@ -152,6 +152,9 @@ button.accept-policy {
 .main-title {
     text-align: center;
     font-family: "Forum", serif;
+    word-wrap: normal;
+    text-wrap-mode: normal;
+    white-space: normal;
 }
 
 .modal {

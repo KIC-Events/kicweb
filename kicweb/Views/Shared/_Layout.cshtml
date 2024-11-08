@@ -86,6 +86,11 @@
                 </div>
             </div>
         </nav>
+        @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+        {
+            <h1 class="main-title text-danger">This is a dev site, used for testing purposes. Information here may be incorrect or made up entirely. If you try to buy a ticket here, nothing will happen. You have been warned.</h1>
+            <p>Click <a href="https://cure.kicevents.com">here</a> to go to the real thing.</p>
+        }
     </header>
     <div class="container main-container">
         <main role="main" class="pb-3">
