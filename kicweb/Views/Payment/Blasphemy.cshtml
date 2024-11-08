@@ -45,4 +45,10 @@
             </form>
         </div>
     }
+    @if(ViewBag.SalesActive != true)
+    {
+        <div class="container row">
+            <h3 class="main-title">Sales have closed. Ticket may be purchased at the door.</h3>
+        </div>
+    }
 </div>

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using KiCData.Models;
+using KiCData.Models.WebModels;
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -61,8 +62,25 @@ namespace KiCWeb.Controllers
             ViewBag.StandardCount = standardCnt;
             ViewBag.VIPCount = vipCnt;
 
-            return View();
+            RegistrationViewModel viewModel = new RegistrationViewModel();
+
+            return View(viewModel);
         }
+
+        [HttpPost]
+        public IActionResult Blasphemy(RegistrationViewModel rvmUpdated)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ErrorMessage = "Missing or incorrect registration info.";
+                return View(rvmUpdated);
+            }
+
+
+
+            return Redirect("Success");
+        }
+
 
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         //public IActionResult Error()
