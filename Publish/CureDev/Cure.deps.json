@@ -12,13 +12,13 @@
           "KiCData": "1.0.0",
           "Microsoft.EntityFrameworkCore": "8.0.8",
           "Microsoft.EntityFrameworkCore.Relational": "8.0.8",
-          "Square": "38.0.0"
+          "Square": "38.1.0"
         },
         "runtime": {
           "Cure.dll": {}
         }
       },
-      "APIMatic.Core/0.4.1": {
+      "APIMatic.Core/0.4.3": {
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
@@ -42,15 +42,15 @@
           }
         }
       },
-      "MailKit/4.7.1.1": {
+      "MailKit/4.8.0": {
         "dependencies": {
-          "MimeKit": "4.7.1",
+          "MimeKit": "4.8.0",
           "System.Formats.Asn1": "8.0.1"
         },
         "runtime": {
           "lib/net8.0/MailKit.dll": {
-            "assemblyVersion": "4.7.0.0",
-            "fileVersion": "4.7.1.1"
+            "assemblyVersion": "4.8.0.0",
+            "fileVersion": "4.8.0.0"
           }
         }
       },
@@ -544,7 +544,7 @@
           "System.Security.Principal.Windows": "4.5.0"
         }
       },
-      "MimeKit/4.7.1": {
+      "MimeKit/4.8.0": {
         "dependencies": {
           "BouncyCastle.Cryptography": "2.4.0",
           "System.Formats.Asn1": "8.0.1",
@@ -552,8 +552,8 @@
         },
         "runtime": {
           "lib/net8.0/MimeKit.dll": {
-            "assemblyVersion": "4.7.0.0",
-            "fileVersion": "4.7.1.0"
+            "assemblyVersion": "4.8.0.0",
+            "fileVersion": "4.8.0.0"
           }
         }
       },
@@ -825,16 +825,16 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.2"
         }
       },
-      "Square/38.0.0": {
+      "Square/38.1.0": {
         "dependencies": {
-          "APIMatic.Core": "0.4.1",
+          "APIMatic.Core": "0.4.3",
           "Microsoft.Bcl.HashCode": "1.1.1",
           "Microsoft.CSharp": "4.7.0"
         },
         "runtime": {
           "lib/netstandard2.0/Square.dll": {
-            "assemblyVersion": "38.0.0.0",
-            "fileVersion": "38.0.0.0"
+            "assemblyVersion": "38.1.0.0",
+            "fileVersion": "38.1.0.0"
           }
         }
       },
@@ -1506,16 +1506,16 @@
       },
       "KiCData/1.0.0": {
         "dependencies": {
-          "MailKit": "4.7.1.1",
+          "MailKit": "4.8.0",
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.2.0",
           "Microsoft.AspNetCore.SignalR": "1.1.0",
           "Microsoft.EntityFrameworkCore": "8.0.8",
           "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.Http": "8.0.0",
-          "MimeKit": "4.7.1",
+          "MimeKit": "4.8.0",
           "Pomelo.EntityFrameworkCore.MySql": "8.0.2",
-          "Square": "38.0.0",
+          "Square": "38.1.0",
           "System.Net.Http": "4.3.4"
         },
         "runtime": {
@@ -1530,12 +1530,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "APIMatic.Core/0.4.1": {
+    "APIMatic.Core/0.4.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-gz+5pU8ZFEFSjBMReUvHGAkE4vWfQ1Hdwsa+AJkrkeeJGUoB5RgPn0JnOr6zgH+/AAiAuagLykrjxG5lJ0qD2Q==",
-      "path": "apimatic.core/0.4.1",
-      "hashPath": "apimatic.core.0.4.1.nupkg.sha512"
+      "sha512": "sha512-n941lB8iwYREw8FwaiBBSD37hizstAbK/oxcrgXLs0PIZiAykMY8R0Y1SvcH12wPL9udIFI8I0crjIeoV7VffQ==",
+      "path": "apimatic.core/0.4.3",
+      "hashPath": "apimatic.core.0.4.3.nupkg.sha512"
     },
     "BouncyCastle.Cryptography/2.4.0": {
       "type": "package",
@@ -1544,12 +1544,12 @@
       "path": "bouncycastle.cryptography/2.4.0",
       "hashPath": "bouncycastle.cryptography.2.4.0.nupkg.sha512"
     },
-    "MailKit/4.7.1.1": {
+    "MailKit/4.8.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Y3okmIxu8g/ZcoJiE2i+dCeKgnNyddsXmcJslZnCPGVPP0aRyeVINHV1h97V+OVMdqjQI6O12J2p8Duwq5UEqQ==",
-      "path": "mailkit/4.7.1.1",
-      "hashPath": "mailkit.4.7.1.1.nupkg.sha512"
+      "sha512": "sha512-zZ1UoM4FUnSFUJ9fTl5CEEaejR0DNP6+FDt1OfXnjg4igZntcir1tg/8Ufd6WY5vrpmvToAjluYqjVM24A+5lA==",
+      "path": "mailkit/4.8.0",
+      "hashPath": "mailkit.4.8.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/2.2.0": {
       "type": "package",
@@ -2034,12 +2034,12 @@
       "path": "microsoft.win32.registry/4.5.0",
       "hashPath": "microsoft.win32.registry.4.5.0.nupkg.sha512"
     },
-    "MimeKit/4.7.1": {
+    "MimeKit/4.8.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Qoj4aVvhX14A1FNvaJ33hzOP4VZI2j+Mr38I9wSGcjMq4BYDtWLJG89aJ9nRW2cNfH6Czjwyp7+Mh++xv3AZvg==",
-      "path": "mimekit/4.7.1",
-      "hashPath": "mimekit.4.7.1.nupkg.sha512"
+      "sha512": "sha512-U24wp4LKED+sBRzyrWICE+3bSwptsTrPOcCIXbW5zfeThCNzQx5NCo8Wus+Rmi+EUkQrCwlI/3sVfejeq9tuxQ==",
+      "path": "mimekit/4.8.0",
+      "hashPath": "mimekit.4.8.0.nupkg.sha512"
     },
     "MySqlConnector/2.3.5": {
       "type": "package",
@@ -2370,12 +2370,12 @@
       "path": "runtime.unix.system.runtime.extensions/4.3.0",
       "hashPath": "runtime.unix.system.runtime.extensions.4.3.0.nupkg.sha512"
     },
-    "Square/38.0.0": {
+    "Square/38.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GKdTgV2oBYR9Wj4HwMzpLfYYYtZ+xdUT1azMYiJ74Vb8Vb+HxfjtqwzJDRzu5+ErVytYzzWSj6kk5GQeqaXoSg==",
-      "path": "square/38.0.0",
-      "hashPath": "square.38.0.0.nupkg.sha512"
+      "sha512": "sha512-WQQ7YXeQQ6ISsr4+O1WLmr/zsmySQhzyjfXeogcSQ+FLP4J6wwc0KcUQlfUSD2BGRaAlHjPFnxfskBB9VZBCrw==",
+      "path": "square/38.1.0",
+      "hashPath": "square.38.1.0.nupkg.sha512"
     },
     "System.AppContext/4.3.0": {
       "type": "package",
