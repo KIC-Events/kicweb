@@ -7,7 +7,10 @@ using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Square.Models;
 
 namespace KiCWeb.Controllers
 {
@@ -76,9 +79,139 @@ namespace KiCWeb.Controllers
                 return View(rvmUpdated);
             }
 
+            if(rvmUpdated.Email != rvmUpdated.EmailConf)
+            {
+                ViewBag.ErrorMessage = "Email does not match.";
+                return View(rvmUpdated);
+            }
 
+            AddRegToCookies(rvmUpdated);
 
-            return Redirect("Success");
+            if(rvmUpdated.CreateMore == false)
+            {
+                return Redirect("InterstitialWait");
+            }
+            else
+            {
+                return Redirect("~/Blasphemy");
+            }
+        }
+
+        [Route("~/InterstitialWait")]
+        [Route("/Home/InterstitialWait")]
+        [Route("/GenController/InterstitialWait")]
+        public IActionResult InterstitialWait()
+        {
+            return View();
+        }
+
+        [Route("~/PaymentProcess")]
+        [Route("/Home/PaymentProcess")]
+        [Route("/Payment/PaymentProcess")]
+        public IActionResult PaymentProcess(string eventName, int price)
+        {
+            List<RegistrationViewModel> regList = GetRegFromCookies();
+            _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
+            PaymentLink paymentURL;
+            try
+            {
+                paymentURL = _paymentService.CreateCurePaymentLink(regList);
+            }
+            catch (Exception ex)
+            {
+                return Redirect("Error");
+            }
+
+            WriteRegToDB(regList, paymentURL.OrderId, paymentURL.Id, eventName, price);
+
+            return Redirect(paymentURL.Url);
+        }
+
+        private void AddRegToCookies(RegistrationViewModel rvm)
+        {
+            var context = _contextAccessor.HttpContext;
+
+            if (context.Request.Cookies["Registration"] is null)
+            {
+                CookieOptions cookieOptions = _cookieService.NewCookieFactory();
+                List<RegistrationViewModel> regList = new List<RegistrationViewModel>();
+                regList.Add(rvm);
+                string cookieValue = JsonConvert.SerializeObject(regList);
+                context.Response.Cookies.Append("Registration", cookieValue, cookieOptions);
+            }
+            else
+            {
+                List<RegistrationViewModel> regList = JsonConvert.DeserializeObject<List<RegistrationViewModel>>(context.Request.Cookies["Registration"]);
+                regList.Add(rvm);
+                context.Response.Cookies.Delete("Registration");
+                string cookieValue = JsonConvert.SerializeObject(regList);
+                CookieOptions cookieOptions = _cookieService.NewCookieFactory();
+                context.Response.Cookies.Append("Registration", cookieValue, cookieOptions);
+            }
+        }
+
+        private List<RegistrationViewModel> GetRegFromCookies()
+        {
+            var context = _contextAccessor.HttpContext;
+
+            string? regList = context.Request.Cookies["Registration"];
+
+            if (regList == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else
+            {
+                List<RegistrationViewModel>? convertedRegList = JsonConvert.DeserializeObject<List<RegistrationViewModel>>(regList);
+                return convertedRegList;
+            }
+        }
+
+        private void WriteRegToDB(List<RegistrationViewModel> regList, string orderID, string paymentLinkID, string eventName, int price)
+        {
+            KiCData.Models.Event? kicEvent = _context.Events.Where(e => e.Name == eventName).FirstOrDefault();
+
+            foreach (var reg in regList)
+            {
+                KiCData.Models.Member? member = _context.Members.Where(m => m.FirstName == reg.FirstName && m.LastName == reg.LastName).FirstOrDefault();
+
+                if(member == null)
+                {
+                    member = new()
+                    {
+                        FirstName = reg.FirstName,
+                        LastName = reg.LastName,
+                        Email = reg.Email,
+                        DateOfBirth = reg.DateOfBirth
+                    };
+                }
+
+                Ticket ticket = new() 
+                {
+                    Event = kicEvent,
+                    Price = price,
+                    DatePurchased = DateOnly.FromDateTime(DateTime.Today),
+                    StartDate = kicEvent.StartDate,
+                    EndDate = kicEvent.EndDate,
+                    Type = reg.TicketType
+                };
+
+                Attendee attendee = new()
+                {
+                    Member = member,
+                    OrderID = orderID,
+                    PaymentLinkID = paymentLinkID,
+                    Ticket = ticket
+                };
+
+                ticket.Attendee = attendee;
+
+                _context.Members.Add(member);
+                _context.Ticket.Add(ticket);
+                _context.Attendees.Add(attendee);
+            }
+
+            _context.SaveChanges();
         }
 
 
