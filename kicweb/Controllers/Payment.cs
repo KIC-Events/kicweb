@@ -40,6 +40,8 @@ namespace KiCWeb.Controllers
         [HttpGet("Purchase")]
         public IActionResult Purchase()
         {
+            _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
+
             return View();
         }
 
