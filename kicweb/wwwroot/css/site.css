@@ -262,3 +262,8 @@ a.ad-card {
     box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset;
     border-radius: 0px;
 }
+
+img.responsive {
+    height: auto;
+    max-width: 100%;
+}

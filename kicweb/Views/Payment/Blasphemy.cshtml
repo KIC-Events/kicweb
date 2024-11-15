@@ -2,18 +2,30 @@
 
 <div class="view-body">
     <div id="blasphemy-description" class="container row">
-        <p>
-            Our annual fundraiser is just around the corner, and this year’s event promises to be more exciting than ever. We are thrilled to bring together our community for an evening filled with entertainment, networking, and philanthropy. The fundraiser will feature live performances from local artists, a silent auction with unique items and experiences, and a catered dinner showcasing some of the best culinary delights. All proceeds from the event will go directly toward supporting our ongoing programs, helping us make a lasting impact in the lives of those who need it most.
-        </p>
-        <p>
-            This year, we have set an ambitious goal to raise $100,000, which will allow us to expand our services and reach even more individuals in need. Whether you are a long-time supporter or a first-time attendee, your participation in this event will make a tangible difference. During the fundraiser, we will also be honoring several key members of our community whose contributions have played a vital role in furthering our mission. From supporting local outreach programs to funding educational initiatives, every donation counts and helps us continue our important work.
-        </p>
-        <p>
-            We invite you to join us for a night of generosity and fun, as we come together to make a real difference. Tickets are available now, and we encourage early registration as seating is limited. Even if you’re unable to attend in person, there are plenty of ways to get involved, from sponsoring the event to contributing items to the silent auction. Together, we can surpass our fundraising goal and create a brighter future for the community. Don’t miss this opportunity to be a part of something truly special!
-        </p>
+        <h2>We're happy to announce Blasphemy! A 21+ Fundraiser for CURE 2025!</h2>
+        <p>This show will be held on <strong>Sunday, 12/15 at 4pm EST</strong> at <strong>425/Club Princeton</strong> (where the monthly KIC parties are held) and feature performers from our very own community.</p>
+
+        <p>Join us for an entertaining evening with stunning performances by our local community! All proceeds will go towards materials and funds needed to ensure the event is a success.</p>
+
+        <p><strong>Tickets will be on sale through the KIC website starting on Friday, 11/15.</strong> Here's the breakdown:</p>
+
+        <ul>
+            <li><strong>$15</strong> - Advanced General Admission (11/15-12/14)</li>
+            <li><strong>$20</strong> - At Door: Cash and Card accepted</li>
+            <li><strong>$30</strong> - VIP (11/15 - Sell out)</li>
+        </ul>
+
+        <p><em>VIP includes front row seating and a goodie bag; limited seats available. (4) seats to a VIP table and can be purchased in a group or individually.</em></p>
+
+        <p>You do <strong>NOT</strong> need to be a member of Club Princeton/425 to attend this show but <strong>MUST</strong> be 21+.</p>
+
+        <p>This will be a BYOB event for any alcohol, as the club is not permitted to sell to patrons. Limited mixers will be available, along with light refreshments.</p>
+
+        <p>Feel free to bring any <a href="https://fetlife.com/groups/296186/posts/29470635" target="_blank">Silent Auction items</a> or <a href="https://fetlife.com/groups/296186/posts/29735170" target="_blank">Wishlist purchases</a> to the event!</p>
+
     </div>
     <hr />
-    @if(ViewBag.SalesActive == true)
+    @if(ViewBag.SalesActive == true && ViewBag.StandardCount > 0)
     {
         <div class="container row" id="blasphemy-purchase-form">
             <form method="post" asp-area="" asp-controller="Payment" asp-action="Blasphemy">
@@ -29,26 +41,53 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="DateOfBirth"></label>
-                            <input asp-for="DateOfBirth" class="form-control" />
+                            <input asp-for="DateOfBirth" class="form-control" type="date"/>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TicketType"></label>
+                            <select asp-for="TicketType" class="form-control" asp-items="@Model.TicketTypes">
+                                <option value="" disabled selected>Select Ticket Type</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-box">
                         <div class="form-group">
-                            <input asp-for="CreateMore" type="checkbox" />
+                            <input asp-for="CreateMore" type="checkbox" id="createMoreCheckBox" onclick='changeBtnText()' />
                             <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout. this form will be reset when you click submit, and you can create another ticket before proceeding to checkout.</label>
                         </div>
                         <div class="form-group">
-                            <button class="flat-btn" type="submit" value="Submit">Submit</button>
+                            <button class="flat-btn" type="submit" value="Submit" id="blasphemyFormSubmitBtn">Submit</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     }
-    @if(ViewBag.SalesActive != true)
+    @if(ViewBag.SalesActive == false)
     {
         <div class="container row">
             <h3 class="main-title">Sales have closed. Ticket may be purchased at the door.</h3>
         </div>
     }
+    @if(ViewBag.StandardCount == 0)
+    {
+        <div class="container row">
+            <h3 class="main-title">Standard tickets have sold out and may no longer be purchased.</h3>
+        </div>
+    }
 </div>
+
+<script>
+    var subBtn = document.getElementById('blasphemyFormSubmitBtn');
+    function changeBtnText(){
+        if (subBtn.innerHTML === 'Submit') {
+            subBtn.innerHTML = 'Create Another Registration';
+        }
+        else if (subBtn.innerHTML === 'Create Another Registration') {
+            subBtn.innerHTML = 'Submit';
+        }
+        else{
+            subBtn.innerHTML = 'Ok.';
+        }
+    }
+</script>

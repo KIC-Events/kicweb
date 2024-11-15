@@ -86,6 +86,10 @@ namespace KiCData.Models.WebModels
         public bool WaitList { get; set; }
 
         public string? Pronouns { get; set; }
+
+        public Event? Event { get; set; }
+
+        public int? Price { get; set; }
     }
 
     public class VolunteerPositionSelection

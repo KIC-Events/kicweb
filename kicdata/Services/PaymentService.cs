@@ -41,22 +41,14 @@ namespace KiCData.Services
 
         public int CheckInventory(string objectSearchTerm, string variationSearchTerm)
         {
-            try
-            {
-                int response = checkInventory(objectSearchTerm, variationSearchTerm);
-                return response;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            
+            int response = checkInventory(objectSearchTerm, variationSearchTerm);
+            return response;
         }
 
         private int checkInventory(string objectSearchTerm, string variationSearchTerm)
         {
             ListCatalogResponse catResponse = _client.CatalogApi.ListCatalog();
-            CatalogObject obj = catResponse.Objects
+            CatalogObject? obj = catResponse.Objects
                 .Where(o => o.ItemData.Name.Contains(objectSearchTerm))
                 .FirstOrDefault();
 

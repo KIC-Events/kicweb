@@ -5,11 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using KiCData.Models;
 using KiCData.Models.WebModels;
+using KiCData.Models.WebModels.Member;
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Ocsp;
 using Square.Models;
 
 namespace KiCWeb.Controllers
@@ -47,9 +50,11 @@ namespace KiCWeb.Controllers
             return Redirect("https://kic-events.square.site/shop/apparel/INJSIHWIBYY7LG4HENI4NYFL");
         }
 
-        [HttpGet("Blasphemy")]
+
         [Route("/Blasphemy")]
         [Route("~/Blasphemy")]
+        [Route("/Payment/Blasphemy")]
+        [HttpGet("Blasphemy")]
         public IActionResult Blasphemy()
         {
             ViewBag.SalesActive = true;
@@ -65,31 +70,41 @@ namespace KiCWeb.Controllers
             ViewBag.StandardCount = standardCnt;
             ViewBag.VIPCount = vipCnt;
 
-            RegistrationViewModel viewModel = new RegistrationViewModel();
+            RegistrationViewModel viewModel = new RegistrationViewModel()
+            {
+                Event = _context.Events.Where(e => e.Name == "Blasphemy").First()
+            };
+
+            viewModel.TicketTypes = new List<SelectListItem>();
+            if (vipCnt > 0) { viewModel.TicketTypes.Add(new SelectListItem("VIP", "VIP")); }
+            viewModel.TicketTypes.Add(new SelectListItem("Standard", "Standard"));
 
             return View(viewModel);
         }
 
+
+        [Route("/Blasphemy")]
+        [Route("~/Blasphemy")]
+        [Route("/Payment/Blasphemy")]
         [HttpPost]
         public IActionResult Blasphemy(RegistrationViewModel rvmUpdated)
         {
-            if (!ModelState.IsValid)
+            if (rvmUpdated.TicketType == "Standard")
             {
-                ViewBag.ErrorMessage = "Missing or incorrect registration info.";
-                return View(rvmUpdated);
+                rvmUpdated.Price = 15;
+            }
+            else if(rvmUpdated.TicketType == "VIP")
+            {
+                rvmUpdated.Price = 30;
             }
 
-            if(rvmUpdated.Email != rvmUpdated.EmailConf)
-            {
-                ViewBag.ErrorMessage = "Email does not match.";
-                return View(rvmUpdated);
-            }
+            rvmUpdated.Event = _context.Events.Where(e => e.Name == "Blasphemy").First();
 
             AddRegToCookies(rvmUpdated);
 
             if(rvmUpdated.CreateMore == false)
             {
-                return Redirect("InterstitialWait");
+                return Redirect("/Payment/InterstitialWait");
             }
             else
             {
@@ -99,7 +114,7 @@ namespace KiCWeb.Controllers
 
         [Route("~/InterstitialWait")]
         [Route("/Home/InterstitialWait")]
-        [Route("/GenController/InterstitialWait")]
+        [Route("/Payment/InterstitialWait")]
         public IActionResult InterstitialWait()
         {
             return View();
@@ -108,21 +123,23 @@ namespace KiCWeb.Controllers
         [Route("~/PaymentProcess")]
         [Route("/Home/PaymentProcess")]
         [Route("/Payment/PaymentProcess")]
-        public IActionResult PaymentProcess(string eventName, int price)
+        public IActionResult PaymentProcess()
         {
             List<RegistrationViewModel> regList = GetRegFromCookies();
             _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
+
             PaymentLink paymentURL;
+
             try
             {
-                paymentURL = _paymentService.CreateCurePaymentLink(regList);
+                paymentURL = _paymentService.CreatePaymentLink(regList, regList[0].Event);
             }
             catch (Exception ex)
             {
-                return Redirect("Error");
+                return Redirect("~/Error");
             }
 
-            WriteRegToDB(regList, paymentURL.OrderId, paymentURL.Id, eventName, price);
+            WriteRegToDB(regList, paymentURL.OrderId, paymentURL.Id);
 
             return Redirect(paymentURL.Url);
         }
@@ -167,9 +184,9 @@ namespace KiCWeb.Controllers
             }
         }
 
-        private void WriteRegToDB(List<RegistrationViewModel> regList, string orderID, string paymentLinkID, string eventName, int price)
+        private void WriteRegToDB(List<RegistrationViewModel> regList, string orderID, string paymentLinkID)
         {
-            KiCData.Models.Event? kicEvent = _context.Events.Where(e => e.Name == eventName).FirstOrDefault();
+            KiCData.Models.Event? kicEvent = _context.Events.Where(e => e.Name == regList[0].Event.Name).FirstOrDefault();
 
             foreach (var reg in regList)
             {
@@ -189,7 +206,7 @@ namespace KiCWeb.Controllers
                 Ticket ticket = new() 
                 {
                     Event = kicEvent,
-                    Price = price,
+                    Price = (double)reg.Price,
                     DatePurchased = DateOnly.FromDateTime(DateTime.Today),
                     StartDate = kicEvent.StartDate,
                     EndDate = kicEvent.EndDate,
