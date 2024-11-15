@@ -64,8 +64,8 @@ namespace KiCWeb.Controllers
                 ViewBag.SalesActive = false;
             }
 
-            int standardCnt = _paymentService.CheckInventory("Blasphemy Ticket", "Standard");
-            int vipCnt = _paymentService.CheckInventory("Blasphemy Ticket", "VIP");
+            int standardCnt = _paymentService.CheckInventory("Blasphemy", "Standard");
+            int vipCnt = _paymentService.CheckInventory("Blasphemy", "VIP");
 
             ViewBag.StandardCount = standardCnt;
             ViewBag.VIPCount = vipCnt;
@@ -198,9 +198,14 @@ namespace KiCWeb.Controllers
                     {
                         FirstName = reg.FirstName,
                         LastName = reg.LastName,
-                        Email = reg.Email,
-                        DateOfBirth = reg.DateOfBirth
+                        Email = "N/A",
+                        DateOfBirth = reg.DateOfBirth,
+                        AdditionalInfo = "N/A",
+                        City = "N/A",
+                        State = "N/A"
                     };
+
+                    _context.Members.Add(member);
                 }
 
                 Ticket ticket = new() 
@@ -210,7 +215,8 @@ namespace KiCWeb.Controllers
                     DatePurchased = DateOnly.FromDateTime(DateTime.Today),
                     StartDate = kicEvent.StartDate,
                     EndDate = kicEvent.EndDate,
-                    Type = reg.TicketType
+                    Type = reg.TicketType,
+                    IsComped = false
                 };
 
                 Attendee attendee = new()
@@ -218,12 +224,21 @@ namespace KiCWeb.Controllers
                     Member = member,
                     OrderID = orderID,
                     PaymentLinkID = paymentLinkID,
-                    Ticket = ticket
+                    Ticket = ticket,
+                    BackgroundChecked = false,
+                    BadgeName = "N/A",
+                    ConfirmationNumber = 1215,
+                    IsPaid = false,
+                    IsRefunded = false,
+                    isRegistered = true,
+                    Pronouns = "N/A",
+                    RoomPreference = "N/A",
+                    RoomWaitListed = false,
+                    TicketWaitListed = false
                 };
 
                 ticket.Attendee = attendee;
 
-                _context.Members.Add(member);
                 _context.Ticket.Add(ticket);
                 _context.Attendees.Add(attendee);
             }

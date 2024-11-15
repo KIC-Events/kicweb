@@ -19,7 +19,8 @@ namespace Scripts
                 builder.AddJsonFile("appsettings.Development.json");
             }
             IConfigurationRoot configuration = builder.Build();
-            IEmailService emailService = new EmailService(configuration, null, null);
+
+            IEmailService emailService = new EmailService(configuration, null, null, null);
 
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1. Send emails from an excel sheet.");

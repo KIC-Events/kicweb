@@ -257,12 +257,12 @@ namespace KiCData.Services
             {
                 ListCatalogResponse catalogResponse = _client.CatalogApi.ListCatalog();
                 CatalogObject? catalogObject = catalogResponse.Objects
-                    .Where(o => o.ItemData.Name == kicEvent.Name)
+                    .Where(o => o.ItemData.Name == reg.Event.Name)
                     .FirstOrDefault();
 
                 if(catalogObject is null)
                 {
-                    _logger.LogText("Could not find Catalog Object " + kicEvent.Name);
+                    _logger.LogText("Could not find Catalog Object " + reg.Event.Name);
                     throw new Exception("Catalog object not found.");
                 }
 
