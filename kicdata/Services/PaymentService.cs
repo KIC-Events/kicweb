@@ -7,6 +7,7 @@ using Square.Authentication;
 using Square.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -40,22 +41,14 @@ namespace KiCData.Services
 
         public int CheckInventory(string objectSearchTerm, string variationSearchTerm)
         {
-            try
-            {
-                int response = checkInventory(objectSearchTerm, variationSearchTerm);
-                return response;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            
+            int response = checkInventory(objectSearchTerm, variationSearchTerm);
+            return response;
         }
 
         private int checkInventory(string objectSearchTerm, string variationSearchTerm)
         {
             ListCatalogResponse catResponse = _client.CatalogApi.ListCatalog();
-            CatalogObject obj = catResponse.Objects
+            CatalogObject? obj = catResponse.Objects
                 .Where(o => o.ItemData.Name.Contains(objectSearchTerm))
                 .FirstOrDefault();
 
@@ -88,14 +81,24 @@ namespace KiCData.Services
             return response;
         }
 
-        public PaymentLink CreatePaymentLink(List<RegistrationViewModel> regList)
+        /*
+         * 10-24-2024 194-add-ticket-purchase-for-blashphemy
+         * https://github.com/Malechus/kic/issues/194
+         * This method should be a reusable method with injectable data
+         * but since we are two and half months away from the event
+         * rather than risk a refactor I am just renaming this method
+         * from CreatePaymentLink to CreateCurePaymentLink and building a new
+         * reusable CreatePaymentLink method.
+         * Malechus
+         */
+        public PaymentLink CreateCurePaymentLink(List<RegistrationViewModel> regList)
         {
-            PaymentLink paymentLink = createPaymentLink(regList);
+            PaymentLink paymentLink = createCurePaymentLink(regList);
 
             return paymentLink;
         }
 
-        private PaymentLink createPaymentLink(List<RegistrationViewModel> regList)
+        private PaymentLink createCurePaymentLink(List<RegistrationViewModel> regList)
         {
             List<OrderLineItem> orderLineItems = new List<OrderLineItem>();
             List<OrderLineItemDiscount> orderDiscounts = new List<OrderLineItemDiscount>();
@@ -213,6 +216,115 @@ namespace KiCData.Services
                 paymentLink = response.PaymentLink;
             }
             catch(Square.Exceptions.ApiException ex)
+            {
+                _logger.LogSquareEx(ex);
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                throw ex;
+            }
+
+            return paymentLink;
+        }
+
+        /// <summary>
+        /// Generates a dynamic Square payment link for the requested items.
+        /// </summary>
+        /// <param name="regList">List<RegistrationViewModel> containing the registrants purchasing event tickets.</param>
+        /// <param name="kicEvent">The KiCData.Models.Event object for which tickets are being purchased.</param>
+        /// <param name="discountCodes">String[] array of discount codes that could apply.</param>
+        /// <param name="redirectUrl">Url for redirect after payment complete (merch, etc.) leave empty for generic success page.</param>
+        /// <returns>PaymentLink</returns>
+        public PaymentLink CreatePaymentLink(List<RegistrationViewModel> regList, KiCData.Models.Event kicEvent, string[] discountCodes = null, string redirectUrl = null)
+        {
+            PaymentLink paymentLink = createPaymentLink(regList, kicEvent, discountCodes, redirectUrl);
+
+            return paymentLink;
+        }
+
+        private PaymentLink createPaymentLink(List<RegistrationViewModel> regList, KiCData.Models.Event kicEvent, string[] discountCodes = null, string redirectUrl = null)
+        {
+            if(redirectUrl is null) redirectUrl = "https://www.kicevents.com/success";
+            List<OrderLineItem> orderLineItems = new List<OrderLineItem>();
+            List<OrderLineItemDiscount> orderDiscounts = new List<OrderLineItemDiscount>();
+
+            var locations = _client.LocationsApi.ListLocations();
+            string locationID = locations.Locations.FirstOrDefault().Id;
+
+            foreach(RegistrationViewModel reg in regList)
+            {
+                ListCatalogResponse catalogResponse = _client.CatalogApi.ListCatalog();
+                CatalogObject? catalogObject = catalogResponse.Objects
+                    .Where(o => o.ItemData.Name == reg.Event.Name)
+                    .FirstOrDefault();
+
+                if(catalogObject is null)
+                {
+                    _logger.LogText("Could not find Catalog Object " + reg.Event.Name);
+                    throw new Exception("Catalog object not found.");
+                }
+
+                string id = catalogObject.Id;
+
+                CatalogObject? variation = catalogObject.ItemData.Variations.Where(v => v.ItemVariationData.Name == reg.TicketType).FirstOrDefault();
+
+                if(variation is null)
+                {
+                    _logger.LogText("Could not find Item Variation " + reg.TicketType);
+                    throw new Exception("Item variation not found.");
+                }
+
+                string varId = variation.Id;
+
+                OrderLineItem orderLineItem = new OrderLineItem.Builder(quantity: "1")
+                    .CatalogObjectId(varId)
+                    .Note(reg.FirstName + " " + reg.LastName)
+                    .Build();
+
+                orderLineItems.Add(orderLineItem);
+            }
+
+            OrderServiceCharge orderServiceCharge = new OrderServiceCharge.Builder()
+                .Name("Handling Fee")
+                .Percentage("3")
+                .CalculationPhase("SUBTOTAL_PHASE")
+                .Build();
+
+            List<OrderServiceCharge> serviceCharges = new List<OrderServiceCharge>();
+            serviceCharges.Add(orderServiceCharge);
+
+            OrderPricingOptions pricingOptions = new OrderPricingOptions.Builder()
+                .AutoApplyTaxes(true)
+                .Build();
+
+            Order order = new Order.Builder(locationId: locationID)
+                .LineItems(orderLineItems)
+                .PricingOptions(pricingOptions)
+                .ServiceCharges(serviceCharges)
+                .Discounts(orderDiscounts)
+                .Build();
+
+            CheckoutOptions options = new CheckoutOptions.Builder()
+                .RedirectUrl(redirectUrl)
+                .Build();
+
+            CreatePaymentLinkRequest paymentRequest = new CreatePaymentLinkRequest.Builder()
+                .IdempotencyKey(Guid.NewGuid().ToString())
+                .Order(order)
+                .CheckoutOptions(options)
+                .Build();
+
+            PaymentLink paymentLink;
+
+            try
+            {
+                CreatePaymentLinkResponse response = _client.CheckoutApi.CreatePaymentLink(paymentRequest);
+
+                paymentLink = response.PaymentLink;
+            }
+            catch (Square.Exceptions.ApiException ex)
             {
                 _logger.LogSquareEx(ex);
                 throw ex;

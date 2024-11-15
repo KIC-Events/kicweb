@@ -216,7 +216,7 @@ namespace Cure.Controllers
             PaymentLink paymentURL;
             try
             {
-                paymentURL = _paymentService.CreatePaymentLink(regList);
+                paymentURL = _paymentService.CreateCurePaymentLink(regList);
             }
             catch (Exception ex)
             {

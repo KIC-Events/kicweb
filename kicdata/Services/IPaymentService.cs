@@ -11,6 +11,8 @@ namespace KiCData.Services
     public interface IPaymentService
     {
         public int CheckInventory(string objectSearchTerm, string variationSearchTerm);
-        public PaymentLink CreatePaymentLink(List<RegistrationViewModel> regList);
+        public PaymentLink CreateCurePaymentLink(List<RegistrationViewModel> regList);
+
+        public PaymentLink CreatePaymentLink(List<RegistrationViewModel> regList, KiCData.Models.Event kicEvent, string[] discountCodes = null, string redirectUrl = null);
     }
 }
