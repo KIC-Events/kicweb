@@ -36,8 +36,10 @@ public class HomeController : Controller
 
 	[HttpGet]
 	public IActionResult Index()
-	{
-		IndexViewModel ivm = new IndexViewModel()
+    {
+        _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
+
+        IndexViewModel ivm = new IndexViewModel()
 		{
 			Consent = false
 		};

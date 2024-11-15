@@ -31,6 +31,11 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICookieService, CookieService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
+builder.Services.AddHttpClient<IEmailService, EmailService>(client =>
+{
+	client.BaseAddress = new Uri(config["Base Addresses:Mail"]);
+});
+builder.Services.AddSingleton<IPaymentService, PaymentService>();
 builder.Services.AddControllersWithViews();
 
 WebApplication app = builder.Build();

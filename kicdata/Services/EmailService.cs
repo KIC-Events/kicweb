@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using System.Net;
+using System.Text;
+using System.Text.Json;
 
 namespace KiCData.Services
 {
@@ -19,11 +21,14 @@ namespace KiCData.Services
         private readonly IConfigurationRoot _config;
         private readonly IHttpClientFactory _httpClientFactory;
         private IKiCLogger _logger;
-        public EmailService(IConfigurationRoot config, IHttpClientFactory clientFactory, IKiCLogger logger)
+        private HttpClient _httpClient;
+
+        public EmailService(IConfigurationRoot config, IHttpClientFactory clientFactory, IKiCLogger logger, HttpClient httpClient)
         {
             this._config = config;
             this._httpClientFactory = clientFactory;
             this._logger = logger;
+            this._httpClient = httpClient;
         }
 
         /// <summary>
@@ -38,7 +43,9 @@ namespace KiCData.Services
             message.To.Add(_config["Email Addresses:" + rep]);
             message.Cc.Add(_config["Email Addresses:Admin"]);
             message.Subject = "Web Form Submission | " + rep + " | " + DateTime.Now.ToString();
-            
+            message.From = "mailer-daemon@kicevents.com";
+
+
             return message;
         }
 
@@ -48,7 +55,7 @@ namespace KiCData.Services
         /// <param name="message">The FormMessage to be sent.</param>
         /// <returns>Task</returns>
         /// <exception cref="Exception"></exception>
-        public async Task SendEmail(FormMessage message)
+        public void SendEmail(FormMessage message)
         {
             if(message.Html is null && message.HtmlBuilder is null)
             {
@@ -60,29 +67,34 @@ namespace KiCData.Services
                 message.BuildHtml();
             }
 
-            MimeMessage mimeMessage = new MimeMessage();
-            mimeMessage.From.Add(new MailboxAddress("KIC Automated Mailer", "mailer-daemon@kicevents.com"));
-            foreach(string s in message.To)
-            {
-                mimeMessage.To.Add(new MailboxAddress("", s));
-            }
-            mimeMessage.Subject = message.Subject;
-            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Html };
+            _logger.LogText("Sending email. ");
 
-            try
+            List<KeyValuePair<string, string>> keyValuePairs = new List<KeyValuePair<string, string>>();
+
+            string toValue = null;
+
+            foreach (string s in message.To)
             {
-                using (SmtpClient client = new SmtpClient())
-                {
-                    client.Connect("smtp.forwardemail.net", 465, true);
-                    client.Authenticate(_config["Credentials:Mailbot:Username"], _config["Credentials:Mailbot:Password"]);
-                    client.Send(mimeMessage);
-                    client.Disconnect(true);
-                }
+                toValue = toValue + "," + s;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
+            keyValuePairs.Add(new KeyValuePair<string, string>("to", toValue));
+            keyValuePairs.Add(new KeyValuePair<string, string>("from", message.From));
+            keyValuePairs.Add(new KeyValuePair<string, string>("body", message.Html));
+            keyValuePairs.Add(new KeyValuePair<string, string>("html", message.Html));
+            keyValuePairs.Add(new KeyValuePair<string, string>("subject", message.Subject));
+
+            HttpRequestMessage? request = new HttpRequestMessage(HttpMethod.Post, "");
+
+            FormUrlEncodedContent formUrlEncodedContent = new FormUrlEncodedContent(keyValuePairs);
+
+            request.Content = formUrlEncodedContent;
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(_config["Credentials:Mailbot:Token"] + ":")));
+
+            HttpResponseMessage? result = _httpClient.Send(request);
+
+            _logger.LogText("Message sent...");
         }
     }
 }

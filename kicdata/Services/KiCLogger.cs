@@ -17,6 +17,17 @@ namespace KiCData.Services
             InitLogFile();
         }
 
+        public void LogText(string text)
+        {
+            InitLogFile();
+
+            StreamWriter sw = File.AppendText(path + fileName);
+            sw.WriteLine(DateTime.Now.ToString());
+            sw.WriteLine(text);
+            sw.WriteLine();
+            sw.Close();
+        }
+
         public void Log(Exception exception)
         {
             InitLogFile();

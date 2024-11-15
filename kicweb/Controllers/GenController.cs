@@ -157,8 +157,6 @@ namespace KiCWeb.Controllers
         }
 
 
-
-        //Issue #86 https://github.com/Malechus/kic/issues/86
         /*
         [HttpGet]
         public IActionResult Presenters()
@@ -327,8 +325,12 @@ namespace KiCWeb.Controllers
 
             return Redirect("Success");
         }
+        */
 
-
+        //https://github.com/Malechus/kic/issues/86
+        
+        [Route("~/Contact")]
+        [Route("/Gen/Contact")]
         [HttpGet]
         public IActionResult Contact()
         {
@@ -342,6 +344,8 @@ namespace KiCWeb.Controllers
             return View(feedback);
         }
 
+        [Route("~/Contact")]
+        [Route("/Gen/Contact")]
         [HttpPost]
         public IActionResult Contact(Feedback feedbackUpdated)
         {
@@ -354,7 +358,7 @@ namespace KiCWeb.Controllers
             FormMessage message = _emailService.FormSubmissionEmailFactory("Admin");
             if (message == null)
             {
-                _logger.Log(new Exception("The message is null."), _contextAccessor.HttpContext.Request);
+                _logger.Log(new Exception("The message is null."));
 
                 return Redirect("Error");
             }
@@ -364,9 +368,18 @@ namespace KiCWeb.Controllers
                 "<br />" +
                 "<br /><b>Details: </b>" + feedbackUpdated.Text +
                 "<br />" +
-                "<br />" +
-                "Please take any necessary action from here. If you encounter issues with this email, or you believe it has been sent in error, please reply to it."
+                "<br />"
             );
+
+            if(feedbackUpdated.Name != null)
+            {
+                message.HtmlBuilder.AppendLine("<p><b>Sent by:</b> " + feedbackUpdated.Name + "</p>");
+            }
+
+            if(feedbackUpdated.Email != null)
+            {
+                message.HtmlBuilder.AppendLine("<p><b>Email for:</b> " + feedbackUpdated.Email + "</p>");
+            }
 
             try
             {
@@ -374,25 +387,20 @@ namespace KiCWeb.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Log(ex, _contextAccessor.HttpContext.Request);
+                _logger.Log(ex);
                 return Redirect("Error");
             }
 
             return Redirect("Success");
         }
-        */
-
+        /*
         [Route("~/Contact")]
         [Route("/Gen/Contact")]
         public IActionResult Contact()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             return View();
         }
-
+        */
         [Route("~/GetInvolved")]
         [Route("/Gen/GetInvolved")]
         public IActionResult GetInvolved()

@@ -153,10 +153,12 @@ button.accept-policy
   color: lightslategray;
 }
 
-.main-title
-{
-  text-align: center;
-  font-family: "Forum", serif;
+.main-title {
+    text-align: center;
+    font-family: "Forum", serif;
+    word-wrap: normal;
+    text-wrap-mode: normal;
+    white-space: normal;
 }
 
 .modal
@@ -202,6 +204,20 @@ button.accept-policy
     padding-top: 15px;
 }
 
+.form-box {
+    border: 2px solid white;
+    border-spacing: 2px;
+    background: rgba(255, 205, 54, 0.2);
+    color: rgba(255, 205, 54, 1);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.form-control {
+    background: rgba(0, 0, 0, 0.9);
+    color: rgba(255, 205, 54, 1);
+}
+
 .text-center{
     text-align: center;
     list-style-position: inside;
@@ -245,4 +261,9 @@ a.ad-card {
     text-align: center;
     box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset;
     border-radius: 0px;
+}
+
+img.responsive {
+    height: auto;
+    max-width: 100%;
 }
