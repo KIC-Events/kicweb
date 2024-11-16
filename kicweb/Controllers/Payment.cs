@@ -56,7 +56,7 @@ namespace KiCWeb.Controllers
         [Route("/Blasphemy")]
         [Route("~/Blasphemy")]
         [Route("/Payment/Blasphemy")]
-        [HttpGet("Blasphemy")]
+        [HttpGet]
         public IActionResult Blasphemy()
         {
             ViewBag.SalesActive = true;
@@ -110,7 +110,7 @@ namespace KiCWeb.Controllers
             }
             else
             {
-                return Redirect("~/Blasphemy");
+                return RedirectToAction("Blasphemy");
             }
         }
 
