@@ -96,39 +96,9 @@ namespace Cure.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
-            int goldCount = 0;
-            int silverCount = 0;
-            int regularCount = 0;
-            try
-            {
-                silverCount = _paymentService.CheckInventory("CURE Event Ticket", "Silver");
-                goldCount = _paymentService.CheckInventory("CURE Event Ticket", "Gold");
-                regularCount = _paymentService.CheckInventory("CURE Event Ticket", "Regular");
-            }
-            catch (Exception ex)
-            {
-                return Redirect("Error");
-                //TODO Log exception
-            }
-
             RegistrationViewModel reg = new RegistrationViewModel();
-
-            reg.TicketTypes = new List<SelectListItem>();
-            if (goldCount > 0) { reg.TicketTypes.Add(new SelectListItem("Gold", "Gold")); }
-            if (silverCount > 0) { reg.TicketTypes.Add(new SelectListItem("Silver", "Silver")); }
-            reg.TicketTypes.Add(new SelectListItem("Standard", "Regular"));
-
-            reg.RoomTypes = new List<SelectListItem>();
-            reg.RoomTypes.Add(new SelectListItem("One King", "One King"));
-            reg.RoomTypes.Add(new SelectListItem("Two Doubles", "Two Doubles"));
-            reg.RoomTypes.Add(new SelectListItem("I will not be staying at the host hotel.", "I will not be staying at the host hotel."));
-            reg.RoomTypes.Add(new SelectListItem("I am staying in someone else's room.", "I am staying in someone else's room."));
-
-            if (goldCount == 0 && silverCount == 0 && regularCount == 0)
-            {
-                ViewBag.SoldOut = true;
-                reg.WaitList = true;
-            }
+            
+            reg = BuildReg(reg);
 
             return View(reg);
         }
@@ -142,16 +112,16 @@ namespace Cure.Controllers
         {
             if (!ModelState.IsValid)
             {
-
-
                 ViewBag.Error = "Missing required info.";
-                return View();
+                regUpdated = BuildReg(regUpdated);
+                return View(regUpdated);
             }
 
             if (regUpdated.Email != regUpdated.EmailConf)
             {
                 ViewBag.Error = "Email does not match.";
-                return View();
+                regUpdated = BuildReg(regUpdated);
+                return View(regUpdated);
             }
 
             if (regUpdated.DiscountCode is not null)
@@ -167,6 +137,7 @@ namespace Cure.Controllers
                 else
                 {
                     ViewBag.Error = "Discount code not found.";
+                    regUpdated = BuildReg(regUpdated);
                     return View(regUpdated);
                 }
             }
@@ -185,6 +156,41 @@ namespace Cure.Controllers
             {
                 return Redirect("~/Register");
             }
+        }
+
+        private RegistrationViewModel BuildReg(RegistrationViewModel reg)
+        {
+            int goldCount = 0;
+            int silverCount = 0;
+            int regularCount = 0;
+            try
+            {
+                silverCount = _paymentService.CheckInventory("CURE Event Ticket", "Silver");
+                goldCount = _paymentService.CheckInventory("CURE Event Ticket", "Gold");
+                regularCount = _paymentService.CheckInventory("CURE Event Ticket", "Regular");
+            }
+            catch (Exception ex)
+            {
+                //TODO Log exception
+            }
+
+            reg.TicketTypes = new List<SelectListItem>();
+            if (goldCount > 0) { reg.TicketTypes.Add(new SelectListItem("Gold", "Gold")); }
+            if (silverCount > 0) { reg.TicketTypes.Add(new SelectListItem("Silver", "Silver")); }
+            reg.TicketTypes.Add(new SelectListItem("Standard", "Regular"));
+
+            reg.RoomTypes = new List<SelectListItem>();
+            reg.RoomTypes.Add(new SelectListItem("One King", "One King"));
+            reg.RoomTypes.Add(new SelectListItem("Two Doubles", "Two Doubles"));
+            reg.RoomTypes.Add(new SelectListItem("I will not be staying at the host hotel.", "I will not be staying at the host hotel."));
+            reg.RoomTypes.Add(new SelectListItem("I am staying in someone else's room.", "I am staying in someone else's room."));
+
+            if (goldCount == 0 && silverCount == 0 && regularCount == 0)
+            {
+                reg.WaitList = true;
+            }
+
+            return reg;
         }
 
         [Route("~/Waitlist")]
