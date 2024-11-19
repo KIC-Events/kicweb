@@ -30,6 +30,9 @@
                             <li class="nav-item">
                                 <a class="flat-btn nav-link" asp-area="" asp-controller="Gen" asp-action="About">About</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="flat-btn nav-link" asp-area="" asp-controller="Gen" asp-action="Consent">Consent and Policies</a>
+                            </li>
                             @*<li class="nav-item">
                         <a class="nav-link flat-btn" target="_blank" href="https://kic-events.square.site/shop/apparel/INJSIHWIBYY7LG4HENI4NYFL">Merch</a>
                         <a class="nav-link flat-btn" asp-area="" asp-controller="Payment" asp-action="MerchStore" target="_blank">Merch</a>
@@ -94,7 +97,7 @@
     @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
     {
         <header>
-            <h1 class="main-title text-danger">This is a dev site, used for testing purposes. Information here may be incorrect or made up entirely. If you try to buy a ticket here, nothing will happen. You have been warned.</h1>
+            <h4 class="main-title text-danger">This is a dev site, used for testing purposes. Information here may be incorrect or made up entirely. If you try to buy a ticket here, nothing will happen. You have been warned.</h4>
             <p class="main-title">Click <a href="https://cure.kicevents.com">here</a> to go to the real thing.</p>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
                 <div class="container-fluid">
@@ -111,6 +114,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="flat-btn nav-link" asp-area="" asp-controller="Gen" asp-action="About">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="flat-btn nav-link" asp-area="" asp-controller="Gen" asp-action="Consent">Consent and Policies</a>
                             </li>
                             @*<li class="nav-item">
                         <a class="nav-link flat-btn" target="_blank" href="https://kic-events.square.site/shop/apparel/INJSIHWIBYY7LG4HENI4NYFL">Merch</a>
@@ -152,6 +158,8 @@
                             <li>
                                 <a href="https://cure.kicevents.com"><img src="~/css/images/CURE/3.png" alt="CURE 2025 Logo, button to CURE web site." width="100px" height="100px" /></a>
                             </li>
+                            <span class="nav-spacer"></span>
+                            <span></span>
                             <span class="nav-spacer"></span>
                             <span></span>
                             <span class="nav-spacer"></span>
