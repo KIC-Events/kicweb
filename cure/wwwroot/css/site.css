@@ -8,6 +8,10 @@ html {
     }
 }
 
+.main-container{
+    margin: 0 auto;
+}
+
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,

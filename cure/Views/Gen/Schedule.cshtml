@@ -1,0 +1,12 @@
+﻿@page
+
+<div class="view-body">
+    @foreach(KiCData.Models.Presentation p in ViewBag.Presentations)
+    {
+        <div class="form-box">
+            <p>@p.Presenter.PublicName</p>
+            <p>@p.Name</p>
+            <p>@p.Description</p>
+        </div>
+    }
+</div>

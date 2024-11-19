@@ -11,19 +11,27 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="align-content-center banner-head">
-            <a asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="~/css/images/CureBanner.png" alt="CURE Banner" onerror="this.style.display='none'" style="height: auto; max-width: 100%;" />
-            </a>
+    <div class="container row">
+        <header class="header">
+            <div class="align-content-center banner-head">
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/css/images/CureBanner.png" alt="CURE Banner" onerror="this.style.display='none'" style="height: auto; max-width: 100%;" />
+                </a>
+            </div>
             @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
             {
-                <h1 class="main-title text-danger">This is a dev site, used for testing purposes. Information here may be incorrect or made up entirely. If you try to buy a ticket here, nothing will happen. You have been warned.</h1>
-                <p>Click <a href="https://cure.kicevents.com">here</a> to go to the real thing.</p>
+                <div class="align-content-center banner-head">
+                    <h4 class="main-title text-danger">This is a dev site, used for testing purposes. Information here may be incorrect or made up entirely. If you try to buy a ticket here, nothing will happen. You have been warned.</h4>
+                    <p>Click <a href="https://cure.kicevents.com">here</a> to go to the real thing.</p>
+                </div>
             }
-        </div>
-    </header>
+        </header>
+    </div>
     <div class="container main-container">
+        @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+        {
+            <div style="height: 120px;"></div>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

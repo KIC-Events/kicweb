@@ -85,8 +85,12 @@ namespace Cure.Controllers
         [Route("/GenController/Schedule")]
         public IActionResult Schedule()
         {
-            //return View();
-            return RedirectToAction("ComingSoon");
+            ViewBag.Presentations = _kdbContext.Presentations.Where(p => p.EventId == 1111).ToList();
+            foreach(Presentation presentation in ViewBag.Presentations)
+            {
+                presentation.Presenter = _kdbContext.Presenters.Where(p => p.Id == presentation.PresenterId).First();
+            }
+            return View();
         }
 
         [Route("~/Register")]
