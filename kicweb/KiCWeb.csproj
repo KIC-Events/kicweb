@@ -30,4 +30,9 @@
   <ItemGroup>
     <ProjectReference Include="..\kicdata\KiCData.csproj"/>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>  
 </Project>
