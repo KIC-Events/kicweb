@@ -22,12 +22,7 @@ public class CompsFromJson
             Environment.Exit(1);
         }
 
-        string jsonValue;
-
-        using(StreamReader sr = new StreamReader(File.ReadAllText(filePath)))
-        {
-            jsonValue = sr.ToString();
-        }
+        string jsonValue = File.ReadAllText(filePath);
 
         compObjs = JsonSerializer.Deserialize<List<CompObj>>(jsonValue);
     }
@@ -55,8 +50,11 @@ public class CompsFromJson
                     FirstName = obj.FirstName,
                     LastName = obj.LastName,
                     Email = obj.Email,
-                    FetName = obj.FetName
+                    FetName = obj.FetName,
+                    DateOfBirth = new DateOnly(1900, 1, 1)
                 };
+
+                _context.Members.Add(member);
             }
 
             Console.WriteLine("Creating attendee model.");
@@ -64,6 +62,7 @@ public class CompsFromJson
             attendee.Member = member;
             attendee.BackgroundChecked = false;
             attendee.IsPaid = true;
+            attendee.BadgeName = "TBD";
 
             Console.WriteLine("Creating ticket.");
             ticket.Attendee = attendee;
@@ -85,7 +84,6 @@ public class CompsFromJson
             };
 
             Console.WriteLine("Writing data to DB.");
-            _context.Members.Add(member);
             _context.Attendees.Add(attendee);
             _context.Ticket.Add(ticket);
             _context.TicketComp.Add(ticketComp);
