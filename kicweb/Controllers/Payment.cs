@@ -155,15 +155,21 @@ namespace KiCWeb.Controllers
                 CookieOptions cookieOptions = _cookieService.NewCookieFactory();
                 List<RegistrationViewModel> regList = new List<RegistrationViewModel>();
                 regList.Add(rvm);
-                string cookieValue = JsonConvert.SerializeObject(regList);
+                string cookieValue = JsonConvert.SerializeObject(regList, new JsonSerializerSettings(){
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
                 context.Response.Cookies.Append("Registration", cookieValue, cookieOptions);
             }
             else
             {
-                List<RegistrationViewModel> regList = JsonConvert.DeserializeObject<List<RegistrationViewModel>>(context.Request.Cookies["Registration"]);
+                List<RegistrationViewModel> regList = JsonConvert.DeserializeObject<List<RegistrationViewModel>>(context.Request.Cookies["Registration"], new JsonSerializerSettings(){
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
                 regList.Add(rvm);
                 context.Response.Cookies.Delete("Registration");
-                string cookieValue = JsonConvert.SerializeObject(regList);
+                string cookieValue = JsonConvert.SerializeObject(regList, new JsonSerializerSettings(){
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
                 CookieOptions cookieOptions = _cookieService.NewCookieFactory();
                 context.Response.Cookies.Append("Registration", cookieValue, cookieOptions);
             }
