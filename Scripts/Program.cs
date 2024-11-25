@@ -2,6 +2,7 @@
 using KiCData.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Scripts
 {
@@ -20,7 +21,19 @@ namespace Scripts
             }
             IConfigurationRoot configuration = builder.Build();
 
-            IEmailService emailService = new EmailService(configuration, null, null, null);
+            ServiceCollection serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton(configuration);
+            DbContextOptionsBuilder<KiCdbContext> dbOptionsBuilder = new DbContextOptionsBuilder<KiCdbContext>();
+            dbOptionsBuilder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
+            DbContextOptions<KiCdbContext> options = dbOptionsBuilder.Options;
+            serviceCollection.AddSingleton<KiCdbContext>(new KiCdbContext(options));
+            serviceCollection.AddSingleton<IKiCLogger, KiCLogger>();
+            serviceCollection.AddHttpClient<IEmailService, EmailService>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["Base Addresses:Mail"]);
+                });
+
+            ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1. Send emails from an excel sheet.");
@@ -37,19 +50,19 @@ namespace Scripts
             switch (response)
             {
                 case "1":
-                    SendEmailFromList(configuration, emailService);
+                    SendEmailFromList(configuration, serviceProvider.GetService<IEmailService>());
                     break;
                 case "2":
                     CreateCompsFromList(configuration);
                     break;
                 case "3":
-                    InviteToBeta(configuration, emailService);
+                    InviteToBeta(configuration, serviceProvider.GetService<IEmailService>());
                     break;
                 case "4":
                     DeleteDuplicates(configuration);
                     break;
                 case "5":
-                    SendEmailsFromDB(configuration, emailService);
+                    SendEmailsFromDB(configuration, serviceProvider.GetService<IEmailService>());
                     break;
                 case "6":
                     DeleteDupesFromList(configuration);
