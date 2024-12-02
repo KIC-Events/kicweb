@@ -412,6 +412,13 @@ namespace KiCWeb.Controllers
             return View();
         }
 
+        [Route("~/Consent")]
+        [Route("/Gen/Consent")]
+        public IActionResult Consent()
+        {
+            return View();
+        }
+
         [Route("~/Success")]
         [Route("/Gen/Success")]
         public IActionResult Success()
