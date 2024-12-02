@@ -2,6 +2,7 @@
 using KiCData.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Scripts
 {
@@ -20,7 +21,19 @@ namespace Scripts
             }
             IConfigurationRoot configuration = builder.Build();
 
-            IEmailService emailService = new EmailService(configuration, null, null, null);
+            ServiceCollection serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton(configuration);
+            DbContextOptionsBuilder<KiCdbContext> dbOptionsBuilder = new DbContextOptionsBuilder<KiCdbContext>();
+            dbOptionsBuilder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
+            DbContextOptions<KiCdbContext> options = dbOptionsBuilder.Options;
+            serviceCollection.AddSingleton<KiCdbContext>(new KiCdbContext(options));
+            serviceCollection.AddSingleton<IKiCLogger, KiCLogger>();
+            serviceCollection.AddHttpClient<IEmailService, EmailService>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["Base Addresses:Mail"]);
+                });
+
+            ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1. Send emails from an excel sheet.");
@@ -30,31 +43,35 @@ namespace Scripts
             Console.WriteLine("5. Send emails from DB");
             Console.WriteLine("6. Delete Dupes from list");
             Console.WriteLine("7. Validate list and add missing reg");
+            Console.WriteLine("8. Create Scholarship Comps from Json File");
             Console.WriteLine("100. Exit.");
             string response = Console.ReadLine();
 
             switch (response)
             {
                 case "1":
-                    SendEmailFromList(configuration, emailService);
+                    SendEmailFromList(configuration, serviceProvider.GetService<IEmailService>());
                     break;
                 case "2":
                     CreateCompsFromList(configuration);
                     break;
                 case "3":
-                    InviteToBeta(configuration, emailService);
+                    InviteToBeta(configuration, serviceProvider.GetService<IEmailService>());
                     break;
                 case "4":
                     DeleteDuplicates(configuration);
                     break;
                 case "5":
-                    SendEmailsFromDB(configuration, emailService);
+                    SendEmailsFromDB(configuration, serviceProvider.GetService<IEmailService>());
                     break;
                 case "6":
                     DeleteDupesFromList(configuration);
                     break;
                 case "7":
                     AddRegFromList(configuration);
+                    break;
+                case "8":
+                    CreateCompsFromJson(configuration);
                     break;
                 case "100":
                     Console.WriteLine("Goodbye.");
@@ -66,6 +83,26 @@ namespace Scripts
             }
 
             Main(args);
+        }
+
+        private static void CreateCompsFromJson(IConfigurationRoot configuration)
+        {
+            Console.WriteLine("Please enter the full path to the file.");
+            string fPath = Console.ReadLine();
+            Console.WriteLine("Setting up...");
+            if (!File.Exists(fPath))
+            {
+                Console.WriteLine("That didn't work. Try again.");
+                return;
+            }
+            Console.WriteLine("Checking entries...");
+            DbContextOptionsBuilder<KiCdbContext> builder = new DbContextOptionsBuilder<KiCdbContext>();
+            builder.UseMySql(configuration["Database:ConnectionString"], ServerVersion.AutoDetect(configuration["Database:ConnectionString"]));
+            KiCdbContext context = new KiCdbContext(builder.Options);
+            Console.WriteLine("Reading File");
+            CompsFromJson compsFromJson = new CompsFromJson(fPath, context);
+            Console.WriteLine("Writing to DB");
+            compsFromJson.JsonToModel();
         }
 
         private static void AddRegFromList(IConfigurationRoot configuration)

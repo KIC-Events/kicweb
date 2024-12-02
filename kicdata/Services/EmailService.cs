@@ -72,13 +72,19 @@ namespace KiCData.Services
             List<KeyValuePair<string, string>> keyValuePairs = new List<KeyValuePair<string, string>>();
 
             string toValue = null;
+            string ccValue = null;
 
             foreach (string s in message.To)
             {
                 toValue = toValue + "," + s;
             }
 
+            foreach (string s in message.Cc){
+                ccValue = ccValue + "," + s;
+            }
+
             keyValuePairs.Add(new KeyValuePair<string, string>("to", toValue));
+            keyValuePairs.Add(new KeyValuePair<string, string>("cc", ccValue));
             keyValuePairs.Add(new KeyValuePair<string, string>("from", message.From));
             keyValuePairs.Add(new KeyValuePair<string, string>("body", message.Html));
             keyValuePairs.Add(new KeyValuePair<string, string>("html", message.Html));
