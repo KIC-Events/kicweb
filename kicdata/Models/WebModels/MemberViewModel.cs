@@ -128,4 +128,61 @@ namespace KiCData.Models.WebModels
             this.presenters = presenters;
         }
     }
+
+    public class CheckInViewModel
+    {
+        public CheckInViewModel()
+        {
+            this.IsPaid = false;
+        }
+
+        public CheckInViewModel(KiCdbContext context)
+        {
+            this.IsPaid = false;
+
+            Events = new List<SelectListItem>();
+
+            List<Event> events = context.Events
+                .Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
+                .OrderBy(e => e.StartDate)
+                .ToList();
+
+            foreach(Event e in events)
+            {
+                SelectListItem i = new SelectListItem();
+                i.Text = e.Name;
+                i.Value = e.Id.ToString();
+                i.Disabled = false;
+
+                Events.Add(i);
+            }
+
+            Events[0].Selected = true;
+        }
+
+        public string? FirstName{get;set;}
+        public string? LastName{get;set;}
+        public string? Email{get;set;}
+        public string? City{get;set;}
+        public string? State{get;set;}
+        public DateOnly? DateOfBirth{get;set;}
+        public string? MemberId{get;set;}
+        public string? ConfNumber{get;set;}
+        public bool IsPaid{get;set;}
+        public Event? Event{get;set;}
+        public List<SelectListItem>? Events{get;set;}
+
+
+        public bool IsEmpty()
+        {
+            bool result = false;
+
+            if(FirstName is null || LastName is null || MemberId is null)
+            {
+                result = true;
+            }
+
+            return result;
+        }
+    }
 }

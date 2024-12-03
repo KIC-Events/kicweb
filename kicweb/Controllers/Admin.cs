@@ -41,6 +41,16 @@ namespace KiCWeb.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("/Admin/Registration")]
+        [Route("/Registration")]
+        public IActionResult Registration()
+        {
+            CheckInViewModel cvm = new CheckInViewModel(_context);
+
+            return View(cvm);
+        }
+
         //Request for adding tickets to the database for an event
         [HttpGet]
         [Route("Tickets")]
