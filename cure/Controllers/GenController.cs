@@ -181,6 +181,7 @@ namespace Cure.Controllers
 
             reg.RoomTypes = new List<SelectListItem>();
             reg.RoomTypes.Add(new SelectListItem("I would like to sign up for the wait list for a room.", "I would like to sign up for the wait list for a room."));
+            reg.RoomTypes.Add(new SelectListItem("I will be staying in someone else's room.", "I will be staying in someone else's room."));
             reg.RoomTypes.Add(new SelectListItem("I will not be staying at the host hotel.", "I will not be staying at the host hotel."));
 
             if (goldCount == 0 && silverCount == 0 && regularCount == 0)
