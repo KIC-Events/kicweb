@@ -85,8 +85,7 @@ namespace Cure.Controllers
         [Route("/GenController/Schedule")]
         public IActionResult Schedule()
         {
-            //return View();
-            return RedirectToAction("ComingSoon");
+            return View();
         }
 
         [Route("~/Register")]
