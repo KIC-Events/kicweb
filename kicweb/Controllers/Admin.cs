@@ -16,14 +16,14 @@ namespace KiCWeb.Controllers
     public class Admin : KICAuthController
     {
 
-        private readonly ILogger<Admin> _logger;
+        private readonly IKiCLogger _logger;
         private readonly IConfigurationRoot _configurationRoot;
         private readonly IUserService _userService;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly KiCdbContext _context;
         private readonly ICookieService _cookieService;
 
-        public Admin(ILogger<Admin> logger, IConfigurationRoot configurationRoot, IUserService userService, IHttpContextAccessor httpContextAccessor, KiCdbContext kiCdbContext, ICookieService cookieService) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
+        public Admin(IKiCLogger logger, IConfigurationRoot configurationRoot, IUserService userService, IHttpContextAccessor httpContextAccessor, KiCdbContext kiCdbContext, ICookieService cookieService) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _logger = logger;
             _userService = userService;
@@ -49,6 +49,144 @@ namespace KiCWeb.Controllers
             CheckInViewModel cvm = new CheckInViewModel(_context);
 
             return View(cvm);
+        }
+
+        public IActionResult CheckIn(CheckInViewModel? cvmUpdated = null)
+        {
+            if(cvmUpdated is null)
+            {
+                cvmUpdated = TempData["Checkin"] as CheckInViewModel;
+            }
+
+            return View(cvmUpdated);
+        }
+
+        public async Task<IActionResult> OnPostSearchAsync(CheckInViewModel cvmUpdated)
+        {
+            KiCData.Models.Member? member = null;
+
+            try
+            {
+                member = MemberSearch(cvmUpdated);
+            }
+            catch(Exception ex)
+            {
+                _logger.Log(ex);
+                return RedirectToAction("Registration");
+            }
+
+            if(member is null)
+            {
+                return RedirectToAction("Registration");
+            }
+
+            Attendee? attendee = null;
+
+            try
+            {
+                attendee = AttendeeSearch(member, cvmUpdated.Event);
+            }
+            catch(Exception ex)
+            {
+                _logger.Log(ex);
+                return RedirectToAction("Registration");
+            }
+
+            cvmUpdated.FirstName = member.FirstName;
+            cvmUpdated.LastName = member.LastName;
+            cvmUpdated.City = member.City;
+            cvmUpdated.State = member.State;
+            cvmUpdated.DateOfBirth = member.DateOfBirth;
+            cvmUpdated.ConfNumber = attendee.Id.ToString();
+            cvmUpdated.Email = member.Email;
+
+            TempData["Checkin"] = cvmUpdated;
+            return RedirectToAction("Checkin");
+        }
+
+        public async Task<IActionResult> OnPostCheckinAsync(CheckInViewModel cvmUpdated)
+        {
+            if(cvmUpdated.IsEmpty())
+            {
+                _logger.LogText("Empty cvm on checkin execution.");
+                return RedirectToAction("Registration");
+            }
+
+            if(!cvmUpdated.IsPaid)
+            {
+                //need to return with some way to alert that payment is not complete
+                return RedirectToAction("Registration");
+            }
+
+            return RedirectToPage("Registration");
+        }
+
+        public KiCData.Models.Member? MemberSearch(CheckInViewModel cvmUpdated)
+        {
+            KiCData.Models.Member? member;
+            if(cvmUpdated.FirstName is not null && cvmUpdated.LastName is not null)
+            {
+                try
+                {
+                    member = _context.Members
+                        .Where(m => m.FirstName == cvmUpdated.FirstName && m.LastName == cvmUpdated.LastName)
+                        .FirstOrDefault();
+
+                    if(member is not null)
+                    {
+                        return member;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    _logger.Log(ex);
+                }
+            }
+
+            if(cvmUpdated.FirstName is null || cvmUpdated.LastName is null)
+            {
+                try{
+                    member = _context.Members
+                        .Where(m => m.Id.ToString() == cvmUpdated.MemberId)
+                        .FirstOrDefault();
+
+                    if(member is not null)
+                    {
+                        return member;
+                    }
+                    else
+                    {
+                        throw new Exception("Member not found.");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    _logger.Log(ex);
+                }
+
+                if(cvmUpdated.MemberId is null)
+                {
+                    throw new Exception("Missing search criteria.");
+                }
+            }
+
+            return null;
+        }
+
+        public Attendee AttendeeSearch(KiCData.Models.Member member, KiCData.Models.Event kicEvent)
+        {
+            Attendee? attendee = _context.Attendees
+                .Where(a => a.MemberId == member.Id && a.Ticket.Event.Id == kicEvent.Id)
+                .FirstOrDefault();
+
+            if(attendee is not null)
+            {
+                return attendee;
+            }
+            else
+            {
+                throw new Exception("Attendee not found.");
+            }
         }
 
         //Request for adding tickets to the database for an event

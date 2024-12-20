@@ -65,6 +65,12 @@
                         <label asp-for="IsPaid">Payment Confirmation</label>
                     </input>
                 </div>
+                <div class="form-group">
+                    <button type="submit" class="flat-btn" asp-page-handler="Search">Search</button>
+                </div>
+                @if(!@Model.IsEmpty()){
+                    <button type="submit" class="flat-btn" asp-page-handler="Checkin">Check In</button>
+                }
             </div>
         </div>
     </form>
