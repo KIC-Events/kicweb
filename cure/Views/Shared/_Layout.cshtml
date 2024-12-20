@@ -16,15 +16,17 @@
             <a asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/css/images/CureBanner.png" alt="CURE Banner" onerror="this.style.display='none'" style="height: auto; max-width: 100%;" />
             </a>
-            @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
-            {
-                <h1 class="main-title text-danger">This is a dev site, used for testing purposes. Information here may be incorrect or made up entirely. If you try to buy a ticket here, nothing will happen. You have been warned.</h1>
-                <p>Click <a href="https://cure.kicevents.com">here</a> to go to the real thing.</p>
-            }
+            
         </div>
     </header>
     <div class="container main-container">
         <main role="main" class="pb-3">
+            @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                <div class="container row" style="height: 200px;"></div>
+                <h1 class="main-title text-danger">This is a dev site, used for testing purposes. Information here may be incorrect or made up entirely. If you try to buy a ticket here, nothing will happen. You have been warned.</h1>
+                <p>Click <a href="https://cure.kicevents.com">here</a> to go to the real thing.</p>
+            }
             @RenderBody()
         </main>
     </div>
