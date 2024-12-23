@@ -11,7 +11,7 @@ namespace Scripts
         static void Main(string[] args)
         {
             IConfigurationBuilder builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
-            if (Environment.GetEnvironmentVariable("AASPNETCORE_ENVIRONMENT") == "Production")
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
             {
                 builder.AddJsonFile("appsettings.Production.json");
             }
