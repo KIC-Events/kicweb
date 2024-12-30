@@ -85,10 +85,9 @@ namespace Cure.Controllers
         [Route("/GenController/Schedule")]
         public IActionResult Schedule()
         {
-            //return View();
-            return RedirectToAction("ComingSoon");
+            return View();
         }
-
+        /*
         [Route("~/Register")]
         [Route("~/Registration")]
         [Route("/Home/Registration")]
@@ -157,7 +156,7 @@ namespace Cure.Controllers
                 return Redirect("~/Register");
             }
         }
-
+        
         private RegistrationViewModel BuildReg(RegistrationViewModel reg)
         {
             int goldCount = 0;
@@ -180,10 +179,9 @@ namespace Cure.Controllers
             reg.TicketTypes.Add(new SelectListItem("Standard", "Regular"));
 
             reg.RoomTypes = new List<SelectListItem>();
-            reg.RoomTypes.Add(new SelectListItem("One King", "One King"));
-            reg.RoomTypes.Add(new SelectListItem("Two Doubles", "Two Doubles"));
+            reg.RoomTypes.Add(new SelectListItem("I would like to sign up for the wait list for a room.", "I would like to sign up for the wait list for a room."));
+            reg.RoomTypes.Add(new SelectListItem("I will be staying in someone else's room.", "I will be staying in someone else's room."));
             reg.RoomTypes.Add(new SelectListItem("I will not be staying at the host hotel.", "I will not be staying at the host hotel."));
-            reg.RoomTypes.Add(new SelectListItem("I am staying in someone else's room.", "I am staying in someone else's room."));
 
             if (goldCount == 0 && silverCount == 0 && regularCount == 0)
             {
@@ -233,6 +231,7 @@ namespace Cure.Controllers
 
             return Redirect(paymentURL.Url);
         }
+        */
 
         [Route("~/Privacy")]
         [Route("/Home/Privacy")]
@@ -260,6 +259,7 @@ namespace Cure.Controllers
             return View();
         }
 
+        /*
         [Route("~/RegistrationSuccessful")]
         [Route("~/RegistrationSuccessful/**")]
         [Route("/Home/RegistrationSuccessful")]
@@ -295,6 +295,7 @@ namespace Cure.Controllers
 
             return View();
         }
+        */
 
         [Route("~/TicketTypes")]
         [Route("/Home/TicketTypes")]
