@@ -23,19 +23,22 @@
             </a>
         </div>
     </div>
+    <div class="container">
+        <h3 class="main-title">This form collects some personal information. This information is intended only for internal use and for performing actions related to event safety, namely background checks. The data collected here will be securely stored and never sold. We recognize that privacy is of paramount concern for an event of this type, and we will take all reasonable steps to secure and protect your data.</h3>
+    </div>
+    @if(ViewBag.Error != null)
+    {
         <div class="container">
-            <h3 class="main-title">This form collects some personal information. This information is intended only for internal use and for performing actions related to event safety, namely background checks. The data collected here will be securely stored and never sold. We recognize that privacy is of paramount concern for an event of this type, and we will take all reasonable steps to secure and protect your data.</h3>
+            <h4 class="text-danger">@ViewBag.Error</h4>
         </div>
-        @if(ViewBag.Error != null)
-        {
-            <div class="container">
-                <h4 class="text-danger">@ViewBag.Error</h4>
-            </div>
-        }
-        <div class="container">
-            <h2 class="main-title text-danger">Hotel rooms are sold out. You can sign up for the wait list and will receive a room if and when one becomes available in first come, first served order.</canvas></h3>
+    }
+    <div style="height: 20px;"></div>
+    @if(Model.WaitList is true)
+    {
+        <div class="container row">
+            <h1>Tickets are sold out.</h1>
         </div>
-        <div style="height: 20px;"></div>
+    }
     <form method="post" asp-area="" asp-controller="Home" asp-action="Registration">
         <div class="container row">
             <div class="form-box">
@@ -219,9 +222,12 @@
                     <label asp-for="CreateMore">Check here if you would like to add another ticket before proceeding to checkout. This form will be reset when you click submit, and you can create another ticket before proceeding to checkout.</label>
                     </input>
                 </div>
-                <div class="form-group">
-                    <button class="flat-btn" type="submit" value="Submit">Submit</button>
-                </div>
+                @if(Model.WaitList is false)
+                {
+                    <div class="form-group">
+                        <button class="flat-btn" type="submit" value="Submit">Submit</button>
+                    </div>
+                }
             </div>
         </div>
     </form>
