@@ -88,6 +88,7 @@ namespace Cure.Controllers
 			return View();
 		}
 		
+		/*
 		[Route("~/Register")]
 		[Route("~/Registration")]
 		[Route("/Home/Registration")]
@@ -230,6 +231,7 @@ namespace Cure.Controllers
 
 			return Redirect(paymentURL.Url);
 		}
+		*/
 
 		[Route("~/Privacy")]
 		[Route("/Home/Privacy")]
@@ -257,7 +259,7 @@ namespace Cure.Controllers
 			return View();
 		}
 
-		
+		/*
 		[Route("~/RegistrationSuccessful")]
 		[Route("~/RegistrationSuccessful/**")]
 		[Route("/Home/RegistrationSuccessful")]
@@ -293,7 +295,7 @@ namespace Cure.Controllers
 
 			return View();
 		}
-		
+		*/
 
 		[Route("~/TicketTypes")]
 		[Route("/Home/TicketTypes")]
