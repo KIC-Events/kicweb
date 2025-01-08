@@ -11,66 +11,43 @@
             <hr />
         </div>
     </div>
-    <form method="post" asp-area="" asp-controller="Admin" asp-action="Registration">
+    <form method="post">
         <div class="container row">
             <div class="col-sm">
                 <div class="form-group">
-                    <label asp-for="Event">For which event are you checking in?</label>
-                    <select asp-for="Event" class="form-control" asp-items="@Model.Events"></select>
+                    <label asp-for="EventId">For which event are you checking in?</label>
+                    <select asp-for="EventId" class="form-control" asp-items="@Model.Events"></select>
                 </div>
             </div>
         </div>
         <div class="container row">
-            <div class="col-sm-6">
+            <div class="col-sm">
                 <div class="form-group">
                     <label asp-for="FirstName">First Name</label>
                     <input asp-for="FirstName" class="form-control" />
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="col-sm">
                 <div class="form-group">
                     <label asp-for="LastName">Last Name</label>
                     <input asp-for="LastName" class="form-control" />
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="col-sm">    
                 <div class="form-group">
                     <label asp-for="ConfNumber">Confirmation Number</label>
                     <input asp-for="ConfNumber" class="form-control" />
                     <span asp-validation-for="ConfNumber" class="text-danger"></span>
                 </div>
+            </div>            
+        </div>
+        <div class="container row">
+            <div class="col-sm">
                 <div class="form-group">
-                    <label asp-for="DateOfBirth">Date of Birth</label>
-                    <input asp-for="DateOfBirth" type="date" class="form-control" />
-                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    <button type="submit" class="flat-btn">Search</button>
                 </div>
-                <div class="form-group">
-                    <label asp-for="City">City</label>
-                    <input asp-for="City" class="form-control" readonly />
-                </div>
-                <div class="form-group">
-                    <label asp-for="State">State</label>
-                    <input asp-for="State" class="form-control" readonly />
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label asp-for="MemberId">Member ID</label>
-                    <input asp-for="MemberId" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="Email">Email</label>
-                    <input asp-for="Email" class="form-control" readonly />
-                </div>
-                <div class="form-group">
-                    <input asp-for="IsPaid" type="checkbox" readonly>
-                        <label asp-for="IsPaid">Payment Confirmation</label>
-                    </input>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="flat-btn" asp-page-handler="Search">Search</button>
-                </div>
-                @if(!@Model.IsEmpty()){
-                    <button type="submit" class="flat-btn" asp-page-handler="Checkin">Check In</button>
-                }
             </div>
         </div>
     </form>
