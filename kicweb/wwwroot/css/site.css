@@ -231,8 +231,10 @@ button.accept-policy
     text-align: center;
 }
 
-.form-control {
+.form-control,
+.form-control[readonly] {
     background: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.9);
     color: rgba(255, 205, 54, 1);
 }
 

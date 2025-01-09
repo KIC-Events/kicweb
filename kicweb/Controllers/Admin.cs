@@ -114,7 +114,14 @@ namespace KiCWeb.Controllers
 			
 			_context.SaveChanges();
 			
-			return RedirectToAction("Gen/Success");
+			return RedirectToAction("CheckInSuccess");
+		}
+		
+		[Route("/Admin/CheckInSuccess")]
+		[Route("/CheckInSuccess")]
+		public IActionResult CheckInSuccess()
+		{
+			return View();
 		}
 
 		public CheckInViewModel OnPostSearch(CheckInViewModel cvmUpdated)
