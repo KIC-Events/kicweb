@@ -22,7 +22,7 @@ public class ConsumeMasterList
 		
 		try
 		{
-			masterListObjs = JsonSerializer.Deserialize<List<MasterListObj>>(path);
+			masterListObjs = JsonSerializer.Deserialize<List<MasterListObj>>(File.ReadAllBytes(path));
 		}
 		catch(Exception ex)
 		{
@@ -38,7 +38,7 @@ public class ConsumeMasterList
 			Console.WriteLine("Updating attendee " + m.confNumber.ToString());
 			
 			Attendee a = _context.Attendees
-				.Where(a => a.Id == int.Parse(m.confNumber))
+				.Where(a => a.Id == m.confNumber)
 				.First();
 				
 			if(m.bcComplete != "No" && m.bcComplete is not null)
@@ -64,7 +64,7 @@ public class ConsumeMasterList
 
 public class MasterListObj
 {
-	public string? confNumber{get;set;}
+	public int? confNumber{get;set;}
 	public string? bcComplete{get;set;}
 	public string? paymentConfirmed{get;set;}
 	public string? pronouns{get;set;}

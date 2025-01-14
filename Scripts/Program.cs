@@ -44,6 +44,7 @@ namespace Scripts
 			Console.WriteLine("6. Delete Dupes from list");
 			Console.WriteLine("7. Validate list and add missing reg");
 			Console.WriteLine("8. Create Scholarship Comps from Json File");
+			Console.WriteLine("9. Consume master list from JSON file.");
 			Console.WriteLine("100. Exit.");
 			string response = Console.ReadLine();
 
