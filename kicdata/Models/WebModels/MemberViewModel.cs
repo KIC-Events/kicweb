@@ -143,7 +143,7 @@ namespace KiCData.Models.WebModels
 			Events = new List<SelectListItem>();
 
 			List<Event> events = context.Events
-				.Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
+				.Where(e => e.Id == 1112)
 				.OrderBy(e => e.StartDate)
 				.ToList();
 
