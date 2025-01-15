@@ -5,10 +5,11 @@
 
 case $1 in
 	"prod")
-		echo "Deploying KIC and CURE sites to Production environments."
+#		echo "Deploying KIC and CURE sites to Production environments."
+		echo "Deploying KIC site to Production environment."
 		echo "Stopping services..."
 		systemctl stop kicweb.service
-		systemctl stop cureweb.service
+#		systemctl stop cureweb.service
 		echo "Updating repository to latest changes..."
 		cd /srv/repo
 		git switch main > /dev/null 2>&1
@@ -16,18 +17,19 @@ case $1 in
 		git pull > /dev/null 2>&1
 		echo "Building applications..."
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Production -o /srv/kicweb/ > /dev/null 2>&1
-		dotnet build cure/Cure.csproj --os linux -c Production -o /srv/cureweb/ > /dev/null 2>&1
+#		dotnet build cure/Cure.csproj --os linux -c Production -o /srv/cureweb/ > /dev/null 2>&1
 		echo "Starting services..."
 		cd /srv
 		systemctl start kicweb.service
-		systemctl start cureweb.service
+#		systemctl start cureweb.service
 		sleep 2
 		;;
 	"dev")
-		echo "Deploying KIC and CURE sites to DEV environments."
+#		echo "Deploying KIC and CURE sites to DEV environments."
+		echo "Deploying KIC site to Production environment."
 		echo "Stopping services..."
 		systemctl stop kicdev.service
-		systemctl stop curedev.service
+#		systemctl stop curedev.service
 		echo "Updating repository to latest changes..."
 		cd /srv/repo
 		git switch dev > /dev/null 2>&1
@@ -35,11 +37,11 @@ case $1 in
 		git pull > /dev/null 2>&1
 		echo "Building applications..."
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Development -o /srv/kicdev/ > /dev/null 2>&1
-		dotnet build cure/Cure.csproj --os linux -c Development -o /srv/curedev/ > /dev/null 2>&1
+#		dotnet build cure/Cure.csproj --os linux -c Development -o /srv/curedev/ > /dev/null 2>&1
 		echo "Starting services..."
 		cd /srv
 		systemctl start kicdev.service
-		systemctl start curedev.service
+#		systemctl start curedev.service
 		sleep 2
 		;;
 	*)
