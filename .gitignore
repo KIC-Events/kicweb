@@ -85,3 +85,6 @@ _[Ss]cripts
 /Publish/CureProd/appsettings.Production.json
 /Publish/*/appsettings.json
 /Publish/*/appsettings.*.json
+nuget.config
+/nuget.config
+*/nuget.config

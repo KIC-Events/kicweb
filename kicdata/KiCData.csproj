@@ -1,9 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageID>KICData</PackageID>
+    <Version>1.3.0</Version>
+    <Authors>Malechus, mgallagjr</Authors>
+    <Company>KIC Events LLC</Company>
+    <PackageDescription>A collection of models and data interfaces for KIC Events projects.</PackageDescription>
+    <RepositoryURL>https://github.com/Malechus/kic</RepositoryURL>
   </PropertyGroup>
 
   <ItemGroup>
