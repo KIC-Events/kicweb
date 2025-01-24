@@ -36,10 +36,10 @@ public class HomeController : Controller
 
 	[HttpGet]
 	public IActionResult Index()
-    {
-        _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
+	{
+		_cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
 
-        IndexViewModel ivm = new IndexViewModel()
+		IndexViewModel ivm = new IndexViewModel()
 		{
 			Consent = false
 		};
@@ -56,7 +56,7 @@ public class HomeController : Controller
 			.ToList();
 		ViewBag.Events = events;
 
-        return View(ivm);
+		return View(ivm);
 	}
 
 	[HttpPost]
@@ -68,24 +68,31 @@ public class HomeController : Controller
 			CookieOptions cookieOptions = _cookieService.NewCookieFactory();
 			_contextAccessor.HttpContext.Response.Cookies.Append("Age_Gate", "true", cookieOptions); 
 			
+			if(_contextAccessor.HttpContext.Request.Cookies["age_gate_redirect"] is not null)
+			{
+				string path = _contextAccessor.HttpContext.Request.Cookies["age_gate_redirect"];
+				_contextAccessor.HttpContext.Response.Cookies.Delete("age_gate_redirect");
+				return Redirect(path);
+			}
+			
 			List<Event> events = _kdbContext.Events
 				.Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
 				.ToList();
 
-            ViewBag.Events = events;
-            return View();
+			ViewBag.Events = events;
+			return View();
 		}
 		else
 		{
 			ViewBag.AgeGateCookieAccepted = false;
 
-            List<Event> events = _kdbContext.Events
-                .Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
-                .ToList();
+			List<Event> events = _kdbContext.Events
+				.Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
+				.ToList();
 
-            ViewBag.Events = events;
+			ViewBag.Events = events;
 
-            return View();
+			return View();
 		}
 	}
 
