@@ -1,0 +1,14 @@
+[Unit]
+Description=Production service for KIC Discord bot
+
+[Service]
+WorkingDirectory=/srv/jane
+ExecStart=/usr/bin/dotnet /srv/jane/Jane.dll
+Restart=always
+KillSignal=SIGINT
+SyslogIdentifier=jane-dotnet
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target
