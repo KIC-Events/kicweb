@@ -1,0 +1,18 @@
+[Unit]
+Description=Production site for KIC CURE Event.
+
+[Service]
+WorkingDirectory=/srv/cureweb
+ExecStart=/usr/bin/dotnet /srv/cureweb/Cure.dll
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=cureweb-dotnet
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_NOLOG0=true
+Environment=ASPNETCORE_URLS=http://localhost:5002
+
+
+[Install]
+WantedBy=multi-user.target
