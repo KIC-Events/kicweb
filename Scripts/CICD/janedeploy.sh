@@ -13,6 +13,9 @@ case $1 in
 		git switch main > /dev/null 2>&1
 		git fetch > /dev/null 2>&1
 		git pull > /dev/null 2>&1
+		echo "Updating services..."
+		cp /srv/repo/Scripts/systemd/jane.service /etc/systemd/system/jane.service
+		systemctl daemon-reload
 		echo "Building application..."
 		dotnet build jane/Jane.csproj --os linux -c Production -o /srv/jane/ > /dev/null 2>&1
 		echo "Starting services..."
@@ -29,6 +32,9 @@ case $1 in
 		git switch dev > /dev/null 2>&1
 		git fetch > /dev/null 2>&1
 		git pull > /dev/null 2>&1
+		echo "Updating services..."
+		cp /srv/repo/Scripts/systemd/janedev.service /etc/systemd/system/janedev.service
+		systemctl daemon-reload
 		echo "Building application..."
 		dotnet build jane/Jane.csproj --os linux -c Development -o /srv/janedev/ > /dev/null 2>&1
 		echo "Starting services..."
