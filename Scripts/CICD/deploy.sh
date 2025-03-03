@@ -15,7 +15,7 @@ case $1 in
 		git pull > /dev/null 2>&1
 		echo "Updating services..."
 		cp /srv/repo/Scripts/CICD/kicweb.service /etc/systemd/system/kicweb.service
-		systemctl daemon-reload
+		systemctl daemon-reload  
 		echo "Building applications..."
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Production -o /srv/kicweb/ > /dev/null 2>&1
 		echo "Starting services..."

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Discord;
+using Discord.Interactions;
 
 namespace Jane;
 
@@ -62,18 +63,26 @@ public class Startup
 	
 	private void ConfigureServices(IServiceCollection services)
 	{
-		services.AddSingleton(Configuration)
-		.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
+		var _client = new DiscordSocketClient(new DiscordSocketConfig
 		{
 			LogLevel = LogSeverity.Verbose,
 			MessageCacheSize = 1000,
 			GatewayIntents = Discord.GatewayIntents.AllUnprivileged | Discord.GatewayIntents.MessageContent
-		}))
+		});
+		
+		services.AddSingleton(Configuration)
+		.AddSingleton(_client)
 		.AddSingleton(new CommandService(new CommandServiceConfig
 		{
 			LogLevel = LogSeverity.Verbose,
-			DefaultRunMode = RunMode.Async,
+			DefaultRunMode = Discord.Commands.RunMode.Async,
 			CaseSensitiveCommands = false
+		}))
+		.AddSingleton(new InteractionService(_client.Rest, new InteractionServiceConfig
+		{
+			LogLevel = LogSeverity.Verbose,
+			DefaultRunMode = Discord.Interactions.RunMode.Async,
+			ExitOnMissingModalField = true
 		}))
 		.AddSingleton<BotLogger>()
 		.AddSingleton<CommandHandler>()

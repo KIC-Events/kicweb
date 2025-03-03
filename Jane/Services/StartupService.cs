@@ -5,6 +5,9 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualBasic;
+using Discord.Interactions;
+using Square.Models;
 
 namespace Jane.Services;
 
@@ -15,19 +18,22 @@ public class StartupService
 	private readonly CommandService commands;
 	private readonly IConfigurationRoot config;
 	private readonly BotLogger botLogger;
+	private readonly InteractionService interactionService;
 	
-	public StartupService(IServiceProvider serviceProvider, DiscordSocketClient client, CommandService commands, IConfigurationRoot config, BotLogger botLogger)
+	public StartupService(IServiceProvider serviceProvider, DiscordSocketClient client, CommandService commands, IConfigurationRoot config, BotLogger botLogger, InteractionService interactionService)
 	{
 		this.serviceProvider = serviceProvider;
 		this.client = client;
 		this.commands = commands;
 		this.config = config;
 		this.botLogger = botLogger;
+		this.interactionService = interactionService;
 	}
 	
 	public async Task StartConnectionAsync()
 	{
 		client.Ready += Announce;
+		client.Ready += async () => await interactionService.RegisterCommandsGloballyAsync();
 		
 		string token = config["BotToken"];
 		if(string.IsNullOrWhiteSpace(token))
@@ -61,6 +67,7 @@ public class StartupService
 		try
 		{
 			await commands.AddModulesAsync(GetType().Assembly, serviceProvider);
+			await interactionService.AddModulesAsync(GetType().Assembly, serviceProvider);
 		}
 		catch(Exception ex)
 		{
@@ -97,7 +104,7 @@ public class StartupService
 	}
 }
 
-internal class BooleanTypeReader : TypeReader
+internal class BooleanTypeReader : Discord.Commands.TypeReader
 {
 	   public override Task<TypeReaderResult> ReadAsync(ICommandContext context, string input, IServiceProvider services)
 		{
