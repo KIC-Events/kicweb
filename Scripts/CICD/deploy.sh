@@ -24,7 +24,7 @@ case $1 in
 		sleep 2
 		;;
 	"dev")
-		echo "Deploying KIC site to Production environment."
+		echo "Deploying KIC site to Development environment."
 		echo "Stopping services..."
 		systemctl stop kicdev.service
 		echo "Updating repository to latest changes..."
