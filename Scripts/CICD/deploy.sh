@@ -9,12 +9,12 @@ case $1 in
 		echo "Stopping services..."
 		systemctl stop kicweb.service
 		echo "Updating repository to latest changes..."
-		cd /srv/repo
+		cd /srv/repo/kic
 		git switch main > /dev/null 2>&1
 		git fetch > /dev/null 2>&1
 		git pull > /dev/null 2>&1
 		echo "Updating services..."
-		cp /srv/repo/Scripts/CICD/kicweb.service /etc/systemd/system/kicweb.service
+		cp /srv/repo/kic/Scripts/CICD/kicweb.service /etc/systemd/system/kicweb.service
 		systemctl daemon-reload  
 		echo "Building applications..."
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Production -o /srv/kicweb/ > /dev/null 2>&1
@@ -24,16 +24,16 @@ case $1 in
 		sleep 2
 		;;
 	"dev")
-		echo "Deploying KIC site to Production environment."
+		echo "Deploying KIC site to Development environment."
 		echo "Stopping services..."
 		systemctl stop kicdev.service
 		echo "Updating repository to latest changes..."
-		cd /srv/repo
+		cd /srv/repo/kic
 		git switch dev > /dev/null 2>&1
 		git fetch > /dev/null 2>&1
 		git pull > /dev/null 2>&1
 		echo "Updating services..."
-		cp /srv/repo/Scripts/CICD/kicdev.service /etc/systemd/system/kicdev.service
+		cp /srv/repo/kic/Scripts/CICD/kicdev.service /etc/systemd/system/kicdev.service
 		systemctl daemon-reload
 		echo "Building applications..."
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Development -o /srv/kicdev/ > /dev/null 2>&1
