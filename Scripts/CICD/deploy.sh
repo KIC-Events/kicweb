@@ -14,7 +14,7 @@ case $1 in
 		git fetch > /dev/null 2>&1
 		git pull > /dev/null 2>&1
 		echo "Updating services..."
-		cp /srv/repo/kic/Scripts/CICD/kicweb.service /etc/systemd/system/kicweb.service
+		cp -u /srv/repo/kic/Scripts/systemd/kicweb.service /etc/systemd/system/kicweb.service
 		systemctl daemon-reload  
 		echo "Building applications..."
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Production -o /srv/kicweb/ > /dev/null 2>&1
@@ -33,7 +33,7 @@ case $1 in
 		git fetch > /dev/null 2>&1
 		git pull > /dev/null 2>&1
 		echo "Updating services..."
-		cp /srv/repo/kic/Scripts/CICD/kicdev.service /etc/systemd/system/kicdev.service
+		cp -u /srv/repo/kic/Scripts/systemd/kicdev.service /etc/systemd/system/kicdev.service
 		systemctl daemon-reload
 		echo "Building applications..."
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Development -o /srv/kicdev/ > /dev/null 2>&1
