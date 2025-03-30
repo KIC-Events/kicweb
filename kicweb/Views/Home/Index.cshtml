@@ -91,20 +91,24 @@
 
 @if(!ViewBag.AgeGateCookieAccepted)
 {
-    <div id="AgeGateModal" class="modal">
-        <div class="modal-content">
-            <p>This site is intended only for persons 18 years of age or older.</p>
-            <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
-            <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
-            <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
-                <div class="form-group">
-                    <input asp-for="Consent" type="checkbox" />
-                    <label asp-for="Consent">Check here if you consent.</label>
+    <div id="AgeGateModal" class="modal d-flex align-items-center" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>This site is intended only for persons 18 years of age or older.</p>
+                    <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
+                    <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
+                    <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
+                        <div class="form-group">
+                            <input asp-for="Consent" type="checkbox" />
+                            <label asp-for="Consent">Check here if you consent.</label>
+                        </div>
+                        <div class="form-grou">
+                            <button class="flat-btn" type="submit" value="Accept">Accept</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-grou">
-                    <button class="flat-btn" type="submit" value="Accept">Accept</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 }
