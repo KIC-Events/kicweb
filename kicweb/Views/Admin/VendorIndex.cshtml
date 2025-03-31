@@ -59,9 +59,11 @@
 
 @if (ViewBag.Error is not null)
 {
-    <div id="ValidationErrorModal" class="modal">
-        <div class="modal-content">
-            <p>@ViewBag.Error</p>
+    <div id="ValidationErrorModal" class="modal d-flex align-items-center" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <p>@ViewBag.Error</p>
+            </div>
         </div>
     </div>
 }
