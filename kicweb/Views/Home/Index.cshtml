@@ -54,29 +54,33 @@
                     <br />
                 </div>
                 <div class="container row" style="align-items:center; padding-left:10%;">
-                    @foreach (Event e in ViewBag.EventsWithImages)
-                    {
-                        <div class="container col-sm-4">
-                            <div class="ad-card">
-                                <img src=@e.ImagePath alt=@e.Name onerror="this.style.display='none'" style="width:100%;" />
-                                <div style="padding:20px;">
-                                    <p class="ad-card">@e.Name</p>
-                                    <a target="_blank" href=@e.Link class="ad-card">Check It Out</a>
+                    <div class="container row" style="padding-bottom:10%;">
+                        @foreach (Event e in ViewBag.EventsWithImages)
+                        {
+                            <div class="container col-sm-4">
+                                <div class="ad-card">
+                                    <img src=@e.ImagePath alt=@e.Name onerror="this.style.display='none'" style="width:100%;" />
+                                    <div style="padding:20px;">
+                                        <p class="ad-card">@e.Name</p>
+                                        <a target="_blank" href=@e.Link class="ad-card">Check It Out</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    @foreach(Event e in ViewBag.EventsWithoutImages)
-                    {
-                        <div class="container col-sm-4">
-                            <div class="ad-card">
-                                <div style="padding:20px;">
-                                    <p class="ad-card">@e.Name</p>
-                                    <a target="_blank" href="@e.Link" class="ad-card">Check It Out</a>
+                        }
+                    </div>
+                    <div class="container row">
+                        @foreach(Event e in ViewBag.EventsWithoutImages)
+                        {
+                            <div class="container col-sm-4">
+                                <div class="ad-card">
+                                    <div style="padding:20px;">
+                                        <p class="ad-card">@e.Name</p>
+                                        <a target="_blank" href="@e.Link" class="ad-card">Check It Out</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
             </div>
             }

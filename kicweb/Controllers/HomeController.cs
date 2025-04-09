@@ -93,10 +93,26 @@ public class HomeController : Controller
 			}
 			
 			List<Event> events = _kdbContext.Events
-				.Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
-				.ToList();
-
-			ViewBag.Events = events;
+			.Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
+			.ToList();
+		
+			List<Event> eventsWithImages = new List<Event>();
+			List<Event> eventsWithoutImages = new List<Event>();
+			
+			foreach(Event e in events)
+			{
+				if(e.ImagePath is not null)
+				{
+					eventsWithImages.Add(e);
+				}
+				else
+				{
+					eventsWithoutImages.Add(e);
+				}
+			}
+			
+			ViewBag.EventsWithImages = eventsWithImages;
+			ViewBag.EventsWithoutImages = eventsWithoutImages;
 			return View();
 		}
 		else
@@ -104,10 +120,26 @@ public class HomeController : Controller
 			ViewBag.AgeGateCookieAccepted = false;
 
 			List<Event> events = _kdbContext.Events
-				.Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
-				.ToList();
-
-			ViewBag.Events = events;
+			.Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
+			.ToList();
+		
+			List<Event> eventsWithImages = new List<Event>();
+			List<Event> eventsWithoutImages = new List<Event>();
+			
+			foreach(Event e in events)
+			{
+				if(e.ImagePath is not null)
+				{
+					eventsWithImages.Add(e);
+				}
+				else
+				{
+					eventsWithoutImages.Add(e);
+				}
+			}
+			
+			ViewBag.EventsWithImages = eventsWithImages;
+			ViewBag.EventsWithoutImages = eventsWithoutImages;
 
 			return View();
 		}
