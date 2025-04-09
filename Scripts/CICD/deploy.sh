@@ -18,6 +18,8 @@ case $1 in
 		systemctl daemon-reload  
 		echo "Building applications..."
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Production -o /srv/kicweb/ > /dev/null 2>&1
+		echo "Adding config files..."
+		cp -u /srv/config/*.json /srv/kicweb/
 		echo "Starting services..."
 		cd /srv
 		systemctl start kicweb.service
@@ -37,6 +39,8 @@ case $1 in
 		systemctl daemon-reload
 		echo "Building applications..."
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Development -o /srv/kicdev/ > /dev/null 2>&1
+		echo "Adding config files..."
+		cp -u /srv/config/*.json /srv/kicdev/
 		echo "Starting services..."
 		cd /srv
 		systemctl start kicdev.service
