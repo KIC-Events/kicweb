@@ -3,6 +3,8 @@ using KiCData.Models;
 using KiCData.Models.WebModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +38,7 @@ builder.Services.AddHttpClient<IEmailService, EmailService>(client =>
 	client.BaseAddress = new Uri(config["Base Addresses:Mail"]);
 });
 builder.Services.AddSingleton<IPaymentService, PaymentService>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 WebApplication app = builder.Build();
 
