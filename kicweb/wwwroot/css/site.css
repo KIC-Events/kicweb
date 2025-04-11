@@ -179,23 +179,18 @@ button.accept-policy
     white-space: normal;
 }
 
-.modal
+.modal {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-dialog
 {
-    display: block;
-    position: fixed;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -10%);
     border: solid;
-    height: 30%;
-    width: 80%;
     background-color: black;
 }
 
 .modal-content
 {
-    width:auto;
-    height:auto;
     background-color:black;
     color:antiquewhite;
     text-align: center;
@@ -254,7 +249,6 @@ div.ad-card {
     justify-content: flex-end;
     align-items: center;
     width: 259px;
-    min-height: 425px;
     max-height: 425px;
     background: #FFCB37;
     color: #000000;

@@ -41,28 +41,105 @@
                 <img style="max-width: 250px; height: auto; color: rgba(255, 255, 255, .8) !important; box-shadow: 0px 0px 20px 10px #FFCD36;" src="/css/images/KPSQR.png" alt="QR Code representing https://discord.gg/mRMPabafgc" />
             </div>
         </div>
-        <hr />
-        <br />
-        <div class="row" id="event-carousel" style="align-items:center;">
-            <div class="text-center">
-                <h5>Upcoming Events</h5>
-                <br />
+        @if(ViewBag.EventsWithImages != null && ViewBag.EventsWithoutImages != null){
+            List<Event> eventsWithImages = ViewBag.EventsWithImages;
+            List<Event> eventsWithoutImages = ViewBag.EventsWithoutImages;
+            @if(eventsWithImages.Count > 0 || eventsWithoutImages.Count > 0)
+            {
+            <hr />
+            <br />
+            <div class="row" id="event-carousel" style="align-items:center;">
+                <div class="text-center">
+                    <h5>Upcoming Events</h5>
+                    <br />
+                </div>
+                <div class="container row" style="align-items:center; padding-left:10%;">
+                    <div class="container row" style="padding-bottom:10%;">
+                        @foreach (Event e in ViewBag.EventsWithImages)
+                        {
+                            <div class="container col-sm-4">
+                                <div class="ad-card">
+                                    <img src=@e.ImagePath alt=@e.Name onerror="this.style.display='none'" style="width:100%;" />
+                                    <div style="padding:20px;">
+                                        <p class="ad-card">@e.Name</p>
+                                        <a target="_blank" href=@e.Link class="ad-card">Check It Out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="container row">
+                        @foreach(Event e in ViewBag.EventsWithoutImages)
+                        {
+                            <div class="container col-sm-4">
+                                <div class="ad-card">
+                                    <div style="padding:20px;">
+                                        <p class="ad-card">@e.Name</p>
+                                        <a target="_blank" href="@e.Link" class="ad-card">Check It Out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
-            <div class="container row" style="align-items:center; padding-left:10%;">
-                @foreach (Event e in ViewBag.Events)
-                {
-                    <div class="container col-sm-4">
-                        <div class="ad-card">
-                            <img src=@e.ImagePath alt=@e.Name onerror="this.style.display='none'" style="width:100%;" />
-                            <div style="padding:20px;">
-                                <p class="ad-card">@e.Name</p>
-                                <a target="_blank" href=@e.Link class="ad-card">Check It Out</a>
+            }
+        }
+        @if(ViewBag.EventsWithImages != null && ViewBag.EventsWithoutImages == null){
+            List<Event> eventsWithImages = ViewBag.EventsWithImages;
+            @if(eventsWithImages.Count > 0)
+            {
+            <hr />
+            <br />
+            <div class="row" id="event-carousel" style="align-items:center;">
+                <div class="text-center">
+                    <h5>Upcoming Events</h5>
+                    <br />
+                </div>
+                <div class="container row" style="align-items:center; padding-left:10%;">
+                    @foreach (Event e in ViewBag.EventsWithImages)
+                    {
+                        <div class="container col-sm-4">
+                            <div class="ad-card">
+                                <img src=@e.ImagePath alt=@e.Name onerror="this.style.display='none'" style="width:100%;" />
+                                <div style="padding:20px;">
+                                    <p class="ad-card">@e.Name</p>
+                                    <a target="_blank" href=@e.Link class="ad-card">Check It Out</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
+            }
+        }
+        @if(ViewBag.EventsWithImages == null && ViewBag.EventsWithoutImages != null){
+            List<Event> eventsWithoutImages = ViewBag.EventsWithoutImages;
+            @if(eventsWithoutImages.Count > 0)
+            {
+                <hr />
+                <br />
+                <div class="row" id="event-carousel" style="align-items:center;">
+                <div class="text-center">
+                    <h5>Upcoming Events</h5>
+                    <br />
+                </div>
+                <div class="container row" style="align-items:center; padding-left:10%;">
+                    @foreach(Event e in ViewBag.EventsWithoutImages)
+                    {
+                        <div class="container col-sm-4">
+                            <div class="ad-card">
+                                <div style="padding:20px;">
+                                    <p class="ad-card">@e.Name</p>
+                                    <a target="_blank" href="@e.Link" class="ad-card">Check It Out</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            }
+        }
     </div>
     <br />
     <hr />
@@ -91,20 +168,24 @@
 
 @if(!ViewBag.AgeGateCookieAccepted)
 {
-    <div id="AgeGateModal" class="modal">
-        <div class="modal-content">
-            <p>This site is intended only for persons 18 years of age or older.</p>
-            <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
-            <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
-            <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
-                <div class="form-group">
-                    <input asp-for="Consent" type="checkbox" />
-                    <label asp-for="Consent">Check here if you consent.</label>
+    <div id="AgeGateModal" class="modal d-flex align-items-center" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>This site is intended only for persons 18 years of age or older.</p>
+                    <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
+                    <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
+                    <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
+                        <div class="form-group">
+                            <input asp-for="Consent" type="checkbox" />
+                            <label asp-for="Consent">Check here if you consent.</label>
+                        </div>
+                        <div class="form-grou">
+                            <button class="flat-btn" type="submit" value="Accept">Accept</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-grou">
-                    <button class="flat-btn" type="submit" value="Accept">Accept</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 }

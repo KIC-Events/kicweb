@@ -18,6 +18,8 @@ case $1 in
 		systemctl daemon-reload
 		echo "Building application..."
 		dotnet build jane/Jane.csproj --os linux -c Production -o /srv/jane/ > /dev/null 2>&1
+		echo "Adding config files..."
+		cp -u /srv/config/jane/*.json /srv/jane/
 		echo "Starting services..."
 		cd /srv
 		systemctl start jane.service
@@ -37,6 +39,8 @@ case $1 in
 		systemctl daemon-reload
 		echo "Building application..."
 		dotnet build jane/Jane.csproj --os linux -c Development -o /srv/janedev/ > /dev/null 2>&1
+		echo "Adding config files..."
+		cp -u /srv/config/jane/*.json /srv/janedev/
 		echo "Starting services..."
 		cd /srv
 		systemctl start janedev.service
