@@ -11,7 +11,7 @@ on:
       main
 
 env:
-  REPO: https://malechus:${{secrets.GITHUB_TOKEN}}@github.com/malechus/kic.git
+  REPO: https://malechus:${{secrets.GITHUB_TOKEN}}@github.com/KIC-Events/kic.git
 
 jobs:
   merge:
