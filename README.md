@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/Prod_Version-1.4.2-green)  
+![Static Badge](https://img.shields.io/badge/Prod_Version-1.4.2a-green)  
 ![Static Badge](https://img.shields.io/badge/Dev_Version-1.4.3-yellow)
 
 
