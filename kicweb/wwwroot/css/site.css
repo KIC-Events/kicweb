@@ -1,3 +1,9 @@
+@font-face
+{
+  font-family: "Forum";
+  src: url("wwwroot/Forum-Regular.ttf") format("truetype");
+}
+
 html
 {
   font-size: 14px;
@@ -83,7 +89,7 @@ body
   background-size: contain;
   background-position: center;
   color: antiquewhite;
-  font-family: "Forum", serif;
+  font-family: "Forum", "Garamond", serif;
 }
 
 .header
