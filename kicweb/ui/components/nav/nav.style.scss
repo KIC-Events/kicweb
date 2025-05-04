@@ -1,0 +1,18 @@
+[data-nav] {
+  --color-nav-bg: var(--color-black);
+  --color-nav-text: var(--color-white);
+
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  @include flex-center;
+
+  background-color: var(--color-nav-bg);
+  color: var(--color-nav-text);
+
+  ul {
+    list-style: none;
+    @include flex-center;
+    gap: var(--space-7);
+  }
+}

@@ -20,8 +20,8 @@ export default {
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @use "./_variables" as *;
-          @use "./_mixins" as *;
+          @use "~/styles/_variables" as *;
+          @use "~/styles/_mixins" as *;
         `
       }
     }
