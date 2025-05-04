@@ -11,5 +11,12 @@ export default {
         main: resolve(__dirname, 'index.js')
       }
     }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "./_variables" as *;`
+      }
+    }
   }
-}
+};
