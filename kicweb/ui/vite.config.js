@@ -1,5 +1,4 @@
 import { resolve } from 'path'
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default {
   resolve: {
@@ -26,15 +25,5 @@ export default {
         `
       }
     }
-  },
-  plugins: [
-    viteStaticCopy({
-      targets: [
-        {
-          src: 'public/*',
-          dest: '',
-        },
-      ],
-    }),
-  ],
+  }
 };
