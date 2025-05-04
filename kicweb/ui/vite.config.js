@@ -1,7 +1,12 @@
 import { resolve } from 'path'
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default {
-  base: '/dist/',
+  resolve: {
+    alias: {
+      '~': resolve(__dirname),
+    },
+  },
   build: {
     outDir: '../wwwroot/dist',
     assetsDir: '',
@@ -15,8 +20,21 @@ export default {
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "./_variables" as *;`
+        additionalData: `
+          @use "./_variables" as *;
+          @use "./_mixins" as *;
+        `
       }
     }
-  }
+  },
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'public/*',
+          dest: '',
+        },
+      ],
+    }),
+  ],
 };

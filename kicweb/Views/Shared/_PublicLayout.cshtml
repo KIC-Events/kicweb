@@ -33,7 +33,7 @@
     @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development") {
         foreach (var cssFile in cssFiles)
         {
-            <link rel="stylesheet" href="/dist/@cssFile" />
+            <link rel="stylesheet" href="/@cssFile" />
         }
     }
     
@@ -188,11 +188,11 @@
     @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
     {
         <script type="module" src="http://localhost:5173/@@vite/client"></script>
-        <script type="module" src="http://localhost:5173/dist/index.js"></script>
+        <script type="module" src="http://localhost:5173/index.js"></script>
     }
     else if (!string.IsNullOrEmpty(mainJs))
     {
-        <script type="module" src="/dist/@mainJs"></script>
+        <script type="module" src="/@mainJs"></script>
     }
 </body>
 
