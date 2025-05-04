@@ -1,3 +1,24 @@
+@{
+    var manifestPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/dist/.vite/manifest.json");
+    string mainJs = null;
+    List<string> cssFiles = new();
+
+    if (System.IO.File.Exists(manifestPath) && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
+    {
+        var json = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllText(manifestPath));
+        var main = json.RootElement.GetProperty("index.js");
+
+        mainJs = main.GetProperty("file").GetString();
+
+        if (main.TryGetProperty("css", out var cssList))
+        {
+            foreach (var css in cssList.EnumerateArray())
+            {
+                cssFiles.Add(css.GetString());
+            }
+        }
+    }
+}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +29,14 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="icon" type="image/x-icon" href="~/css/images/favicon.ico" />
+    @* Inject CSS *@
+    @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development") {
+        foreach (var cssFile in cssFiles)
+        {
+            <link rel="stylesheet" href="/dist/@cssFile" />
+        }
+    }
+    
 </head>
 
 <body>
@@ -151,9 +180,20 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - KIC Events LLC - <a asp-area="" asp-controller="Gen" asp-action="Privacy">Privacy</a> - <a asp-area="" asp-controller="Gen" asp-action="Contact">Contact</a> - <a asp-area="" asp-controller="Admin" asp-action="AdminServices">Admin Services</a>
+            &copy; 2023sdfg∂ - KIC Events LLC - <a asp-area="" asp-controller="Gen" asp-action="Privacy">Privacy</a> - <a asp-area="" asp-controller="Gen" asp-action="Contact">Contact</a> - <a asp-area="" asp-controller="Admin" asp-action="AdminServices">Admin Services</a>
         </div>
     </footer>
+
+    @* Inject JS *@
+    @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+    {
+        <script type="module" src="http://localhost:5173/@@vite/client"></script>
+        <script type="module" src="http://localhost:5173/dist/index.js"></script>
+    }
+    else if (!string.IsNullOrEmpty(mainJs))
+    {
+        <script type="module" src="/dist/@mainJs"></script>
+    }
 </body>
 
 </html>

@@ -88,3 +88,5 @@ _[Ss]cripts
 nuget.config
 /nuget.config
 */nuget.config
+# Client build output directory
+kicweb/wwwroot/dist
