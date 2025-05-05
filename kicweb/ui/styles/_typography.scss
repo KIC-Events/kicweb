@@ -68,6 +68,7 @@
 // Element Styles + Reusable Utility Classes
 h1, .h1 {
   font: var(--font-h1);
+  text-transform: uppercase;
 }
 
 h2, .h2 {

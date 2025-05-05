@@ -3,9 +3,12 @@
 .home {  
   .hero {
     @include flex-center;
-    background: yellow; // Placeholder for the hero background
     min-height: 21.25rem;
     height: 80vh;
+    background-image: url('/images/redesign/Hero-Large.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
     .content {
       @include flex-center;
@@ -17,11 +20,13 @@
       @include flex-center;
       flex-direction: column;
       font-size: 4.125rem;
+      letter-spacing: 0.409375rem;
       line-height: 4.5rem;
       gap: var(--space-0-5);
 
       .display {
         font-size: 2rem;
+        letter-spacing: 0.2rem;
         line-height: 2.4375rem;
       }
     }
@@ -29,7 +34,7 @@
     .hero-image {
       width: 6.4375rem;
       height: 8.28125rem;
-      background: black; // Placeholder for the logo background
+      margin-right: 1.875rem;
     }
   }
 }
