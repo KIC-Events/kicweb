@@ -1,3 +1,3 @@
 import '~/styles/main.scss';
-import '~/components/nav';
+import '~/components';
 import '~/scripts';
