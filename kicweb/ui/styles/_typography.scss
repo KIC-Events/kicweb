@@ -1,6 +1,103 @@
+// Font-face declarations
+@font-face {
+  font-family: "Big Shoulders";
+  src: url("../fonts/BigShoulders-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
 @font-face {
   font-family: "Forum";
-  src: url("/fonts/Forum-Regular.ttf") format("truetype");
-  font-weight: normal;
+  src: url("../fonts/Forum-Regular.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+:root {
+  // Font Families
+  --font-forum: "Forum", serif; // Forum font
+  --font-montserrat: "Montserrat", sans-serif; // Montserrat font
+  --font-big-shoulders: "Big Shoulders", sans-serif; // Big Shoulders font
+
+  // Font Weights
+  --weight-normal: 400; // Normal
+  --weight-medium: 500; // Medium
+  --weight-semibold: 600; // SemiBold
+
+  // Font Shorthands
+  --font-h1: normal normal normal 4.6875rem/5.1875rem var(--font-forum); // 75px / 83px
+  --font-h2: normal normal normal 3.875rem/4.25rem var(--font-forum); // 62px / 68px
+  --font-h3: normal normal var(--weight-medium) 3.3125rem/4rem var(--font-montserrat); // 53px / 64px
+  --font-h4: italic normal normal 3rem/3.625rem var(--font-montserrat); // 48px / 58px
+  --font-h5: normal normal normal 2.625rem/2.875rem var(--font-forum); // 42px / 46px
+  --font-h6: normal normal normal 2.25rem/2.5rem var(--font-forum); // 36px / 40px
+  --font-body: normal normal normal 3.3125rem/4rem var(--font-montserrat); // 53px / 64px
+  --font-display-h1: normal normal var(--weight-semibold) 3.4375rem/4.1875rem var(--font-montserrat); // 55px / 67px
+  --font-display-h2: normal normal var(--weight-semibold) 2.8125rem/3.4375rem var(--font-montserrat); // 45px / 55px
+  --font-button: normal normal var(--weight-medium) 3.3125rem/3.9375rem var(--font-big-shoulders); // 53px / 63px
+}
+
+// Element Styles + Reusable Utility Classes
+h1, .h1 {
+  font: var(--font-h1);
+}
+
+h2, .h2 {
+  font: var(--font-h2);
+}
+
+h3, .h3 {
+  font: var(--font-h3);
+}
+
+h4, .h4 {
+  font: var(--font-h4);
+}
+
+h5, .h5 {
+  font: var(--font-h5);
+}
+
+h6, .h6 {
+  font: var(--font-h6);
+}
+
+.body-text {
+  font: var(--font-body);
+}
+
+h1.display, .h1-display {
+  font: var(--font-display-h1);
+}
+
+h2.display .h2-display {
+  font: var(--font-display-h2);
 }
