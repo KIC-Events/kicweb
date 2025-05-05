@@ -1,4 +1,5 @@
-
+# Ignore DS_Store files created by Mac OS
+.DS_Store
 # Include dlls if they’re in the NuGet packages directory
 !/packages/*/lib/*.dll
 !/packages/*/lib/*/*.dll
