@@ -1,2 +1,3 @@
-@use "_reset";
-@use "_typography" as *;
+@use "./_reset";
+@use "./_typography";
+@use "./pages/index";

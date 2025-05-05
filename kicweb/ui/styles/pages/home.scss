@@ -1,0 +1,35 @@
+@use "~/styles/_mixins" as *;
+
+.home {  
+  .hero {
+    @include flex-center;
+    background: yellow; // Placeholder for the hero background
+    min-height: 21.25rem;
+    height: 80vh;
+
+    .content {
+      @include flex-center;
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+
+    h1 {
+      @include flex-center;
+      flex-direction: column;
+      font-size: 4.125rem;
+      line-height: 4.5rem;
+      gap: var(--space-0-5);
+
+      .display {
+        font-size: 2rem;
+        line-height: 2.4375rem;
+      }
+    }
+
+    .hero-image {
+      width: 6.4375rem;
+      height: 8.28125rem;
+      background: black; // Placeholder for the logo background
+    }
+  }
+}

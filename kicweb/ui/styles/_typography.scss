@@ -94,10 +94,12 @@ h6, .h6 {
   font: var(--font-body);
 }
 
-h1.display, .h1-display {
+h1.display, .h1-display, h1 .display {
   font: var(--font-display-h1);
+  text-transform: uppercase;
 }
 
 h2.display .h2-display {
   font: var(--font-display-h2);
+  text-transform: uppercase;
 }
