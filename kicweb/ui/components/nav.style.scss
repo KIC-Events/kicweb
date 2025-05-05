@@ -12,6 +12,7 @@
   background-color: var(--color-nav-bg);
   color: var(--color-nav-text);
   padding: 0 var(--space-4);
+  transition: height var(--transition-default);
 
   [data-nav-left] {
     margin-right: auto;
@@ -37,6 +38,7 @@
   }
 
   [data-nav-logo] {
+    transition: height var(--transition-default);
     display: block;
     width: auto;
     height: 3.875rem;
@@ -46,6 +48,9 @@
     list-style: none;
     @include flex-center;
     gap: var(--space-3-5);
+    transition: padding-left var(--transition-default);
+    padding-left: 0;
+
     a {
       transition: var(--transition-default);
       color: var(--color-white);
@@ -55,6 +60,18 @@
         text-decoration: underline;
         color: var(--color-accent);
       }
+    }
+  }
+
+  &[data-state="compact"] {
+    height: 3.5rem;
+
+    [data-nav-logo] {
+      height: 2.5rem;
+    }
+
+    ul {
+      padding-left: 1rem;
     }
   }
 }
