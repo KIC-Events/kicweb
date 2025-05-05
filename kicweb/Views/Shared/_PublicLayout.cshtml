@@ -3,7 +3,7 @@
     string mainJs = null;
     List<string> cssFiles = new();
 
-    if (System.IO.File.Exists(manifestPath) && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
+    if (System.IO.File.Exists(manifestPath) && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production")
     {
         var json = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllText(manifestPath));
         var main = json.RootElement.GetProperty("index.js");
@@ -27,16 +27,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - KIC Events LLC</title>
     <link rel="icon" type="image/x-icon" href="~/images/favicon.ico" />
-    @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+    @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
     {
         <script type="module" src="http://localhost:5173/@@vite/client"></script>
         <script type="module" src="http://localhost:5173/index.js"></script>
     }
     @* Inject CSS *@
-    @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development") {
+    @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production") {
         foreach (var cssFile in cssFiles)
         {
-            <link rel="stylesheet" href="/@cssFile" />
+            <link rel="stylesheet" href="/dist/@cssFile" />
         }
     }
     
@@ -58,9 +58,9 @@
     </footer>
 
     @* Inject JS *@
-    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development" && !string.IsNullOrEmpty(mainJs))
+    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production" && !string.IsNullOrEmpty(mainJs))
     {
-        <script type="module" src="/@mainJs"></script>
+        <script type="module" src="/dist/@mainJs"></script>
     }
 </body>
 
