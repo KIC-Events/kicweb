@@ -59,7 +59,7 @@ a>img.flat-btn-blocked:hover {
 
 .navbar-brand
 {
-  background-image: url('images/kic-logo-dark.png');
+  background-image: url('../images/kic-logo-dark.png');
   background-size: contain;
   background-repeat: no-repeat;
   display: block;
@@ -77,7 +77,7 @@ body
 {
   margin-bottom: 60px;
   background-color: black;
-  background-image: url('images/kic-bg-darker.png');
+  background-image: url('../images/kic-bg-darker.png');
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: contain;
