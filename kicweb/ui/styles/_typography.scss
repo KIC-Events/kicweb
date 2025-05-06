@@ -13,6 +13,7 @@
   font-style: normal;
 }
 
+/* 400 normal */
 @font-face {
   font-family: "Montserrat";
   src: url("../fonts/Montserrat-Regular.ttf") format("truetype");
@@ -20,6 +21,15 @@
   font-style: normal;
 }
 
+/* 400 italic */
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* 500 normal */
 @font-face {
   font-family: "Montserrat";
   src: url("../fonts/Montserrat-Medium.ttf") format("truetype");
@@ -27,18 +37,12 @@
   font-style: normal;
 }
 
+/* 600 normal */
 @font-face {
   font-family: "Montserrat";
   src: url("../fonts/Montserrat-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
-}
-
-@font-face {
-  font-family: "Montserrat";
-  src: url("../fonts/Montserrat-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
 }
 
 :root {
@@ -53,16 +57,16 @@
   --weight-semibold: 600; // SemiBold
 
   // Font Shorthands
-  --font-h1: normal normal normal 4.6875rem/5.1875rem var(--font-forum); // 75px / 83px
-  --font-h2: normal normal normal 3.875rem/4.25rem var(--font-forum); // 62px / 68px
-  --font-h3: normal normal var(--weight-medium) 3.3125rem/4rem var(--font-montserrat); // 53px / 64px
-  --font-h4: italic normal normal 3rem/3.625rem var(--font-montserrat); // 48px / 58px
-  --font-h5: normal normal normal 2.625rem/2.875rem var(--font-forum); // 42px / 46px
-  --font-h6: normal normal normal 2.25rem/2.5rem var(--font-forum); // 36px / 40px
-  --font-body: normal normal normal 3.3125rem/4rem var(--font-montserrat); // 53px / 64px
-  --font-display-h1: normal normal var(--weight-semibold) 3.4375rem/4.1875rem var(--font-montserrat); // 55px / 67px
-  --font-display-h2: normal normal var(--weight-semibold) 2.8125rem/3.4375rem var(--font-montserrat); // 45px / 55px
-  --font-button: normal normal var(--weight-medium) 3.3125rem/3.9375rem var(--font-big-shoulders); // 53px / 63px
+  --font-h1: normal normal normal 4.6875rem/5.1875rem var(--font-forum);
+  --font-h2: normal normal normal 1.9375rem/2.125rem var(--font-forum); 
+  --font-h3: normal normal var(--weight-medium) 3.3125rem/4rem var(--font-montserrat);
+  --font-h4: italic normal normal 3rem/3.625rem var(--font-montserrat);
+  --font-h5: normal normal normal 1.3125rem/1.43125rem var(--font-forum);
+  --font-h6: normal normal normal 2.25rem/2.5rem var(--font-forum);
+  --font-body: normal normal normal 3.3125rem/4rem var(--font-montserrat);
+  --font-display-h1: normal normal var(--weight-semibold) 3.4375rem/4.1875rem var(--font-montserrat);
+  --font-display-h2: normal normal var(--weight-semibold) 1.40625rem/1.71875rem var(--font-montserrat);
+  --font-button: normal normal var(--weight-medium) 1.0625rem/normal var(--font-big-shoulders);
 }
 
 // Element Styles + Reusable Utility Classes
@@ -73,6 +77,7 @@ h1, .h1 {
 
 h2, .h2 {
   font: var(--font-h2);
+  text-transform: uppercase;
 }
 
 h3, .h3 {
@@ -85,6 +90,8 @@ h4, .h4 {
 
 h5, .h5 {
   font: var(--font-h5);
+  letter-spacing: .13125rem;
+  text-transform: uppercase;
 }
 
 h6, .h6 {
@@ -92,7 +99,7 @@ h6, .h6 {
 }
 
 .body-text {
-  font: var(--font-body);
+  font: normal normal normal .875rem/1.2rem var(--font-montserrat);
 }
 
 h1.display, .h1-display, h1 .display {
@@ -100,7 +107,18 @@ h1.display, .h1-display, h1 .display {
   text-transform: uppercase;
 }
 
-h2.display .h2-display {
+h2.display, .h2-display, h2 .display, .h2-display {
   font: var(--font-display-h2);
   text-transform: uppercase;
+  letter-spacing: 0.140625rem;
+}
+
+h3.display, .h3-display, h3 .display {
+  font: var(--font-display-h2);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.140625rem;
+  font-size: 1.25rem;
+  line-height: 1.53125rem;
+  letter-spacing: .125rem;
 }

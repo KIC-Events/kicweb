@@ -5,7 +5,7 @@
   --color-nav-text: var(--color-white);
 }
 
-[data-nav] {
+.nav {
   position: fixed;
   inset: 0;
   width: 100%;
@@ -24,12 +24,12 @@
     --nav-logo-height: 2.5rem;
   }
 
-  [data-nav-left] {
+  &__section--left {
     margin-right: auto;
     @include flex-center;
   }
 
-  [data-nav-right] {
+  &__section--right {
     margin-left: auto;
     @include flex-center;
     gap: var(--space-2);
@@ -47,14 +47,14 @@
     }
   }
 
-  [data-nav-logo] {
+  &__logo {
     transition: height var(--transition-default);
     display: block;
     width: auto;
     height: var(--nav-logo-height);
   }
 
-  ul {
+  &__menu {
     list-style: none;
     @include flex-center;
     gap: var(--space-3-5);
@@ -76,21 +76,20 @@
   &[data-state="compact"] {
     height: 3.5rem;
 
-    [data-nav-logo] {
+    .nav__logo{
       height: 2.5rem;
     }
 
-    ul {
+    .nav__menu {
       padding-left: 1rem;
     }
   }
-}
 
-// This is a spacer element to push content down when the nav is fixed
-[data-nav-spacer] {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: var(--nav-height);
-  transition: height var(--transition-default);
+  &__spacer {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: var(--nav-height);
+    transition: height var(--transition-default);
+  }
 }

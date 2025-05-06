@@ -38,3 +38,30 @@
     }
   }
 }
+
+#home-consent-banner {
+  hr {
+    height: var(--divider-height);
+    background-color: var(--color-accent);
+    border: none;
+    margin: 0;
+    width: 100%;
+    max-width: 26rem;
+    margin-top: var(--space-1);
+    margin-bottom: var(--space-2);
+
+    @include breakpoint(md) {
+      max-width: 18rem;
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin-top: var(--space-2);
+    @include flex-center-column;
+    flex-direction: column;
+    li {
+      margin: 0;
+    };
+  }
+}
