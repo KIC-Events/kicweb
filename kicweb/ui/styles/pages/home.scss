@@ -65,3 +65,45 @@
     };
   }
 }
+
+#age-gate-dialog {
+  border: 0.1875rem solid var(--color-accent);
+  padding: 4.4375rem 5.4375rem;
+  color: var(--color-white);
+  text-align: center;
+
+  .dialog__content {
+    @include flex-center-column;
+    gap: var(--space-1-5);
+  }
+
+  h2.display {
+    font-family: var(--font-forum);
+    color: var(--color-accent);
+    font-weight: normal;
+    text-align: center;
+  }
+
+  .checkbox label {
+    font-family: var(--font-montserrat);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: currentColor;
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  p {
+    font: var(--font-body);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    line-height: 1.15625rem;
+    letter-spacing: 0.09375rem;
+  }
+
+  .button {
+    margin-top: var(--space-1);
+  }
+}
