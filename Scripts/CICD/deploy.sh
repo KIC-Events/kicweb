@@ -16,7 +16,12 @@ case $1 in
 		echo "Updating services..."
 		cp -u /srv/repo/kic/Scripts/systemd/kicweb.service /etc/systemd/system/kicweb.service
 		systemctl daemon-reload  
+		echo "Building frontend..."
+		cd /srv/repo/kic/kicweb/ui
+		npm clean-install > /dev/null 2>&1
+		npm run build > /dev/null 2>&1
 		echo "Building applications..."
+		cd /srv/repo/kic/kicweb
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Production -o /srv/kicweb/ > /dev/null 2>&1
 		echo "Adding config files..."
 		cp -u /srv/config/*.json /srv/kicweb/
@@ -36,8 +41,13 @@ case $1 in
 		git pull > /dev/null 2>&1
 		echo "Updating services..."
 		cp -u /srv/repo/kic/Scripts/systemd/kicdev.service /etc/systemd/system/kicdev.service
-		systemctl daemon-reload
+		systemctl daemon-reload  
+		echo "Building frontend..."
+		cd /srv/repo/kic/kicweb/ui
+		npm clean-install > /dev/null 2>&1
+		npm run build > /dev/null 2>&1
 		echo "Building applications..."
+		cd /srv/repo/kic/kicweb
 		dotnet build kicweb/KiCWeb.csproj --os linux -c Development -o /srv/kicdev/ > /dev/null 2>&1
 		echo "Adding config files..."
 		cp -u /srv/config/*.json /srv/kicdev/
@@ -47,8 +57,30 @@ case $1 in
 		sleep 2
 		;;
 	*)
-		echo "This script requires one argument, either prod or dev."
-		exit
+		echo "Attempting to deploy the following branch to dev: $1"
+		echo "Stopping services..."
+		systemctl stop kicdev.service
+		echo "Updating repository to latest changes..."
+		cd /srv/repo/kic
+		git switch $1 > /dev/null 2>&1
+		git fetch > /dev/null 2>&1
+		git pull > /dev/null 2>&1
+		echo "Updating services..."
+		cp -u /srv/repo/kic/Scripts/systemd/kicdev.service /etc/systemd/system/kicdev.service
+		systemctl daemon-reload  
+		echo "Building frontend..."
+		cd /srv/repo/kic/kicweb/ui
+		npm clean-install > /dev/null 2>&1
+		npm run build > /dev/null 2>&1
+		echo "Building applications..."
+		cd /srv/repo/kic/kicweb
+		dotnet build kicweb/KiCWeb.csproj --os linux -c Development -o /srv/kicdev/ > /dev/null 2>&1
+		echo "Adding config files..."
+		cp -u /srv/config/*.json /srv/kicdev/
+		echo "Starting services..."
+		cd /srv
+		systemctl start kicdev.service
+		sleep 2
 		;;
 esac
 
