@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // Util mixins
 @mixin flex-center {
   display: flex;
@@ -24,7 +26,7 @@ $breakpoints: (
 @mixin breakpoint($size) {
   // Gets size from the map or uses the size directly.
   // This allows us to either do @include breakpoint(md) or @include breakpoint(500px).
-  $value: if(map-has-key($breakpoints, $size), map-get($breakpoints, $size), $size);
+  $value: if(map.has-key($breakpoints, $size), map.get($breakpoints, $size), $size);
 
   @media (max-width: #{$value}) {
     @content;

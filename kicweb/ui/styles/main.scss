@@ -2,10 +2,6 @@
 @use "./_typography";
 @use "./pages/index";
 
-body {
-  color: red !important;
-}
-
 html:not(.js-enabled) dialog ~ * {
   display: none !important;
 }
