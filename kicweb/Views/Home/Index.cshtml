@@ -1,6 +1,32 @@
 ﻿
 @model KiCData.Models.WebModels.IndexViewModel
 
+@if(!ViewBag.AgeGateCookieAccepted)
+{
+    <dialog id="age-gate-dialog" class="dialog" data-cancel-disabled>
+        <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
+            <div class="dialog__content">
+                <h2 class="display">
+                    THIS SITE IS INTENDED ONLY FOR PERSONS 18 YEARS OF AGE OR OLDER.
+                </h2>
+                <p>
+                    This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.
+                </p>
+                <p>
+                    By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city.
+                </p>
+                <div class="checkbox">
+                    <input asp-for="Consent" type="checkbox" />
+                    <label asp-for="Consent">Check here if you consent.</label>
+                </div>
+                <button type="submit" value="Accept" class="button">
+                    Enter Site
+                </button>
+            </div>
+        </form>
+    </dialog>
+}
+
 <div class="home">
   <section class="hero">
     <div class="content"> 
@@ -234,27 +260,3 @@
         </div>
     </div>
 </div>
-
-@if(!ViewBag.AgeGateCookieAccepted)
-{
-    <div id="AgeGateModal" class="modal d-flex align-items-center" aria-modal="true" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p>This site is intended only for persons 18 years of age or older.</p>
-                    <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
-                    <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
-                    <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
-                        <div class="form-group">
-                            <input asp-for="Consent" type="checkbox" />
-                            <label asp-for="Consent">Check here if you consent.</label>
-                        </div>
-                        <div class="form-grou">
-                            <button class="flat-btn" type="submit" value="Accept">Accept</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-}
