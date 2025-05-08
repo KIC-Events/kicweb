@@ -69,6 +69,11 @@
   --font-button: normal normal var(--weight-medium) 1.0625rem/normal var(--font-big-shoulders);
 }
 
+// Global Styles
+body {
+  font-family: var(--font-montserrat);
+}
+
 // Element Styles + Reusable Utility Classes
 h1, .h1 {
   font: var(--font-h1);

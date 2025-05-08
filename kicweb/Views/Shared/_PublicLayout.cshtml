@@ -50,15 +50,13 @@
 <body>
     @await Html.PartialAsync("Components/_Nav")
 
+    @await Html.PartialAsync("Components/_DevEnvWarning")
+
     <main role="main">
         @RenderBody()
     </main>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - KIC Events LLC - <a asp-area="" asp-controller="Gen" asp-action="Privacy">Privacy</a> - <a asp-area="" asp-controller="Gen" asp-action="Contact">Contact</a> - <a asp-area="" asp-controller="Admin" asp-action="AdminServices">Admin Services</a>
-        </div>
-    </footer>
+    @await Html.PartialAsync("Components/_Footer")
 
     @if (Environment.GetEnvironmentVariable("IS_LOCAL_DEV") != "true" && !string.IsNullOrEmpty(mainJs))
     {
