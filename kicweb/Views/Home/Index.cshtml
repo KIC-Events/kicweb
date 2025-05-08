@@ -96,6 +96,30 @@
   </ul>
 </section>
 
+<div class="container">
+  @await Html.PartialAsync("Components/_Events")
+</div>
+
+<section
+  id="home-sponsor-banner"
+  class="info-banner"
+  role="region"
+  aria-labelledby="home-page-sponsor-title"
+>
+  <div class="container">
+    <h2 class="display" id="home-page-sponsor-title">
+      Become a CURE 2026 sponsor!
+    </h2>
+    <p>
+      Sponsoring CURE 2026 helps to provide furniture, staff, and amenities at the event. 
+      In return, you can receive advertisement space on our website, in our brochure, or even on the hotel.
+    </p>
+    <a class="button" asp-area="" asp-controller="Gen" asp-action="GetInvolved">
+      Sponsor CURE 2026
+    </a>
+  </div>
+</section>
+
 <div class="view-body">
     <div class="container row">
         <partial name="~/Views/Shared/_Sponsors.cshtml" />
@@ -133,7 +157,7 @@
         <div class="container row text-center">
             <h5><a href="https://discord.gg/mRMPabafgc">CLICK HERE</a> or scan the QR code to join the KIC Events Discord Server, for all the latest information!</h5>
             <div style="padding: 25px;">
-                <img style="max-width: 250px; height: auto; color: rgba(255, 255, 255, .8) !important; box-shadow: 0px 0px 20px 10px #FFCD36;" src="/images/KPSQR.png" alt="QR Code representing https://discord.gg/mRMPabafgc" />
+                <img src="/images/KPSQR.png" alt="QR Code representing https://discord.gg/mRMPabafgc" />
             </div>
         </div>
         @if(ViewBag.EventsWithImages != null && ViewBag.EventsWithoutImages != null){
