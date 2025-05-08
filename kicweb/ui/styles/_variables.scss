@@ -29,33 +29,11 @@
   --color-accent: var(--color-yellow);
   --color-highlight: var(--color-purple);
 
-  // TYPOGRAPHY
-  --font-forum: 'Forum', serif;
-  --font-montserrat: 'Montserrat', sans-serif;
-  --font-bigshoulders: 'Big Shoulders Text', sans-serif;
-
-  --font-heading-1: var(--font-forum);
-  --font-heading-2: var(--font-forum);
-  --font-heading-3: var(--font-montserrat);
-  --font-heading-4: var(--font-montserrat);
-  --font-heading-5: var(--font-forum);
-  --font-heading-6: var(--font-forum);
-  --font-display-heading: var(--font-montserrat);
-  --font-body: var(--font-montserrat);
-  --font-button: var(--font-bigshoulders);
-
-  --weight-regular: 400;
-  --weight-medium: 500;
-  --weight-semibold: 600;
-
   // TRANSITIONS
   --transition-fast: 150ms ease;
   --transition-default: 300ms ease;
   --transition-slow: 500ms ease;
 
-  // BREAKPOINTS (subject to change)
-  --breakpoint-sm: 480px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
+  // UTILITIES
+  --divider-height: 0.25rem;
 }

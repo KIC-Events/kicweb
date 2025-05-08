@@ -3,7 +3,7 @@
     string mainJs = null;
     List<string> cssFiles = new();
 
-    if (System.IO.File.Exists(manifestPath) && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
+    if (System.IO.File.Exists(manifestPath) && Environment.GetEnvironmentVariable("IS_LOCAL_DEV") != "true")
     {
         var json = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllText(manifestPath));
         var main = json.RootElement.GetProperty("index.js");
@@ -27,7 +27,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - KIC Events LLC</title>
     <link rel="icon" type="image/x-icon" href="~/images/favicon.ico" />
-    @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+    @if (Environment.GetEnvironmentVariable("IS_LOCAL_DEV") == "true")
     {
         <script type="module" src="http://localhost:5173/@@vite/client"></script>
         <script type="module" src="http://localhost:5173/index.js"></script>
@@ -39,17 +39,20 @@
             <link rel="stylesheet" href="/dist/@cssFile" />
         }
     }
+
+    <script>
+        document.documentElement.classList.add('js-enabled');
+    </script>
+</script>
     
 </head>
 
 <body>
     @await Html.PartialAsync("Components/_Nav")
 
-    <div class="container main-container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main">
+        @RenderBody()
+    </main>
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -57,7 +60,7 @@
         </div>
     </footer>
 
-    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development" && !string.IsNullOrEmpty(mainJs))
+    @if (Environment.GetEnvironmentVariable("IS_LOCAL_DEV") != "true" && !string.IsNullOrEmpty(mainJs))
     {
         <script type="module" src="/dist/@mainJs"></script>
     }

@@ -1,0 +1,18 @@
+
+
+.container {
+  max-width: 76rem;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+
+  @include breakpoint(xl) {
+    max-width: 64rem;
+  }
+  
+  @include breakpoint(lg) {
+    max-width: 52rem;
+    padding: 0 var(--space-2);
+  }
+}

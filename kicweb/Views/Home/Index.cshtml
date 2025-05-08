@@ -1,10 +1,36 @@
 ﻿
 @model KiCData.Models.WebModels.IndexViewModel
 
+@if(!ViewBag.AgeGateCookieAccepted)
+{
+    <dialog id="age-gate-dialog" class="dialog" data-cancel-disabled>
+        <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
+            <div class="dialog__content">
+                <h2 class="display">
+                    THIS SITE IS INTENDED ONLY FOR PERSONS 18 YEARS OF AGE OR OLDER.
+                </h2>
+                <p>
+                    This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.
+                </p>
+                <p>
+                    By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city.
+                </p>
+                <div class="checkbox">
+                    <input asp-for="Consent" type="checkbox" />
+                    <label asp-for="Consent">Check here if you consent.</label>
+                </div>
+                <button type="submit" value="Accept" class="button">
+                    Enter Site
+                </button>
+            </div>
+        </form>
+    </dialog>
+}
+
 <div class="home">
   <section class="hero">
     <div class="content"> 
-      <div class="hero-image"></div>
+      <img class="hero-image" src="/images/redesign/hero-logo.svg" alt="KIC Events Logo" />
       <h1>
         <span>KIC Events</span>
         <span class="display">Welcome Home</span>
@@ -12,6 +38,63 @@
     </div>
   </section>
 </div>
+
+<div class="container">
+  <section 
+    class="page-section" 
+    role="region" 
+    aria-labelledby="home-page-about-title"
+  >
+    <h2 id="home-page-about-title">
+      We are Kinky In Columbus
+    </h2>
+    <div class="content body-text">
+      <p>
+        Kinky In Columbus is your home for sex positive kink parties and events in Columbus, Ohio. 
+      </p>
+      <p>
+        We host monthly parties that combine education and fetish fun with a focus on community building. We also host weekend long intensives, New To Kink classes and munches, and showcase area vendors. 
+      </p>
+      <p>
+        We believe strongly in building and maintaining a safe, informed, and healthy community. We are inclusive of all identities and lifestyles, and consent is the basis for everything we do. We offer education on a variety of topics, and offer experiential demonstrations of corporal play, electric play, and fire play. 
+      </p>
+      <p>
+        If you would like to share feedback about our events, or an issue at our events, please use the form here.
+      </p>
+
+      <div class="button-group">
+        <a class="button" asp-area="" asp-controller="Payment" asp-action="Purchase">
+          Purchase tickets
+        </a>
+        <a class="button button--secondary" asp-area="" asp-controller="Gen" asp-action="About">
+          Learn who we are
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section 
+  id="home-consent-banner" 
+  class="info-banner info-banner--inverted"
+  role="region" 
+  aria-labelledby="home-page-consent-title"
+>
+  <h2 class="display" id="home-page-consent-title">
+    Consent is Required, Consent is Sexy
+  </h2>
+  <hr />
+  <h3 class="display">
+    Consent is:
+  </h3>
+  <ul class="h5">
+    <li>Enthusiastic.</li>
+    <li>Clear-Headed.</li>
+    <li>Mutual.</li>
+    <li>Informed.</li>
+    <li>Without Manipulation or Coercion.</li>
+  </ul>
+</section>
 
 <div class="view-body">
     <div class="container row">
@@ -177,27 +260,3 @@
         </div>
     </div>
 </div>
-
-@if(!ViewBag.AgeGateCookieAccepted)
-{
-    <div id="AgeGateModal" class="modal d-flex align-items-center" aria-modal="true" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p>This site is intended only for persons 18 years of age or older.</p>
-                    <p>This site features content related to consensual adult sexuality. We do not condone or support abuse - in any form.</p>
-                    <p>By using this site you affirm that you are of age and the viewing of sexually explicit material is legal in your country, state, or city. </p>
-                    <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
-                        <div class="form-group">
-                            <input asp-for="Consent" type="checkbox" />
-                            <label asp-for="Consent">Check here if you consent.</label>
-                        </div>
-                        <div class="form-grou">
-                            <button class="flat-btn" type="submit" value="Accept">Accept</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-}

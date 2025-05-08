@@ -1,5 +1,3 @@
-import './nav.style.scss';
-
 document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('[data-nav]');
   let lastScrollY = window.scrollY;

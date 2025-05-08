@@ -1,0 +1,36 @@
+.page-section {
+  padding: var(--space-4) 0;
+
+  h2 {
+    max-width: 34rem;
+    width: 100%;
+    padding-bottom: 0.6375rem;
+    border-bottom: var(--divider-height) solid var(--color-accent);
+
+    @include breakpoint(xl) {
+      max-width: 30rem;
+    }
+
+    @include breakpoint(lg) {
+      max-width: 26rem;
+    }
+
+    @include breakpoint(sm) {
+      max-width: 100%;
+    }
+
+    &.border-color-alt {
+      border-color: var(--color-highlight);
+    }
+  }
+
+  .content {
+    padding: var(--space-2-5) 0;
+    > * + * {
+      margin-top: var(--space-2);
+    }
+    p + .button-group {
+      margin-top: var(--space-2-5);
+    }
+  }
+}

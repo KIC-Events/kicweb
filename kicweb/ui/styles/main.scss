@@ -1,3 +1,7 @@
 @use "./_reset";
 @use "./_typography";
 @use "./pages/index";
+
+html:not(.js-enabled) dialog ~ * {
+  display: none !important;
+}

@@ -1,0 +1,49 @@
+.button-group {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.button {
+  text-decoration: none;
+  font: var(--font-button);
+  letter-spacing: 0.10625rem;
+  height: 2.3125rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: var(--color-text-primary);
+  transition: var(--transition-default);
+  padding: 0 var(--space-2);
+  border: .1875rem solid var(--color-accent);
+
+  &:hover {
+    cursor: pointer;
+    background: transparent;
+    color: currentColor;
+  }
+
+  &--secondary {
+    background: transparent;
+    color: currentColor;
+
+    &:hover {
+      background: var(--color-accent);
+      color: var(--color-text-primary);
+    }
+  }
+
+  &--tertiary {
+    background: transparent;
+    color: currentColor;
+    
+    &:hover {
+      background: var(--color-white);
+      color: var(--color-text-primary);
+    }
+  }
+}
