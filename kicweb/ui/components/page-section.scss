@@ -5,7 +5,7 @@
     padding-top: 0;
   }
 
-  h2 {
+  > h2, .h2 {
     max-width: 34rem;
     width: 100%;
     padding-bottom: 0.6375rem;
@@ -37,18 +37,20 @@
       margin-top: var(--space-2-5);
     }
 
-    h3 {
+    h2, h3 {
       font-size: .9375rem;
       line-height: 1.15625rem;
       letter-spacing: 0.09375rem;
       text-transform: uppercase;
+      font-family: var(--font-montserrat);
+      font-weight: 600;
 
       &.italic {
         font-weight: normal;
         font-style: italic;
       }
 
-      + p {
+      + p, + ul {
         margin-top: var(--space-1);
       }
     }
@@ -56,6 +58,11 @@
     ul {
       list-style: disc;
       padding-left: var(--space-2-5);
+
+      ul {
+        list-style: circle;
+        padding-left: var(--space-2-5);
+      }
     }
 
     a:not(.button) {
