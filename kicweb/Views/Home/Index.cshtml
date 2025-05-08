@@ -110,7 +110,7 @@
     <h2 class="display" id="home-page-sponsor-title">
       Become a CURE 2026 sponsor!
     </h2>
-    <p>
+    <p></p>
       Sponsoring CURE 2026 helps to provide furniture, staff, and amenities at the event. 
       In return, you can receive advertisement space on our website, in our brochure, or even on the hotel.
     </p>
@@ -120,167 +120,52 @@
   </div>
 </section>
 
-<div class="view-body">
-    <div class="container row">
-        <partial name="~/Views/Shared/_Sponsors.cshtml" />
+<div class="container">
+  <section
+    id="home-resources"
+    class="page-section"
+    role="region"
+    aria-labelledby="home-page-resources-title"
+  >
+    <h2 id="home-page-resources-title">
+      Resources
+    </h2>
+    <div class="content body-text">
+      <p>
+        <strong>There are a number of resources available to the community, some of them are listed here.</strong> 
+      </p>
+      <p>
+        This is not a comprehensive list, and listing a resource here does not indicate that KICEvents LLC endorses the organization or resource listed. This is intended simply to provide a starting point to find community resources.
+      </p>
+      <h3>
+        NATIONAL COALITION FOR SEXUAL FREEDOM
+      </h3>
+      <p>
+        The NCSF is committed to creating a political, legal and social environment in the US that advances equal rights for consenting adults who engage in alternative sexual and relationship expressions. The NCSF aims to advance the rights of, and advocate for consenting adults in the BDSM-Leather-Fetish, Swing, and Polyamory Communities. We pursue our vision through direct services, education, advocacy, and outreach, in conjunction with our partners, to directly benefit these communities.
+      </p>
+      <ul>
+        <li>
+          <a target="_blank" rel="noopener noreferrer" href="https://ncsfreedom.org/key-programs-2/consent-counts/">Consent Counts</a>
+        </li>
+        <li>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.kapprofessionals.org/">Kink Aware Professionals</a>
+        </li>
+        <li>
+          <a target="_blank" rel="noopener noreferrer" href="https://ncsfreedom.org/educational-outreach-overview/">Education Outreach</a>
+        </li>
+        <li>
+          <a target="_blank" rel="noopener noreferrer" href="https://ncsfreedom.org/media-outreach/">Media Outreach</a>
+        </li>
+      </ul>
+      <h3>
+        EQUITAS HEALTH
+      </h3>
+      <p>
+        "Equitas Health is a nonprofit community healthcare system founded in 1984. We are one of the nation’s largest LGBTQ+ and HIV/AIDS-serving organizations, serving tens of thousands of patients in Ohio, Texas, Kentucky, and West Virginia."
+      </p>
+      <p>
+        <a target="_blank" rel="noopener noreferrer" href="https://equitashealth.com/find-a-location/">Find a provider.</a>
+      </p>
     </div>
-    <div style="height: 25px;"></div>
-    <h1 class="main-title">Welcome Home</h1>
-    <hr />
-    <div class="landing-page">
-        <div class="row">
-            <div class="text-center">
-                <h4>Welcome to KIC Events</h4>
-                <h5>We are Kinky In Columbus</h5>
-                <hr />
-                <p>Kinky In Columbus is your home for sex positive kink parties and events in Columbus, Ohio.</p>
-                <p>We host monthly parties that combine education and fetish fun with a focus on community building. We also host weekend long intensives, New To Kink classes and munches, and showcase area vendors.</p>
-                <p>We believe strongly in building and maintaining a safe, informed, and healthy community. We are inclusive of all identities and lifestyles, and consent is the basis for everything we do. We offer education on a variety of topics, and offer experiential demonstrations of corporal play, electric play, and fire play.</p>
-                <p>Learn about who we are and what we do on our <a asp-area="" asp-controller="Gen" asp-action="About">About</a> page.</p>
-                <p>Learn how to attend our events and purchase tickets <a asp-area="" asp-controller="Payment" asp-action="Purchase">here.</a></p>
-                <br />
-                <p><b>If you would like to share feedback about our events, or an issue at our events, please use the form <a asp-area="" asp-controller="Gen" asp-action="Contact">here.</a> </b></p>
-                <br />
-                <br />
-                <h5>Consent is Required, Consent is Sexy</h5>
-                <p><b>Consent is:</b></p>
-                <ul style="list-style: none;"><b>
-                    <li>Enthusiastic.</li>
-                    <li>Clear-Headed.</li>
-                    <li>Mutual.</li>
-                    <li>Informed.</li>
-                    <li>Without Manipulation or Coercion.</li>
-                </b></ul>
-            </div>
-        </div>
-        <br />
-        <div class="container row text-center">
-            <h5><a href="https://discord.gg/mRMPabafgc">CLICK HERE</a> or scan the QR code to join the KIC Events Discord Server, for all the latest information!</h5>
-            <div style="padding: 25px;">
-                <img src="/images/KPSQR.png" alt="QR Code representing https://discord.gg/mRMPabafgc" />
-            </div>
-        </div>
-        @if(ViewBag.EventsWithImages != null && ViewBag.EventsWithoutImages != null){
-            List<Event> eventsWithImages = ViewBag.EventsWithImages;
-            List<Event> eventsWithoutImages = ViewBag.EventsWithoutImages;
-            @if(eventsWithImages.Count > 0 || eventsWithoutImages.Count > 0)
-            {
-            <hr />
-            <br />
-            <div class="row" id="event-carousel" style="align-items:center;">
-                <div class="text-center">
-                    <h5>Upcoming Events</h5>
-                    <br />
-                </div>
-                <div class="container row" style="align-items:center; padding-left:10%;">
-                    <div class="container row" style="padding-bottom:10%;">
-                        @foreach (Event e in ViewBag.EventsWithImages)
-                        {
-                            <div class="container col-sm-4">
-                                <div class="ad-card">
-                                    <img src=@e.ImagePath alt=@e.Name onerror="this.style.display='none'" style="width:100%;" />
-                                    <div style="padding:20px;">
-                                        <p class="ad-card">@e.Name</p>
-                                        <a target="_blank" href=@e.Link class="ad-card">Check It Out</a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <div class="container row">
-                        @foreach(Event e in ViewBag.EventsWithoutImages)
-                        {
-                            <div class="container col-sm-4">
-                                <div class="ad-card">
-                                    <div style="padding:20px;">
-                                        <p class="ad-card">@e.Name</p>
-                                        <a target="_blank" href="@e.Link" class="ad-card">Check It Out</a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-            }
-        }
-        @if(ViewBag.EventsWithImages != null && ViewBag.EventsWithoutImages == null){
-            List<Event> eventsWithImages = ViewBag.EventsWithImages;
-            @if(eventsWithImages.Count > 0)
-            {
-            <hr />
-            <br />
-            <div class="row" id="event-carousel" style="align-items:center;">
-                <div class="text-center">
-                    <h5>Upcoming Events</h5>
-                    <br />
-                </div>
-                <div class="container row" style="align-items:center; padding-left:10%;">
-                    @foreach (Event e in ViewBag.EventsWithImages)
-                    {
-                        <div class="container col-sm-4">
-                            <div class="ad-card">
-                                <img src=@e.ImagePath alt=@e.Name onerror="this.style.display='none'" style="width:100%;" />
-                                <div style="padding:20px;">
-                                    <p class="ad-card">@e.Name</p>
-                                    <a target="_blank" href=@e.Link class="ad-card">Check It Out</a>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-            }
-        }
-        @if(ViewBag.EventsWithImages == null && ViewBag.EventsWithoutImages != null){
-            List<Event> eventsWithoutImages = ViewBag.EventsWithoutImages;
-            @if(eventsWithoutImages.Count > 0)
-            {
-                <hr />
-                <br />
-                <div class="row" id="event-carousel" style="align-items:center;">
-                <div class="text-center">
-                    <h5>Upcoming Events</h5>
-                    <br />
-                </div>
-                <div class="container row" style="align-items:center; padding-left:10%;">
-                    @foreach(Event e in ViewBag.EventsWithoutImages)
-                    {
-                        <div class="container col-sm-4">
-                            <div class="ad-card">
-                                <div style="padding:20px;">
-                                    <p class="ad-card">@e.Name</p>
-                                    <a target="_blank" href="@e.Link" class="ad-card">Check It Out</a>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-            }
-        }
-    </div>
-    <br />
-    <hr />
-    <br />
-    <div id="resources">
-        <div class="text-center">
-            <h4>Resources</h4>
-            <p><b>There are a number of resources available to the community, some of them are listed here.</b></p>
-            <p>This is not a comprehensive list, and listing a resource here does not indicate that KICEvents LLC endorses the organization or resource listed. This is intended simply to provide a starting point to find community resources.</p>
-            <br />
-            <p><b>National Coalition for Sexual Freedom</b></p>
-            <p>The NCSF is committed to creating a political, legal and social environment in the US that advances equal rights for consenting adults who engage in alternative sexual and relationship expressions. The NCSF aims to advance the rights of, and advocate for consenting adults in the BDSM-Leather-Fetish, Swing, and Polyamory Communities. We pursue our vision through direct services, education, advocacy, and outreach, in conjunction with our partners, to directly benefit these communities.</p>
-            <ul>
-                <li><a href="https://ncsfreedom.org/key-programs-2/consent-counts/">Consent Counts</a></li>
-                <li><a href="https://www.kapprofessionals.org/">Kink Aware Professionals</a></li>
-                <li><a href="https://ncsfreedom.org/educational-outreach-overview/">Education Outreach</a></li>
-                <li><a href="https://ncsfreedom.org/media-outreach/">Media Outreach</a></li>
-            </ul>
-            <br />
-            <p><b>Equitas Health</b></p>
-            <p>"Equitas Health is a nonprofit community healthcare system founded in 1984. We are one of the nation’s largest LGBTQ+ and HIV/AIDS-serving organizations, serving tens of thousands of patients in Ohio, Texas, Kentucky, and West Virginia."</p>
-            <p><a href="https://equitashealth.com/find-a-location/">Find a provider.</a></p>
-        </div>
-    </div>
+  </section>
 </div>

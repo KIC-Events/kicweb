@@ -1,6 +1,10 @@
 .page-section {
   padding: var(--space-4) 0;
 
+  + .page-section {
+    padding-top: 0;
+  }
+
   h2 {
     max-width: 34rem;
     width: 100%;
@@ -31,6 +35,37 @@
     }
     p + .button-group {
       margin-top: var(--space-2-5);
+    }
+
+    h3 {
+      font-size: .9375rem;
+      line-height: 1.15625rem;
+      letter-spacing: 0.09375rem;
+      text-transform: uppercase;
+
+      &.italic {
+        font-weight: normal;
+        font-style: italic;
+      }
+
+      + p {
+        margin-top: var(--space-1);
+      }
+    }
+
+    ul {
+      list-style: disc;
+      padding-left: var(--space-2-5);
+    }
+
+    a:not(.button) {
+      text-decoration: underline;
+      letter-spacing: 0;
+      transition: var(--transition-fast);
+  
+      &:hover {
+        text-shadow: 0 0 0.5px currentColor, 0 0 0.5px currentColor;
+      }
     }
   }
 }

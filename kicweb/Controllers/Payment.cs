@@ -1,18 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using KiCData.Models;
 using KiCData.Models.WebModels;
-using KiCData.Models.WebModels.Member;
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Ocsp;
 using Square.Models;
 
 namespace KiCWeb.Controllers
@@ -26,6 +17,7 @@ namespace KiCWeb.Controllers
         private readonly IConfigurationRoot _configurationRoot;
         private readonly KiCdbContext _context;
         private readonly IPaymentService _paymentService;
+	    private KiCdbContext _kdbContext;
 
         public Payment(ILogger<Payment> logger, IHttpContextAccessor contextAccessor, ICookieService cookieService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext, IPaymentService paymentService) : base(configurationRoot, userService: null, contextAccessor, kiCdbContext, cookieService)
         {
@@ -35,6 +27,7 @@ namespace KiCWeb.Controllers
             _configurationRoot = configurationRoot;
             _context = kiCdbContext;
             _paymentService = paymentService;
+            _kdbContext = kiCdbContext;
         }
 
         [HttpGet("Purchase")]
@@ -42,6 +35,21 @@ namespace KiCWeb.Controllers
         {
             _cookieService.DeleteCookie(_contextAccessor.HttpContext.Request, "Registration");
 
+            List<KiCData.Models.Event> events = _kdbContext.Events
+                        .Where(e => e.StartDate > DateOnly.FromDateTime(DateTime.Now))
+                        .ToList();
+                    
+            List<KiCData.Models.Event> eventsWithImages = new List<KiCData.Models.Event>();
+            foreach(KiCData.Models.Event e in events)
+            {
+                if(e.ImagePath is not null)
+                {
+                    eventsWithImages.Add(e);
+                }
+            }
+            
+            ViewBag.events = eventsWithImages; // New events for redesign (TODO refactor this)
+                    
             return View();
         }
 
