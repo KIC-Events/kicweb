@@ -33,6 +33,7 @@ TestResults/
 *.rar
 *.tar
 *.zip
+!cure.tar.gz
 ######################
 # Logs and databases #
 ######################
