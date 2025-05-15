@@ -1,14 +1,14 @@
 // Font-face declarations
 @font-face {
   font-family: "Big Shoulders";
-  src: url("../fonts/BigShoulders-Medium.ttf") format("truetype");
+  src: url("/fonts/BigShoulders-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Forum";
-  src: url("../fonts/Forum-Regular.ttf") format("truetype");
+  src: url("/fonts/Forum-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 /* 400 normal */
 @font-face {
   font-family: "Montserrat";
-  src: url("../fonts/Montserrat-Regular.ttf") format("truetype");
+  src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
@@ -24,7 +24,7 @@
 /* 400 italic */
 @font-face {
   font-family: "Montserrat";
-  src: url("../fonts/Montserrat-Italic.ttf") format("truetype");
+  src: url("/fonts/Montserrat-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
 }
@@ -32,7 +32,7 @@
 /* 500 normal */
 @font-face {
   font-family: "Montserrat";
-  src: url("../fonts/Montserrat-Medium.ttf") format("truetype");
+  src: url("/fonts/Montserrat-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
@@ -40,7 +40,7 @@
 /* 600 normal */
 @font-face {
   font-family: "Montserrat";
-  src: url("../fonts/Montserrat-SemiBold.ttf") format("truetype");
+  src: url("/fonts/Montserrat-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
