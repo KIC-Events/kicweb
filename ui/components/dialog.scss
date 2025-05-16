@@ -1,0 +1,15 @@
+.dialog {
+  display: block;
+  color: var(--color-white);
+  background: var(--color-black);
+  box-shadow: 0.1875rem 0.1875rem 0.375rem #00000029;
+  max-width: 45rem;
+  width: 100%;
+  padding: var(--space-6);
+  margin: auto;
+  outline: none;
+
+  &::backdrop {
+    background-color: #000000BE;
+  }
+}

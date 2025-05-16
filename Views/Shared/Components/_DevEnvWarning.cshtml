@@ -1,0 +1,26 @@
+@if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development") 
+{
+  <div class="dev-banner">
+    <p>
+      This is a dev site, used for testing purposes. Information here may be incorrect or made up entirely.<br/>
+      <span style="font-weight: bold">If you try to buy a ticket here, nothing will happen. You have been warned.</span>
+    </p>
+  </div>
+
+  <style>
+    .dev-banner {
+      background: red;
+      color: white;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding: 2rem 0;
+    }
+
+    .dev-banner p {
+      display: block;
+      text-align: center;
+    }
+  </style>
+}

@@ -1,0 +1,42 @@
+:root {
+  // SPACING (8px = 1 unit)
+  --space-0: 0;          // 0px
+  --space-0-5: 0.25rem;  // 4px
+  --space-1: 0.5rem;     // 8px
+  --space-1-5: 0.75rem;  // 12px
+  --space-2: 1rem;       // 16px
+  --space-2-5: 1.25rem;  // 20px
+  --space-3: 1.5rem;     // 24px
+  --space-3-5: 1.75rem;  // 28px
+  --space-4: 2rem;       // 32px
+  --space-4-5: 2.25rem;  // 36px
+  --space-5: 2.5rem;     // 40px
+  --space-5-5: 2.75rem;  // 44px
+  --space-6: 3rem;       // 48px
+  --space-6-5: 3.25rem;  // 52px
+  --space-7: 3.5rem;     // 56px
+  --space-7-5: 3.75rem;  // 60px
+  --space-8: 4rem;       // 64px
+
+  // COLORS
+  --color-black: #000;
+  --color-grey: #505050;
+  --color-gray: #505050;
+  --color-white: #FFFFFF;
+  --color-yellow: #FFCD36;
+  --color-purple: #5F0E75;
+  --color-red: #FF0000;
+
+  --color-text-primary: var(--color-black);
+  --color-bg-primary: var(--color-white);
+  --color-accent: var(--color-yellow);
+  --color-highlight: var(--color-purple);
+
+  // TRANSITIONS
+  --transition-fast: 150ms ease;
+  --transition-default: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  // UTILITIES
+  --divider-height: 0.25rem;
+}
