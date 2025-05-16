@@ -5,3 +5,8 @@
 html:not(.js-enabled) dialog ~ * {
   display: none !important;
 }
+
+.scroll-lock {
+  overflow: hidden;
+  padding-right: var(--scrollbar-width);
+}

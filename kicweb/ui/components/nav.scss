@@ -11,7 +11,8 @@
   width: 100%;
   height: var(--nav-height);
   z-index: 1000;
-  @include flex-center;
+  display: flex;
+  align-items: center;
   font-family: var(--font-forum);
   font-size: 0.875rem;
   background-color: var(--color-nav-bg);
@@ -24,48 +25,62 @@
     --nav-logo-height: 2.5rem;
   }
 
-  &__section--left {
-    margin-right: auto;
-    @include flex-center;
-  }
+  &__mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-  &__section--right {
-    margin-left: auto;
+    @include breakpoint(md) {
+      width: 100%;
+    }
   }
 
   &__logo {
-    transition: height var(--transition-default);
-    display: block;
-    width: auto;
-    height: var(--nav-logo-height);
+    @include flex-center;
+
+    > img {
+      transition: height var(--transition-default);
+      display: block;
+      width: auto;
+      height: var(--nav-logo-height);
+    }
   }
 
   &__menu {
-    list-style: none;
-    @include flex-center;
-    gap: var(--space-3-5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
     transition: padding-left var(--transition-default);
-    padding-left: 0;
 
-    a {
-      transition: var(--transition-default);
-      color: var(--color-white);
-      text-decoration: none;
-      text-transform: uppercase;
-      &:hover {
-        text-decoration: underline;
-        color: var(--color-accent);
+    &--mobile-spacer {
+      display: none;
+      @include breakpoint(md) {
+        display: block;
+      }
+    }
+
+    &--links {
+      @include flex-center;
+      list-style: none;
+      gap: var(--space-3-5);
+      transition: padding-left var(--transition-default);
+      padding-left: 0;
+  
+      a {
+        transition: var(--transition-default);
+        color: var(--color-white);
+        text-decoration: none;
+        text-transform: uppercase;
+        &:hover {
+          text-decoration: underline;
+          color: var(--color-accent);
+        }
       }
     }
   }
 
   &[data-state="compact"] {
-    height: 3.5rem;
-
-    .nav__logo{
-      height: 2.5rem;
-    }
-
     .nav__menu {
       padding-left: 1rem;
     }
@@ -77,5 +92,115 @@
     width: 100%;
     height: var(--nav-height);
     transition: height var(--transition-default);
+  }
+
+  &__toggle {
+    display: none;
+    position: relative;
+    width: 1.75rem;
+    height: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  
+    @include breakpoint(md) {
+      display: block;
+    }
+  
+    span {
+      display: block;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 0.15rem;  // Slightly thinner for better X sharpness
+      background: currentColor;
+      border-radius: 1rem;
+      transition: var(--transition-fast);
+    }
+  
+    span:nth-child(1) {
+      top: 0;
+    }
+  
+    span:nth-child(2) {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  
+    span:nth-child(3) {
+      bottom: 0;
+    }
+  
+    &[aria-expanded="true"] {
+      span:nth-child(1) {
+        top: 50%;
+        transform: rotate(45deg) translateY(calc(-50% - 0.075rem))
+      }
+  
+      span:nth-child(2) {
+        opacity: 0;
+      }
+  
+      span:nth-child(3) {
+        top: 50%;
+        transform: rotate(-45deg) translate(.075rem, -50%);
+      }
+    }
+  }
+
+  @include breakpoint(md) {
+    --nav-height: 3.5rem;
+    --nav-logo-height: 2.5rem;
+
+    flex-direction: column;
+    transition: none;
+
+    .nav__mobile-header {
+      margin-top: 0.5rem;
+    }
+
+    .nav__menu {
+      opacity: 0;
+      visibility: hidden;
+      z-index: -1;
+      pointer-events: none;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      font-size: 1.5rem;
+      height: 100%;
+
+      > * {
+        transition: opacity var(--transition-slow), transform var(--transition-slow);
+        transform: translateY(-0.5rem);
+        opacity: 0;
+      }
+
+      &--links {
+        flex-direction: column;
+        gap: var(--space-1);
+      }
+    }
+
+    &[data-expanded="true"] {
+      height: 100vh;
+      overflow-y: auto;
+
+      .nav__menu {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: none;
+
+        > * {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        &--social {
+          padding-bottom: 2.5rem;
+        }
+      }
+    }
   }
 }
