@@ -1,0 +1,12 @@
+@use "./_reset";
+@use "./_typography";
+@use "./pages/index";
+
+html:not(.js-enabled) dialog ~ * {
+  display: none !important;
+}
+
+.scroll-lock {
+  overflow: hidden;
+  padding-right: var(--scrollbar-width);
+}

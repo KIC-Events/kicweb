@@ -70,6 +70,7 @@ public class HomeController : Controller
 			}
 		}
 		
+		ViewBag.events = eventsWithImages; // New events for redesign (TODO refactor this)
 		ViewBag.EventsWithImages = eventsWithImages;
 		ViewBag.EventsWithoutImages = eventsWithoutImages;
 

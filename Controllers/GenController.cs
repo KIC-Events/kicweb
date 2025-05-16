@@ -90,15 +90,15 @@ namespace KiCWeb.Controllers
                     Text = a.Name
                 }).ToList(),
                 Positions = new List<SelectListItem>()
-            {
-            new SelectListItem(){ Value = "DM", Text ="Dungeon Monitor" },
-            new SelectListItem(){ Value = "Door", Text =  "Door Person/Greeter" },
-            new SelectListItem(){ Value = "Bar", Text = "Bartender" },
-            new SelectListItem(){ Value = "Fire", Text = "Service Top - Fire" },
-            new SelectListItem(){ Value = "Electric", Text = "Service Top - Electric" },
-            new SelectListItem(){ Value = "Corporal", Text = "Service Top - Corporal" },
-            new SelectListItem(){ Value = "Reg", Text = "Special Events - Registration" }
-            },
+                {
+                    new SelectListItem(){ Value = "DM", Text ="Dungeon Monitor" },
+                    new SelectListItem(){ Value = "Door", Text =  "Door Person/Greeter" },
+                    new SelectListItem(){ Value = "Bar", Text = "Bartender" },
+                    new SelectListItem(){ Value = "Fire", Text = "Service Top - Fire" },
+                    new SelectListItem(){ Value = "Electric", Text = "Service Top - Electric" },
+                    new SelectListItem(){ Value = "Corporal", Text = "Service Top - Corporal" },
+                    new SelectListItem(){ Value = "Reg", Text = "Special Events - Registration" }
+                },
 
             };
 
@@ -110,7 +110,37 @@ namespace KiCWeb.Controllers
         {
             if (!ModelState.IsValid)
             {
+                Console.WriteLine("ModelState is not valid");
+                foreach (var state in ModelState)
+    {
+        var key = state.Key;
+        var errors = state.Value.Errors;
+
+        foreach (var error in errors)
+        {
+            Console.WriteLine($"Key: {key}, Error: {error.ErrorMessage}");
+        }
+    }
                 ViewBag.Error = "There was a validation issue.";
+                // Repopulate the lists
+                volUpdated.Events = _kdbContext.Events
+                    .Where(a => a.StartDate > DateOnly.FromDateTime(DateTime.Now))
+                    .Select(a => new SelectListItem
+                    {
+                        Value = a.Id.ToString(),
+                        Text = a.Name
+                    }).ToList();
+
+                volUpdated.Positions = new List<SelectListItem>
+                {
+                    new SelectListItem{ Value = "DM", Text ="Dungeon Monitor" },
+                    new SelectListItem{ Value = "Door", Text =  "Door Person/Greeter" },
+                    new SelectListItem{ Value = "Bar", Text = "Bartender" },
+                    new SelectListItem{ Value = "Fire", Text = "Service Top - Fire" },
+                    new SelectListItem{ Value = "Electric", Text = "Service Top - Electric" },
+                    new SelectListItem{ Value = "Corporal", Text = "Service Top - Corporal" },
+                    new SelectListItem{ Value = "Reg", Text = "Special Events - Registration" }
+                };
                 return View(volUpdated);
             }
             else
