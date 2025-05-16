@@ -91,18 +91,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true'
 
     // Find all siblings of the nav to apply/remove inert
-    const navSiblings = [...nav.parentElement.children].filter((el) => el !== nav)
+    const navContainer = nav.parentElement
+    const navContainerSiblings = [...navContainer.parentElement.children].filter((el) => el !== navContainer)
 
     if (isExpanded) {
       toggleButton.setAttribute('aria-expanded', 'false')
       nav.dataset.expanded = 'false'
       unlockScroll()
-      navSiblings.forEach((el) => el.removeAttribute('inert'))
+      navContainerSiblings.forEach((el) => el.removeAttribute('inert'))
     } else {
       toggleButton.setAttribute('aria-expanded', 'true')
       nav.dataset.expanded = 'true'
       lockScroll()
-      navSiblings.forEach((el) => el.setAttribute('inert', 'true'))
+      navContainerSiblings.forEach((el) => el.setAttribute('inert', 'true'))
     }
   })
 })

@@ -29,6 +29,15 @@
         letter-spacing: 0.2rem;
         line-height: 2.4375rem;
       }
+
+      @include breakpoint(md) {
+        font-size: 3.5rem;
+
+        .display {
+          font-size: 1.8rem;
+          line-height: 2rem;
+        }
+      }
     }
 
     .hero-image {
@@ -40,6 +49,8 @@
 }
 
 #home-consent-banner {
+  text-align: center;
+
   hr {
     height: var(--divider-height);
     background-color: var(--color-accent);

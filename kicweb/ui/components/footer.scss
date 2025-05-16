@@ -88,4 +88,32 @@
       }
     }
   }
+
+  @include breakpoint(md) {
+    height: auto;
+    padding: var(--space-2) var(--space-4);
+
+    &__nav {
+      flex-direction: column;
+      position: relative;
+
+      &--branding {
+        margin-right: 0;
+        margin-bottom: var(--space-4);
+        align-self: center;
+      }
+
+      &--links:last-child {
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin-top: 11.75rem;
+        align-items: flex-end;
+      }
+    }
+
+    &__bottom {
+      margin-top: var(--space-6);
+    }
+  }
 }
