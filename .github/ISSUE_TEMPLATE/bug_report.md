@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 **Description**
-A clear and concise description of what the bug is.
+_A clear and concise description of what the bug is._
 
 **Steps To Reproduce**
 1. Go to '...'
@@ -17,13 +17,13 @@ A clear and concise description of what the bug is.
 4. See error
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+_A clear and concise description of what you expected to happen._
 
 **Actual behavior**
-A clear and concise description of what actually happened.
+_A clear and concise description of what actually happened._
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+_If applicable, add screenshots to help explain your problem._
 
 **Additional context**
-Add any other context about the problem here (specific browsers, root causes, ideas for how to fix, etc.)
+_Add any other context about the problem here (specific browsers, root causes, ideas for how to fix, etc.)_
