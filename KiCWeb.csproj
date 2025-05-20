@@ -9,8 +9,7 @@
     <Content Remove="Views\People\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <!-- TODO REPLACE THE FOLLOWING LINE TO ORIGINAL -->
-    <ProjectReference Include="../KiCData/KiCData.csproj" /> 
+    <PackageReference Include="KICData" Version="1.4.3" />
     <PackageReference Include="MailKit" Version="4.8.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
       <PrivateAssets>all</PrivateAssets>
