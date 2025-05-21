@@ -1,13 +1,33 @@
 @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development") 
 {
   <div class="dev-banner">
-    <p>
+    <div class="col-lg">
+      <div class="row">
+      <span id="close" onclick="this.parentNode.parentNode.parentNode.remove(); return false;">x</span>
+      </div>  
+      <div class="row">
+      <p>
       This is a dev site, used for testing purposes. Information here may be incorrect or made up entirely.<br/>
       <span style="font-weight: bold">If you try to buy a ticket here, nothing will happen. You have been warned.</span>
-    </p>
+      </p>
+    </div>  
+    </div>      
   </div>
 
   <style>
+    #close {
+    float: right;
+    display:inline-block;
+    padding:2px 5px;
+    border: solid;
+    }  
+
+    #close:hover {
+      background: white;
+      color: black;
+      cursor: pointer;
+    }
+
     .dev-banner {
       background: red;
       color: white;
