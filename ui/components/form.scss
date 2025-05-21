@@ -1,0 +1,91 @@
+form {
+  .field {
+    position: relative;
+
+    label {
+      font: normal normal bold 0.75rem/0.9375rem var(--font-montserrat);
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    &__description {
+      font: italic normal normal 0.625rem/0.9375rem var(--font-montserrat);
+      color: var(--color-grey);
+      letter-spacing: 0;
+      margin-top: .0625rem;
+    }
+
+    &-validation-error {
+      font-family: var(--font-montserrat);
+      font-weight: normal;
+      font-size: 0.675rem;
+      color: var(--color-red);
+      position: absolute;
+      bottom: -1.15rem;
+    }
+
+    &.required {
+      label::after {
+        content: " *";
+        color: var(--color-red);
+      }
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select,
+    .ts-control {
+      display: block;
+      width: 100%;
+      font-size: 0.875rem;
+      max-width: 18.75rem;
+      border: 0.125rem solid var(--color-accent);
+      height: var(--space-4);
+      padding: 0 var(--space-1);
+      margin-top: 0.375rem;
+      border-radius: 0;
+
+      &:focus {
+        border-color: color-mix(in srgb, var(--color-accent) 90%, black 10%);
+      }
+
+      &.input-validation-error {
+        border-color: var(--color-red);
+      }
+    }
+
+    textarea {
+      height: auto;
+      max-width: 30.25rem;
+      min-height: 4.5rem;
+      padding: var(--space-1);
+    }
+
+    .ts-control {
+      padding: var(--space-1);
+      max-width: 30.25rem;
+      height: auto;
+      min-height: 2.5rem;
+      width: 100%;
+    }
+
+    .input-validation-error + .ts-wrapper .ts-control {
+      border-color: var(--color-red);
+    }
+    
+    + .field {
+      margin-top: var(--space-2-5);
+    }
+
+    + .button {
+      margin-top: var(--space-5);
+    }
+  }
+}

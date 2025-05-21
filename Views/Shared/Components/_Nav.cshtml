@@ -1,0 +1,39 @@
+<div class="nav__spacer"></div>
+
+<header>
+  <nav aria-label="Main navigation" data-nav class="nav">
+    <div class="nav__mobile-header">
+      <a class="nav__logo" asp-area="" asp-controller="Home" asp-action="Index">
+        <img src="/images/kic-logo-dark.png" alt="KIC Events Logo" />
+      </a>
+
+      <button 
+        data-nav-toggle 
+        class="nav__toggle" 
+        type="button" 
+        aria-label="Toggle navigation"
+        aria-controls="main-nav-menu"
+        aria-expanded="false"
+      />
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <div class="nav__menu" id="main-nav-menu">
+      <div class="nav__menu--mobile-spacer"></div>
+      <ul class="nav__menu--links">
+        <li><a asp-area="" asp-controller="Gen" asp-action="About">About</a></li>
+        <li><a asp-area="" asp-controller="Payment" asp-action="Purchase">Get Tickets</a></li>
+        <li><a asp-area="" asp-controller="Gen" asp-action="GetInvolved">Get Involved</a></li>
+        <li><a asp-area="" asp-controller="Gen" asp-action="Consent">Consent &amp; Policies</a></li>
+      </ul>
+
+      <div class="nav__menu--social">
+        @await Html.PartialAsync("Components/_SocialLinks")
+      </div>
+    </div>
+
+  </nav>
+</header>

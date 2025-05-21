@@ -1,0 +1,23 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Owner Tasks";
+}
+
+<div class="view-body">
+    <h1 class="main-title">Admin Services</h1>
+    <hr />
+    <p><b>Choose an admin task below</b></p>
+    <ol>
+        <b>
+        <li><a asp-area="" asp-controller="Owner" asp-action="CompIndex">View All Ticket Comps</a></li>
+        <li><a asp-area="" asp-controller="Owner" asp-action="CompAdd">Add ticket comps</a></li>
+        <li><a asp-area="" asp-controller="Admin" asp-action="AdminEvents">Events</a></li>
+        <li><a asp-area="" asp-controller="Owner" asp-action="Index">Presenter Management</a></li>
+        <li><a asp-area="" asp-controller="Owner" asp-action="Tickets">Ticket Management</a></li>
+        <li><a asp-area="" asp-controller="Owner" asp-action="Index">Owner Tasks</a></li>
+        </b>
+    </ol>
+</div>

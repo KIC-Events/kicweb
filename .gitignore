@@ -33,11 +33,13 @@ TestResults/
 *.rar
 *.tar
 *.zip
+!cure.tar.gz
 ######################
 # Logs and databases #
 ######################
 *.log
 *.sqlite
+/Logs
 # OS generated files #
 ######################
 .DS_Store?

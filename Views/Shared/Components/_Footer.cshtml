@@ -1,0 +1,28 @@
+<footer id="landing-footer" class="footer">
+  <nav class="footer__nav" aria-label="Footer links">
+    <div class="footer__nav--branding">
+      <img class="nav__logo" src="/images/kic-logo-dark.png" alt="KIC Events Logo" />
+      <h2>KIC Events</h2>
+      <h3 class="h5">Est. 2023</h3>
+    </div>
+    <ul class="footer__nav--links">
+      <li><a asp-area="" asp-controller="Gen" asp-action="About">About</a></li>
+      <li><a asp-area="" asp-controller="Payment" asp-action="Purchase">Get Tickets</a></li>
+      <li><a asp-area="" asp-controller="Gen" asp-action="GetInvolved">Get Involved</a></li>
+      <li><a asp-area="" asp-controller="Gen" asp-action="Consent">Consent &amp; Policies</a></li>
+    </ul>
+    <ul class="footer__nav--links">
+      <li class="has-button"><a class="button" asp-area="" asp-controller="Payment" asp-action="Purchase">Purchase Tickets</a></li>
+      <li><a asp-area="" asp-controller="Admin" asp-action="AdminServices">Admin Login</a></li>
+      <li><a asp-area="" asp-controller="Gen" asp-action="Contact">Contact</a></li>
+    </ul>
+  </nav>
+  <section class="footer__bottom">
+    <div class="footer__bottom--left">
+      © 2023 - KIC Events LLC - <a asp-area="" asp-controller="Gen" asp-action="Privacy">Privacy Policy</a>
+    </div>
+    <div class="footer__bottom--right">
+      @await Html.PartialAsync("Components/_SocialLinks")
+    </div>
+  </section>
+</footer>

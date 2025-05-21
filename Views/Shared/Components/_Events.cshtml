@@ -1,0 +1,34 @@
+<section class="page-section events__section" aria-labelledby="upcoming-events-heading">
+  <h2 class="h2" id="upcoming-events-heading">Upcoming Events</h2>
+
+  @if(ViewBag.Events != null)
+  {
+    List<Event> events = ViewBag.Events;
+    @if(events.Count > 0)
+    {
+      <div class="events">
+        @foreach (Event e in ViewBag.Events)
+        {
+          <div class="event">
+            <div class="event__top">
+              <img src=@e.ImagePath alt=@e.Name onerror="this.src='/images/kic-logo-dark.png'" />
+            </div>
+            <div class="event__bottom">
+              <h3>@e.Name</h3>
+              <a class="button" target="_blank" rel="noopener noreferrer" href=@e.Link>Check It Out</a>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+
+  <div class="events__qr-code">
+    <img src="/images/KPSQR.png" alt="QR Code representing https://discord.gg/mRMPabafgc" />
+    <p>
+      <a href="https://discord.gg/mRMPabafgc">Click Here</a> 
+      or scan the QR code to join the KIC Events Discord Server, for all the latest information!
+    </p>
+  </div>
+
+</section>

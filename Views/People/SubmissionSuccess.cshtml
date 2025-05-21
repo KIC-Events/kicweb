@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Submission Successful";
+    string submissionType = string.Empty;
+    switch (ViewBag.PersonType)
+    {
+        case "Volunteer":
+            submissionType = "volunteering";
+            break;
+        case "Vendor":
+            submissionType = "providing vendor services";
+            break;
+        case "Presenter":
+            submissionType = "presenting";
+            break;
+        default:
+            submissionType = "participating";
+            break;
+    }
+}
+<div class="view-body">
+    <h1>Get Involved</h1>
+    <br />
+    <hr />
+    <br />
+    <h4>@ViewBag.PersonType</h4>
+    <p>
+        It takes a large team to make our events work. Thank you for your interest in @submissionType with KIC Events. We will be in touch with you shortly.
+    </p>
+    <br />
+    <p></p>
+</div>

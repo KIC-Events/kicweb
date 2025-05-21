@@ -1,0 +1,17 @@
+.social-links {
+  @include flex-center;
+  gap: var(--space-2);
+  a {
+    svg {
+      height: 1.125rem;
+      
+      path {
+        transition: var(--transition-default);
+        fill: var(--color-accent);
+      }
+    }
+    &:hover svg path {
+      fill: var(--color-white);
+    }
+  }
+}
