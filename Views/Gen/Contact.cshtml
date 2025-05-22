@@ -19,39 +19,41 @@
     </div>
   </section>
 
-  <section class="page-section" aria-labelledby="feedback-section-title">
-    <form method="post" asp-controller="Gen" asp-action="Contact" novalidate>
-      <fieldset>
-        <legend class="h2" id="feedback-section-title">
-            Submit Feedback
-        </legend>
-        <div class="content body-text">
-          <p>
-            You can fill out this form to send feedback to the event runners. 
-            Only the owners of KiCEvents will have access to this feedback, and no identifying information will be included, 
-            unless you include your name and email for follow up. If you choose to submit your feedback anonymously, 
-            we will not be able to let you know the outcome.
-          </p>
-        
-          <div class="field">
-            <label asp-for="Name"></label>
-            <div class="field__description">If you would like a follow-up</div>
-            <input asp-for="Name" />
+  @if(ViewBag.Contact == true){
+    <section class="page-section" aria-labelledby="feedback-section-title">
+      <form method="post" asp-controller="Gen" asp-action="Contact" novalidate>
+        <fieldset>
+          <legend class="h2" id="feedback-section-title">
+              Submit Feedback
+          </legend>
+          <div class="content body-text">
+            <p>
+              You can fill out this form to send feedback to the event runners. 
+              Only the owners of KiCEvents will have access to this feedback, and no identifying information will be included, 
+              unless you include your name and email for follow up. If you choose to submit your feedback anonymously, 
+              we will not be able to let you know the outcome.
+            </p>
+          
+            <div class="field">
+              <label asp-for="Name"></label>
+              <div class="field__description">If you would like a follow-up</div>
+              <input asp-for="Name" />
+            </div>
+            <div class="field">
+              <label asp-for="Email"></label>
+              <div class="field__description">If you would like a follow-up</div>
+              <input asp-for="Email" />
+              <span asp-validation-for="Email"></span>
+            </div>
+            <div class="field">
+              <label asp-for="Text"></label>
+              <textarea asp-for="Text" type="text"></textarea>
+              <span asp-validation-for="Text"></span>
+            </div>
+            <button class="button" type="submit" value="Submit">Submit</button>
           </div>
-          <div class="field">
-            <label asp-for="Email"></label>
-            <div class="field__description">If you would like a follow-up</div>
-            <input asp-for="Email" />
-            <span asp-validation-for="Email"></span>
-          </div>
-          <div class="field">
-            <label asp-for="Text"></label>
-            <textarea asp-for="Text" type="text"></textarea>
-            <span asp-validation-for="Text"></span>
-          </div>
-          <button class="button" type="submit" value="Submit">Submit</button>
-        </div>
-      </fieldset>
-    </form>
-  </section>
+        </fieldset>
+      </form>
+    </section>
+  }
 </div>

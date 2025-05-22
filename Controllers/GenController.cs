@@ -369,6 +369,8 @@ namespace KiCWeb.Controllers
                 return Redirect("~Home/Index");
             }
             ViewBag.Error = null;
+            bool contact = _configurationRoot.GetValue<bool>("Features:CONTACT");
+            ViewBag.Contact = contact;
             Feedback feedback = new Feedback();
 
             return View(feedback);
