@@ -46,14 +46,14 @@ form {
       width: 100%;
       font-size: 0.875rem;
       max-width: 18.75rem;
-      border: 0.125rem solid var(--color-accent);
+      border: 0.125rem solid var(--color-theme);
       height: var(--space-4);
       padding: 0 var(--space-1);
       margin-top: 0.375rem;
       border-radius: 0;
 
       &:focus {
-        border-color: color-mix(in srgb, var(--color-accent) 90%, black 10%);
+        border-color: color-mix(in srgb, var(--color-theme) 90%, black 10%);
       }
 
       &.input-validation-error {
@@ -86,6 +86,64 @@ form {
 
     + .button {
       margin-top: var(--space-5);
+    }
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    display: inline-block;
+    width: .9375rem;
+    height: .9375rem;
+    font-size: 0.675rem; // This controls checkmark stroke thickness
+    cursor: pointer;
+    border: none;
+    background: none;
+  
+    // Background box
+    &::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-color: var(--color-theme);
+      border-radius: 25%;
+    }
+  
+    // Checkmark (mimicking Font Awesome)
+    &::after {
+      content: "";
+      position: absolute;
+      top: .2em;
+      left: .5em;
+      width: .5em;
+      height: .8em;
+      border: solid var(--color-black);
+      border-width: 0 0.19em 0.19em 0;
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      pointer-events: none;
+    }
+
+    &:hover::after {
+      opacity: 0.25;
+    }
+  
+    &:checked::after {
+      opacity: 1;
+    }
+  
+    &:focus-visible {
+      outline: 2px solid var(--color-black);
+      outline-offset: 2px;
     }
   }
 }

@@ -10,3 +10,7 @@ html:not(.js-enabled) dialog ~ * {
   overflow: hidden;
   padding-right: var(--scrollbar-width);
 }
+
+.theme__cure {
+  --color-theme: var(--color-theme-cure);
+}
