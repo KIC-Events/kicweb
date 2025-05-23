@@ -32,6 +32,10 @@
   --color-accent: var(--color-yellow);
   --color-highlight: var(--color-purple);
 
+  --color-theme-default: var(--color-yellow);
+  --color-theme-cure: var(--color-purple);
+  --color-theme: var(--color-theme-default);
+
   // TRANSITIONS
   --transition-fast: 150ms ease;
   --transition-default: 300ms ease;

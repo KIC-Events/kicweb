@@ -1,5 +1,5 @@
 .info-banner {
-  background-color: var(--color-accent);
+  background-color: var(--color-theme);
   color: var(--color-text-primary);
   width: 100%;
   padding: var(--space-4) var(--space-2);
@@ -18,7 +18,7 @@
     background-color: var(--color-black);
     color: var(--color-white);
     h2, .h2, .title {
-      color: var(--color-accent);
+      color: var(--color-theme);
     }
   }
 

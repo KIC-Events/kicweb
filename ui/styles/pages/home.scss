@@ -4,11 +4,15 @@
   .hero {
     @include flex-center;
     min-height: 21.25rem;
-    height: 80vh;
+    height: 60vh;
     background-image: url('/images/redesign/Hero-Large.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    @include breakpoint(md) {
+      height: 45vh;
+    }
 
     .content {
       @include flex-center;
@@ -53,7 +57,7 @@
 
   hr {
     height: var(--divider-height);
-    background-color: var(--color-accent);
+    background-color: var(--color-theme);
     border: none;
     margin: 0;
     width: 100%;

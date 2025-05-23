@@ -5,11 +5,11 @@
     padding-top: 0;
   }
 
-  h2, .h2 {
+  h2:not(.h1,.h3,.h4,.h5,.h6), .h2 {
     max-width: 34rem;
     width: 100%;
     padding-bottom: 0.6375rem;
-    border-bottom: var(--divider-height) solid var(--color-accent);
+    border-bottom: var(--divider-height) solid var(--color-theme);
 
     @include breakpoint(xl) {
       max-width: 30rem;
