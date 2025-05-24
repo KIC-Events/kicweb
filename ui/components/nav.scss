@@ -72,12 +72,18 @@
       transition: padding-left var(--transition-default);
       padding-left: 0;
   
-      a {
+      a,
+      .link {
         color: var(--color-white);
         font-weight: 500;
         letter-spacing: .0625rem;
         text-decoration: none;
         text-transform: uppercase;
+
+        .caret {
+          transform: translate(.2rem, -.1rem);
+        }
+
         &:hover {
           text-decoration: underline;
           color: var(--color-accent);

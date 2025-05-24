@@ -26,6 +26,17 @@
       <ul class="nav__menu--links">
         <li><a asp-area="" asp-controller="Gen" asp-action="About">About</a></li>
         <li><a asp-area="" asp-controller="Payment" asp-action="Purchase">Get Tickets</a></li>
+        <li>
+          <button type="button" class="link" data-dropdown-toggle aria-haspopup="true" aria-expanded="false">
+            CURE<span class="caret"></span>
+          </button>
+          <ul class="nav__menu--dropdown" data-dropdown>
+            <li><a asp-area="" asp-controller="Cure" asp-action="Home">CURE 2026</a></li>
+            <li><a asp-area="" asp-controller="Cure" asp-action="Registration">Registration</a></li>
+            <li><a asp-area="" asp-controller="Cure" asp-action="Rules">Rules &amp; FAQs</a></li>
+            <li><a asp-area="" asp-controller="Cure" asp-action="Vendors">Presenters &amp; Vendors</a></li>
+            <li><a asp-area="" asp-controller="Cure" asp-action="Volunteers">Volunteers</a></li>
+        </li>
         <li><a asp-area="" asp-controller="Gen" asp-action="GetInvolved">Get Involved</a></li>
         <li><a asp-area="" asp-controller="Gen" asp-action="Consent">Consent &amp; Policies</a></li>
       </ul>
