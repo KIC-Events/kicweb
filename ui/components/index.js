@@ -1,3 +1,4 @@
+import './caret.scss'
 import './container.scss'
 import './nav.js'
 import './nav.scss'
