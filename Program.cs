@@ -1,3 +1,4 @@
+using KiCWeb.Configuration;
 using KiCData.Services;
 using KiCData.Models;
 using KiCData.Models.WebModels;
@@ -37,6 +38,11 @@ builder.Services.AddHttpClient<IEmailService, EmailService>(client =>
 });
 builder.Services.AddSingleton<IPaymentService, PaymentService>();
 builder.Services.AddControllersWithViews();
+var featureFlags = builder.Configuration
+    .GetSection("FeatureFlags")
+    .Get<FeatureFlags>() ?? new FeatureFlags();
+
+builder.Services.AddSingleton(featureFlags);
 
 WebApplication app = builder.Build();
 

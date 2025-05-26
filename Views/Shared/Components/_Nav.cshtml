@@ -26,6 +26,10 @@
       <ul class="nav__menu--links">
         <li><a asp-area="" asp-controller="Gen" asp-action="About">About</a></li>
         <li><a asp-area="" asp-controller="Payment" asp-action="Purchase">Get Tickets</a></li>
+        @if (FeatureFlags.ShowCurePages)
+        {
+          <li><a href="#">CURE</a></li>
+        }
         <li><a asp-area="" asp-controller="Gen" asp-action="GetInvolved">Get Involved</a></li>
         <li><a asp-area="" asp-controller="Gen" asp-action="Consent">Consent &amp; Policies</a></li>
       </ul>
