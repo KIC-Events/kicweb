@@ -1,1 +1,12 @@
-<div>TODO: Rules</div>
+<div class="container">
+  <section class="page-section">
+    <h1 class="h2">
+      Rules!!
+    </h1>
+    @Html.Accordion(new List<AccordionItem>
+    {
+        new AccordionItem { Title = "First", Description = "First description" },
+        new AccordionItem { Title = "Second", Description = "Second description" },
+    })
+  </section>
+</div>
