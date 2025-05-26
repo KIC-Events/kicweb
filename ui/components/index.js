@@ -1,3 +1,5 @@
+import './accordion.js'
+import './accordion.scss'
 import './caret.scss'
 import './container.scss'
 import './nav.js'

@@ -52,8 +52,19 @@
 
     @await Html.PartialAsync("Components/_DevEnvWarning")
 
+    @{
+        var bodyClass = ViewBag.LayoutWrapperClass as string;
+    }
     <main role="main">
+        @if (!string.IsNullOrEmpty(bodyClass)) {
+            @:<div class="@bodyClass">
+        }
+
         @RenderBody()
+
+        @if (!string.IsNullOrEmpty(bodyClass)) {
+            @:</div>
+        }
     </main>
 
     @await Html.PartialAsync("Components/_Footer")
