@@ -333,8 +333,6 @@ namespace KiCWeb.Controllers
         public IActionResult Contact()
         {
             ViewBag.Error = null;
-            bool contact = _configurationRoot.GetValue<bool>("Features:CONTACT");
-            ViewBag.Contact = contact;
             Feedback feedback = new Feedback();
 
             return View(feedback);
