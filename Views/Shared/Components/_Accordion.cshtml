@@ -24,9 +24,10 @@
     </button>
     <div 
       id="@panelId" 
-      class="accordion-content" 
+      class="accordion-content body-text" 
       role="region" 
-      aria-labelledby="@btnId" 
+      aria-labelledby="@btnId"
+      aria-hidden="true"
     >
       @Html.Raw(item.Description)
     </div>
