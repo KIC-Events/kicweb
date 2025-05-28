@@ -19,7 +19,7 @@
     </div>
   </section>
 
-  @if(ViewBag.Contact == true){
+  @if(FeatureFlags.ShowContactForm) {
     <section class="page-section" aria-labelledby="feedback-section-title">
       <form method="post" asp-controller="Gen" asp-action="Contact" novalidate>
         <fieldset>
