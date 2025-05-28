@@ -72,20 +72,33 @@
       transition: padding-left var(--transition-default);
       padding-left: 0;
   
-      a {
+      a,
+      .link {
         color: var(--color-white);
         font-weight: 500;
         letter-spacing: .0625rem;
         text-decoration: none;
         text-transform: uppercase;
-        &:hover {
-          text-decoration: underline;
-          color: var(--color-accent);
-          text-shadow: 0 0 1px var(--color-accent),
-                        0 0 1px var(--color-accent);        
+
+        .caret {
+          transform: translate(.2rem, -.1rem);
         }
       }
+
+      a:hover,
+      .link:hover,
+      [data-dropdown-toggle].open {
+        text-decoration: underline;
+        color: var(--color-accent);
+        text-shadow: 0 0 1px var(--color-accent),
+                      0 0 1px var(--color-accent);
+      }
+
+      [data-dropdown-toggle].open .caret {
+        transform: rotate(180deg) translate(-.2rem, .15rem);
+      }
     }
+
   }
 
   &[data-state="compact"] {
@@ -156,6 +169,25 @@
     }
   }
 
+  [data-dropdown] {
+    display: none;
+    position: absolute;
+    margin-top: 0.625rem;
+    padding-top: .1875rem;
+    padding-bottom: 0.875rem;
+    padding-inline: 0.625rem;
+    flex-direction: column;
+    background: var(--color-black);
+    gap: 0.6875rem;
+    width: 14rem;
+    margin-left: -0.625rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+    &.show {
+      display: flex;
+    }
+  }
+
   @include breakpoint(md) {
     flex-direction: column;
     transition: none;
@@ -185,6 +217,10 @@
       &--links {
         flex-direction: column;
         gap: var(--space-1);
+
+        li {
+          text-align: center;;
+        }
       }
     }
 
@@ -208,6 +244,19 @@
           padding-bottom: var(--space-2-5);
         }
       }
+    }
+
+    [data-dropdown-toggle] .caret {
+      position: relative;
+      left: .1rem;
+      top: -.1rem;
+    }
+
+    [data-dropdown] {
+      position: relative;
+      align-items: center;
+      text-align: center;
+      font-size: 1rem;
     }
   }
 }

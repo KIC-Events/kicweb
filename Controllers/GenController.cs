@@ -33,10 +33,6 @@ namespace KiCWeb.Controllers
         [Route("/Gen/Privacy")]
         public IActionResult Privacy()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             return View();
         }
 
@@ -44,10 +40,6 @@ namespace KiCWeb.Controllers
         [Route("/Gen/Club425")]
         public IActionResult Club425()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             return View();
         }
 
@@ -55,10 +47,6 @@ namespace KiCWeb.Controllers
         [Route("/Gen/About")]
         public IActionResult About()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             return View();
         }
 
@@ -66,10 +54,6 @@ namespace KiCWeb.Controllers
         [Route("/Gen/Purchase")]
         public IActionResult Purchase()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             return View("/Views/Shared/UnderConstruction.cshtml");
         }
 
@@ -77,10 +61,6 @@ namespace KiCWeb.Controllers
         [Route("Volunteers/Register")]
         public IActionResult Volunteers()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             VolunteerViewModel volunteer = new VolunteerViewModel
             {
                 Events = _kdbContext.Events.Where(a => a.StartDate > DateOnly.FromDateTime(DateTime.Now)).Select
@@ -191,10 +171,6 @@ namespace KiCWeb.Controllers
         [HttpGet]
         public IActionResult Presenters()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             ViewBag.Error = null;
             Presentation presentation = new Presentation() { Presenter = new Presenter() };
             return View(presentation);
@@ -248,10 +224,6 @@ namespace KiCWeb.Controllers
         [HttpGet]
         public IActionResult Vendors()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             ViewBag.Error = null;
             Vendor vendor = new Vendor();
             return View(vendor);
@@ -302,10 +274,6 @@ namespace KiCWeb.Controllers
         [HttpGet]
         public IActionResult Volunteers()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             ViewBag.Error = null;
             Volunteer volunteer = new Volunteer();
 
@@ -364,10 +332,6 @@ namespace KiCWeb.Controllers
         [HttpGet]
         public IActionResult Contact()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             ViewBag.Error = null;
             Feedback feedback = new Feedback();
 
@@ -435,10 +399,6 @@ namespace KiCWeb.Controllers
         [Route("/Gen/GetInvolved")]
         public IActionResult GetInvolved()
         {
-            if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
-            {
-                return Redirect("~Home/Index");
-            }
             return View();
         }
 

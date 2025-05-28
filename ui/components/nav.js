@@ -43,6 +43,8 @@ function blockScroll(e) {
  */
 document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('[data-nav]')
+  if (!nav) return
+  
   const toggleButton = document.querySelector('[data-nav-toggle]')
 
   let lastScrollY = window.scrollY
