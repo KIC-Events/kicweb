@@ -30,6 +30,10 @@
 
   .content {
     padding: var(--space-2-5) 0;
+  }
+
+  .content,
+  .accordion-content {
     > * + * {
       margin-top: var(--space-2);
     }

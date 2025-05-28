@@ -21,6 +21,7 @@
       data-accordion-toggle
     >
       @item.Title
+      <i class="fa-solid fa-chevron-down"></i>
     </button>
     <div 
       id="@panelId" 
@@ -28,6 +29,7 @@
       role="region" 
       aria-labelledby="@btnId"
       aria-hidden="true"
+      inert
     >
       @Html.Raw(item.Description)
     </div>
