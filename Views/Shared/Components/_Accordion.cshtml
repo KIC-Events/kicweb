@@ -1,0 +1,38 @@
+@model IEnumerable<KiCWeb.Models.AccordionItem>
+
+@{
+  var id = $"acc-{Guid.NewGuid().ToString("N").Substring(0, 8)}";
+  var items = Model.ToList();
+}
+
+<div class="accordion" id="@id">
+@for (int i = 0; i < items.Count; i++)
+{
+  var item = items[i];
+  var btnId = $"{id}-btn-{i}";
+  var panelId = $"{id}-panel-{i}";
+  <div class="accordion-item">
+    <button 
+      id="@btnId"
+      class="accordion-header"
+      aria-expanded="false"
+      aria-controls="@panelId"
+      data-accordion-id="@id"
+      data-accordion-toggle
+    >
+      @item.Title
+      <i class="fa-solid fa-chevron-down"></i>
+    </button>
+    <div 
+      id="@panelId" 
+      class="accordion-content body-text" 
+      role="region" 
+      aria-labelledby="@btnId"
+      aria-hidden="true"
+      inert
+    >
+      @Html.Raw(item.Description)
+    </div>
+  </div>
+}
+</div>
