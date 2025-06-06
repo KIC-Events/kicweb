@@ -90,17 +90,17 @@ namespace KiCWeb.Controllers
         {
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("ModelState is not valid");
+                _logger.LogText("ModelState is not valid");
                 foreach (var state in ModelState)
-    {
-        var key = state.Key;
-        var errors = state.Value.Errors;
+                {
+                    var key = state.Key;
+                    var errors = state.Value.Errors;
 
-        foreach (var error in errors)
-        {
-            Console.WriteLine($"Key: {key}, Error: {error.ErrorMessage}");
-        }
-    }
+                    foreach (var error in errors)
+                    {
+                        _logger.LogText($"Key: {key}, Error: {error.ErrorMessage}");
+                    }
+                }
                 ViewBag.Error = "There was a validation issue.";
                 // Repopulate the lists
                 volUpdated.Events = _kdbContext.Events
