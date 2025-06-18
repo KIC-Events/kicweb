@@ -34,9 +34,12 @@
             <img src="@p.ImgPath" alt="@p.PublicName's image" />
             <div class="header-details">
               <h1 class="h2-display">@p.PublicName</h1>
-              <div class="header-details__subtitle">
-                HE/HIM, SHE/HER. MOUTHY BRATTY DUO
-              </div>
+              @if (!string.IsNullOrWhiteSpace(p.Tagline))
+              {
+                <div class="header-details__subtitle">
+                  @p.Tagline
+                </div>
+              }
               <div class="header-details__class-list">
                 <div>Breath Play with Erotic Rope Bondage</div>
                 <div>Brat Proof Bondage: Escape-resistant Ties for Squirmy Bottoms</div>
