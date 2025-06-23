@@ -107,6 +107,8 @@
   @await Html.PartialAsync("Components/_Events")
 </div>
 
+
+@if(FeatureFlags.ShowCurePages){
 <section
   id="home-sponsor-banner"
   class="info-banner"
@@ -126,6 +128,7 @@
     </a>
   </div>
 </section>
+}
 
 <div class="container">
   <section
