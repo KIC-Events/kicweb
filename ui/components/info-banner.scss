@@ -1,0 +1,40 @@
+.info-banner {
+  background-color: var(--color-theme);
+  color: var(--color-text-primary);
+  width: 100%;
+  padding: var(--space-4) var(--space-2);
+  text-align: center;
+
+  &, & .container {
+    @include flex-center;
+    flex-direction: column;
+  }
+
+  .container {
+    max-width: 55rem;
+  }
+
+  &--inverted {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    h2, .h2, .title {
+      color: var(--color-theme);
+    }
+  }
+
+  p {
+    font-family: var(--font-montserrat);
+    font-size: 1.25rem;
+    letter-spacing: 0.125rem;
+    line-height: 1.5rem;
+    text-align: center;
+  }
+
+  h2 + p {
+    margin-top: var(--space-3);
+  }
+
+  p + .button {
+    margin-top: var(--space-3);
+  }
+}

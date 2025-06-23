@@ -1,0 +1,34 @@
+@use "sass:map";
+
+// Util mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-center-column {
+  @include flex-center;
+  flex-direction: column;
+}
+
+// Breakpoints
+// Usage: @include breakpoint(md) { ... }
+// This mixin allows you to use the breakpoints defined in the variables file.
+$breakpoints: (
+  xs: 30em,   // 480px
+  sm: 40em,   // 640px
+  md: 48em,   // 768px
+  lg: 64em,   // 1024px
+  xl: 75em,   // 1200px
+);
+
+@mixin breakpoint($size) {
+  // Gets size from the map or uses the size directly.
+  // This allows us to either do @include breakpoint(md) or @include breakpoint(500px).
+  $value: if(map.has-key($breakpoints, $size), map.get($breakpoints, $size), $size);
+
+  @media (max-width: #{$value}) {
+    @content;
+  }
+}

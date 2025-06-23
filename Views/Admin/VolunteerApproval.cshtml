@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Volunteer Approval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model KiCData.Models.WebModels.EventVolunteerViewModel
+
+<div class="form-fillable">
+    <form asp-action="VolunteerApproval" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="EventId"></label>
+            @Html.HiddenFor(m => m.EventId)
+            <input asp-for="EventName" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+            <label asp-for="VolunteerId"></label>
+            @Html.HiddenFor(m => m.VolunteerId)
+            <input asp-for="VolunteerName" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+            <label asp-for="Position"></label>
+            <select asp-for="Position" asp-items="@Model.Positions">
+                <option value="0">Select the Position</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="ShiftStart"></label>
+            <input asp-for="ShiftStart" class="form-control" />
+            <span asp-validation-for="ShiftStart" class="text-danger" ></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ShiftEnd"></label>
+            <input asp-for="ShiftEnd" class="form-control" />
+            <span asp-validation-for="ShiftEnd" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="col-8">
+                <input type="submit" value="Approve and Assign" class="btn btn-secondary" />
+            </div>
+        </div>
+    </form>
+</div>

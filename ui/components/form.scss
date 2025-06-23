@@ -1,0 +1,149 @@
+form {
+  .field {
+    position: relative;
+
+    label {
+      font: normal normal bold 0.75rem/0.9375rem var(--font-montserrat);
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    &__description {
+      font: italic normal normal 0.625rem/0.9375rem var(--font-montserrat);
+      color: var(--color-grey);
+      letter-spacing: 0;
+      margin-top: .0625rem;
+    }
+
+    &-validation-error {
+      font-family: var(--font-montserrat);
+      font-weight: normal;
+      font-size: 0.675rem;
+      color: var(--color-red);
+      position: absolute;
+      bottom: -1.15rem;
+    }
+
+    &.required {
+      label::after {
+        content: " *";
+        color: var(--color-red);
+      }
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select,
+    .ts-control {
+      display: block;
+      width: 100%;
+      font-size: 0.875rem;
+      max-width: 18.75rem;
+      border: 0.125rem solid var(--color-theme);
+      height: var(--space-4);
+      padding: 0 var(--space-1);
+      margin-top: 0.375rem;
+      border-radius: 0;
+
+      &:focus {
+        border-color: color-mix(in srgb, var(--color-theme) 90%, black 10%);
+      }
+
+      &.input-validation-error {
+        border-color: var(--color-red);
+      }
+    }
+
+    textarea {
+      height: auto;
+      max-width: 30.25rem;
+      min-height: 4.5rem;
+      padding: var(--space-1);
+    }
+
+    .ts-control {
+      padding: var(--space-1);
+      max-width: 30.25rem;
+      height: auto;
+      min-height: 2.5rem;
+      width: 100%;
+    }
+
+    .input-validation-error + .ts-wrapper .ts-control {
+      border-color: var(--color-red);
+    }
+    
+    + .field {
+      margin-top: var(--space-2-5);
+    }
+
+    + .button {
+      margin-top: var(--space-5);
+    }
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    display: inline-block;
+    width: .9375rem;
+    height: .9375rem;
+    font-size: 0.675rem; // This controls checkmark stroke thickness
+    cursor: pointer;
+    border: none;
+    background: none;
+  
+    // Background box
+    &::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-color: var(--color-theme);
+      border-radius: 25%;
+    }
+  
+    // Checkmark (mimicking Font Awesome)
+    &::after {
+      content: "";
+      position: absolute;
+      top: .2em;
+      left: .5em;
+      width: .5em;
+      height: .8em;
+      border: solid var(--color-black);
+      border-width: 0 0.19em 0.19em 0;
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      pointer-events: none;
+    }
+
+    &:hover::after {
+      opacity: 0.25;
+    }
+  
+    &:checked::after {
+      opacity: 1;
+    }
+  
+    &:focus-visible {
+      outline: 2px solid var(--color-black);
+      outline-offset: 2px;
+    }
+  }
+}

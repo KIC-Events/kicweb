@@ -1,0 +1,50 @@
+﻿@page
+
+<div class="container">
+  <section class="page-section" role="region" aria-labelledby="tickets-page-title">
+    <h2 id="tickets-page-title">
+      Get Tickets
+    </h2>
+    <div class="content body-text">
+      <h3>How to Register</h3>
+      <p>
+        To attend, you must first complete a FREE online membership application and be approved before registering. Applications are due no later than 8:00 AM on the day of the event. 
+        If you’ve attended before, simply register for the event without needing to reapply.
+      </p>
+      <h3 class="italic">
+        membership Process:
+      </h3>
+      <ul>
+        <li>
+          Complete the FREE online membership form (details must match your government ID).
+        </li>
+        <li>
+          List KIC Events as your sponsor. This must be done
+        </li>
+        <li>
+          Confirm your email (check your spam folder). Your application will not be submitted without this step.
+        </li>
+        <li>
+          Once approved, create a user ID and password, then register for the event by clicking RESERVE NOW.
+        </li>
+        <li>
+          Purchase tickets in advance for a discounted rate, or pay at the door after your approval.
+        </li>
+      </ul>
+      <a class="button" href="https://425vipclub.com/kic/" target="_blank" rel="noopener noreferrer">
+        Apply for Membership
+      </a>
+      <p>
+        <strong>Important:</strong> You must present a valid government-issued ID for entry. <strong>NO ID = NO ENTRY.</strong>
+      </p>
+      <h3>
+        Cancellations
+      </h3>
+      <p>
+        Email <a href="mailto:KICEventsLLC@gmail.com">KICEventsLLC@gmail.com</a> by 2:00 PM the day of the event with your legal name for a credit to be used toward a future event.
+      </p>
+    </div>
+  </section>
+
+  @await Html.PartialAsync("Components/_Events")
+</div>

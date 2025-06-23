@@ -1,0 +1,78 @@
+@{
+    var manifestPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/dist/.vite/manifest.json");
+    string mainJs = null;
+    List<string> cssFiles = new();
+
+    if (System.IO.File.Exists(manifestPath) && Environment.GetEnvironmentVariable("IS_LOCAL_DEV") != "true")
+    {
+        var json = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllText(manifestPath));
+        var main = json.RootElement.GetProperty("index.js");
+
+        mainJs = main.GetProperty("file").GetString();
+
+        if (main.TryGetProperty("css", out var cssList))
+        {
+            foreach (var css in cssList.EnumerateArray())
+            {
+                cssFiles.Add(css.GetString());
+            }
+        }
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - KIC Events LLC</title>
+    <link rel="icon" type="image/x-icon" href="~/images/favicon.ico" />
+    @if (Environment.GetEnvironmentVariable("IS_LOCAL_DEV") == "true")
+    {
+        <script type="module" src="http://localhost:5173/@@vite/client"></script>
+        <script type="module" src="http://localhost:5173/index.js"></script>
+    } 
+    else 
+    {
+        foreach (var cssFile in cssFiles)
+        {
+            <link rel="stylesheet" href="/dist/@cssFile" />
+        }
+    }
+
+    <script>
+        document.documentElement.classList.add('js-enabled');
+    </script>
+</script>
+    
+</head>
+
+<body>
+    @await Html.PartialAsync("Components/_Nav")
+
+    @await Html.PartialAsync("Components/_DevEnvWarning")
+
+    @{
+        var bodyClass = ViewBag.LayoutWrapperClass as string;
+    }
+    <main role="main">
+        @if (!string.IsNullOrEmpty(bodyClass)) {
+            @:<div class="@bodyClass">
+        }
+
+        @RenderBody()
+
+        @if (!string.IsNullOrEmpty(bodyClass)) {
+            @:</div>
+        }
+    </main>
+
+    @await Html.PartialAsync("Components/_Footer")
+
+    @if (Environment.GetEnvironmentVariable("IS_LOCAL_DEV") != "true" && !string.IsNullOrEmpty(mainJs))
+    {
+        <script type="module" src="/dist/@mainJs"></script>
+    }
+</body>
+
+</html>

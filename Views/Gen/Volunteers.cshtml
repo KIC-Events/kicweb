@@ -1,0 +1,101 @@
+
+@{
+    ViewData["Title"] = "Get Involved - Volunteers";
+}
+@model KiCData.Models.WebModels.VolunteerViewModel
+
+<div class="container">
+  <section class="page-section" aria-labelledby="volunteers-page-title">
+    <h1 class="h2" id="volunteers-page-title">
+      Volunteer Info
+    </h1>
+    <div class="content body-text">
+      <p>
+        Do you desire to meet and interact with like minded people while helping give back to your local kink community?
+      </p>
+      <p>
+        Have you ever thought of volunteering at events though not sure what you would be required to do?
+      </p>
+      <p>
+        Below is a list of volunteer positions with a brief description that we have available at KIC Events:
+      </p>
+      <ul>
+        <li>Door person/greeter - Hand out waivers to attendees to fill out and review for completion.</li>
+        <li>"Bartender" - Alcohol is not allowed at KIC events though we desire to have people give out water, soda, juices, and snacks.</li>
+        <li>Dungeon Monitors - Actively walk the main play space, outside patio, and sexy time area to help ensure attendees are following the rules of the event and engaging in safe consensual play.</li>
+        <li>Service Top (fire, electric, or corporal) - Effectively, safely, and consensually discuss, talk about, and/or perform scenes for attendees who are wanting to explore and experience what is being offered.</li>
+      </ul>
+      <p>
+        Please fill out the form below with your details to be added to the mailing list for volunteer shifts.
+      </p>
+      <form asp-action="Volunteers" method="post" novalidate>
+        <div class="field">
+          <label asp-for="EventId"></label>
+          @Html.DescriptionFor(m => m.EventId)
+          <select asp-for="EventId" asp-items="@Model.Events">
+            <option value="">@Html.PromptFor(m => m.EventId, "Select an event")</option>
+          </select>
+          <span asp-validation-for="EventId"></span>
+        </div>
+
+        <div class="field">
+          <label asp-for="FirstName"></label>
+          @Html.DescriptionFor(m => m.FirstName)
+          <input asp-for="FirstName" />
+          <span asp-validation-for="FirstName"></span>
+        </div>
+        <div class="field">
+          <label asp-for="LastName"></label>
+          @Html.DescriptionFor(m => m.LastName)
+          <input asp-for="LastName" />
+          <span asp-validation-for="LastName"></span>
+        </div>
+        <div class="field">
+          <label asp-for="SexOnID"></label>
+          @Html.DescriptionFor(m => m.SexOnID)
+          <input asp-for="SexOnID" />
+          <span asp-validation-for="SexOnID"></span>
+        </div>
+        <div class="field">
+          <label asp-for="Email"></label>
+          @Html.DescriptionFor(m => m.Email)
+          <input asp-for="Email" placeholder="@Html.PromptFor(m => m.Email)" />
+          <span asp-validation-for="Email"></span>
+        </div>
+        <div class="field">
+          <label asp-for="DateOfBirth"></label>
+          <input asp-for="DateOfBirth" type="date" />
+          <span asp-validation-for="DateOfBirth"></span>
+        </div>
+        <div class="field">
+          <label asp-for="FetName"></label>
+          <input asp-for="FetName" />
+          <span asp-validation-for="FetName"></span>
+        </div>
+        <div class="field">
+          <label asp-for="ClubId"></label>
+          @Html.DescriptionFor(m => m.ClubId)
+          <input asp-for="ClubId" />
+          <span asp-validation-for="ClubId"></span>
+        </div>
+        <div class="field">
+          <label asp-for="PhoneNumber"></label>
+          <input asp-for="PhoneNumber" />
+          <span asp-validation-for="PhoneNumber"></span>
+        </div>
+        <div class="field">
+          <label asp-for="Details"></label>
+          <textarea asp-for="Details"></textarea>
+          <span asp-validation-for="Details"></span>
+        </div>
+        <div class="field">
+          <label asp-for="Positions"></label>
+          <select asp-for="Positions" asp-items="@Model.Positions" multiple></select>
+          <span asp-validation-for="Positions"></span>
+        </div>
+
+        <button class="button" type="submit">Register</button>
+      </form>
+    </div>
+  </section>
+</div>

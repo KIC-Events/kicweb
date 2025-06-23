@@ -1,0 +1,62 @@
+<div class="nav__spacer"></div>
+
+<header>
+  <nav aria-label="Main navigation" data-nav class="nav">
+    <div class="nav__mobile-header">
+      <a class="nav__logo" asp-area="" asp-controller="Home" asp-action="Index">
+        <img src="/images/kic-logo-dark.png" alt="KIC Events Logo" />
+      </a>
+
+      <button 
+        data-nav-toggle 
+        class="nav__toggle" 
+        type="button" 
+        aria-label="Toggle navigation"
+        aria-controls="main-nav-menu"
+        aria-expanded="false"
+      />
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <div class="nav__menu" id="main-nav-menu">
+      <div class="nav__menu--mobile-spacer"></div>
+      <ul class="nav__menu--links">
+        <li><a asp-area="" asp-controller="Gen" asp-action="About">About</a></li>
+        <li><a asp-area="" asp-controller="Payment" asp-action="Purchase">Get Tickets</a></li>
+        @if (FeatureFlags.ShowCurePages)
+        {
+          <li>
+            <button 
+              type="button" 
+              class="link" 
+              data-dropdown-toggle 
+              aria-haspopup="true" 
+              aria-expanded="false"
+              aria-controls="nav-dropdown-cure"
+              aria-label="Toggle CURE dropdown"
+            >
+              CURE<span class="caret"></span>
+            </button>
+            <ul id="nav-dropdown-cure" class="nav__menu--dropdown" data-dropdown>
+              <li><a asp-area="" asp-controller="Cure" asp-action="">CURE 2026</a></li>
+              <li><a asp-area="" asp-controller="Cure" asp-action="Registration">Registration</a></li>
+              <li><a asp-area="" asp-controller="Cure" asp-action="Rules">Rules &amp; FAQs</a></li>
+              <li><a asp-area="" asp-controller="Cure" asp-action="Presenters">Presenters &amp; Vendors</a></li>
+              <li><a asp-area="" asp-controller="Cure" asp-action="Volunteers">Volunteers</a></li>
+            </ul>
+          </li>
+        }
+        <li><a asp-area="" asp-controller="Gen" asp-action="GetInvolved">Get Involved</a></li>
+        <li><a asp-area="" asp-controller="Gen" asp-action="Consent">Consent &amp; Policies</a></li>
+      </ul>
+
+      <div class="nav__menu--social">
+        @await Html.PartialAsync("Components/_SocialLinks")
+      </div>
+    </div>
+
+  </nav>
+</header>
