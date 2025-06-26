@@ -1,3 +1,142 @@
-<div>
-  TODO: CURE Homepage
+<div class="cure-home">
+  <div class="cure-home__hero">
+    Hero image coming soon
+  </div>
+
+  <div class="container">
+    <section class="page-section cure-home__top-info" role="region" aria-labelledby="cure-home-title">
+      <h1 class="h2" id="cure-home-title" style="max-width: 100%;">
+        Columbus’ Ultimate Relationship Exploration
+      </h1>
+      <div class="content cure-home__top-info-callout">
+        Mark your calendars, as the dates of the event will be <strong>January 10-11, 2025</strong> at a hotel in Northern Columbus (exact address will be given to attendees once they purchase their ticket(s) and receive registration confirmation).
+      </div>
+      <div class="content">
+        <p>
+          <strong>So, what makes this KIC event different from a monthly KIC event? </strong>
+        </p>
+        <p>
+          For starters, this event will take place at a HOTEL!!! If you decide to reserve a room, you wont have to worry about driving home after an evening of playing. You could literally go to a class, play, take a nap, and possibly do it all over again. How awesome is that?
+        </p>
+        <p>
+          Then, there is the PRESENTERS. Yes that’s right, presenters, not just one, like at our monthly party. Right now we are working on bringing some of the best Kinky Education Presenters from all over the country. We are looking for a diverse spread of knowledge from rope to impact, poly relations to power exchanges, medical to safety concerns, and any to all different types of play.
+        </p>
+        <p>
+          We will have a plethora of VENDORS selling their kinky goodies. Items such as floggers, rope, apparel, bratty stickers, gags, collars, paddles, and other toys galore!
+        </p>
+        <div class="button-group">
+          <a class="button" asp-controller="Cure" asp-action="Registration">
+            Register for CURE 2026
+          </a>
+          <a class="button button--secondary" asp-controller="Cure" asp-action="Rules">
+            Read Rules &amp; FAQs
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <section class="info-banner info-banner--column-layout info-banner--with-divider">
+    <div class="container">
+      <div class="info-banner__column">
+        <h2 class="display">
+          Become a CURE 2026 sponsor!
+        </h2>
+        <p>
+          Sponsoring CURE 2026 helps to provide furniture, staff, and amenities at the event. 
+          In return, you can receive advertisement space on our website, in our brochure, or even on the hotel floor.
+        </p>
+        <a class="button button--tertiary" asp-area="" asp-controller="Gen" asp-action="GetInvolved">
+          Sponsor CURE 2026
+        </a>
+      </div>
+      <div class="info-banner__column--divider"></div>
+      <div class="info-banner__column">
+        <h2 class="display">
+          Donate Yo Shit
+        </h2>
+        <p>
+          Got extra crap in your closet that you haven’t used in months and probably needs washed? Donate it to our silent auction! But plz wash it first. Like for real.
+        </p>
+        <a class="button button--tertiary" asp-area="" asp-controller="Gen" asp-action="GetInvolved">
+          Donate to the Silent Auction
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <section class="page-section" role="region" aria-labelledby="presenters-title">
+      <h2 id="presenters-title">
+        Presenters &amp; Vendors
+      </h2>
+      <div class="content body-text">
+        <p>
+          Get ready to dive deep into new sensations, learn from passionate instructors, and connect with a community of like-minded explorers. Whether you’re a curious newcomer or a seasoned adventurer, these classes are designed to spark your curiosity, expand your skills, and make this weekend one to remember.
+        </p>
+        <p>
+          Interested in becoming a Presenter or Vendor for CURE 2026? <a href="#"><strong>Submit an application here!</strong></a>
+        </p>
+        <div class="button-group">
+          <a class="button" asp-controller="Cure" asp-action="Presenters">
+            View CURE Presenters &amp; Vendors
+          </a>
+          <!-- TODO this will be a link to presenters page with a jump link to the class descriptions section -->
+          <a class="button button--secondary" href="#"> 
+            Read Class Descriptions
+          </a>
+        </div>
+      </div>
+      <div class="cure-home__volunteers-callout">
+        <img src="/images/redesign/CURE-Volunteer-Image.png" />
+        <div class="content body-text">
+          <h2 class="display">Interested in Volunteering for CURE?</h2>
+          <p>
+            Volunteering is not only a fun and rewarding way to experience the event, but it’s also a crucial part of making everything run smoothly.
+          </p>
+          <p>
+            This is a fantastic opportunity to get involved beyond just attending. We know Columbus is full of people who love to serve, and we have plenty of volunteer spots for you to do just that!
+          </p>
+          <p>
+            <a asp-controller="Cure" asp-action="Volunteers">
+              <strong>Learn About Volunteering Opportunities for CURE 2026</strong>
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <section 
+    id="cure-discord-banner"
+    class="info-banner info-banner--inverted"
+    role="region" 
+    aria-labelledby="cure-discord-title"
+  >
+    <h2 class="display" id="cure-discord-title">
+      STAY IN THE KNOW FOR CURE 2026
+    </h2>
+    <hr />
+    <ul>
+      <li>
+        <a href="#">
+          JOIN THE KIC CURE 2026 GROUP
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          JOIN THE KIC DISCORD
+        </a>
+      </li>
+    </ul>
+  </section>
+  <div class="container">
+    <section class="page-section" role="region" aria-labelledby="cure-home-sponsors-title">
+      <h2 id="cure-home-sponsors-title" style="max-width: 100%;">
+        Thank You to Our Sponsors!
+      </h2>
+      <p>
+        TODO add sponsors here
+      </p>
+    </section>
+  </div>
 </div>
