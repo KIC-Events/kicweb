@@ -1,8 +1,15 @@
 {
-  "hash": "01c26e4b",
-  "configHash": "7f768756",
-  "lockfileHash": "3a30d3cd",
-  "browserHash": "f8c2e7f2",
-  "optimized": {},
+  "hash": "54b90fb0",
+  "configHash": "74b299ed",
+  "lockfileHash": "f192518a",
+  "browserHash": "839212a6",
+  "optimized": {
+    "jquery-validation-unobtrusive": {
+      "src": "../../node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js",
+      "file": "jquery-validation-unobtrusive.js",
+      "fileHash": "dd9ceef2",
+      "needsInterop": true
+    }
+  },
   "chunks": {}
 }

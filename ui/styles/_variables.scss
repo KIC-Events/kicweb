@@ -33,8 +33,10 @@
   --color-highlight: var(--color-purple);
 
   --color-theme-default: var(--color-yellow);
+  --color-theme-highlight: var(--color-highlight);
   --color-theme-cure: var(--color-purple);
   --color-theme: var(--color-theme-default);
+  --color-theme-cure-highlight: var(--color-yellow);
 
   // TRANSITIONS
   --transition-fast: 150ms ease;

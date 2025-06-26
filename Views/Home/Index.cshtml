@@ -50,17 +50,24 @@
     </h2>
     <div class="content body-text">
       <p>
-        Kinky In Columbus is your home for sex positive kink parties and events in Columbus, Ohio. 
+        Kinky In Columbus (KIC) is your home for alternative lifestyle parties and events in Columbus, Ohio.  
       </p>
       <p>
-        We host monthly parties that combine education and fetish fun with a focus on community building. We also host weekend long intensives, New To Kink classes and munches, and showcase area vendors. 
+        We host monthly parties that combine education and fetish fun with a focus on community building.  We also host weekend long intensives, New To Kink classes and munches, and showcase area vendors. 
       </p>
       <p>
-        We believe strongly in building and maintaining a safe, informed, and healthy community. We are inclusive of all identities and lifestyles, and consent is the basis for everything we do. We offer education on a variety of topics, and offer experiential demonstrations of corporal play, electric play, and fire play. 
+        We believe strongly in building and maintaining a safe, informed, and healthy community.  We are inclusive of all identities and lifestyles, and consent is the basis for everything we do.  We offer education on a variety of topics, and offer experimental demonstrations of corporal, electric, and fire play. 
       </p>
-      <p>
-        If you would like to share feedback about our events, or an issue at our events, please use the form here.
-      </p>
+      @if(FeatureFlags.ShowContactForm){
+        <p>
+          If you have feedback, suggestions, or would like to report an issue regarding our events, please fill out <a asp-area="" asp-asp-controller="Gen" asp-action="Contact">this form.</a>
+        </p>
+      }
+      @if(!FeatureFlags.ShowContactForm){
+        <p>
+          If you have feedback, suggestions, or would like to report an issue regarding our events, please email us at <a href="mailto:admin@kicevents.com">admin@kicevents.com.</a>
+        </p>
+      }
 
       <div class="button-group">
         <a class="button" asp-area="" asp-controller="Payment" asp-action="Purchase">
@@ -165,6 +172,24 @@
       </p>
       <p>
         <a target="_blank" rel="noopener noreferrer" href="https://equitashealth.com/find-a-location/">Find a provider.</a>
+      </p>
+      <h3>
+        Sexual Assault Response Network offer Central Ohio (SARNCO)
+      </h3>
+      <p>
+        "SARNCO is a 24/7 crisis hotline and support service for survivors of sexual assault, abuse, and harassment. We provide free and confidential support to survivors and their loved ones."
+      </p>
+      <p>
+        <a target="_blank" rel="noopener noreferrer" href="https://www.ohiohealth.com/community-health/sarnco">Visit SARNCO</a>
+      </p>
+      <p>
+        <a target="_blank" rel="noopener noreferrer" href="tel:844-644-6435">Call SARNCO at 844-644-6435</a>
+      </p>
+      <h3>
+        Columbus Public Health Department
+      </h3>
+      <p>
+        <a target="_blank" rel="noopener noreferrer" href="https://www.columbus.gov/Services/Public-Health">Visit the Columbus Public Health Department</a>
       </p>
     </div>
   </section>
