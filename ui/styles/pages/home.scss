@@ -121,4 +121,27 @@
   .button {
     margin-top: var(--space-1);
   }
+
+  @include breakpoint(sm) {
+    padding: 2.5rem 1.5rem;
+    width: 100%;
+    max-width: 30rem;
+
+    h2.display {
+      font-size: 1.125rem;
+      line-height: 1.5rem;
+      letter-spacing: .1125rem;
+    }
+
+    p {
+      font-size: 0.875rem;
+      line-height: 1.125rem;
+    }
+
+    .checkbox label {
+      font-size: 0.875rem;
+      line-height: 1.125rem;
+    }
+  }
+
 }

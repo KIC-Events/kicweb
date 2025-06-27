@@ -107,6 +107,8 @@
   @await Html.PartialAsync("Components/_Events")
 </div>
 
+
+@if(FeatureFlags.ShowCurePages){
 <section
   id="home-sponsor-banner"
   class="info-banner"
@@ -126,6 +128,7 @@
     </a>
   </div>
 </section>
+}
 
 <div class="container">
   <section
@@ -174,7 +177,7 @@
         <a target="_blank" rel="noopener noreferrer" href="https://equitashealth.com/find-a-location/">Find a provider.</a>
       </p>
       <h3>
-        Sexual Assault Response Network offer Central Ohio (SARNCO)
+        Sexual Assault Response Network of Central Ohio (SARNCO)
       </h3>
       <p>
         "SARNCO is a 24/7 crisis hotline and support service for survivors of sexual assault, abuse, and harassment. We provide free and confidential support to survivors and their loved ones."
