@@ -5,7 +5,7 @@
     padding-top: 0;
   }
 
-  h2:not(.h1,.h3,.h4,.h5,.h6), .h2 {
+  h2:not(.h1,.h3,.h4,.h5,.h6,.display), .h2 {
     max-width: 34rem;
     width: 100%;
     padding-bottom: 0.6375rem;
@@ -34,14 +34,18 @@
 
   .content,
   .accordion-content {
-    > * + * {
+    > *:not(.content__list-label) + * {
       margin-top: var(--space-2);
+    }
+    > .content__list-label + ul,
+    > .content__list-label + ol {
+      padding-left: var(--space-3-5);
     }
     p + .button-group {
       margin-top: var(--space-2-5);
     }
 
-    h2, h3 {
+    h2:not(.display), h3:not(.display) {
       font-size: .9375rem;
       line-height: 1.15625rem;
       letter-spacing: 0.09375rem;
@@ -57,6 +61,15 @@
       + p, + ul {
         margin-top: var(--space-1);
       }
+    }
+
+    h3.display, .h3.display {
+      font-size: 0.9375rem;
+      line-height: 1.15625rem;
+      letter-spacing: 0.09375rem;
+      text-transform: uppercase;
+      font-family: var(--font-montserrat);
+      font-weight: 600;
     }
 
     ul {

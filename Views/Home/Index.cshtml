@@ -3,7 +3,7 @@
 
 @if(!ViewBag.AgeGateCookieAccepted)
 {
-    <dialog id="age-gate-dialog" class="dialog" data-cancel-disabled>
+    <dialog id="age-gate-dialog" class="dialog" data-cancel-disabled data-open-on-load>
         <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
             <div class="dialog__content">
                 <h2 class="display">

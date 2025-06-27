@@ -1,1 +1,240 @@
-<div>TODO: Presenters</div>
+<div class="container">
+  <section class="page-section" role="region" aria-labelledby="presenters-section-title">
+    <h1 class="h2" id="presenters-section-title">
+      CURE 2026 Presenters
+    </h1>
+    <div class="presenters">
+      @if(ViewBag.Presenters != null)
+      {
+        List<Presenter> presenters = ViewBag.Presenters;
+        @foreach (Presenter p in ViewBag.Presenters)
+        {
+          <button type="button" class="presenters__card">
+            <div class="presenters__image-container">
+              <img src="@p.ImgPath" alt="@p.PublicName's image" />
+            </div>
+            <h3>@p.PublicName</h3>
+          </button>
+        }
+      }
+    </div>
+
+    <dialog id="presenters-dialog" class="dialog" data-portal="dialogs">
+      <button class="dialog-close" type="button" aria-label="Close dialog" data-action="close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button class="dialog-control dialog-control--left" type="button" aria-label="Previous presenter" data-action="previous">
+        <i class="fa-solid fa-chevron-left"></i>
+        <span class="display-mobile">Previous</span>
+      </button>
+      @foreach (Presenter p in ViewBag.Presenters)
+      {
+        <div class="presenter-details">
+          <header>
+            <img src="@p.ImgPath" alt="@p.PublicName's image" />
+            <div class="header-details">
+              <h1 class="h2-display">@p.PublicName</h1>
+              @if (!string.IsNullOrWhiteSpace(p.Tagline))
+              {
+                <div class="header-details__subtitle">
+                  @p.Tagline
+                </div>
+              }
+              <div class="header-details__class-list">
+                <div>Breath Play with Erotic Rope Bondage</div>
+                <div>Brat Proof Bondage: Escape-resistant Ties for Squirmy Bottoms</div>
+              </div>
+              <div class="header-details__socials">
+                <div>
+                  <div class="header-details__socials-title">
+                    Follow Daisy:
+                  </div>
+                  <div class="social-links">
+                    <a href="https://instagram.com/kic_llc" target="_blank" rel="noopener noreferrer">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+                      </svg>
+                    </a>
+                    <a href="https://fetlife.com/KIC_Events" target="_blank" rel="noopener noreferrer">
+                      <svg style="width: 1rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.61 35">
+                        <path d="M15.806,35c-1.644-1.391-3.318-2.758-4.936-4.19C8.194,28.441,5.431,26.152,2.934,23.6.556,21.178-.729,18.093.436,14.737c.7-2.006.509-3.923.627-5.9A16.273,16.273,0,0,1,4.07,0c.3,1.722.552,3.379.878,5.023a11.2,11.2,0,0,0,.626,1.821A2.784,2.784,0,0,0,8.245,8.98a11.458,11.458,0,0,1,6.741,3.037,1.06,1.06,0,0,0,1.649,0,13.42,13.42,0,0,1,7.645-3.2,2.2,2.2,0,0,0,1.33-1.038,13.464,13.464,0,0,0,1.746-6.3A4.03,4.03,0,0,1,27.626.176a16.6,16.6,0,0,1,2.927,7.661c.093,1.248-.015,2.509.023,3.763a5.4,5.4,0,0,0,.269,1.773c1.225,3.145,1.044,6.246-1.027,8.846A56.09,56.09,0,0,1,23.4,28.664c-2.424,2.189-5.012,4.2-7.592,6.336" fill="#fff"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+                <div>
+                  <div class="header-details__socials-title">
+                    Follow Jer:
+                  </div>
+                  <div class="social-links">
+                    <a href="https://instagram.com/kic_llc" target="_blank" rel="noopener noreferrer">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+                      </svg>
+                    </a>
+                    <a href="https://fetlife.com/KIC_Events" target="_blank" rel="noopener noreferrer">
+                      <svg style="width: 1rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.61 35">
+                        <path d="M15.806,35c-1.644-1.391-3.318-2.758-4.936-4.19C8.194,28.441,5.431,26.152,2.934,23.6.556,21.178-.729,18.093.436,14.737c.7-2.006.509-3.923.627-5.9A16.273,16.273,0,0,1,4.07,0c.3,1.722.552,3.379.878,5.023a11.2,11.2,0,0,0,.626,1.821A2.784,2.784,0,0,0,8.245,8.98a11.458,11.458,0,0,1,6.741,3.037,1.06,1.06,0,0,0,1.649,0,13.42,13.42,0,0,1,7.645-3.2,2.2,2.2,0,0,0,1.33-1.038,13.464,13.464,0,0,0,1.746-6.3A4.03,4.03,0,0,1,27.626.176a16.6,16.6,0,0,1,2.927,7.661c.093,1.248-.015,2.509.023,3.763a5.4,5.4,0,0,0,.269,1.773c1.225,3.145,1.044,6.246-1.027,8.846A56.09,56.09,0,0,1,23.4,28.664c-2.424,2.189-5.012,4.2-7.592,6.336" fill="#fff"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+          <p class="body-text">@p.Bio</p>
+        </div>
+      }
+      <button class="dialog-control dialog-control--right" type="button" aria-label="Next presenter" data-action="next">
+        <span class="display-mobile">Next</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </dialog>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="class-descriptions-section-title">
+    <h2 class="h2" id="class-descriptions-section-title">
+      CURE 2026 Class Descriptions
+    </h2>
+    <div class="content body-text">
+      <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+        <a href="#" class="button">
+          DOWNLOAD CLASS DESCRIPTIONS (PDF)
+        </a>
+        <a href="#" class="button button--secondary">
+          DOWNLOAD CLASS SCHEDULE (PDF)
+        </a>
+      </div>
+      @Html.Accordion(new List<AccordionItem>
+      {
+        new AccordionItem { 
+          Title = "Becoming Leather: What You Need to Know", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Bedroom Bondage 101 & More (Shhh... It’s Rope for Sex)", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Brat Proof Bondage: Escape-Resistant Ties for Squirmy Bottoms", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Breath Play with Erotic Rope Bondage", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Chasity, Tease, and Denial", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Chocolate Milk and Tears: Dark Age Play", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Combine Polyamory and Power Exchange... Successfully!", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Different Strokes: Advanced & Creative Caning", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Emotional Sadism & Masochism 101", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Flog Me Tender… Bits", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Got Consent for Kink", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Gravity is Your Toy: Partial Suspensions", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Inspirational Sadomasochism", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Introduction to BDSM", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Keep It Tight: A Hands-On Exploration of Erotic Mummification", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Queen Takes Knight", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Sensory Manipulation: An Immersive Experience", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Smashing Stigma: Mental Health and Kink", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "The Floor Is Not Lava", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Tying Different Bodies", 
+          Description = @"
+            <p>Coming soon.</p>
+          "
+        },
+      })
+    </div>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="vendors-section-title">
+    <h2 class="h2" id="vendors-section-title">
+      CURE 2026 Vendors
+    </h2>
+    <div class="content body-text">
+      <p>TODO: Coming soon.</p>
+    </div>
+  </section>
+</div>

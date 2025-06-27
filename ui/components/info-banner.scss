@@ -5,12 +5,39 @@
   padding: var(--space-4) var(--space-2);
   text-align: center;
 
+  .theme__cure & {
+    color: var(--color-white);
+  }
+
   &, & .container {
     @include flex-center;
     flex-direction: column;
   }
 
-  .container {
+  &--column-layout .container {
+    flex-direction: row;
+    position: relative;
+  }
+
+  &--column-layout .container > &__column {
+    @include flex-center;
+    flex-direction: column;
+    position: relative;
+  }
+
+  &--with-divider .container {
+    display: grid;
+    grid-template-columns: 1fr 0.21875rem 1fr;
+    grid-template-areas: "left divider right";
+    gap: 1.5rem;
+  }
+
+  &__column--divider {
+    height: 100%;
+    background-color: var(--color-theme-highlight);
+  }
+
+  &:not(&--column-layout) .container {
     max-width: 55rem;
   }
 
