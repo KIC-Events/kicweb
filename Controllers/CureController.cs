@@ -37,6 +37,14 @@ namespace KiCWeb.Controllers
             return View(); // Views/Cure/Registration.cshtml
         }
 
+        [Route("registration/form")]
+        public IActionResult RegistrationForm()
+        {
+            // This action could be used to return a form for registration
+            // You might want to return a partial view or a specific view for the form
+            return View(); // Views/Cure/RegistrationForm.cshtml
+        }
+
         [Route("rules")]
         public IActionResult Rules()
         {

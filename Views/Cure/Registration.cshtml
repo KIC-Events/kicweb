@@ -1,1 +1,125 @@
-<div>TODO: Registration</div>
+<div class="container">
+  <section class="page-section">
+    <h1 class="h2">REGISTER FOR CURE 2026</h1>
+    <h2 class="display" style="text-align: center; text-transform: none; letter-spacing: .09375rem; margin-top: var(--space-2)">
+      <span style="font-weight: normal">Registration opens on</span> <strong style="font-weight: 700">September 6th at 11:59:59pm!</strong>
+    </h2>
+    <div class="content body-text">
+      <p>
+        Make sure you are ready to go with your ID and payment method. <strong>ALL information entered into the registration system, MUST match your information on your government issued identification card.</strong> This can be State ID, Driver’s license, or a US Passport. Think of this more as purchasing a plane ticket than a kinky convention ticket, so please no scene names for your legal name. The more accurate your information, the smoother the registration approval process and the faster you can get your registration confirmation number and the hotel information.
+      </p>
+      <p>
+        Speaking of hotel, when registering you will have the opportunity to select your preference of room type. This does not “secure” the hotel room, but rather adds you to a queue. Securing the hotel room will be done later by following the instructions in the registration confirmation email on how to provide your card information to the host hotel.
+      </p>
+      <p>
+        If you are attending as a group or couple, remember, only one person PER ROOM needs to select a room type for their ticket. Hotel rooms are a 2 night minimum. Click HERE for more info.
+      </p>
+      <p>
+        Registration is a two step process. You will fill out the registration form on our website. Then, once you hit SUBMIT, you will be redirected to the secure payment link through Square. Once you enter your payment information, click PAY. You will receive a payment confirmation email. If you have any registration questions, email registration@kicevents.com (You may also want to add this email address to your contacts so you do not miss any important communications over the next few months).
+      </p>
+      <h3>
+        Tickets
+      </h3>
+      <p>
+        There are 3 different ticket types to chose from when registering.
+      </p>
+      <ul>
+        <li>Gold</li>
+        <li>Silver</li>
+        <li>Standard</li>
+      </ul>
+      <p>
+        <strong>Gold Tickets</strong> - Are the closest rooms to the event space in the hotel. This ticket also comes with one CURE t-shirt and a goodie bag. (LIMITED quantity available. Only 1 person has to purchase a gold ticket, not all staying in the room)
+      </p>
+      <p>
+        <strong>Silver Tickets</strong> - Are the next closest rooms to the event space in the hotel. This ticket comes with a goodie bag. (LIMITED quantity available. Only 1 person has to purchase a silver ticket, not all staying in the room)
+      </p>
+      <p>
+        <strong>Standard</strong> - This is just a standard ticket that gets you entrance to all the activities of the events.
+      </p>
+      <a asp-controller="Cure" asp-action="RegistrationForm" class="button">
+        Register for CURE 2026
+      </a>
+    </div>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="section-registration-faqs">
+    <h2 id="section-registration-faqs">
+      Registration FAQs
+    </h2>
+    @Html.Accordion(new List<AccordionItem>
+    {
+      new AccordionItem { 
+        Title = "What information is required in order to register for CURE?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "Why is all this information needed?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "Will there be a physical ticket?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "What kind of ID is needed to register for the event?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "What if I do not have one of those types of ID’s?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "What are the differences in the ticket types?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "Can I purchase a single day or party pass?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "I bought my ticket, where is my confirmation email?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "Where do I make my hotel reservations?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "When can I make my hotel reservation?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "How are rooms assigned?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "Are there still rooms available?", 
+        Description = @"
+          <p>Coming soon.</p>
+        "
+      },
+    })
+  </section>
+</div>
