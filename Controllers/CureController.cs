@@ -6,6 +6,7 @@ using KiCData.Services;
 using KiCData.Models.WebModels;
 using KiCData.Models;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace KiCWeb.Controllers
 {
@@ -54,18 +55,22 @@ namespace KiCWeb.Controllers
         [Route("presenters")]
         public IActionResult Presenters()
         {
-            var presenters = _kdbContext.Presenters
+            ViewBag.Presenters = _kdbContext.Presenters
+                .Include(p => p.Socials)
+                .Include(p => p.Presentations)
                 .OrderBy(p => p.PublicName)
                 .ToList();
 
-            ViewBag.Presenters = presenters;
+            ViewBag.Vendors = _kdbContext.Vendors
+                .OrderBy(v => v.PublicName)
+                .ToList();
 
             // Log to console or logger
-            string json = JsonSerializer.Serialize(presenters, new JsonSerializerOptions
+            string json = JsonSerializer.Serialize(ViewBag.Vendors, new JsonSerializerOptions
             {
                 WriteIndented = true // optional: makes it pretty
             });
-            Console.WriteLine("Presenters JSON:");
+            Console.WriteLine("Vendors JSON:");
             Console.WriteLine(json); // or use your logger
             
             return View(); // Views/Cure/Presenters.cshtml
