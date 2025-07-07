@@ -5,5 +5,6 @@ namespace KiCWeb.Configuration
     {
         public bool ShowCurePages { get; set; }
         public bool ShowContactForm { get; set; }
+        public bool ShowBlasphemyContent{ get; set; }
     }
 }
