@@ -134,9 +134,21 @@
       <h2 id="cure-home-sponsors-title" style="max-width: 100%;">
         Thank You to Our Sponsors!
       </h2>
-      <p>
-        TODO add sponsors here
-      </p>
+      <div class="sponsors">
+        @if (ViewBag.Sponsors != null)
+        {
+            List<Sponsor> sponsors = ViewBag.Sponsors;
+            foreach (Sponsor s in sponsors)
+            {
+                <a class="sponsors__card" href="@s.WebsiteUrl" target="_blank" rel="noopener noreferrer">
+                    <div class="sponsors__image-container">
+                        <img src="@s.ImgPath" alt="@s.PublicName's logo" />
+                    </div>
+                    <h3>@s.PublicName</h3>
+                </a>
+            }
+        }
+      </div>
     </section>
   </div>
 </div>

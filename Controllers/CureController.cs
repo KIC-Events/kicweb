@@ -29,6 +29,8 @@ namespace KiCWeb.Controllers
         [Route("")]
         public IActionResult Index()
         {
+            ViewBag.Sponsors = _kdbContext.Sponsors.ToList();
+
             return View(); // Views/Cure/Index.cshtml
         }
 
