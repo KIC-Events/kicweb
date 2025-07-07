@@ -7,6 +7,9 @@ using KiCData.Models.WebModels;
 using KiCData.Models;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Square;
+using Square.Models;
+using Square.Authentication;
 
 namespace KiCWeb.Controllers
 {
@@ -14,16 +17,22 @@ namespace KiCWeb.Controllers
     public class CureController : KICController
     {
         private readonly KiCdbContext _kdbContext;
+        private readonly InternalPaymentService _paymentService;
+        private readonly KiCLogger _logger;
 
         public CureController(
             IConfigurationRoot configurationRoot,
             IUserService userService,
             IHttpContextAccessor httpContextAccessor,
             KiCdbContext kiCdbContext,
-            ICookieService cookieService
+            ICookieService cookieService,
+            InternalPaymentService paymentService,
+            KiCLogger kiCLogger
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
+            _paymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
+            _logger = kiCLogger ?? throw new ArgumentNullException(nameof(kiCLogger));
         }
 
         [Route("")]
@@ -40,12 +49,86 @@ namespace KiCWeb.Controllers
             return View(); // Views/Cure/Registration.cshtml
         }
 
+        [HttpGet]
         [Route("registration/form")]
         public IActionResult RegistrationForm()
         {
             // This action could be used to return a form for registration
             // You might want to return a partial view or a specific view for the form
-            return View(); // Views/Cure/RegistrationForm.cshtml
+            
+            CardFormModel cfm = new CardFormModel();
+            
+            return View(cfm); // Views/Cure/RegistrationForm.cshtml
+        }
+        
+        [HttpPost]
+        [Route("registration/form")]
+        public IActionResult RegistrationForm(CardFormModel cfmUpdated)
+        {
+            if(cfmUpdated.CardToken is not null)
+            {
+                try
+                {
+                    _paymentService.CreateGenericPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
+                }
+                catch(Exception ex)
+                {
+                    if(ex is Square.Exception.ApiException squareEx)
+                    {
+                        // Handle Square-specific exceptions
+                        _logger.LogSquareEx(squareEx);
+                    }
+                    else
+                    {
+                        // Handle other exceptions
+                        _logger.Log(ex);
+                    }
+                    
+                    return RedirectToActionResult("error");
+                }
+                
+                return RedirectToActionResult("paymentprocessing");
+            }
+        }
+        
+        [Route("paymentprocessing")]
+        public IActionResult PaymentProcessing()
+        {
+            string paymentStatus = "pending";
+            
+            while (paymentStatus == "pending")
+            {
+                paymentStatus = _paymentService.CheckPaymentStatus();
+            }
+            
+            if(paymentStatus == "approved" || paymentStatus == "completed")
+            {
+                return RedirectToAction("cardsuccess");
+            }
+            else
+            {
+                return RedirectToAction("carderror");
+            }
+            
+            return View(); // Views/Cure/PaymentProcessing.cshtml
+        }
+        
+        [Route("carderror")]
+        public IActionResult CardError()
+        {
+            // This action could be used to handle card errors
+            // You might want to return a specific error view
+            
+            return View("CardError"); // Views/Cure/CardError.cshtml
+        }
+        
+        [Route("cardsuccess")]
+        public IActionResult CardSuccess()
+        {
+            // This action could be used to show a success message after a successful card operation
+            // You might want to return a specific success view
+            
+            return View("CardSuccess"); // Views/Cure/CardSuccess.cshtml
         }
 
         [Route("rules")]
@@ -82,6 +165,24 @@ namespace KiCWeb.Controllers
         public IActionResult Volunteers()
         {
             return View(); // Views/Cure/Volunteers.cshtml
+        }
+        
+        [Route("error")]
+        public IActionResult Error()
+        {
+            // This action could be used to handle errors
+            // You might want to return a specific error view
+            
+            return View("Error"); // Views/Cure/Error.cshtml
+        }
+        
+        [Route("success")]
+        public IActionResult Success()
+        {
+            // This action could be used to show a success message after a successful operation
+            // You might want to return a specific success view
+            
+            return View("Success"); // Views/Cure/Success.cshtml
         }
     }
 }
