@@ -19,7 +19,7 @@ namespace KiCWeb.Controllers
     {
         private readonly KiCdbContext _kdbContext;
         private readonly InternalPaymentService _paymentService;
-        private readonly KiCLogger _logger;
+        private readonly IKiCLogger _logger;
 
         public CureController(
             IConfigurationRoot configurationRoot,
@@ -28,7 +28,7 @@ namespace KiCWeb.Controllers
             KiCdbContext kiCdbContext,
             ICookieService cookieService,
             InternalPaymentService paymentService,
-            KiCLogger kiCLogger
+            IKiCLogger kiCLogger
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
