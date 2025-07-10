@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Square;
 using Square.Models;
 using Square.Authentication;
+using Square.Exceptions;
 
 namespace KiCWeb.Controllers
 {
@@ -73,7 +74,7 @@ namespace KiCWeb.Controllers
                 }
                 catch(Exception ex)
                 {
-                    if(ex is Square.Exception.ApiException squareEx)
+                    if(ex is Square.Exceptions.ApiException squareEx)
                     {
                         // Handle Square-specific exceptions
                         _logger.LogSquareEx(squareEx);
@@ -84,21 +85,23 @@ namespace KiCWeb.Controllers
                         _logger.Log(ex);
                     }
                     
-                    return RedirectToActionResult("error");
+                    return RedirectToAction("error");
                 }
                 
-                return RedirectToActionResult("paymentprocessing");
+                return RedirectToAction("paymentprocessing");
             }
+            
+            return RedirectToAction("error");
         }
         
         [Route("paymentprocessing")]
-        public IActionResult PaymentProcessing()
+        public IActionResult PaymentProcessing(string paymentId)
         {
             string paymentStatus = "pending";
             
             while (paymentStatus == "pending")
             {
-                paymentStatus = _paymentService.CheckPaymentStatus();
+                paymentStatus = _paymentService.CheckPaymentStatus(paymentId);
             }
             
             if(paymentStatus == "approved" || paymentStatus == "completed")
