@@ -11,6 +11,7 @@ using Square;
 using Square.Models;
 using Square.Authentication;
 using Square.Exceptions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace KiCWeb.Controllers
 {
@@ -56,10 +57,37 @@ namespace KiCWeb.Controllers
         {
             // This action could be used to return a form for registration
             // You might want to return a partial view or a specific view for the form
+
+            RegistrationViewModel registration = new RegistrationViewModel()
+            {
+                Event = _kdbContext.Events.Where(e => e.Name == "CURE").First()
+            };
+
+            registration.TicketTypes =
+            [
+              new SelectListItem("Gold", "Gold"),
+              new SelectListItem("Silver", "Silver"),
+              new SelectListItem("Sweet", "Sweet"),
+              new SelectListItem("Standard", "Standard"),
+            ];
+
+            registration.RoomTypes =
+            [
+              new SelectListItem("King", "King"),
+              new SelectListItem("Doubles", "Doubles"),
+              new SelectListItem("Staying with someone else", "Staying with someone else"),
+              new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
+            ];
+
+            registration.ArrivalDays =
+            [
+              new SelectListItem("Thursday evening", "Thursday evening"),
+              new SelectListItem("Friday morning", "Friday morning"),
+              new SelectListItem("Friday afternoon", "Friday afternoon"),
+              new SelectListItem("Other", "Other"),
+            ];
             
-            CardFormModel cfm = new CardFormModel();
-            
-            return View(cfm); // Views/Cure/RegistrationForm.cshtml
+            return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
         
         [HttpPost]
