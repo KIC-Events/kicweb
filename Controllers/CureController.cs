@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using KiCData;
 using KiCData.Services;
 using KiCData.Models.WebModels;
+using KiCData.Models.WebModels.PaymentModels;
+using KiCData.Models.WebModels.PurchaseModels;
 using KiCData.Models;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +21,7 @@ namespace KiCWeb.Controllers
     public class CureController : KICController
     {
         private readonly KiCdbContext _kdbContext;
-        private readonly InternalPaymentService _paymentService;
+        private readonly IPaymentService _paymentService;
         private readonly IKiCLogger _logger;
 
         public CureController(
@@ -28,7 +30,7 @@ namespace KiCWeb.Controllers
             IHttpContextAccessor httpContextAccessor,
             KiCdbContext kiCdbContext,
             ICookieService cookieService,
-            InternalPaymentService paymentService,
+            IPaymentService paymentService,
             IKiCLogger kiCLogger
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
