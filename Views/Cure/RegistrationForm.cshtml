@@ -1,1 +1,215 @@
-<div>TODO: Registration form</div>
+@model KiCData.Models.WebModels.RegistrationViewModel
+
+<div class="container">
+  <section class="page-section" aria-labelledby="registration-form-title">
+    <h1 class="h2">CURE 2026 Registration</h1>    
+    <div class="content body-text">
+      <p>
+        This form collects some personal information. This information is intended only for internal use and for performing actions related to event safety, namely background checks. The data collected here will be securely stored and never sold. We recognize that privacy is of paramount concern for an event of this type, and we will take all reasonable steps to secure and protect your data.
+      </p>
+      <p>
+        This information is used for the background check, and must match your identification exactly. Avoid nicknames, abbreviates, etc. This information will be checked against your ID at the time of the event.
+      </p>
+      <p>
+        <em style="color: var(--color-red)">* Indicates required field</em>
+      </p>
+    </div>
+    <form>
+      <div class="field radio-group">
+        <label asp-for="TicketType"></label>
+        @Html.DescriptionFor(m => m.TicketType)
+        @for (int i = 0; i < Model.TicketTypes.Count; i++)
+        {
+            var item = Model.TicketTypes[i];
+            <div class="radio">
+              <input
+                type="radio"
+                name="TicketType"
+                id="ticket_@i"
+                value="@item.Value"
+                asp-for="TicketType"
+              />
+              <label for="ticket_@i">@item.Text</label>
+            </div>
+        }
+      </div>
+
+      @* First name *@
+      <div class="field">
+        <label asp-for="FirstName"></label>
+        @Html.DescriptionFor(m => m.FirstName)
+        <input asp-for="FirstName" required />
+        <span asp-validation-for="FirstName"></span>
+      </div>
+
+      @* Last name *@
+      <div class="field">
+        <label asp-for="LastName"></label>
+        @Html.DescriptionFor(m => m.LastName)
+        <input asp-for="LastName" required />
+        <span asp-validation-for="LastName"></span>
+      </div>
+
+      @* Email *@
+      <div class="field">
+        <label asp-for="Email"></label>
+        @Html.DescriptionFor(m => m.Email)
+        <input asp-for="Email" type="email" required placeholder="@Html.PromptFor(m => m.Email)" />
+        <span asp-validation-for="Email"></span>
+      </div>
+
+      @* Email Confirmation *@
+      <div class="field">
+        <label asp-for="EmailConf"></label>
+        @Html.DescriptionFor(m => m.EmailConf)
+        <input asp-for="EmailConf" type="email" required placeholder="@Html.PromptFor(m => m.EmailConf)" />
+        <span asp-validation-for="EmailConf"></span>
+      </div>
+
+      @* Date of Birth *@
+      <div class="field">
+        <label asp-for="DateOfBirth"></label>
+        @Html.DescriptionFor(m => m.DateOfBirth)
+        <input asp-for="DateOfBirth" type="date" required />
+        <span asp-validation-for="DateOfBirth"></span>
+      </div>
+
+      @* Sex Listed On ID *@
+      <div class="field">
+        <label asp-for="SexOnID"></label>
+        @Html.DescriptionFor(m => m.SexOnID)
+        <input asp-for="SexOnID" required />
+        <span asp-validation-for="SexOnID"></span>
+      </div>
+
+      @* Phone Number *@
+      <div class="field">
+        <label asp-for="PhoneNumber"></label>
+        @Html.DescriptionFor(m => m.PhoneNumber)
+        <input asp-for="PhoneNumber" type="tel" required />
+        <span asp-validation-for="PhoneNumber"></span>
+      </div>
+
+      @* City *@
+      <div class="field">
+        <label asp-for="City"></label>
+        @Html.DescriptionFor(m => m.City)
+        <input asp-for="City" required />
+        <span asp-validation-for="City"></span>
+      </div>
+
+      @* State *@
+      <div class="field">
+        <label asp-for="State"></label>
+        @Html.DescriptionFor(m => m.State)
+        <input asp-for="State" required />
+        <span asp-validation-for="State"></span>
+      </div>
+
+      @* Fet Name *@
+      <div class="field">
+        <label asp-for="FetName"></label>
+        @Html.DescriptionFor(m => m.FetName)
+        <input asp-for="FetName" required />
+        <span asp-validation-for="FetName"></span>
+      </div>
+
+      @* Club ID *@
+      <div class="field">
+        <label asp-for="ClubId"></label>
+        @Html.DescriptionFor(m => m.ClubId)
+        <input asp-for="ClubId" required />
+        <span asp-validation-for="ClubId"></span>
+      </div>
+
+      @* Badge Name *@
+      <div class="field">
+        <label asp-for="BadgeName"></label>
+        @Html.DescriptionFor(m => m.BadgeName)
+        <input asp-for="BadgeName" required />
+        <span asp-validation-for="BadgeName"></span>
+      </div>
+
+      @* Select Room Type *@
+      <div class="field radio-group">
+        <label asp-for="RoomType"></label>
+        <div class="field__description">
+          <p>Please indicate whether you will be staying at the host hotel, and if so, what type of room you would like.</p>
+          <p>If you are attending as a group, <strong>only one person PER ROOM</strong> needs to select a room type for their ticket.</p>
+          <p>Due to the limited number of rooms at the host hotel, all rooms are being assigned by order of request. Selection of room preference does not guarantee room placement. To handle this, everyone will be added to a queue and room selection will be processed in the order tickets were purchased.</p>
+        </div>
+        @for (int i = 0; i < Model.RoomTypes.Count; i++)
+        {
+            var item = Model.RoomTypes[i];
+            <div class="radio">
+              <input
+                type="radio"
+                name="RoomType"
+                id="room_@i"
+                value="@item.Value"
+                asp-for="RoomType"
+              />
+              <label for="room_@i">@item.Text</label>
+            </div>
+        }
+      </div>
+
+      @* Arrival Day *@
+      <div class="field radio-group" id="arrival-day-group">
+        <label asp-for="ArrivalDay"></label>
+        <div class="field__description">
+          Please let us know if you plan to arrive Thursday or Friday. 
+          We want to make sure the room will be ready for you when you arrive.
+        </div>
+        @for (int i = 0; i < Model.ArrivalDays.Count; i++)
+        {
+          var item = Model.ArrivalDays[i];
+          <div class="radio">
+            <input
+              type="radio"
+              name="ArrivalDay"
+              id="arrival_@i"
+              value="@item.Value"
+              asp-for="ArrivalDay"
+            />
+            <label for="arrival_@i">@item.Text</label>
+          </div>
+        }
+        
+        <div id="arrival-day-other-container" hidden>
+          <input asp-for="ArrivalDayOther" placeholder="Enter when you plan to arrive" />
+        </div>
+      </div>
+
+      <button class="button" type="submit">Register</button>
+    </form>
+  </section>
+</div>
+
+@section Scripts {
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const group = document.getElementById("arrival-day-group");
+    const otherContainer = document.getElementById("arrival-day-other-container");
+
+    function updateVisibility() {
+      const selected = group.querySelector("input[name='ArrivalDay']:checked");
+      if (selected && selected.value === "Other") {
+        otherContainer.hidden = false;
+      } else {
+        otherContainer.hidden = true;
+      }
+    }
+
+    // Initialize on page load
+    updateVisibility();
+
+    // Listen for changes to any input inside the group
+    group.addEventListener("change", (event) => {
+      if (event.target.name === "ArrivalDay") {
+        updateVisibility();
+      }
+    });
+  });
+</script>
+}
