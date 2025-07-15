@@ -62,7 +62,12 @@ namespace KiCWeb.Controllers
 
             RegistrationViewModel registration = new RegistrationViewModel()
             {
-                Event = _kdbContext.Events.Where(e => e.Name == "CURE").First()
+                Event = _kdbContext.Events
+                .Where(
+                    e => e.Name == "CURE"
+                    && e.EndDate >= DateOnly.FromDateTime(DateTime.Now) // Ensure the event is not in the past, and that it is the CURE event
+                )
+                .First()
             };
 
             registration.TicketTypes =
