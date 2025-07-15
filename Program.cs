@@ -36,7 +36,7 @@ builder.Services.AddHttpClient<IEmailService, EmailService>(client =>
 {
 	client.BaseAddress = new Uri(config["Base Addresses:Mail"]);
 });
-builder.Services.AddSingleton<PaymentService, PaymentService>();
+builder.Services.AddSingleton<IPaymentService, PaymentService>();
 builder.Services.AddControllersWithViews();
 var featureFlags = builder.Configuration
     .GetSection("FeatureFlags")
