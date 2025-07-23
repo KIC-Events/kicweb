@@ -14,6 +14,7 @@ using Square.Models;
 using Square.Authentication;
 using Square.Exceptions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Web;
 
 namespace KiCWeb.Controllers
 {
@@ -23,6 +24,8 @@ namespace KiCWeb.Controllers
         private readonly KiCdbContext _kdbContext;
         private readonly IPaymentService _paymentService;
         private readonly IKiCLogger _logger;
+        private readonly RegistrationStorageService _registrationStorageService;
+        private readonly IConfigurationRoot _configurationRoot;
 
         public CureController(
             IConfigurationRoot configurationRoot,
@@ -31,12 +34,15 @@ namespace KiCWeb.Controllers
             KiCdbContext kiCdbContext,
             ICookieService cookieService,
             IPaymentService paymentService,
-            IKiCLogger kiCLogger
+            IKiCLogger kiCLogger,
+            RegistrationStorageService registrationStorageService
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
             _paymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
             _logger = kiCLogger ?? throw new ArgumentNullException(nameof(kiCLogger));
+            _registrationStorageService = registrationStorageService ?? throw new ArgumentNullException(nameof(registrationStorageService));
+            _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
         }
 
         [Route("")]
@@ -99,13 +105,73 @@ namespace KiCWeb.Controllers
         
         [HttpPost]
         [Route("registration/form")]
-        public IActionResult RegistrationForm(CardFormModel cfmUpdated)
+        public IActionResult RegistrationForm(RegistrationViewModel registrationData)
+        {
+            string sessionId = HttpContext.Session.Id;
+
+            RegistrationStorage? registrationStorage = _registrationStorageService.Storage
+                .Where(s => s.SessionID == sessionId)
+                .FirstOrDefault();
+                
+            if (registrationStorage is null)
+            {
+                registrationStorage = new RegistrationStorage
+                {
+                    SessionID = sessionId,
+                    Registrations = new List<RegistrationViewModel>()
+                };
+                _registrationStorageService.Storage.Add(registrationStorage);
+            }
+            registrationStorage.Registrations.Add(registrationData);
+            
+            if(registrationData.CreateMore)
+            {
+                return RedirectToAction("RegistrationForm");
+            }
+            else
+            {
+                // Redirect to the payment page with the registration data
+                return RedirectToAction("RegistrationPayment");
+            }
+        }
+        
+        [HttpGet]
+        [Route("registration/payment")]
+        public IActionResult RegistrationPayment()
+        {
+            string sessionId = HttpContext.Session.Id;
+
+            RegistrationStorage? registrationStorage = _registrationStorageService.Storage
+                .Where(s => s.SessionID == sessionId)
+                .FirstOrDefault();
+                
+            if (registrationStorage is null || !registrationStorage.Registrations.Any())
+            {
+                // If no registration data is found, redirect to the registration form
+                //TODO: ADD additional error handling or user feedback
+                return RedirectToAction("RegistrationForm");
+            }
+            
+            CureCardFormModel cfm = new CureCardFormModel();
+            cfm.Items = registrationStorage.Registrations;
+            //delete registrationStorage.Registrations; // Clear the registrations after payment form is created
+            
+            ViewBag.AppId = _configurationRoot["Square:AppID"];
+            ViewBag.LocationId = _configurationRoot["Square:LocationId"];
+            
+            return View(cfm); // Views/Cure/RegistrationPaymentForm.cshtml
+        }
+        
+        [HttpPost]
+        [Route("registration/payment")]
+        public IActionResult RegistrationPayment(CureCardFormModel cfmUpdated)
         {
             if(cfmUpdated.CardToken is not null)
             {
+                string paymentStatus;
                 try
                 {
-                    _paymentService.CreateGenericPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
+                    paymentStatus = _paymentService.CreateCUREPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
                 }
                 catch(Exception ex)
                 {
@@ -123,7 +189,18 @@ namespace KiCWeb.Controllers
                     return RedirectToAction("error");
                 }
                 
-                return RedirectToAction("paymentprocessing");
+                if(paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
+                {
+                    return RedirectToAction("cardsuccess");
+                }
+                else if(paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
+                {
+                    return RedirectToAction("carderror")
+                }
+                else
+                {
+                    return RedirectToAction("paymentprocessing");
+                }
             }
             
             return RedirectToAction("error");
