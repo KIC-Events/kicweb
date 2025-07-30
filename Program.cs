@@ -37,13 +37,21 @@ builder.Services.AddHttpClient<IEmailService, EmailService>(client =>
 	client.BaseAddress = new Uri(config["Base Addresses:Mail"]);
 });
 builder.Services.AddSingleton<IPaymentService, PaymentService>();
-builder.Services.AddSingleton<RegistrationStorageService, RegistrationStorageService>();
+builder.Services.AddSingleton<RegistrationSessionService, RegistrationSessionService>();
 builder.Services.AddControllersWithViews();
 var featureFlags = builder.Configuration
     .GetSection("FeatureFlags")
     .Get<FeatureFlags>() ?? new FeatureFlags();
 
 builder.Services.AddSingleton(featureFlags);
+
+builder.Services.AddSession(options =>
+{
+	options.Cookie.Name = "kic_session";
+	options.Cookie.IsEssential = true;
+	options.IdleTimeout = TimeSpan.FromMinutes(30);
+	options.Cookie.HttpOnly = true;
+});
 
 WebApplication app = builder.Build();
 
@@ -63,6 +71,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseStatusCodePages();
+app.UseSession();
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllerRoute(

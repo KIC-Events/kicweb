@@ -24,7 +24,7 @@ namespace KiCWeb.Controllers
         private readonly KiCdbContext _kdbContext;
         private readonly IPaymentService _paymentService;
         private readonly IKiCLogger _logger;
-        private readonly RegistrationStorageService _registrationStorageService;
+        private readonly RegistrationSessionService _registrationSessionService;
         private readonly IConfigurationRoot _configurationRoot;
 
         public CureController(
@@ -35,13 +35,13 @@ namespace KiCWeb.Controllers
             ICookieService cookieService,
             IPaymentService paymentService,
             IKiCLogger kiCLogger,
-            RegistrationStorageService registrationStorageService
+            RegistrationSessionService registrationSessionService
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
             _paymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
             _logger = kiCLogger ?? throw new ArgumentNullException(nameof(kiCLogger));
-            _registrationStorageService = registrationStorageService ?? throw new ArgumentNullException(nameof(registrationStorageService));
+            _registrationSessionService = registrationSessionService ?? throw new ArgumentNullException(nameof(registrationSessionService));
             _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
         }
 
@@ -92,45 +92,23 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
-            registration.ArrivalDays =
-            [
-              new SelectListItem("Thursday evening", "Thursday evening"),
-              new SelectListItem("Friday morning", "Friday morning"),
-              new SelectListItem("Friday afternoon", "Friday afternoon"),
-              new SelectListItem("Other", "Other"),
-            ];
-            
             return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
         
         [HttpPost]
         [Route("registration/form")]
-        public IActionResult RegistrationForm(RegistrationViewModel registrationData)
+        public IActionResult RegistrationForm(RegistrationViewModel registrationData, string action)
         {
-            string sessionId = HttpContext.Session.Id;
-
-            RegistrationStorage? registrationStorage = _registrationStorageService.Storage
-                .Where(s => s.SessionID == sessionId)
-                .FirstOrDefault();
-                
-            if (registrationStorage is null)
-            {
-                registrationStorage = new RegistrationStorage
-                {
-                    SessionID = sessionId,
-                    Registrations = new List<RegistrationViewModel>()
-                };
-                _registrationStorageService.Storage.Add(registrationStorage);
-            }
-            registrationStorage.Registrations.Add(registrationData);
+            var registrations = _registrationSessionService.Registrations;
+            registrations.Add(registrationData);
+            _registrationSessionService.Registrations = registrations; 
             
-            if(registrationData.CreateMore)
+            if (action == "CreateMore")
             {
                 return RedirectToAction("RegistrationForm");
             }
             else
             {
-                // Redirect to the payment page with the registration data
                 return RedirectToAction("RegistrationPayment");
             }
         }
@@ -139,21 +117,20 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public IActionResult RegistrationPayment()
         {
-            string sessionId = HttpContext.Session.Id;
-
-            RegistrationStorage? registrationStorage = _registrationStorageService.Storage
-                .Where(s => s.SessionID == sessionId)
-                .FirstOrDefault();
+            var registrations = _registrationSessionService.Registrations;
                 
-            if (registrationStorage is null || !registrationStorage.Registrations.Any())
+            if (_registrationSessionService.IsEmpty())
             {
+                // Attempt to log registrations json
+                string registrationsJson = JsonSerializer.Serialize(registrations, new JsonSerializerOptions { WriteIndented = true });
+
                 // If no registration data is found, redirect to the registration form
                 //TODO: ADD additional error handling or user feedback
                 return RedirectToAction("RegistrationForm");
             }
-            
+
             CureCardFormModel cfm = new CureCardFormModel();
-            cfm.Items = registrationStorage.Registrations;
+            cfm.Items = _registrationSessionService.Registrations;
             //delete registrationStorage.Registrations; // Clear the registrations after payment form is created
             
             ViewBag.AppId = _configurationRoot["Square:AppID"];
@@ -195,7 +172,7 @@ namespace KiCWeb.Controllers
                 }
                 else if(paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
                 {
-                    return RedirectToAction("carderror")
+                    return RedirectToAction("carderror");
                 }
                 else
                 {
@@ -270,8 +247,6 @@ namespace KiCWeb.Controllers
             {
                 WriteIndented = true // optional: makes it pretty
             });
-            Console.WriteLine("Vendors JSON:");
-            Console.WriteLine(json); // or use your logger
             
             return View(); // Views/Cure/Presenters.cshtml
         }
