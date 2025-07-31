@@ -14,7 +14,7 @@
         <em style="color: var(--color-red)">* Indicates required field</em>
       </p>
     </div>
-    <form>
+    <form asp-action="RegistrationForm" method="post">
       <div class="field radio-group">
         <label asp-for="TicketType"></label>
         @Html.DescriptionFor(m => m.TicketType)
@@ -154,62 +154,8 @@
         }
       </div>
 
-      @* Arrival Day *@
-      <div class="field radio-group" id="arrival-day-group">
-        <label asp-for="ArrivalDay"></label>
-        <div class="field__description">
-          Please let us know if you plan to arrive Thursday or Friday. 
-          We want to make sure the room will be ready for you when you arrive.
-        </div>
-        @for (int i = 0; i < Model.ArrivalDays.Count; i++)
-        {
-          var item = Model.ArrivalDays[i];
-          <div class="radio">
-            <input
-              type="radio"
-              name="ArrivalDay"
-              id="arrival_@i"
-              value="@item.Value"
-              asp-for="ArrivalDay"
-            />
-            <label for="arrival_@i">@item.Text</label>
-          </div>
-        }
-        
-        <div id="arrival-day-other-container" hidden>
-          <input asp-for="ArrivalDayOther" placeholder="Enter when you plan to arrive" />
-        </div>
-      </div>
-
-      <button class="button" type="submit">Register</button>
+      <button class="button button--secondary" type="submit" name="action" value="CreateMore">Register another</button>
+      <button class="button" type="submit" name="action" value="Checkout">Checkout</button>
     </form>
   </section>
 </div>
-
-@section Scripts {
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const group = document.getElementById("arrival-day-group");
-    const otherContainer = document.getElementById("arrival-day-other-container");
-
-    function updateVisibility() {
-      const selected = group.querySelector("input[name='ArrivalDay']:checked");
-      if (selected && selected.value === "Other") {
-        otherContainer.hidden = false;
-      } else {
-        otherContainer.hidden = true;
-      }
-    }
-
-    // Initialize on page load
-    updateVisibility();
-
-    // Listen for changes to any input inside the group
-    group.addEventListener("change", (event) => {
-      if (event.target.name === "ArrivalDay") {
-        updateVisibility();
-      }
-    });
-  });
-</script>
-}
