@@ -1,4 +1,6 @@
 import $ from 'jquery';
+import Cleave from 'cleave.js';
+import 'cleave.js/dist/addons/cleave-phone.us';
 import 'jquery-validation';
 import 'jquery-validation-unobtrusive';
 import TomSelect from 'tom-select';
@@ -21,5 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (container) {
       container.classList.add('required');
     }
+  });
+
+  // Phone number input formatting
+  new Cleave('input[type="tel"]', {
+    delimiters: ['(', ') ', '-', ''],
+    blocks: [0, 3, 3, 4],
+    numericOnly: true
+  });
+
+  // Change all input type="number" to be <input type="text" inputmode="numeric" pattern="[0-9]*" />
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.type = 'text';
+    input.setAttribute('inputmode', 'numeric');
+  });
+  new Cleave('input[type="text"][inputmode="numeric"]', {
+    numeral: true,
+    delimiter: '',
+    numeralDecimalScale: 0
   });
 });
