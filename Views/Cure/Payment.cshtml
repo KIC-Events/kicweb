@@ -1,0 +1,39 @@
+@using KiCData.Models.WebModels.PaymentModels
+@model CureCardFormModel
+
+<div id="card-container">
+    <button id="card-button" class="button">Pay with Card</button>
+</div>
+
+
+
+<script type="module">
+    const payments = Square.payments(ViewBag.AppId, ViewBag.LocationId);
+    const card = await payments.card();
+    await card.attach('#card-container');
+
+    const cardButton = document.getElementById('card-button');
+    cardButton.addEventListener('click', async () => {
+      const statusContainer = document.getElementById('payment-status-container');
+
+      try {
+        const result = await card.tokenize();
+        if (result.status === 'OK') {
+          @Model.CardToken = result.token;
+            @*Submit form at this point*@
+        } else {
+          let errorMessage = `Tokenization failed with status: ${result.status}`;
+          if (result.errors) {
+            errorMessage += ` and errors: ${JSON.stringify(
+              result.errors
+            )}`;
+          }
+
+          throw new Error(errorMessage);
+        }
+      } catch (e) {
+        console.error(e);
+        statusContainer.innerHTML = "Payment Failed";
+      }
+    });
+  </script>

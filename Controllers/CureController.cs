@@ -14,6 +14,7 @@ using Square.Models;
 using Square.Authentication;
 using Square.Exceptions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Web;
 
 namespace KiCWeb.Controllers
 {
@@ -23,6 +24,8 @@ namespace KiCWeb.Controllers
         private readonly KiCdbContext _kdbContext;
         private readonly IPaymentService _paymentService;
         private readonly IKiCLogger _logger;
+        private readonly RegistrationSessionService _registrationSessionService;
+        private readonly IConfigurationRoot _configurationRoot;
 
         public CureController(
             IConfigurationRoot configurationRoot,
@@ -31,12 +34,15 @@ namespace KiCWeb.Controllers
             KiCdbContext kiCdbContext,
             ICookieService cookieService,
             IPaymentService paymentService,
-            IKiCLogger kiCLogger
+            IKiCLogger kiCLogger,
+            RegistrationSessionService registrationSessionService
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
             _paymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
             _logger = kiCLogger ?? throw new ArgumentNullException(nameof(kiCLogger));
+            _registrationSessionService = registrationSessionService ?? throw new ArgumentNullException(nameof(registrationSessionService));
+            _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
         }
 
         [Route("")]
@@ -62,7 +68,12 @@ namespace KiCWeb.Controllers
 
             RegistrationViewModel registration = new RegistrationViewModel()
             {
-                Event = _kdbContext.Events.Where(e => e.Name == "CURE").First()
+                Event = _kdbContext.Events
+                .Where(
+                    e => e.Name == "CURE"
+                    && e.EndDate >= DateOnly.FromDateTime(DateTime.Now) // Ensure the event is not in the past, and that it is the CURE event
+                )
+                .First()
             };
 
             registration.TicketTypes =
@@ -81,26 +92,63 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
-            registration.ArrivalDays =
-            [
-              new SelectListItem("Thursday evening", "Thursday evening"),
-              new SelectListItem("Friday morning", "Friday morning"),
-              new SelectListItem("Friday afternoon", "Friday afternoon"),
-              new SelectListItem("Other", "Other"),
-            ];
-            
             return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
         
         [HttpPost]
         [Route("registration/form")]
-        public IActionResult RegistrationForm(CardFormModel cfmUpdated)
+        public IActionResult RegistrationForm(RegistrationViewModel registrationData, string action)
+        {
+            var registrations = _registrationSessionService.Registrations;
+            registrations.Add(registrationData);
+            _registrationSessionService.Registrations = registrations; 
+            
+            if (action == "CreateMore")
+            {
+                return RedirectToAction("RegistrationForm");
+            }
+            else
+            {
+                return RedirectToAction("RegistrationPayment");
+            }
+        }
+        
+        [HttpGet]
+        [Route("registration/payment")]
+        public IActionResult RegistrationPayment()
+        {
+            var registrations = _registrationSessionService.Registrations;
+                
+            if (_registrationSessionService.IsEmpty())
+            {
+                // Attempt to log registrations json
+                string registrationsJson = JsonSerializer.Serialize(registrations, new JsonSerializerOptions { WriteIndented = true });
+
+                // If no registration data is found, redirect to the registration form
+                //TODO: ADD additional error handling or user feedback
+                return RedirectToAction("RegistrationForm");
+            }
+
+            CureCardFormModel cfm = new CureCardFormModel();
+            cfm.Items = _registrationSessionService.Registrations;
+            //delete registrationStorage.Registrations; // Clear the registrations after payment form is created
+            
+            ViewBag.AppId = _configurationRoot["Square:AppID"];
+            ViewBag.LocationId = _configurationRoot["Square:LocationId"];
+            
+            return View(cfm); // Views/Cure/RegistrationPaymentForm.cshtml
+        }
+        
+        [HttpPost]
+        [Route("registration/payment")]
+        public IActionResult RegistrationPayment(CureCardFormModel cfmUpdated)
         {
             if(cfmUpdated.CardToken is not null)
             {
+                string paymentStatus;
                 try
                 {
-                    _paymentService.CreateGenericPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
+                    paymentStatus = _paymentService.CreateCUREPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
                 }
                 catch(Exception ex)
                 {
@@ -118,7 +166,18 @@ namespace KiCWeb.Controllers
                     return RedirectToAction("error");
                 }
                 
-                return RedirectToAction("paymentprocessing");
+                if(paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
+                {
+                    return RedirectToAction("cardsuccess");
+                }
+                else if(paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
+                {
+                    return RedirectToAction("carderror");
+                }
+                else
+                {
+                    return RedirectToAction("paymentprocessing");
+                }
             }
             
             return RedirectToAction("error");
@@ -188,8 +247,6 @@ namespace KiCWeb.Controllers
             {
                 WriteIndented = true // optional: makes it pretty
             });
-            Console.WriteLine("Vendors JSON:");
-            Console.WriteLine(json); // or use your logger
             
             return View(); // Views/Cure/Presenters.cshtml
         }

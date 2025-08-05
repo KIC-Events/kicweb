@@ -100,6 +100,62 @@ form {
     + .button {
       margin-top: var(--space-5);
     }
+
+    &.field--inline {
+      position: relative;
+
+      // Input/textarea inside the inline field
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="number"],
+      input[type="url"],
+      input[type="tel"],
+      input[type="date"],
+      textarea {
+
+        // remove top margin; we place the label on top of the border
+        padding-top: 0.2rem;
+        margin-top: 0;
+        max-width: 18.75rem; // keep your existing width cap
+      }
+
+      input + label,
+      textarea + label {
+        color: var(--color-grey);
+        position: absolute;
+        left: 0.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        transform-origin: left top;
+        font: normal normal 500 0.875rem/1 var(--font-montserrat);
+        pointer-events: none;
+        background: var(--color-white);
+        padding: 0 0.25rem;
+        transition: transform .15s ease, color .15s ease;
+      }
+
+      // Focused or has value -> float
+      input:focus + label,
+      input:not(:placeholder-shown) + label,
+      textarea:focus + label,
+      textarea:not(:placeholder-shown) + label {
+        transform: translateY(-160%) scale(0.9);
+        color: color-mix(in srgb, var(--color-theme) 90%, black 10%);
+      }
+
+      // Keep your required asterisk
+      &.required input + label::after,
+      &.required textarea + label::after {
+        content: " *";
+        color: var(--color-red);
+      }
+
+      // Validation message still sits under the field
+      &-validation-error {
+        bottom: -1.15rem;
+      }
+    }
   }
 }
 

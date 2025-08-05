@@ -1,0 +1,12 @@
+@using KiCData.Models.WebModels
+@using KiCData.Models.WebModels.PaymentModels
+@using System.Text.Json
+
+@model CureCardFormModel
+
+@{
+    var options = new JsonSerializerOptions { WriteIndented = true };
+    var json = JsonSerializer.Serialize(Model.Items, options);
+}
+
+<pre>@Html.Raw(json)</pre>
