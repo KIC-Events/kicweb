@@ -30,11 +30,22 @@
     grid-template-columns: 1fr 0.21875rem 1fr;
     grid-template-areas: "left divider right";
     gap: 1.5rem;
+
+    @include breakpoint(md) {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__column--divider {
     height: 100%;
     background-color: var(--color-theme-highlight);
+
+    @include breakpoint(md) {
+      height: 0.21875rem;
+      width: 100%;
+      margin: var(--space-3) 0;
+    }
   }
 
   &:not(&--column-layout) .container {
