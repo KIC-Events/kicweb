@@ -1,13 +1,28 @@
+@use '../mixins';
+
 .cure-home {
   &__hero {
     width: 100vw;
-    aspect-ratio: 320 / 69;
-    background: purple;
-    color: white;
-    font-size: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    aspect-ratio: 1355 / 333;
+    background: center / contain no-repeat url(/images/redesign/CURE-2026-Desktop.jpg);
+
+    @include mixins.breakpoint(sm) {
+      background-image: url(/images/redesign/CURE-2026-Mobile.jpg);
+      aspect-ratio: 450 / 233;
+    }
+  }
+  &__logo {
+    max-width: 50rem;
+    margin: var(--space-2) auto 0;
+    padding: 0 4rem;
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    @include mixins.breakpoint(md) {
+      padding: 0 2rem;
+    }
   }
   &__top-info-callout {
     text-align: center;

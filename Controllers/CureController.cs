@@ -15,6 +15,7 @@ using Square.Authentication;
 using Square.Exceptions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
+using KiCWeb.Configuration;
 
 namespace KiCWeb.Controllers
 {
@@ -22,6 +23,7 @@ namespace KiCWeb.Controllers
     public class CureController : KICController
     {
         private readonly KiCdbContext _kdbContext;
+        private readonly FeatureFlags _featureFlags;
         private readonly IPaymentService _paymentService;
         private readonly IKiCLogger _logger;
         private readonly RegistrationSessionService _registrationSessionService;
@@ -35,7 +37,8 @@ namespace KiCWeb.Controllers
             ICookieService cookieService,
             IPaymentService paymentService,
             IKiCLogger kiCLogger,
-            RegistrationSessionService registrationSessionService
+            RegistrationSessionService registrationSessionService,
+            FeatureFlags featureFlags
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
@@ -43,6 +46,7 @@ namespace KiCWeb.Controllers
             _logger = kiCLogger ?? throw new ArgumentNullException(nameof(kiCLogger));
             _registrationSessionService = registrationSessionService ?? throw new ArgumentNullException(nameof(registrationSessionService));
             _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
+            _featureFlags = featureFlags ?? throw new ArgumentNullException(nameof(featureFlags));
         }
 
         [Route("")]
@@ -56,6 +60,10 @@ namespace KiCWeb.Controllers
         [Route("registration")]
         public IActionResult Registration()
         {
+            if (!_featureFlags.ShowCureRegistration)
+            {
+                return NotFound();
+            }
             return View(); // Views/Cure/Registration.cshtml
         }
 
@@ -63,6 +71,10 @@ namespace KiCWeb.Controllers
         [Route("registration/form")]
         public IActionResult RegistrationForm()
         {
+            if (!_featureFlags.ShowCureRegistration)
+            {
+                return NotFound();
+            }
             // This action could be used to return a form for registration
             // You might want to return a partial view or a specific view for the form
 
@@ -117,6 +129,10 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public IActionResult RegistrationPayment()
         {
+            if (!_featureFlags.ShowCureRegistration)
+            {
+                return NotFound();
+            }
             var registrations = _registrationSessionService.Registrations;
                 
             if (_registrationSessionService.IsEmpty())
@@ -254,6 +270,12 @@ namespace KiCWeb.Controllers
         [Route("volunteers")]
         public IActionResult Volunteers()
         {
+            Console.WriteLine("Volunteers page accessed.");
+            Console.WriteLine($"Feature flag for ShowCureVolunteers: {_featureFlags.ShowCureVolunteers}");
+            if (!_featureFlags.ShowCureVolunteers)
+            {
+                return NotFound();
+            }
             return View(); // Views/Cure/Volunteers.cshtml
         }
         

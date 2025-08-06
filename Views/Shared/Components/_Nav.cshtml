@@ -42,10 +42,16 @@
             </button>
             <ul id="nav-dropdown-cure" class="nav__menu--dropdown" data-dropdown>
               <li><a asp-area="" asp-controller="Cure" asp-action="">CURE 2026</a></li>
-              <li><a asp-area="" asp-controller="Cure" asp-action="Registration">Registration</a></li>
+              @if (FeatureFlags.ShowCureRegistration)
+              {
+                <li><a asp-area="" asp-controller="Cure" asp-action="Registration">Registration</a></li>
+              }
               <li><a asp-area="" asp-controller="Cure" asp-action="Rules">Rules &amp; FAQs</a></li>
               <li><a asp-area="" asp-controller="Cure" asp-action="Presenters">Presenters &amp; Vendors</a></li>
-              <li><a asp-area="" asp-controller="Cure" asp-action="Volunteers">Volunteers</a></li>
+              @if (FeatureFlags.ShowCureVolunteers)
+              {
+                <li><a asp-area="" asp-controller="Cure" asp-action="Volunteers">Volunteers</a></li>
+              }
             </ul>
           </li>
         }
