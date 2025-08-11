@@ -52,7 +52,8 @@
     }
   }
 
-  &__card:hover > &__details {
+  &__card:hover > &__details,
+  &__card--placeholder > &__details {
     opacity: 1;
   }
 

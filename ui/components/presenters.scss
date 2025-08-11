@@ -49,9 +49,23 @@
     transition: var(--transition-default);
   }
 
-  &__card:hover {
+  &__card:not(&__card--placeholder):hover {
     h3 {
       background: var(--color-highlight);
+    }
+  }
+
+  &__card--placeholder {
+    position: relative;
+    
+    .presenters__image-container::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      width: 100%;
+      opacity: .9;
+      background: var(--color-purple);
     }
   }
 }
