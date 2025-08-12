@@ -49,7 +49,7 @@
     transition: var(--transition-default);
   }
 
-  &__card:hover {
+  &__card:not(&__card--placeholder):hover {
     h3 {
       background: var(--color-highlight);
     }
