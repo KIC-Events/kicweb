@@ -64,6 +64,7 @@ namespace KiCWeb.Controllers
             {
                 return NotFound();
             }
+            ViewBag.ShowCureRegForm = _featureFlags.ShowCureRegForm;
             return View(); // Views/Cure/Registration.cshtml
         }
 
@@ -71,7 +72,7 @@ namespace KiCWeb.Controllers
         [Route("registration/form")]
         public IActionResult RegistrationForm()
         {
-            if (!_featureFlags.ShowCureRegistration)
+            if (!_featureFlags.ShowCureRegForm)
             {
                 return NotFound();
             }

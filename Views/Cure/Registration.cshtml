@@ -37,9 +37,21 @@
       <p>
         <strong>Standard</strong> - This is just a standard ticket that gets you entrance to all the activities of the events.
       </p>
+      @if(ViewBag.ShowCureRegForm)
+      {
+        <p>
+          <strong>Registration is now open!</strong> Click the button below to register.
+        </p>
       <a asp-controller="Cure" asp-action="RegistrationForm" class="button">
         Register for CURE 2026
       </a>
+      }
+      @if(!ViewBag.ShowCureRegForm)
+      {
+        <p>
+          <strong>Registration will open soon!</strong> Please check back later.
+        </p>
+      }
     </div>
   </section>
   <section class="page-section" role="region" aria-labelledby="section-registration-faqs">
