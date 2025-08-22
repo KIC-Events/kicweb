@@ -242,6 +242,7 @@ namespace KiCWeb.Controllers
         [Route("rules")]
         public IActionResult Rules()
         {
+            ViewBag.ShowHotelInfo = _featureFlags.ShowHotelInfo;
             return View(); // Views/Cure/Rules.cshtml
         }
 

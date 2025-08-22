@@ -268,56 +268,74 @@
       })
     </div>
   </section>
-  <section class="page-section" role="region" aria-labelledby="hotel-information-title">
-    <h2 class="h2 rules__jump-link-target" id="hotel-information-title">
-      Hotel Information
-    </h2>
-    <div class="content body-text">
-      <p class="content__list-label"><strong>Check-in:</strong> 4 PM</p>
-      <ul>
-        <li>Please do not arrive earlier or request early check-in.</li>
-      </ul>
-      <p class="content__list-label"><strong>Meal Times:</strong></p>
-      <ul>
-        <li>Breakfast: 7 AM - 10 AM</li>
-        <li>Dinner: 5 PM - 10 PM</li>
-        <li>Limited menu options and NO bar</li>
-        <li><strong>Important:</strong> When in the restaurant, all goodie bits must be covered in compliance with health codes.</li>
-      </ul>
-      <p class="content__list-label"><strong>Mini Fridge in Every Room:</strong></p>
-      <ul>
-        <li>Each room includes a small mini fridge, but microwaves are not guaranteed in all rooms.</li>
-      </ul>
-      <p><strong>Check-Out: Sunday at 11 AM</strong></p>
-      <p class="content__list-label"><strong>Private Event:</strong></p>
-      <ul>
-        <li>Since this is a private event and we’re taking over the hotel, details listed on the hotel website may not apply.</li>
-        <li>There will be <strong>NO HOUSEKEEPING</strong></li>
-        <li>Towel Exchange on Saturday from 1:00-3:00 - check map for location</li>
-        <li>Hotel will be on minimal staff, please be patient with them.</li>
-        <li>If you need anything, find someone with a radio to help assist.</li>
-      </ul>
-    </div>
-  </section>
+  @if(ViewBag.ShowHotelInfo){
+    <section class="page-section" role="region" aria-labelledby="hotel-information-title">
+      <h2 class="h2 rules__jump-link-target" id="hotel-information-title">
+        Hotel Information
+      </h2>
+      <div class="content body-text">
+        <p class="content__list-label"><strong>Check-in:</strong> 4 PM</p>
+        <ul>
+          <li>Please do not arrive earlier or request early check-in.</li>
+        </ul>
+        <p class="content__list-label"><strong>Meal Times:</strong></p>
+        <ul>
+          <li>Breakfast: 7 AM - 10 AM</li>
+          <li>Dinner: 5 PM - 10 PM</li>
+          <li>Limited menu options and NO bar</li>
+          <li><strong>Important:</strong> When in the restaurant, all goodie bits must be covered in compliance with health codes.</li>
+        </ul>
+        <p class="content__list-label"><strong>Mini Fridge in Every Room:</strong></p>
+        <ul>
+          <li>Each room includes a small mini fridge, but microwaves are not guaranteed in all rooms.</li>
+        </ul>
+        <p><strong>Check-Out: Sunday at 11 AM</strong></p>
+        <p class="content__list-label"><strong>Private Event:</strong></p>
+        <ul>
+          <li>Since this is a private event and we’re taking over the hotel, details listed on the hotel website may not apply.</li>
+          <li>There will be <strong>NO HOUSEKEEPING</strong></li>
+          <li>Towel Exchange on Saturday from 1:00-3:00 - check map for location</li>
+          <li>Hotel will be on minimal staff, please be patient with them.</li>
+          <li>If you need anything, find someone with a radio to help assist.</li>
+        </ul>
+      </div>
+    </section>
+  })
   <section class="page-section" role="region" aria-labelledby="diversity-inclusion-title">
     <h2 class="h2 rules__jump-link-target" id="diversity-inclusion-title">
-      Diversity &amp; Inclusion
+      Diversity &amp; Inclusion Policy
     </h2>
     <div class="content body-text">
       <p>
-        KIC Events is committed to being an inclusive, safe, welcoming and positive space for all alternative lifestyles to express themselves in their kink, 
-        gender orientation, sexuality, and relationships as is their preference. The entire event is classified as pansexual and “all gender friendly”. 
-        Please respect everyone’s gender self-identification. If you are not sure about how someone prefers to be referred to, ask politely.
+        KIC Events is committed to being an inclusive, safe, welcoming and positive space for all alternative lifestyles to express themselves in their kink, gender orientation, sexuality, and relationships as is their preference. The entire event is classified as pansexual and “all gender friendly”. Please respect everyone’s gender self-identification. If you are not sure about how someone prefers to be referred to, ask politely.
       </p>
       <p>
-        We strongly believe in the “Law of Mobility” and “Your kink may not be my kink, AND that is OK”. 
-        If you see something you do not like, simply remove yourself from that area. Be respectful and courteous to their space by keeping comments to yourself, 
-        as you would want to be done to you and your space. We ask that everyone keep an open, non-judgmental mind, 
-        try things, learn what you can, and expand your mind to new possibilities.
+        We strongly believe in the “Law of Mobility” and “Your kink may not be my kink, AND that is OK”. If you see something you do not like, simply remove yourself from that area. Be respectful and courteous to their space by keeping comments to yourself, as you would want to be done to you and your space. We ask that everyone keep an open, non-judgmental mind, try things, learn what you can, and expand your mind to new possibilities.
       </p>
-      <p class="h3 display">
-        KIC EVENTS RESERVES THE RIGHT TO REFUSE ANYONE ADMISSION TO ANY KIC EVENT FOR ANY REASON.
+      <p>
+        At CURE, we are committed to fostering an <b>inclusive, safe, and welcoming</b> space where all individuals—regardless of kink, gender identity, sexual orientation, or relationship structure—can freely express themselves.
       </p>
+      <p class="display-h3">
+        respect &amp; Inclusivity
+      </p>
+      <p>
+        All-Gender & Pansexual-Friendly Space: Our entire event is classified as pansexual and all-gender friendly. We ask that all attendees respect each person’s self-identification and preferred pronouns. If you are unsure, ask politely rather than assume.
+      </p>
+      <p>
+        Your Kink May Not Be My Kink, and That’s OK: We strongly believe in the Law of Mobility—if you see something that is not for you, simply remove yourself from the area. Do not disrupt others or make unsolicited comments about their scene, as you would expect the same courtesy for your own preferences.
+      </p>
+      <p>
+        Open-Minded Exploration: We encourage attendees to approach the event with curiosity and respect. Try new things, learn from others, and expand your understanding of the many diverse expressions of kink and alternative lifestyles.
+      </p>
+      <p class="display-h3">
+        Creating a Positive Space
+      </p>
+      <p>
+        KIC Events is a judgment-free environment where consent, inclusivity, and respect are fundamental. Any form of discrimination, harassment, or exclusionary behavior will not be tolerated. If you experience or witness behavior that violates this policy, please reach out to event staff for support.
+      </p>
+      <p><b>
+        Together, we create a community where everyone feels seen, valued, and empowered to explore in a safe and supportive environment. Thank you for being a part of CURE 2026!
+      </b></p>
     </div>
   </section>
 </div>

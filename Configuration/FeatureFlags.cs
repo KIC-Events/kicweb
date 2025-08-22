@@ -8,5 +8,6 @@ namespace KiCWeb.Configuration
         public bool ShowCureRegistration { get; set; }
         public bool ShowContactForm { get; set; }
         public bool ShowBlasphemyContent{ get; set; }
+        public bool ShowHotelInfo{ get; set; }
     }
 }
