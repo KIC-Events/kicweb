@@ -16,10 +16,10 @@ namespace KiCWeb.Controllers
         private readonly ICookieService _cookieService;
         private readonly IConfigurationRoot _configurationRoot;
         private readonly KiCdbContext _context;
-        private readonly PaymentService _paymentService;
+        private readonly IPaymentService _paymentService;
 	    private KiCdbContext _kdbContext;
 
-        public Payment(ILogger<Payment> logger, IHttpContextAccessor contextAccessor, ICookieService cookieService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext, PaymentService paymentService) : base(configurationRoot, userService: null, contextAccessor, kiCdbContext, cookieService)
+        public Payment(ILogger<Payment> logger, IHttpContextAccessor contextAccessor, ICookieService cookieService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext, IPaymentService paymentService) : base(configurationRoot, userService: null, contextAccessor, kiCdbContext, cookieService)
         {
             _logger = logger;
             _contextAccessor = contextAccessor;
