@@ -86,6 +86,14 @@
         <span asp-validation-for="SexOnID"></span>
       </div>
 
+      @* Pronouns *@
+      <div class="field">
+        <label asp-for="Pronouns"></label>
+        @Html.DescriptionFor(m => m.Pronouns)
+        <input asp-for="Pronouns" />
+        <span asp-validation-for="Pronouns"></span>
+      </div>
+
       @* Phone Number *@
       <div class="field">
         <label asp-for="PhoneNumber"></label>
@@ -166,7 +174,7 @@
       <div class="field">
         <label asp-for="FetName"></label>
         @Html.DescriptionFor(m => m.FetName)
-        <input asp-for="FetName" required />
+        <input asp-for="FetName" />
         <span asp-validation-for="FetName"></span>
       </div>
 
@@ -174,7 +182,7 @@
       <div class="field">
         <label asp-for="ClubId"></label>
         @Html.DescriptionFor(m => m.ClubId)
-        <input asp-for="ClubId" required />
+        <input asp-for="ClubId" />
         <span asp-validation-for="ClubId"></span>
       </div>
 

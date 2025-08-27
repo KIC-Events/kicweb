@@ -2,7 +2,7 @@ form {
   .field {
     position: relative;
 
-    label:not(input + label) {
+    label:not(input + label):not(select + label):not(textarea + label) {
       font: normal normal bold 0.75rem/0.9375rem var(--font-montserrat);
       letter-spacing: 0;
       text-transform: uppercase;
@@ -104,6 +104,17 @@ form {
     &.field--inline {
       position: relative;
 
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="number"],
+      input[type="url"],
+      input[type="tel"],
+      input[type="date"],
+      select {
+        height: var(--space-5);
+      }
+
       // Input/textarea inside the inline field
       input[type="text"],
       input[type="email"],
@@ -112,16 +123,24 @@ form {
       input[type="url"],
       input[type="tel"],
       input[type="date"],
+      select,
       textarea {
+        border: 0.1rem solid color-mix(in srgb, var(--color-theme) 50%, transparent);
+        border-radius: 3px;
 
         // remove top margin; we place the label on top of the border
         padding-top: 0.2rem;
         margin-top: 0;
         max-width: 18.75rem; // keep your existing width cap
+
+        &.input-validation-error {
+          border-color: var(--color-red);
+        }
       }
 
       input + label,
-      textarea + label {
+      textarea + label,
+      select + label{
         color: var(--color-grey);
         position: absolute;
         left: 0.25rem;
@@ -137,11 +156,17 @@ form {
 
       // Focused or has value -> float
       input:focus + label,
-      input:not(:placeholder-shown) + label,
+      input.has-value + label,
       textarea:focus + label,
-      textarea:not(:placeholder-shown) + label {
-        transform: translateY(-160%) scale(0.9);
+      textarea.has-value + label,
+      select.has-value + label {
+        transform: translateY(-180%) scale(0.9);
         color: color-mix(in srgb, var(--color-theme) 90%, black 10%);
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: color-mix(in srgb, var(--color-theme) 75%, transparent);
       }
 
       // Keep your required asterisk
