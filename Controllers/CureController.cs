@@ -112,9 +112,28 @@ namespace KiCWeb.Controllers
         [Route("registration/form")]
         public IActionResult RegistrationForm(RegistrationViewModel registrationData, string action)
         {
-            var registrations = _registrationSessionService.Registrations;
-            registrations.Add(registrationData);
-            _registrationSessionService.Registrations = registrations; 
+            if(!ModelState.IsValid)
+            {
+                ViewBag.Error = "Missing Required Information";
+                return View(registrationData);
+            }
+            
+            if(registrationData.DiscountCode is not null)
+            {
+                TicketComp? comp = _kdbContext.TicketComp
+                    .Where(c => c.DiscountCode == registrationData.DiscountCode)
+                    .FirstOrDefault();
+                    
+                if(comp is null)
+                {
+                    ViewBag.Error = "Discount Code Invalid";
+                    return View(registrationData);
+                }
+
+                registrationData.TicketComp = comp;             
+            }
+
+            _registrationSessionService.Registrations.Add(registrationData);
             
             if (action == "CreateMore")
             {

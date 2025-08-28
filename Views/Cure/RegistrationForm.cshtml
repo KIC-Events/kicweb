@@ -1,5 +1,15 @@
 @model KiCData.Models.WebModels.RegistrationViewModel
 
+@if(ViewBag.Error is not null){
+  <div class="container">
+    <section class="page-section" aria-labelledby="error-warning-title">
+      <div class="info-banner">
+        <p>@ViewBag.Error</p>
+      </div>
+    </section>
+  </div>
+}
+
 <div class="container">
   <section class="page-section" aria-labelledby="registration-form-title">
     <h1 class="h2">CURE 2026 Registration</h1>    
