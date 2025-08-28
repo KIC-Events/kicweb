@@ -16,6 +16,7 @@ using Square.Exceptions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
 using KiCWeb.Configuration;
+using KiCWeb.Models;
 
 namespace KiCWeb.Controllers
 {
@@ -260,6 +261,30 @@ namespace KiCWeb.Controllers
                 .OrderBy(v => v.PublicName)
                 .ToList();
 
+            List<Presentation> presentations = _kdbContext.Presentations
+                .Include(p => p.Presenters)
+                .Where(p => p.EventId == int.Parse(_configurationRoot["CUREID"]))
+                .ToList();
+
+            ViewBag.Presentations = new List<AccordionItem>();
+            
+            foreach(Presentation p in presentations)
+            {
+                string concatName = p.Name;
+                foreach(Presenter presenter in p.Presenters)
+                {
+                    concatName = concatName + " - " + presenter.PublicName;
+                }
+                
+                AccordionItem accordionItem = new AccordionItem()
+                {
+                    Title = concatName,
+                    Description = p.Description
+                };
+
+                ViewBag.Presentations.Add(accordionItem);
+            }
+                
             // Log to console or logger
             string json = JsonSerializer.Serialize(ViewBag.Vendors, new JsonSerializerOptions
             {

@@ -88,6 +88,7 @@
       CURE 2026 Class Descriptions
     </h2>
     <div class="content body-text">
+      @*
       <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
         <a href="#" class="button">
           DOWNLOAD CLASS DESCRIPTIONS (PDF)
@@ -96,129 +97,8 @@
           DOWNLOAD CLASS SCHEDULE (PDF)
         </a>
       </div>
-      @Html.Accordion(new List<AccordionItem>
-      {
-        new AccordionItem { 
-          Title = "Becoming Leather: What You Need to Know", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Bedroom Bondage 101 & More (Shhh... It’s Rope for Sex)", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Brat Proof Bondage: Escape-Resistant Ties for Squirmy Bottoms", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Breath Play with Erotic Rope Bondage", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Chasity, Tease, and Denial", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Chocolate Milk and Tears: Dark Age Play", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Combine Polyamory and Power Exchange... Successfully!", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Different Strokes: Advanced & Creative Caning", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Emotional Sadism & Masochism 101", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Flog Me Tender… Bits", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Got Consent for Kink", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Gravity is Your Toy: Partial Suspensions", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Inspirational Sadomasochism", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Introduction to BDSM", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Keep It Tight: A Hands-On Exploration of Erotic Mummification", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Queen Takes Knight", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Sensory Manipulation: An Immersive Experience", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Smashing Stigma: Mental Health and Kink", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "The Floor Is Not Lava", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-        new AccordionItem { 
-          Title = "Tying Different Bodies", 
-          Description = @"
-            <p>Coming soon.</p>
-          "
-        },
-      })
+      *@
+      @Html.Accordion(ViewBag.Presentations as List<AccordionItem>)
     </div>
   </section>
   <section class="page-section" role="region" aria-labelledby="vendors-section-title">
