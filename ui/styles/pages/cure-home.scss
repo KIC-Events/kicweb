@@ -4,10 +4,10 @@
   &__hero {
     width: 100vw;
     aspect-ratio: 1355 / 333;
-    background: center / contain no-repeat url(/images/redesign/CURE-2026-Desktop.jpg);
+    background: center / contain no-repeat url(https://kicweb-images.s3.us-east-1.amazonaws.com/KIC+Events+and+CURE+logos/CURE/hero_banner.png);
 
     @include mixins.breakpoint(sm) {
-      background-image: url(/images/redesign/CURE-2026-Mobile.jpg);
+      background-image: url(https://kicweb-images.s3.us-east-1.amazonaws.com/KIC+Events+and+CURE+logos/CURE/hero_box.png);
       aspect-ratio: 450 / 233;
     }
   }
