@@ -112,7 +112,7 @@ form {
       input[type="tel"],
       input[type="date"],
       select {
-        height: var(--space-5);
+        height: 3rem;
       }
 
       // Input/textarea inside the inline field
@@ -125,7 +125,7 @@ form {
       input[type="date"],
       select,
       textarea {
-        border: 0.1rem solid color-mix(in srgb, var(--color-theme) 50%, transparent);
+        border: 0.1rem solid color-mix(in srgb, var(--color-theme) 40%, transparent);
         border-radius: 3px;
 
         // remove top margin; we place the label on top of the border
@@ -160,7 +160,7 @@ form {
       textarea:focus + label,
       textarea.has-value + label,
       select.has-value + label {
-        transform: translateY(-180%) scale(0.9);
+        transform: translateY(-205%) scale(0.9);
         color: color-mix(in srgb, var(--color-theme) 90%, black 10%);
       }
 

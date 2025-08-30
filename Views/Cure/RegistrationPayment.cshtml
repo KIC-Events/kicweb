@@ -171,10 +171,15 @@
             </div>
           </div>
         </div>
-      </section>
 
-      <!-- Card fields and form -->
-      <div id="card-container"></div>
+        <!-- Card fields and form -->
+        <input type="hidden" asp-for="CardToken" />
+        <div id="card-container"></div>
+
+        <button type="button" id="submit-button" class="button">
+          Checkout
+        </button>
+      </section>
     </div>
 
     <div class="cure-payment__summary">
@@ -199,32 +204,50 @@ else
 
 </style>
 
-<script type="module">
+<script>
+  (async () => {
     const payments = Square.payments('@ViewBag.AppId', '@ViewBag.LocationId');
-    const card = await payments.card();
-    await card.attach('#card-container');
-
-    const cardButton = document.getElementById('card-button');
-    cardButton.addEventListener('click', async () => {
-      const statusContainer = document.getElementById('payment-status-container');
-
-      try {
-        const result = await card.tokenize();
-        if (result.status === 'OK') {
-          console.log(`Token: ${result.token}`);
-        } else {
-          let errorMessage = `Tokenization failed with status: ${result.status}`;
-          if (result.errors) {
-            errorMessage += ` and errors: ${JSON.stringify(
-              result.errors
-            )}`;
-          }
-
-          throw new Error(errorMessage);
+    const card = await payments.card({
+      style: {
+        input: {
+          fontFamily: 'verdana, sans-serif',
+          fontSize: '14px',
+        },
+        'input::placeholder': {
+          color: '#505050',
         }
-      } catch (e) {
-        console.error(e);
-        statusContainer.innerHTML = "Payment Failed";
       }
     });
-  </script>
+    await card.attach('#card-container');
+
+    const submitButton = document.getElementById('submit-button');
+    const form = document.querySelector('form');
+
+    // This request submit runs our validation.
+    // If the form is valid, we proceed to tokenize the card and actually submit to the server.
+    submitButton.addEventListener('click', async () => {
+      form.requestSubmit();
+    });
+
+    // Handle the form submission
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // Tokenize the card details
+      const result = await card.tokenize();
+      if (result.status === 'OK') {
+        // If tokenization was successful, add the token to a hidden input and submit the form
+        const tokenInput = document.getElementById('CardToken');
+        tokenInput.value = result.token;
+        form.submit();
+      } else {
+        // Handle errors.
+        let errorMessage = 'Card payment failed: ';
+        if (result.errors) {
+          errorMessage += result.errors.map(e => e.message).join(', ');
+        }
+        alert(errorMessage);
+      }
+    });
+  })();
+</script>
