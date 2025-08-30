@@ -5,6 +5,8 @@
 @model CureCardFormModel
 
 <form class="container" method="post" asp-action="RegistrationPayment">
+  <pre>@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Items))</pre>
+  
   <div class="cure-payment">
     <div class="cure-payment__main">
       <section class="page-section">
@@ -94,7 +96,7 @@
           <div class="cure-payment__field-row">
             @* Address Line 2 *@
             <div class="field field--inline">
-              <input asp-for="BillingContact.AddressLine2" />
+              <input asp-for="BillingContact.AddressLine2" data-val="false" />
               <label asp-for="BillingContact.AddressLine2"></label>
             </div>
           </div>
@@ -189,6 +191,35 @@
       </div>
     </div>
   </div>
+
+  @for (var i = 0; i < Model.Items.Count; i++)
+  {
+      @Html.Hidden($"Items[{i}].TicketType", Model.Items[i].TicketType)
+      @Html.Hidden($"Items[{i}].RoomType", Model.Items[i].RoomType)
+      @Html.Hidden($"Items[{i}].ArrivalDay", Model.Items[i].ArrivalDay)
+      @Html.Hidden($"Items[{i}].ArrivalDayOther", Model.Items[i].ArrivalDayOther)
+      @Html.Hidden($"Items[{i}].EmailConf", Model.Items[i].EmailConf)
+      @Html.Hidden($"Items[{i}].CreateMore", Model.Items[i].CreateMore)
+      @Html.Hidden($"Items[{i}].DiscountCode", Model.Items[i].DiscountCode)
+      @Html.Hidden($"Items[{i}].TicketComp", Model.Items[i].TicketComp)
+      @Html.Hidden($"Items[{i}].City", Model.Items[i].City)
+      @Html.Hidden($"Items[{i}].State", Model.Items[i].State)
+      @Html.Hidden($"Items[{i}].WaitList", Model.Items[i].WaitList)
+      @Html.Hidden($"Items[{i}].Pronouns", Model.Items[i].Pronouns)
+      @Html.Hidden($"Items[{i}].Event", Model.Items[i].Event)
+      @Html.Hidden($"Items[{i}].Price", Model.Items[i].Price)
+      @Html.Hidden($"Items[{i}].Type", Model.Items[i].Type)
+      @Html.Hidden($"Items[{i}].BadgeName", Model.Items[i].BadgeName)
+      @Html.Hidden($"Items[{i}].FirstName", Model.Items[i].FirstName)
+      @Html.Hidden($"Items[{i}].LastName", Model.Items[i].LastName)
+      @Html.Hidden($"Items[{i}].Email", Model.Items[i].Email)
+      @Html.Hidden($"Items[{i}].DateOfBirth", Model.Items[i].DateOfBirth?.ToString("yyyy-MM-dd"))
+      @Html.Hidden($"Items[{i}].FetName", Model.Items[i].FetName)
+      @Html.Hidden($"Items[{i}].ClubId", Model.Items[i].ClubId)
+      @Html.Hidden($"Items[{i}].PhoneNumber", Model.Items[i].PhoneNumber)
+      @Html.Hidden($"Items[{i}].AdditionalInfo", Model.Items[i].AdditionalInfo)
+      @Html.Hidden($"Items[{i}].SexOnID", Model.Items[i].SexOnID)
+  }
 </form>
 
 @if (Environment.GetEnvironmentVariable("IS_LOCAL_DEV") == "true")
@@ -240,13 +271,6 @@ else
         const tokenInput = document.getElementById('CardToken');
         tokenInput.value = result.token;
         form.submit();
-      } else {
-        // Handle errors.
-        let errorMessage = 'Card payment failed: ';
-        if (result.errors) {
-          errorMessage += result.errors.map(e => e.message).join(', ');
-        }
-        alert(errorMessage);
       }
     });
   })();
