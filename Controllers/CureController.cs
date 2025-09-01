@@ -28,6 +28,7 @@ namespace KiCWeb.Controllers
         private readonly IKiCLogger _logger;
         private readonly RegistrationSessionService _registrationSessionService;
         private readonly IConfigurationRoot _configurationRoot;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public CureController(
             IConfigurationRoot configurationRoot,
@@ -47,6 +48,7 @@ namespace KiCWeb.Controllers
             _registrationSessionService = registrationSessionService ?? throw new ArgumentNullException(nameof(registrationSessionService));
             _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
             _featureFlags = featureFlags ?? throw new ArgumentNullException(nameof(featureFlags));
+            _contextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         [Route("")]
@@ -133,7 +135,8 @@ namespace KiCWeb.Controllers
                 registrationData.TicketComp = comp;             
             }
 
-            _registrationSessionService.Registrations.Add(registrationData);
+            string sessionId = _contextAccessor.HttpContext.Session.Id;
+            _registrationSessionService.AddRegistration(sessionId, registrationData);
             
             if (action == "CreateMore")
             {
@@ -153,9 +156,11 @@ namespace KiCWeb.Controllers
             {
                 return NotFound();
             }
-            var registrations = _registrationSessionService.Registrations;
+
+            string SessionID = _contextAccessor.HttpContext.Session.Id;
+            List<RegistrationViewModel> registrations = _registrationSessionService.GetRegistrationsForUser(SessionID);
                 
-            if (_registrationSessionService.IsEmpty())
+            if (registrations.Count == 0)
             {
                 // Attempt to log registrations json
                 string registrationsJson = JsonSerializer.Serialize(registrations, new JsonSerializerOptions { WriteIndented = true });
@@ -164,6 +169,20 @@ namespace KiCWeb.Controllers
                 //TODO: ADD additional error handling or user feedback
                 return RedirectToAction("RegistrationForm");
             }
+
+            //Check if checkout total is 0 - if user is not paying, we can skip checkout screen.
+            double? priceCheck = 0;
+            foreach(RegistrationViewModel r in registrations)
+            {
+                priceCheck += r.Price;
+                
+                if(r.TicketComp is not null)
+                {
+                    priceCheck -= r.TicketComp.CompAmount;
+                }
+            }
+
+            if (priceCheck == 0) RedirectToAction("nopay");
 
             CureCardFormModel cfm = new CureCardFormModel();
             cfm.Items = _registrationSessionService.Registrations;
@@ -316,6 +335,12 @@ namespace KiCWeb.Controllers
             // You might want to return a specific success view
             
             return View("Success"); // Views/Cure/Success.cshtml
+        }
+        
+        [Route("nopay")]
+        public IActionResult NoPay()
+        {
+            return View();
         }
     }
 }

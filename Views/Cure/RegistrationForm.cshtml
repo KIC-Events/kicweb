@@ -25,6 +25,11 @@
       </p>
     </div>
     <form asp-action="RegistrationForm" method="post">
+      <div class="field">
+        <label asp-for="DiscountCode"></label>
+        @Html.DescriptionFor(m => m.DiscountCode)
+        <input asp-for="DiscountCode" />
+      </div>
       <div class="field radio-group">
         <label asp-for="TicketType"></label>
         @Html.DescriptionFor(m => m.TicketType)
