@@ -1,5 +1,5 @@
-![Static Badge](https://img.shields.io/badge/Prod_Version-1.5.0a-green)  
-![Static Badge](https://img.shields.io/badge/Dev_Version-1.5.1-yellow)
+![Static Badge](https://img.shields.io/badge/Prod_Version-1.5.1-green)  
+![Static Badge](https://img.shields.io/badge/Dev_Version-1.5.2-yellow)
 
 
 
