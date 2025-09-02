@@ -71,40 +71,53 @@ namespace KiCWeb.Controllers
 
         [HttpGet]
         [Route("registration/form")]
-        public IActionResult RegistrationForm()
+        public IActionResult RegistrationForm(Guid? regId)
         {
             if (!_featureFlags.ShowCureRegForm)
             {
                 return NotFound();
             }
-            // This action could be used to return a form for registration
-            // You might want to return a partial view or a specific view for the form
 
-            RegistrationViewModel registration = new RegistrationViewModel()
+            var registrations = _registrationSessionService.Registrations;
+
+            // Try to find an existing registration by regId
+            RegistrationViewModel registration = null;
+            if (regId.HasValue)
             {
-                Event = _kdbContext.Events
-                .Where(
-                    e => e.Name == "CURE"
-                    && e.EndDate >= DateOnly.FromDateTime(DateTime.Now) // Ensure the event is not in the past, and that it is the CURE event
-                )
-                .First()
+                registration = registrations.FirstOrDefault(r => r.RegId == regId.Value);
+            }
+
+            // If not found, create a new registration
+            if (registration == null)
+            {
+                registration = new RegistrationViewModel
+                {
+                    RegId = Guid.NewGuid(),
+                    Event = _kdbContext.Events
+                        .Where(e => e.Name == "CURE" && e.EndDate >= DateOnly.FromDateTime(DateTime.Now))
+                        .FirstOrDefault()
+                };
+
+                registrations.Add(registration);
+                _registrationSessionService.Registrations = registrations;
+            }
+
+            // Populate dropdowns
+            registration.TicketTypes = new List<SelectListItem>
+            {
+                new SelectListItem("Gold", "Gold"),
+                new SelectListItem("Silver", "Silver"),
+                new SelectListItem("Sweet", "Sweet"),
+                new SelectListItem("Standard", "Standard"),
             };
 
-            registration.TicketTypes =
-            [
-              new SelectListItem("Gold", "Gold"),
-              new SelectListItem("Silver", "Silver"),
-              new SelectListItem("Sweet", "Sweet"),
-              new SelectListItem("Standard", "Standard"),
-            ];
-
-            registration.RoomTypes =
-            [
-              new SelectListItem("King", "King"),
-              new SelectListItem("Doubles", "Doubles"),
-              new SelectListItem("Staying with someone else", "Staying with someone else"),
-              new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
-            ];
+            registration.RoomTypes = new List<SelectListItem>
+            {
+                new SelectListItem("King", "King"),
+                new SelectListItem("Doubles", "Doubles"),
+                new SelectListItem("Staying with someone else", "Staying with someone else"),
+                new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
+            };
 
             return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
@@ -113,8 +126,14 @@ namespace KiCWeb.Controllers
         [Route("registration/form")]
         public IActionResult RegistrationForm(RegistrationViewModel registrationData, string action)
         {
+            // Log registrationData as json to console
+            Console.WriteLine("RegistrationViewModel received:");
+            Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
+
             var registrations = _registrationSessionService.Registrations;
+            registrationData.Price = 100; // TODO ⚠️⚠️⚠️ VERY IMPORTANT. MAKE THIS USE REAL TICKET PRICES ⚠️⚠️⚠️ VERY IMPORTANT. MAKE THIS USE REAL TICKET PRICES ⚠️⚠️⚠️
             registrations.Add(registrationData);
+            Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
             _registrationSessionService.Registrations = registrations; 
             
             if (action == "CreateMore")
@@ -135,13 +154,8 @@ namespace KiCWeb.Controllers
             {
                 return NotFound();
             }
-            var registrations = _registrationSessionService.Registrations;
-                
             if (_registrationSessionService.IsEmpty())
             {
-                // Attempt to log registrations json
-                string registrationsJson = JsonSerializer.Serialize(registrations, new JsonSerializerOptions { WriteIndented = true });
-
                 // If no registration data is found, redirect to the registration form
                 //TODO: ADD additional error handling or user feedback
                 return RedirectToAction("RegistrationForm");
@@ -174,10 +188,17 @@ namespace KiCWeb.Controllers
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine("Exception during payment processing:");
+                    Console.WriteLine(ex.ToString());
+
                 Console.WriteLine("Here 2");
 
                     if (ex is Square.Exceptions.ApiException squareEx)
                     {
+                     Console.WriteLine("Square Payment failed:");
+                                        Console.WriteLine($"Status Code: {squareEx.ResponseCode}");
+                    Console.WriteLine($"Message: {squareEx.Message}");
+                    Console.WriteLine($"RawBody: {squareEx.HttpContext?.Response?.RawBody}");
                         // Handle Square-specific exceptions
                         _logger.LogSquareEx(squareEx);
                     }
