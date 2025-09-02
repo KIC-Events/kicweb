@@ -184,10 +184,55 @@
       </section>
     </div>
 
-    <div class="cure-payment__summary">
-      <div class="order-summary">
-        <h3>Your Order</h3>
-        <p>Test 123</p>
+    <div class="cure-payment__summary" style="font-family: var(--font-montserrat)">
+      <div class="order-summary" style="border: 1px solid #000; padding: 1rem; font-family: var(--font-montserrat)">
+        <h3 style="font-weight: 800; font-size: 1rem;">YOUR ORDER</h3>
+        
+        @{
+          var groupedItems = Model.Items
+              .Where(i => i.Type == "Ticket")
+              .GroupBy(i => i.TicketType)
+              .Select(g => new { TicketType = g.Key, Count = g.Count(), Total = g.Sum(i => i.Price) })
+              .ToList();
+          
+          decimal subtotal = Model.Items.Sum(i => (decimal)i.Price);
+          decimal taxRate = 0.08M;
+          decimal salesTax = Math.Round(subtotal * taxRate, 2);
+          decimal totalDue = subtotal + salesTax;
+        }
+
+        @foreach (var group in groupedItems)
+        {
+          <div style="display: flex; justify-content: space-between;">
+            <span>@group.TicketType Ticket @("x" + group.Count)</span>
+            <span>@group.Total.ToString("C")</span>
+          </div>
+        }
+
+        @* TODO this is how we can do merch *@
+        @* 
+          <div style="display: flex; justify-content: space-between;">
+            <span class="sub-item" style="margin-left: 1rem;">• Official CURE 2026 T-Shirt</span>
+            <span>$19.00</span> @* Replace with actual price if dynamic
+          </div> 
+        *@
+
+        <hr style="margin: 1rem 0;" />
+
+        <div style="display: flex; justify-content: space-between;">
+          <strong>Subtotal</strong>
+          <strong>@subtotal.ToString("C")</strong>
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
+          <span>Sales Tax (8%)</span>
+          <span>@salesTax.ToString("C")</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-weight: 800; margin-top: 0.5rem;">
+          <span>Total due today</span>
+          <span>@totalDue.ToString("C")</span>
+        </div>
       </div>
     </div>
   </div>
@@ -206,8 +251,8 @@
       @Html.Hidden($"Items[{i}].State", Model.Items[i].State)
       @Html.Hidden($"Items[{i}].WaitList", Model.Items[i].WaitList)
       @Html.Hidden($"Items[{i}].Pronouns", Model.Items[i].Pronouns)
-      @Html.Hidden($"Items[{i}].Event", Model.Items[i].Event)
       @Html.Hidden($"Items[{i}].Price", Model.Items[i].Price)
+      @Html.Hidden($"Items[{i}].TicketId", Model.Items[i].TicketId)
       @Html.Hidden($"Items[{i}].Type", Model.Items[i].Type)
       @Html.Hidden($"Items[{i}].BadgeName", Model.Items[i].BadgeName)
       @Html.Hidden($"Items[{i}].FirstName", Model.Items[i].FirstName)
