@@ -306,7 +306,7 @@
   }
 </form>
 
-@if (Environment.GetEnvironmentVariable("IS_LOCAL_DEV") == "true")
+@if (Environment.GetEnvironmentVariable("IS_LOCAL_DEV") == "true" || Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
 {
   <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
 }
