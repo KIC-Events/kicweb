@@ -86,8 +86,7 @@ namespace KiCWeb.Controllers
             {
                 Event = _kdbContext.Events
                 .Where(
-                    e => e.Name == "CURE"
-                    && e.EndDate >= DateOnly.FromDateTime(DateTime.Now) // Ensure the event is not in the past, and that it is the CURE event
+                    e => e.Id == int.Parse(_configurationRoot["CUREID"])
                 )
                 .First()
             };
