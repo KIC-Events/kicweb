@@ -19,6 +19,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "choices.js": "^11.1.0",
+    "cleave.js": "^1.6.0",
     "jquery": "^3.7.1",
     "jquery-validation": "^1.21.0",
     "jquery-validation-unobtrusive": "^4.0.0",

@@ -3,7 +3,7 @@
 
 @if(!ViewBag.AgeGateCookieAccepted)
 {
-    <dialog id="age-gate-dialog" class="dialog" data-cancel-disabled>
+    <dialog id="age-gate-dialog" class="dialog" data-cancel-disabled data-open-on-load>
         <form method="post" asp-area="" asp-controller="Home" asp-action="Index">
             <div class="dialog__content">
                 <h2 class="display">
@@ -121,7 +121,7 @@
     </h2>
     <p>
       Sponsoring CURE 2026 helps to provide furniture, staff, and amenities at the event. 
-      In return, you can receive advertisement space on our website, in our brochure, or even on the hotel.
+      In return, you can receive advertisement space on our website, in our brochure, or even on the hotel floor.
     </p>
     <a class="button button--tertiary" asp-area="" asp-controller="Gen" asp-action="GetInvolved">
       Sponsor CURE 2026

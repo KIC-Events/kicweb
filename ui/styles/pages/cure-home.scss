@@ -1,0 +1,76 @@
+@use '../mixins';
+
+.cure-home {
+  &__hero {
+    width: 100vw;
+    aspect-ratio: 1355 / 333;
+    background: center / contain no-repeat url(https://kicweb-images.s3.us-east-1.amazonaws.com/KIC+Events+and+CURE+logos/CURE/hero_banner.png);
+
+    @include mixins.breakpoint(sm) {
+      background-image: url(https://kicweb-images.s3.us-east-1.amazonaws.com/KIC+Events+and+CURE+logos/CURE/hero_box.png);
+      aspect-ratio: 450 / 233;
+    }
+  }
+  &__logo {
+    max-width: 50rem;
+    margin: var(--space-2) auto 0;
+    padding: 0 4rem;
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    @include mixins.breakpoint(md) {
+      padding: 0 2rem;
+    }
+  }
+  &__top-info-callout {
+    text-align: center;
+    font-size: 1.25rem;
+    line-height: 1.51325rem;
+  }
+
+  &__volunteers-callout {
+    display: flex;
+    align-items: center;;
+    gap: var(--space-3);
+    img {
+      display: block;
+      max-width: 22.5rem;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+#cure-discord-banner {
+  h2 {
+    color: var(--color-accent);
+  }
+  hr {
+    height: var(--divider-height);
+    background-color: var(--color-accent);
+    border: none;
+    margin: 0;
+    width: 100%;
+    max-width: 26rem;
+    margin-top: var(--space-1);
+    margin-bottom: var(--space-2);
+  }
+  ul li {
+    + li {
+      margin-top: var(--space-1);
+    }
+    a {
+      font-size: 1.25rem;
+      line-height: 1.51325rem;
+      font-family: var(--font-forum);
+      text-transform: uppercase;
+      font-weight: bold;
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

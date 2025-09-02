@@ -1,4 +1,16 @@
-<div class="container">
+<div class="container rules">
+  <nav class="rules__jump-links" role="navigation" aria-label="Jump to sections">
+    <span>Jump to:</span>
+    <ul>
+      <li><a href="#rules-faqs-title">FAQs</a></li>
+      @if(ViewBag.ShowHotelInfo){<li><a href="#hotel-information-title">Hotel Information</a></li>}
+      <li><a href="#diversity-inclusion-title">Diversity &amp; Inclusion</a></li>
+      <li><a href="#covid-policy-title">COVID-19 Policy</a></li>
+      <li><a href="#transfer-policy-title">Transfer &amp; Refund Policy</a></li>
+      <li><a href="#cell-policy-title">KIC Cell Phone Use Policy</a></li>
+      <li><a href="#disability-policy-title">KIC Events Disability Accommodation Policy</a></li>
+    </ul>
+  </nav>
   <section class="page-section" role="region" aria-labelledby="rules-section-title">
     <h1 class="h2" id="rules-section-title">
       CURE Rules
@@ -6,106 +18,481 @@
     <div class="content body-text" role="presentation" aria-label="CURE Rules Accordion">
       @Html.Accordion(new List<AccordionItem>
       {
-          new AccordionItem { 
-            Title = "Consent", 
-            Description = @"
-              <p>
-                We seek enthusiastic consent – clear headed, mutual, informed co-creation 
-                of a “YES” without manipulation or coercion. It is not an absence of a “No”. 
-                <strong>NO MEANS NO</strong>
-                <br />
-                It is a complete sentence, no explanations needed.
-              </p>
-              <p>
-                The universal safewords are <strong>RED</strong> and <strong>SAFEWORD</strong>. 
-                If either are used, the scene will be stopped immediately.
-              </p>
-            "
-          },
-          new AccordionItem { 
-            Title = "Second", 
-            Description = @"
-              <p>
-                We seek enthusiastic consent – clear headed, mutual, informed co-creation 
-                of a “YES” without manipulation or coercion. It is not an absence of a “No”. 
-              </p>
-              <p><strong>NO MEANS NO</strong>. It is a complete sentence, no explanations needed.</p>
-              <p>
-                The universal safewords are <strong>RED</strong> and <strong>SAFEWORD</strong>. 
-                If either are used, the scene will be stopped immediately.
-              </p>
-            "
-          },
-          new AccordionItem { 
-            Title = "Third", 
-            Description = @"
-              <p>
-                We seek enthusiastic consent – clear headed, mutual, informed co-creation 
-                of a “YES” without manipulation or coercion. It is not an absence of a “No”. 
-              </p>
-              <p><strong>NO MEANS NO</strong>. It is a complete sentence, no explanations needed.</p>
-              <p>
-                The universal safewords are <strong>RED</strong> and <strong>SAFEWORD</strong>. 
-                If either are used, the scene will be stopped immediately.
-              </p>
-            "
-          },
+        new AccordionItem { 
+          Title = "Consent", 
+          Description = @"
+            <p>We seek enthusiastic consent—clear-headed, mutual, informed co-creation of a “YES” without manipulation or coercion. It is not an absence of a “No.”</p>
+            <p><strong>NO MEANS NO.</strong> It is a complete sentence, no explanations needed.</p>
+            <p>The event safewords are <strong>RED</strong> and <strong>SAFEWORD</strong>. If either is used, the scene will be stopped immediately.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Name Badges & Wristbands", 
+          Description = @"
+            <p>All CURE attendees must wear their provided wristband and name badge at all times when in event space. Name badges may not be shared. If found doing so, both the offender and the owner of the badge will be ejected with no refund. (The name badge may be removed for play.)</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Hotel Staff & Public Areas", 
+          Description = @"
+            <p>Hotel staff are not part of the event and may be offended by open displays of WIITWD. Please treat them as vanilla individuals with courtesy and respect. Vanilla behavior must be maintained outside of event space. Follow the “Grandmother Rule” for attire and behavior in public areas.</p>
+            <p>If you have to ask if something is inappropriate, it probably is. Parking lots, lobbies, restaurants, local businesses, and all non-event spaces require vanilla behavior and attire. No nudity or attention-drawing attire outside the event space. Do not display or test implements in public or around hotel staff. No leashes in public areas. Security will enforce compliance. Violators will be asked to leave with no refund.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Age", 
+          Description = @"
+            <p>CURE is open to adults aged 19+ (as of the first event day). A valid government-issued ID is required for entrance and registration.</p>
+            <p><strong>NO ID = NO ENTRY.</strong> No exceptions.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Cellphones, Electronics, & Photography", 
+          Description = @"
+            <ul>
+              <li>NO cameras, cell phones, or recording device usage is allowed in the main event space at any time.</li>
+              <li>Designated areas for phone use: Restaurant, Game Cubby, Vendor Area.</li>
+              <li>Step outside the event space for calls.</li>
+              <li>No electronic devices with cameras in event spaces. Devices without cameras (e.g. Kindle) are allowed with staff approval.</li>
+              <li>Devices may be checked by MODs to ensure compliance.</li>
+            </ul>
+            <p><strong>Anyone seen with a recording device may be immediately ejected with no refund.</strong></p>
+          "
+        },
+        new AccordionItem {
+          Title = "Security, Privacy, Safety, and Manners",
+          Description = @"
+            <ul>
+              <li>Turn off GPS tracking before arrival.</li>
+              <li>Do not share event locations or identify attendees publicly.</li>
+              <li>Privacy is critical for all attendees.</li>
+            </ul>
+          "
+        },
+        new AccordionItem { 
+          Title = "Event Space Etiquette & Behavior", 
+          Description = @"
+            <ul>
+              <li>Do not talk to or interact with players in a scene.</li>
+              <li>No disruptive conversations, laughter, or comments in play space.</li>
+              <li>Equipment time limit: 40 minutes including setup and cleanup.</li>
+              <li>Do not touch toys/gear/belongings without permission.</li>
+              <li>Messy scenes must occur in the Wet and Wild room with proper cleanup and barriers.</li>
+              <li>Respect presenters and attendees.</li>
+            </ul>
+            <p>Report any inappropriate behavior to CURE Event Staff.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Play Not Allowed", 
+          Description = @"
+            <ul>
+              <li>Gun play</li>
+              <li>Golden, brown, rainbow/roman showers</li>
+              <li>Blood play or intentional skin breaking (needles, knives, branding, etc.)</li>
+            </ul>
+          "
+        },
+        new AccordionItem { 
+          Title = "Edge Play", 
+          Description = @"
+            <ul>
+              <li>Inform a MOD or DM before engaging in rough/extreme play.</li>
+              <li>If you see questionable activity, alert a MOD or Volunteer—do not interrupt.</li>
+            </ul>
+          "
+        },
+        new AccordionItem { 
+          Title = "Illegal Activities", 
+          Description = @"
+            <p>Illegal activity in Ohio/USA is also illegal at CURE. Prostitution and solicitation are prohibited. Violators will be banned. Known sex offenders will not be admitted.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Alcohol & Drug Policy", 
+          Description = @"
+            <p>No alcohol, drugs, or illegal substances allowed. Intoxicated attendees will be denied entry or ejected.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Smoking", 
+          Description = @"
+            <p>No smoking or vaping inside. Use designated smoking areas only, including the Cigar Social area.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Tickets, Refunds & Transfers", 
+          Description = @"
+            <p>No entry without advance registration. No on-site ticket sales, refunds, or transfers.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Damage to the Hotel", 
+          Description = @"
+            <p>Attendees are responsible for damages. Report any damage to CURE Event Staff immediately.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Animals", 
+          Description = @"
+            <p>No animals in event spaces except service animals. Notify organizers in advance via admin@kicevents.com.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Emergencies", 
+          Description = @"
+            <p>Notify a CURE Event Staff member immediately for medical or other emergencies.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Lost & Found", 
+          Description = @"
+            <p>Found items: Take them to the CURE Staff Rooms. Lost something? Check there too.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Vending", 
+          Description = @"
+            <p>Only approved vendors may sell in the vendor area. Unauthorized vendors will be removed from the event and hotel.</p>
+          "
+        }
       })
     </div>
   </section>
 
-  <section class="page-section" role="region" aria-labelledby="rules-section-title">
-    <h2 class="h2" id="rules-section-title">
-      CURE Rules 2
+  <section class="page-section" role="region" aria-labelledby="rules-faqs-title">
+    <h2 class="h2 rules__jump-link-target" id="rules-faqs-title">
+      CURE FAQs
     </h1>
     <div class="content body-text" role="presentation" aria-label="CURE Rules Accordion">
       @Html.Accordion(new List<AccordionItem>
       {
-          new AccordionItem { 
-            Title = "Consent", 
-            Description = @"
-              <p>
-                We seek enthusiastic consent – clear headed, mutual, informed co-creation 
-                of a “YES” without manipulation or coercion. It is not an absence of a “No”. 
-                <strong>NO MEANS NO</strong>
-                <br />
-                It is a complete sentence, no explanations needed.
-              </p>
-              <p>
-                The universal safewords are <strong>RED</strong> and <strong>SAFEWORD</strong>. 
-                If either are used, the scene will be stopped immediately.
-              </p>
-            "
-          },
-          new AccordionItem { 
-            Title = "Second", 
-            Description = @"
-              <p>
-                We seek enthusiastic consent – clear headed, mutual, informed co-creation 
-                of a “YES” without manipulation or coercion. It is not an absence of a “No”. 
-              </p>
-              <p><strong>NO MEANS NO</strong>. It is a complete sentence, no explanations needed.</p>
-              <p>
-                The universal safewords are <strong>RED</strong> and <strong>SAFEWORD</strong>. 
-                If either are used, the scene will be stopped immediately.
-              </p>
-            "
-          },
-          new AccordionItem { 
-            Title = "Third", 
-            Description = @"
-              <p>
-                We seek enthusiastic consent – clear headed, mutual, informed co-creation 
-                of a “YES” without manipulation or coercion. It is not an absence of a “No”. 
-              </p>
-              <p><strong>NO MEANS NO</strong>. It is a complete sentence, no explanations needed.</p>
-              <p>
-                The universal safewords are <strong>RED</strong> and <strong>SAFEWORD</strong>. 
-                If either are used, the scene will be stopped immediately.
-              </p>
-            "
-          },
+        new AccordionItem { 
+          Title = "What does CURE stand for?", 
+          Description = @"
+            <p>CURE is short for Columbus' Ultimate Relationship Exploration.  From our experience, hotel events seem to have these cool, hip, or snappy names and acronyms and we tried our best to come up with our own. We think it's pretty neat and is on point with what we would like to accomplish at this event.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "The word relationship is in the title of the event. Do I need to be in a relationship with someone else to attend?", 
+          Description = @"
+            <p>You do not have to be in a relationship with someone else to attend this event. You are more than welcome to come as a single individual as we see that as a relationship with yourself. This event is intended to allow the opportunity for each person to learn by themselves or in collaboration with someone else.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Is this event ADA accessible?", 
+          Description = @"
+            <p>Yep, there is an elevator and ramps where needed.  If you need further accommodations, please reach out to <a href='mailto:admin@kicevents.com'>admin@kicevents.com.</a></p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Are service animals allowed at this event?", 
+          Description = @"
+            <p>Yes, if you require a service animal, please notify KIC Events Owners prior to arrival via email at <a href='mailto:admin@kicevents.com'>admin@kicevents.com.</a></p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Will this be a complete hotel takeover?", 
+          Description = @"
+            <p>Yes, we have contracted with the hotel for a full hotel takeover.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Will there be a theme for the event?", 
+          Description = @"
+            <p>We haven't gotten that far as of yet, though we do imagine there will be one. This will allow attendees to dress up in theme (if they want to, not a must) and add to the energy and spirit of the event. We also hope to line up an event photographer to capture you in your sexy and kinky attire.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Will there be a photographer at the event?", 
+          Description = @"
+            <p>It is our intent to have a separate room at the host hotel where we have an official photographer who can take pictures of you against a backdrop. A waiver/release would need to be completed, and a fee paid to the photographer based on the rates they are charging. Be on the lookout for more information regarding this topic leading up to the event. At no time will pictures be taken in the main event spaces. We prioritize attendee privacy, safety, and security.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Is this event a sex positive event?", 
+          Description = @"
+            <p>It most certainly is. We truly believe there are many ways and paths where kink and sex(uality) intersect with one another and want attendees to be able to express themselves in that regard if they so choose, safely and consensually.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "What is your refund policy?", 
+          Description = @"
+            <p>Due to constraints with timing and costs associated with processing a refund though our financial processor, refunds will be provided based on when the request is made.  Refer to the <a href='#transfer-policy-title'>CURE 2026 TRANSFER & REFUND POLICY</a></p>
+          "
+        },
+        new AccordionItem { 
+          Title = "If I purchased a ticket and no longer be able to attend, can I transfer the ticket to someone else?",
+          Description = @"
+            <p>No. The reason the answer is no, is because a background check is completed on everyone who purchased a ticket. If you give your ticket to someone else, we will not have completed a background check on the person the ticket was transferred to.</p>
+            <p>For check-in purposes at the event, attendee lists are generated based on who purchased a ticket. If your friend showed up at the event after you bought a ticket, they would be turned away at registration as their name would not be on the list. This is intended to help maintain the overall safety and security of the event.</p>
+            <p>It is also possible that there will be a waiting list for tickets if the event is a sellout. By transferring a ticket from you to someone else, that is akin to cutting in line which would be unfair to others.</p>
+            <p><a href='#transfer-policy-title'>Please see the TICKET TRANSFER AND REFUND POLICY</a></p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Are cellphones allowed to be out at the event?", 
+          Description = @"
+            <p>Cellphones are prohibited from being out in the main event space, but allowed in the designated phone areas. The designated phone areas are the Restaurant, the Game Cubby, and the Vendor Area. There will be signs and other forms of communication clearly stating where cellphones are prohibited along with where cellphones are allowed in the designated and vanilla spaces.  </p>
+            <p>If you are caught with your cellphone out in event space, MOD's or event leaders will ask to see your phone to verify that no pictures, videos, or other recordings were taken without consent. Having your cellphone out in event space is something that can lead to you being escorted out of the event immediately and not allowed back in. Please see the KIC Cell Phone Policy for more details. </p>
+            <p>Cell phone use for a medical condition, please see our <a href='#disability-policy-title'>Disability Accommodation Policy.</a></p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Am I allowed to take pictures in my hotel room and post them on Fet?", 
+          Description = @"
+            <p>That is allowed though there are some caveats to it. If you do decide to take pictures in your hotel room and post them to Fet, or possibly other social media, you must ensure that there are no identifying features of the room that will allow others who see the pictures know the location of the host hotel. Various hotel chains have branding when it comes to the carpet, furniture, and other design elements which can make it easy to identify the location of the host hotel.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Can we use hotel equipment and furniture to play on, for example, luggage carts?", 
+          Description = @"
+            <p>No. We have seen many cool pictures over the years of people being tied to a luggage cart, though that is not what they are intended for. As people who travel often, we have seen more than our fair share of luggage carts that we would be scared as hell to tie anyone to. We also want to make sure that people who need luggage carts to take their luggage in and out have fair and equal access to them. It really sucks when you are on the higher floors, and you have to take multiple trips up and down because there isn't a luggage cart handy anywhere.</p>
+            <p>Along the same lines of luggage carts, you cannot tie people to railings on stairwells or other things that look like a cool or interesting hard point. Besides any possible safety issues, anyone who may be at the hotel who is not an attendee (hotel staff/other guests) did not consent to walking into a situation where they would come across something like that. As much as we want and request people to respect our boundaries and consent, we must ensure we do that for others as well.</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Where is this event located?", 
+          Description = @"
+            <p>The host hotel is located in the Columbus Metropolitan area. The exact address will be given to paid attendees when they receive their confirmation email after they register.  ONLY paid attendees will receive the address to help protect the event</p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Do you have a COVID policy?", 
+          Description = @"
+            <p>Yes, we will adhere to all local city, county, and state guidelines when it comes to Covid or any other Health and Safety policies and guidelines.  For further details, please review the <a href='#covid-policy-title'>COVID-19 Policy.</a></p>
+          "
+        },
+        new AccordionItem { 
+          Title = "Can I post about this event on Facebook or other social medias?", 
+          Description = @"
+            <p>If you post your written adventures to Fetlife or other social networks please do not identify the location or fellow attendees. This allows our event and the other attendees in attendance, to stay safe and location not be shared. Everyone’s privacy and security is important, no matter how “out” you are</p>
+          "
+        },
       })
+    </div>
+  </section>
+  @if(ViewBag.ShowHotelInfo){
+    <section class="page-section" role="region" aria-labelledby="hotel-information-title">
+      <h2 class="h2 rules__jump-link-target" id="hotel-information-title">
+        Hotel Information
+      </h2>
+      <div class="content body-text">
+        <p class="content__list-label"><strong>Check-in:</strong> 4 PM</p>
+        <ul>
+          <li>Please do not arrive earlier or request early check-in.</li>
+        </ul>
+        <p class="content__list-label"><strong>Meal Times:</strong></p>
+        <ul>
+          <li>Breakfast: 7 AM - 10 AM</li>
+          <li>Dinner: 5 PM - 10 PM</li>
+          <li>Limited menu options and NO bar</li>
+          <li><strong>Important:</strong> When in the restaurant, all goodie bits must be covered in compliance with health codes.</li>
+        </ul>
+        <p class="content__list-label"><strong>Mini Fridge in Every Room:</strong></p>
+        <ul>
+          <li>Each room includes a small mini fridge, but microwaves are not guaranteed in all rooms.</li>
+        </ul>
+        <p><strong>Check-Out: Sunday at 11 AM</strong></p>
+        <p class="content__list-label"><strong>Private Event:</strong></p>
+        <ul>
+          <li>Since this is a private event and we’re taking over the hotel, details listed on the hotel website may not apply.</li>
+          <li>There will be <strong>NO HOUSEKEEPING</strong></li>
+          <li>Towel Exchange on Saturday from 1:00-3:00 - check map for location</li>
+          <li>Hotel will be on minimal staff, please be patient with them.</li>
+          <li>If you need anything, find someone with a radio to help assist.</li>
+        </ul>
+      </div>
+    </section>
+  }
+  <section class="page-section" role="region" aria-labelledby="diversity-inclusion-title">
+    <h2 class="h2 rules__jump-link-target" id="diversity-inclusion-title">
+      Diversity &amp; Inclusion Policy
+    </h2>
+    <div class="content body-text">
+      <p>
+        At CURE, we are committed to fostering an <b>inclusive, safe, and welcoming</b> space where all individuals—regardless of kink, gender identity, sexual orientation, or relationship structure—can freely express themselves.
+      </p>
+      <p class="h5">
+        Respect &amp; Inclusivity
+      </p>
+      <p>
+        All-Gender & Pansexual-Friendly Space: Our entire event is classified as pansexual and all-gender friendly. We ask that all attendees respect each person’s identity and pronouns. If you are unsure, ask politely rather than assume.
+      </p>
+      <p>
+        Your Kink May Not Be My Kink, and That’s OK: We strongly believe in the Law of Mobility—if you see something that is not for you, simply remove yourself from the area. Do not disrupt others or make unsolicited comments about their scene, as you would expect the same courtesy for your own preferences.
+      </p>
+      <p>
+        Open-Minded Exploration: We encourage attendees to approach the event with curiosity and respect. Try new things, learn from others, and expand your understanding of the many diverse expressions of kink and alternative lifestyles.
+      </p>
+      <p class="h5">
+        Creating a Positive Space
+      </p>
+      <p>
+        KIC Events is a judgment-free environment where consent, inclusivity, and respect are fundamental. Any form of discrimination, harassment, or exclusionary behavior will not be tolerated. If you experience or witness behavior that violates this policy, please reach out to event staff for support.
+      </p>
+      <p><b>
+        Together, we create a community where everyone feels seen, valued, and empowered to explore in a safe and supportive environment. Thank you for being a part of CURE 2026!
+      </b></p>
+    </div>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="covid-policy-title">
+    <h2 class="h2 rules__jump-link-target" id="covid-policy-title">
+      CURE COVID-19 Policy
+    </h2>
+    <div class="content body-text">
+      <p>
+        The health and safety of our attendees are of utmost importance. To protect our community and provide a safe environment, we will adhere to all current federal, state, and local health department guidelines.
+      </p>
+      <p class="h5">
+        General Guidelines
+      </p>
+      <ol>
+        <li>Guideline Compliance: We will follow any active COVID-related mandates, including masking and other safety protocols, should they be required at the time of the event.</li>
+        <li>Personal Protective Equipment (PPE): PPE is encouraged but not required. </li>
+      </ol>
+      <p class="h5">
+        Respectful and Mindful Practices
+      </p>
+      <p>
+        Please help us create a safe and welcoming event by following these guidelines:
+      </p>
+      <ul>
+        <li>Social Distancing: Respect social distancing requests from others, even if you know them.</li>
+        <li>Self-Awareness: Understand your own health needs and take precautions based on your personal risk profile. </li>
+        <li>Illness: If you feel sick, please DO NOT attend the event.</li>
+        <li>Self-Quarantine: If you are under quarantine protocols, we ask that you complete your quarantine before attending.</li>
+      </ul>
+      <p class="h5">
+        COVID Testing and Cancellation Policy
+      </p>
+      <p>
+        We recommend that all attendees self-test for COVID-19 before the event. If you must cancel due to COVID-related reasons, please notify us at <a href="mailto:admin@kicevents.com">admin@kicevents.com</a> by 6:00 PM on Friday, January 9th.
+      </p>
+      <p>
+        We appreciate everyone’s cooperation in helping us host a safe and enjoyable CURE 2026!
+      </p>
+    </div>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="transfer-policy-title">
+    <h2 class="h2 rules__jump-link-target" id="transfer-policy-title">
+      CURE 2026 Transfer &amp; Refund Policy
+    </h2>
+    <div class="content bod-text">
+      <p class="h5">
+        Ticket Transfers
+      </p>
+      <p>
+        Tickets purchased for the CURE 2026 event are <b>non-transferable</b> under any circumstances.
+      </p>
+      <p>
+        All registered attendees are required to undergo a background check at the time of ticket purchase. For this reason, transferring a ticket to another individual is not permitted, as it would bypass the required security screening.
+      </p>
+      <p>
+        Event check-in procedures rely on attendee lists generated from the names of original ticket purchasers. Individuals whose names do not appear on the attendee list will be denied entry, regardless of possession of a ticket. This policy is strictly enforced to ensure the safety and security of all participants.
+      </p>
+      <p>
+        Additionally, in the event of a sellout, a waiting list may be established. Unauthorized ticket transfers circumvent the fair and orderly process of this waitlist and will not be honored.
+      </p>
+      <p class="h5">
+        Ticket Refunds
+      </p>
+      <p>
+        Ticket holders may request a refund according to the schedule outlined below. All refunds are subject to a <b>$10 processing fee</b> to cover administrative and transaction costs.
+      </p>
+      <ul>
+        <li><b>100% Refund</b> (minus processing fee): Requests made on or before <b>October 3, 2025</b></li>
+        <li><b>75% Refund</b> (minus processing fee): Requests made between <b>October 4 and October 31, 2025</b></li>
+        <li><b>50% Refund</b> (minus processing fee): Requests made between <b>November 1 and November 28, 2025</b></li>
+        <li><b>No Refunds:</b> Requests made on or after <b>November 29, 2025</b></li>
+      </ul>
+      <p>
+        All refund requests must be submitted in writing via email to <a href="mailto:admin@kicevents.com">admin@kicevents.com.</a>
+      </p>
+      <p class="h5">
+        On-Site Policy
+      </p>
+      <p>
+        No one will be permitted to enter the CURE 2026 Event Space without advance registration.
+      </p>
+      <p>
+        There will be no ticket sales, exchanges, substitutions, refunds, or transfers at the event site under any circumstances.
+      </p>
+    </div>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="cell-policy-title">
+    <h2 class="h2 rules__jump-link-target" id="cell-policy-title">
+      KIC Cell Phone Use Policy
+    </h2>
+    <div class="content bod-text">
+      <p>
+        We recognize that cell phones are a part of daily life—but in kink spaces, their presence comes with added responsibility. There is no way to fully eliminate the risks associated with cell phone use in public or private event spaces, so we ask all attendees to evaluate their personal boundaries and risk tolerance before attending.
+      </p>
+      <p>
+        This KIC Cell Phone Use Policy is part of our ongoing effort to create a space where we can all engage more safely and intentionally. Just like many forms of kink, cell phone use in these environments carries risks—but with clear expectations and mutual respect, we can navigate it together. Be mindful of others’ privacy, and when in doubt, ask first.
+      </p>
+      <ul>
+        <li><b>NO cell phones</b> allowed in the main event space at any time.</li>
+        <li>Cell phone use to designated areas only. Please step outside the event space to make calls.</li>
+        <li>Designated areas for cellphone usage in the event space are: the Restaurant, Game Cubby, and Vendor Area.</li>
+        <li>Photography is strictly prohibited in ALL event spaces. </li>
+      </ul>
+      <p>
+        Cell phone use for a medical condition, please see our <a href="#disability-policy-title">Disability Accommodation Policy.</a>
+      </p>
+    </div>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="disability-policy-title">
+    <h2 class="h2 rules__jump-link-target" id="disability-policy-title">
+      KIC Events Disability Accommodation Policy
+    </h2>
+    <div class="content bod-text">
+      <p>
+        At KIC Events, we are committed to fostering an inclusive, accessible, and welcoming environment for all attendees. We recognize that individuals with disabilities may require accommodations, including the use of personal devices to monitor health conditions, navigate spaces, or assist with communication.  In accordance with the ADA, we provide Reasonable Accommodations (RA) for those who require them.
+      </p>
+      <p class="h5">
+        Use of Phones & Electronic Devices for Accessibility
+      </p>
+      <p>
+        While our event maintains a no-electronic devices/phones policy in event spaces to protect privacy and create a distraction-free environment, we fully acknowledge that some attendees rely on their phones or other electronic devices as medical or accessibility tools. Devices used for these purposes are exempt from the no-phone policy when required for:
+      </p>
+      <ul>
+        <li>Monitoring health conditions (e.g., blood glucose monitors, heart rate monitors, seizure alert systems)</li>
+        <li>Communication assistance (e.g., speech-to-text apps, AAC devices)</li>
+        <li>Navigation and mobility support (e.g., screen readers, GPS, visual or auditory aids)</li>
+        <li>Other disability-related needs as required by the attendee</li>
+      </ul>
+      <p class="h5">
+        Requesting an Accommodation
+      </p>
+      <p>
+        In accordance with the ADA, we provide Reasonable Accommodations (RA) for those who require them.  If you require the use of a phone or other device in the event space for disability-related reasons, you do not need to disclose specific medical details, but we ask that you:
+      </p>
+      <ul>
+        <li>Inform event staff or a designated Accessibility Coordinator upon arrival or at check-in.</li>
+        <li>A RA Sticker will be received by attendees to place on their event badge.</li>
+        <li>Ensure that usage is discreet and solely for accessibility purposes.</li>
+        <li>Use vibrate/silent mode to minimize disruption.</li>
+        <li>Videos and photos are not allowed to maintain event and attendee privacy.</li>
+      </ul>
+      <p class="h5">
+        Additional Accommodations
+      </p>
+      <p>
+        We strive to accommodate additional accessibility needs, including but not limited to:
+      </p>
+      <ul>
+        <li>Reserved seating for those with mobility limitations</li>
+        <li>Sensory-friendly areas or quiet spaces</li>
+        <li>Alternative formats for event materials (e.g., large print, digital copies)</li>
+        <li>Accessibility routes for wheelchairs and mobility devices</li>
+      </ul>
+      <p>
+        If you have specific requests or require further assistance, please contact us prior to the event at <a href="mailto:admin@kicevents.com">admin@kicevents.com</a> or speak with our KIC Accessibility Staff member during the event.
+      </p>
+      <p>
+        We are committed to ensuring a safe, inclusive, and accommodating space for all members of our community. Thank you for helping us make KIC Events accessible for everyone! Your comfort and safety matter to us. 
+      </p>
     </div>
   </section>
 </div>

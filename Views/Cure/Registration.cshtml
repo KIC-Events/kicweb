@@ -1,1 +1,176 @@
-<div>TODO: Registration</div>
+<div class="container">
+  <section class="page-section">
+    <h1 class="h2">REGISTER FOR CURE 2026</h1>
+    <h2 class="display" style="text-align: center; text-transform: none; letter-spacing: .09375rem; margin-top: var(--space-2)">
+      <span style="font-weight: normal">Registration opens on</span> <strong style="font-weight: 700">September 5th at 11:59:59pm!</strong>
+    </h2>
+    <div class="content body-text">
+      <p class="h5">
+        Registration Details
+      </p>
+      <p>
+        Make sure you’re ready with your government-issued ID and preferred payment method before beginning registration.
+      </p>
+      <p>
+        All information entered during registration <b>must exactly match</b> what appears on your official ID—this includes your full legal name.  Accepted forms of identification include a state ID, driver’s license, military ID, or U.S. passport. Think of this process more like booking a flight than signing up for a local event — please don’t use scene names, nicknames, or abbreviations. Accurate information ensures a smoother approval process and quicker delivery of your registration confirmation and hotel booking instructions.
+      </p>
+      <p>
+        When registering, you’ll have the chance to indicate your <b>preferred room type.</b> This doesn’t guarantee a room but places you in a queue. Securing your hotel room will happen later by following the steps outlined in your registration confirmation email, which will include how to submit your payment details directly to the host hotel.
+      </p>
+      <p>
+        If you’re attending as a couple or group, only <b>one person per room</b> should select a room type during registration. Please note: hotel bookings require a two-night minimum stay. For additional hotel info or questions, click <a href="#section-registration-faqs">HERE</a>.
+      </p>
+      @*ADD REG PROCESS OVERVIEW*@
+      <p>
+        If you have questions or need support, reach out to us at <a href="mailto:registration@kicevents.com">registration@kicevents.com.</a> We also recommend adding this address to your contacts to ensure you don’t miss your registration confirmation or any other important updates in the coming months.
+      </p>
+      <p class="h5">
+        Ticket Options
+      </p>
+      <p>
+        There are 4 different ticket options to choose from when registering:
+      </p>
+      <ul>
+        <li>Gold - $400</li>
+        <li>Silver - $275</li>
+        <li>Sweet it's a Suite - $250</li>
+        <li>Standard</li>
+        <ul>
+          <li>Early Bird: September 6th till October 3rd - $150</li>
+          <li>Regular: October 4th till November 28th - $175</li>
+          <li>Late: November 29th till January 2nd - $200</li>
+        </ul>
+      </ul>
+      <p>
+        <b>Gold Tickets</b> - This option comes with <b>ONE</b> ticket to the event and placement on the first floor of the hotel. This option also comes with two tickets to Decadent Delights, two CURE t-shirts, and a goodie bag. (LIMITED QUANTITY - Only 1 person per room has to purchase a gold ticket, not everyone that is staying in the room)
+      </p>
+      <p>
+        <b>Silver Tickets</b> - This option comes with <b>ONE</b> ticket to the event and placement in the next closest rooms to the event space (these rooms are on the second floor).  This option also comes with a goodie bag. (LIMITED QUANTITY - Only 1 person per room has to purchase a silver ticket, not everyone that is staying in the room)
+      </p>
+      <p>
+        <b>Sweet it’s a Suite Tickets</b> - This option comes with <b>ONE</b> ticket to the event and placement in a hotel suite. <em>NOTE: suites may be located on <b>any</b> floor of the hotel.</em> (LIMITED QUANTITY - Only 1 person per room has to purchase a sweet ticket, not everyone that is staying in the room)
+      </p>
+      <p>
+        <b>Standard Tickets</b> - A standard ticket gets you entrance to all the activities of the event.
+      </p>
+      <p>
+        * Ticket options do not include room costs.  Rooms are secured by the attendee through the hotel via directions shared on the confirmation email.  
+      </p>
+      <p>
+        ** All ticket options are only sold while supplies last. Once all standard tickets are sold, a wait list will be started.  If you would like to be placed on a wait list for a Gold, Silver, or Sweet it’s a Suite option, please send an email to <a href="mailto:admin@kicevents.com">admin@kicevents.com</a> We do suggest purchasing a Standard ticket to guarantee admittance. 
+      </p>
+      <p class="h5">
+        Add Ons
+      </p>
+      <ul>
+        <li><b>Decadent Delights - A VIP Welcome Experience</b></li>
+        <ul>
+          <li>Friday evening before Opening Ceremonies</li>
+          <li>Buffet-style dinner with beef, chicken, and seafood options along with sides and refreshments</li>
+          <li>Offers a chance to mingle with our incredible presenters in a more personal, conversational setting - no microphones, no presentations, just real people connecting over shared passions.</li>
+          <li>Seated, social experience designed to nourish both your appetite and your curiosity.</li>
+          <li>Limited capacity, included with the Gold Ticket Option</li>
+        </ul>
+        <li><b>Merchandise</b></li>
+        <ul>
+          <li>CURE branded T-shirts, Hoodies, and Zip Ups</li>
+          <li>LINK COMING SOON!</li>
+          @*add link to merch*@
+        </ul>
+      </ul>
+      @if(ViewBag.ShowCureRegForm)
+      {
+        <p>
+          <strong>Registration is now open!</strong> Click the button below to register.
+        </p>
+      <a asp-controller="Cure" asp-action="RegistrationForm" class="button">
+        Register for CURE 2026
+      </a>
+      }
+      @if(!ViewBag.ShowCureRegForm)
+      {
+        <p>
+          <strong>Registration will open soon!</strong> Please check back later.
+        </p>
+      }
+    </div>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="section-registration-faqs">
+    <h2 id="section-registration-faqs">
+      Registration FAQs
+    </h2>
+    @Html.Accordion(new List<AccordionItem>
+    {
+      new AccordionItem { 
+        Title = "What information is required in order to register for CURE?", 
+        Description = @"
+          <p>Your legal first and last name</p>
+          <p>Date of Birth (DOB)</p>
+          <p>Sex (matches what is listed on your government issued ID)</p>
+          <p>City, State, and Zip</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "Why is all this information needed?", 
+        Description = @"
+          <p>The information is used to conduct a background check in order for your registration to be approved. This is a safety precaution for all attendees.</p>
+          <p>When you arrive at the event, you will be required to show your government issued ID along with your registration number before entry and it will be compared to the information that was submitted with your registration. This helps ensure whoever comes to the event that the ID, registration #, and the person in the line is all one in the same. This is an additional layer of safety for all attendees.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "Will there be a physical ticket?", 
+        Description = @"
+          <p>No, a physical ticket is not needed nor provided.  When your registration is submitted, you will receive an email confirming payment.  Once your registration is processed, you will receive a confirmation email from registration@kicevents.com with hotel location, information, and your registration code, which will be needed when checking in at the hotel event.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "What kind of ID is needed to register for the event?", 
+        Description = @"
+          <p>A non expired, photo bearing, government issued drivers license or state ID, military ID, or passport will be needed in order to register.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "What if I do not have one of those types of ID’s?", 
+        Description = @"
+          <p>Send an email to admin@kicevents.com and explain your situation regarding your ID. This will allow us to see if there are any viable workarounds.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "What are the differences in the ticket types?", 
+        Description = @"
+          <p>There are 4 different ticket options: Gold, Silver, Sweet it’s a Suite, and Standard.  Gold and Silver options guarantee a room, secured by the attendee, in the host hotel closest to the event space and come with additional items.  Sweet it’s a Suite option guarantees a suite in the host hotel, floor unknown.  The Standard option is an admission ticket to the event.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "Can I purchase a single day or party pass?", 
+        Description = @"
+          <p>No.  There are no single day or party passes available for purchase.  ALL tickets sold are full weekend tickets, whether you choose to come the whole weekend, just for the classes, or for just one of the days.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "I bought my ticket, where is my confirmation email?", 
+        Description = @"
+          <p>When your registration is submitted, you should receive an email confirming payment.  Your registration is then processed and safety measures conducted, this can take several days.  Once that is completed, you will receive the confirmation email from registration@kicevents.com with hotel location, information, and your registration code, which will be needed when checking in at the hotel event.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "Where do I make my hotel reservations?", 
+        Description = @"
+          <p>The confirmation email will include instructions on how to secure your payment with the hotel. Please ensure the reservation is completed by the deadline stated in the email to secure your room.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "When can I make my hotel reservation?", 
+        Description = @"
+          <p>You can make your hotel reservation once you receive your email confirmation indicating that both your payment and background check have been verified.</p>
+        "
+      },
+      new AccordionItem { 
+        Title = "How are rooms assigned?", 
+        Description = @"
+          <p>Rooms are assigned on a first-come, first-served basis.  If a room type is able to be selected, you have secured placement in a room. If rooms are no longer available, there will be an option to be added to the room wait list. </p>
+        "
+      }
+    })
+  </section>
+</div>

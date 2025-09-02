@@ -1,1 +1,135 @@
-<div>TODO: Presenters</div>
+@using KiCWeb.Helpers
+
+<div class="container">
+  <section class="page-section" role="region" aria-labelledby="presenters-section-title">
+    <h1 class="h2" id="presenters-section-title">
+      CURE 2026 Presenters
+    </h1>
+    <div class="presenters">
+      @if(ViewBag.Presenters != null)
+      {
+        List<Presenter> presenters = ViewBag.Presenters;
+        @foreach (Presenter p in ViewBag.Presenters)
+        {
+          <button type="button" class="presenters__card">
+            <div class="presenters__image-container">
+              <img src="@p.ImgPath" alt="@p.PublicName's image" />
+            </div>
+            <h3>@p.PublicName</h3>
+          </button>
+        }
+        <div class="presenters__card presenters__card--placeholder">
+          <div class="presenters__image-container">
+            <img src="/images/redesign/CURE-placeholder-3.png" alt="More presenters coming soon!" />
+          </div>
+          <h3>More presenters coming soon!</h3>
+        </div>
+      }
+    </div>
+
+    <dialog id="presenters-dialog" class="dialog" data-portal="dialogs">
+      <button class="dialog-close" type="button" aria-label="Close dialog" data-action="close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button class="dialog-control dialog-control--left" type="button" aria-label="Previous presenter" data-action="previous">
+        <i class="fa-solid fa-chevron-left"></i>
+        <span class="display-mobile">Previous</span>
+      </button>
+      @foreach (Presenter p in ViewBag.Presenters)
+      {
+        <div class="presenter-details">
+          <header>
+            <img src="@p.ImgPath" alt="@p.PublicName's image" />
+            <div class="header-details">
+              <h1 class="h2-display">@p.PublicName</h1>
+              @if (!string.IsNullOrWhiteSpace(p.Tagline))
+              {
+                <div class="header-details__subtitle">
+                  @p.Tagline
+                </div>
+              }
+              <div class="header-details__class-list">
+                @foreach (var presentation in p.Presentations)
+                {
+                  <div>@presentation.Name</div>
+                }
+              </div>
+              @if (p.Socials?.Any() == true)
+              {
+                <div class="header-details__socials">
+                  <div>
+                    <div class="header-details__socials-title">Follow @p.PublicName:</div>
+                    <div class="social-links">
+                      @foreach (var social in p.Socials)
+                      {
+                          if (SocialPlatformMap.Platforms.TryGetValue(social.Platform.ToLower(), out var platform))
+                          {
+                              var fullUrl = platform.UrlPrefix + social.Handle;
+                              @Html.Raw($"""<a href="{fullUrl}" target="_blank" rel="noopener noreferrer">{platform.SvgMarkup}</a>""")
+                          }
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </header>
+          <p class="body-text">@p.Bio</p>
+        </div>
+      }
+      <button class="dialog-control dialog-control--right" type="button" aria-label="Next presenter" data-action="next">
+        <span class="display-mobile">Next</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </dialog>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="class-descriptions-section-title">
+    <h2 class="h2" id="class-descriptions-section-title">
+      CURE 2026 Class Descriptions
+    </h2>
+    <div class="content body-text">
+      @*
+      <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+        <a href="#" class="button">
+          DOWNLOAD CLASS DESCRIPTIONS (PDF)
+        </a>
+        <a href="#" class="button button--secondary">
+          DOWNLOAD CLASS SCHEDULE (PDF)
+        </a>
+      </div>
+      *@
+      @Html.Accordion(ViewBag.Presentations as List<AccordionItem>)
+    </div>
+  </section>
+  <section class="page-section" role="region" aria-labelledby="vendors-section-title">
+    <h2 class="h2" id="vendors-section-title" style="max-width: 100%;">
+      CURE 2026 Vendors
+    </h2>
+    <div class="vendors">
+    @if(ViewBag.Vendors != null)
+    {
+      List<Vendor> vendors = ViewBag.Vendors;
+      @foreach (Vendor v in ViewBag.Vendors)
+      {
+        <button type="button" class="vendors__card">
+          <div class="vendors__image-container">
+            <img src="@v.ImgPath" alt="@v.PublicName's image" />
+          </div>
+          <div class="vendors__details">
+            <h3>@v.PublicName</h3>
+            <p>@v.Tagline</p>
+          </div>
+        </button>
+      }
+      <div class="vendors__card vendors__card--placeholder">
+        <div class="vendors__image-container">
+          <img src="/images/redesign/CURE-placeholder-3.png" alt="More vendors coming soon!" />
+        </div>
+        <div class="vendors__details">
+          <p>More vendors coming soon!</p>
+        </div>
+      </div>
+    }
+  </div>
+  </section>
+</div>

@@ -2,11 +2,20 @@ form {
   .field {
     position: relative;
 
-    label {
+    label:not(input + label) {
       font: normal normal bold 0.75rem/0.9375rem var(--font-montserrat);
       letter-spacing: 0;
       text-transform: uppercase;
       font-weight: bold;
+    }
+
+    input[type="checkbox"] + label,
+    input[type="radio"] + label {
+      font: normal normal normal 0.75rem/0.9375rem var(--font-montserrat);
+      letter-spacing: 0;
+      text-transform: none;
+      font-weight: normal;
+      cursor: pointer;
     }
 
     &__description {
@@ -14,6 +23,10 @@ form {
       color: var(--color-grey);
       letter-spacing: 0;
       margin-top: .0625rem;
+
+      p + p {
+        margin-top: var(--space-1);
+      }
     }
 
     &-validation-error {
@@ -26,7 +39,7 @@ form {
     }
 
     &.required {
-      label::after {
+      label:not(input + label)::after {
         content: " *";
         color: var(--color-red);
       }
@@ -86,6 +99,124 @@ form {
 
     + .button {
       margin-top: var(--space-5);
+    }
+
+    &.field--inline {
+      position: relative;
+
+      // Input/textarea inside the inline field
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="number"],
+      input[type="url"],
+      input[type="tel"],
+      input[type="date"],
+      textarea {
+
+        // remove top margin; we place the label on top of the border
+        padding-top: 0.2rem;
+        margin-top: 0;
+        max-width: 18.75rem; // keep your existing width cap
+      }
+
+      input + label,
+      textarea + label {
+        color: var(--color-grey);
+        position: absolute;
+        left: 0.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        transform-origin: left top;
+        font: normal normal 500 0.875rem/1 var(--font-montserrat);
+        pointer-events: none;
+        background: var(--color-white);
+        padding: 0 0.25rem;
+        transition: transform .15s ease, color .15s ease;
+      }
+
+      // Focused or has value -> float
+      input:focus + label,
+      input:not(:placeholder-shown) + label,
+      textarea:focus + label,
+      textarea:not(:placeholder-shown) + label {
+        transform: translateY(-160%) scale(0.9);
+        color: color-mix(in srgb, var(--color-theme) 90%, black 10%);
+      }
+
+      // Keep your required asterisk
+      &.required input + label::after,
+      &.required textarea + label::after {
+        content: " *";
+        color: var(--color-red);
+      }
+
+      // Validation message still sits under the field
+      &-validation-error {
+        bottom: -1.15rem;
+      }
+    }
+  }
+}
+
+.radio-group .radio {
+  margin-top: var(--space-1);
+  + .radio {
+    margin-top: var(--space-0-5);
+  }
+}
+
+.checkbox-group .checkbox + .checkbox {
+  margin-top: var(--space-1);
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+
+  input[type=radio] {
+    appearance: none;
+    position: relative;
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid var(--color-theme);
+    background-color: transparent;
+    padding: 0; // Prevents squish from browser default
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0.5rem;
+      height: 0.5rem;
+      background-color: var(--color-theme);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    &:hover::after {
+      opacity: 0.25;
+    }
+
+    &:checked::after {
+      opacity: 1;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-black);
+      outline-offset: 2px;
+    }
+
+    + input {
+
     }
   }
 }

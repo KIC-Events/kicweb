@@ -25,16 +25,20 @@
   --color-white: #FFFFFF;
   --color-yellow: #FFCD36;
   --color-purple: #5F0E75;
+  --color-purple-90: #5F0E75E6;
   --color-red: #FF0000;
 
   --color-text-primary: var(--color-black);
   --color-bg-primary: var(--color-white);
   --color-accent: var(--color-yellow);
   --color-highlight: var(--color-purple);
+  --color-highlight-90: var(--color-purple-90);
 
   --color-theme-default: var(--color-yellow);
+  --color-theme-highlight: var(--color-highlight);
   --color-theme-cure: var(--color-purple);
   --color-theme: var(--color-theme-default);
+  --color-theme-cure-highlight: var(--color-yellow);
 
   // TRANSITIONS
   --transition-fast: 150ms ease;

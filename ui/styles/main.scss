@@ -13,4 +13,5 @@ html:not(.js-enabled) dialog ~ * {
 
 .theme__cure {
   --color-theme: var(--color-theme-cure);
+  --color-theme-highlight: var(--color-theme-cure-highlight);
 }

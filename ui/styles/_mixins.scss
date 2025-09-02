@@ -32,3 +32,24 @@ $breakpoints: (
     @content;
   }
 }
+
+$display-utilities: (
+  none,
+  block,
+  inline,
+  inline-block,
+  flex,
+  inline-flex
+);
+
+// Generates .d-{display}-{breakpoint} classes
+// Usage: .d-block-md { display: block; } at md breakpoint
+@each $display in $display-utilities {
+  @each $name, $bp in $breakpoints {
+    .d-#{$display}-#{$name} {
+      @include breakpoint($bp) {
+        display: #{$display} !important;
+      }
+    }
+  }
+}
