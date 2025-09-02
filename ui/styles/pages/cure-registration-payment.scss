@@ -1,6 +1,14 @@
 .cure-payment {
   --field-row-width: 30rem;
 
+  input + label, select + label {
+    font-family: verdana, sans-serif !important;
+    -webkit-font-smoothing: auto !important;
+    -moz-osx-font-smoothing: auto !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+  }
+
   display: flex;
   gap: 2rem;
   max-width: 1200px;
@@ -50,5 +58,19 @@
         max-width: 100% !important;
       }
     }
+  }
+
+  .sq-card-wrapper .sq-card-iframe-container {
+    max-width: var(--field-row-width);
+    border: 0.1rem solid color-mix(in srgb, var(--color-theme) 30%, transparent);
+    border-radius: 3px;
+    &::before {
+      border: 0.1rem solid color-mix(in srgb, var(--color-theme) 75%, transparent) !important;
+      border-radius: 3px !important;
+    }
+  }
+
+  .sq-card-wrapper.sq-error .sq-card-iframe-container::before {
+      border: 0.1rem solid #FF0000 !important;
   }
 }

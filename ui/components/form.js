@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $.validator.unobtrusive.parse(document);
 
   // Apply 'required' styling based on data attributes
-  document.querySelectorAll('[data-val-required]').forEach(input => {
+  document.querySelectorAll('[data-val-required]:not([data-val="false"])').forEach(input => {
     const container = input.closest('.field');
     if (container) {
       container.classList.add('required');

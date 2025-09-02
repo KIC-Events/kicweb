@@ -16,6 +16,7 @@ using Square.Exceptions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
 using KiCWeb.Configuration;
+using KiCWeb.Models;
 
 namespace KiCWeb.Controllers
 {
@@ -198,16 +199,22 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public IActionResult RegistrationPayment(CureCardFormModel cfmUpdated)
         {
-            if(cfmUpdated.CardToken is not null)
+            Console.WriteLine("CureCardFormModel received:");
+            Console.WriteLine(JsonSerializer.Serialize(cfmUpdated, new JsonSerializerOptions { WriteIndented = true }));
+            
+            if (cfmUpdated.CardToken is not null)
             {
                 string paymentStatus;
+                Console.WriteLine("Here 1");
                 try
                 {
                     paymentStatus = _paymentService.CreateCUREPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    if(ex is Square.Exceptions.ApiException squareEx)
+                Console.WriteLine("Here 2");
+
+                    if (ex is Square.Exceptions.ApiException squareEx)
                     {
                         // Handle Square-specific exceptions
                         _logger.LogSquareEx(squareEx);
@@ -217,15 +224,18 @@ namespace KiCWeb.Controllers
                         // Handle other exceptions
                         _logger.Log(ex);
                     }
-                    
+
                     return RedirectToAction("error");
                 }
-                
-                if(paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
+
+                Console.WriteLine("Here 3");
+
+
+                if (paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
                 {
                     return RedirectToAction("cardsuccess");
                 }
-                else if(paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
+                else if (paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
                 {
                     return RedirectToAction("carderror");
                 }
@@ -234,6 +244,9 @@ namespace KiCWeb.Controllers
                     return RedirectToAction("paymentprocessing");
                 }
             }
+
+                Console.WriteLine("Here 4");
+
             
             return RedirectToAction("error");
         }
@@ -298,6 +311,30 @@ namespace KiCWeb.Controllers
                 .OrderBy(v => v.PublicName)
                 .ToList();
 
+            List<Presentation> presentations = _kdbContext.Presentations
+                .Include(p => p.Presenters)
+                .Where(p => p.EventId == int.Parse(_configurationRoot["CUREID"]))
+                .ToList();
+
+            ViewBag.Presentations = new List<AccordionItem>();
+            
+            foreach(Presentation p in presentations)
+            {
+                string concatName = p.Name;
+                foreach(Presenter presenter in p.Presenters)
+                {
+                    concatName = concatName + " - " + presenter.PublicName;
+                }
+                
+                AccordionItem accordionItem = new AccordionItem()
+                {
+                    Title = concatName,
+                    Description = p.Description
+                };
+
+                ViewBag.Presentations.Add(accordionItem);
+            }
+                
             // Log to console or logger
             string json = JsonSerializer.Serialize(ViewBag.Vendors, new JsonSerializerOptions
             {
