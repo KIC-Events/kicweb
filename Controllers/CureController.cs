@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
 using KiCWeb.Configuration;
 using KiCWeb.Models;
+using Event = KiCData.Models.Event;
 
 namespace KiCWeb.Controllers
 {
@@ -75,12 +76,17 @@ namespace KiCWeb.Controllers
         [Route("registration/form")]
         public IActionResult RegistrationForm()
         {
+            var ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+
+            
             if (!_featureFlags.ShowCureRegForm)
             {
                 return NotFound();
             }
             // This action could be used to return a form for registration
             // You might want to return a partial view or a specific view for the form
+
+            Console.WriteLine("CUREID: " + _configurationRoot["CUREID"]);
 
             RegistrationViewModel registration = new RegistrationViewModel()
             {
@@ -107,6 +113,8 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
+            ViewBag.TicketInventory = ticketInventory;
+
             return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
         
@@ -114,11 +122,11 @@ namespace KiCWeb.Controllers
         [Route("registration/form")]
         public IActionResult RegistrationForm(RegistrationViewModel registrationData, string action)
         {
-            if(!ModelState.IsValid)
-            {
-                ViewBag.Error = "Missing Required Information";
-                return View(registrationData);
-            }
+            // if (!ModelState.IsValid)
+            // {
+            //     ViewBag.Error = "Missing Required Information";
+            //     return View(registrationData);
+            // }
             
             if(registrationData.DiscountCode is not null)
             {
@@ -134,9 +142,16 @@ namespace KiCWeb.Controllers
 
                 registrationData.TicketComp = comp;             
             }
+            
+            // Log registrationData as json to console
+            Console.WriteLine("RegistrationViewModel received:");
+            Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
 
-            string sessionId = _contextAccessor.HttpContext.Session.Id;
-            _registrationSessionService.AddRegistration(sessionId, registrationData);
+            var registrations = _registrationSessionService.Registrations;
+            registrationData.Price = 100; // TODO ⚠️⚠️⚠️ VERY IMPORTANT. MAKE THIS USE REAL TICKET PRICES ⚠️⚠️⚠️ VERY IMPORTANT. MAKE THIS USE REAL TICKET PRICES ⚠️⚠️⚠️
+            registrations.Add(registrationData);
+            Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
+            _registrationSessionService.Registrations = registrations; 
             
             if (action == "CreateMore")
             {
@@ -152,22 +167,33 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public IActionResult RegistrationPayment()
         {
+            List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+
             if (!_featureFlags.ShowCureRegistration)
             {
                 return NotFound();
             }
-
-            string SessionID = _contextAccessor.HttpContext.Session.Id;
-            List<RegistrationViewModel> registrations = _registrationSessionService.GetRegistrationsForUser(SessionID);
-                
-            if (registrations.Count == 0)
+            if (_registrationSessionService.IsEmpty())
             {
-                // Attempt to log registrations json
-                string registrationsJson = JsonSerializer.Serialize(registrations, new JsonSerializerOptions { WriteIndented = true });
-
                 // If no registration data is found, redirect to the registration form
                 //TODO: ADD additional error handling or user feedback
                 return RedirectToAction("RegistrationForm");
+            }            
+
+            List<RegistrationViewModel> registrations = _registrationSessionService.Registrations;
+
+            // Loop through registrations, match TicketType to ticketInventory[].Name.
+            // Set TicketId to the SquareId, and set the Price
+            foreach(RegistrationViewModel r in registrations)
+            {
+                foreach(TicketInventory ti in ticketInventory)
+                {
+                    if(r.TicketType == ti.Name)
+                    {
+                        r.Price = ti.Price;
+                        r.TicketId = ti.SquareId;
+                    }
+                }
             }
 
             //Check if checkout total is 0 - if user is not paying, we can skip checkout screen.
@@ -185,7 +211,7 @@ namespace KiCWeb.Controllers
             if (priceCheck == 0) RedirectToAction("nopay");
 
             CureCardFormModel cfm = new CureCardFormModel();
-            cfm.Items = _registrationSessionService.Registrations;
+            cfm.Items = registrations;
             //delete registrationStorage.Registrations; // Clear the registrations after payment form is created
             
             ViewBag.AppId = _configurationRoot["Square:AppID"];
@@ -201,6 +227,28 @@ namespace KiCWeb.Controllers
             Console.WriteLine("CureCardFormModel received:");
             Console.WriteLine(JsonSerializer.Serialize(cfmUpdated, new JsonSerializerOptions { WriteIndented = true }));
             
+            List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+
+            Event CureEvent = _kdbContext.Events
+                .Where(e => e.Id == int.Parse(_configurationRoot["CUREID"]))
+                .First();
+            
+            // Loop through cfmUpdated.Items (which are the registrations).
+            // Match TicketType to ticketInventory[].Name.
+            // Set TicketId to the SquareId, and set the Price
+            foreach (RegistrationViewModel r in cfmUpdated.Items)
+            {
+                foreach (TicketInventory ti in ticketInventory)
+                {
+                    if (r.TicketType == ti.Name)
+                    {
+                        r.Price = ti.Price;
+                        r.TicketId = ti.SquareId;
+                        r.Event = CureEvent;
+                    }
+                }
+            }
+
             if (cfmUpdated.CardToken is not null)
             {
                 string paymentStatus;
@@ -211,10 +259,17 @@ namespace KiCWeb.Controllers
                 }
                 catch (Exception ex)
                 {
-                Console.WriteLine("Here 2");
+                    Console.WriteLine("Exception during payment processing:");
+                    Console.WriteLine(ex.ToString());
+
+                    Console.WriteLine("Here 2");
 
                     if (ex is Square.Exceptions.ApiException squareEx)
                     {
+                        Console.WriteLine("Square Payment failed:");
+                        Console.WriteLine($"Status Code: {squareEx.ResponseCode}");
+                        Console.WriteLine($"Message: {squareEx.Message}");
+                        Console.WriteLine($"RawBody: {squareEx.HttpContext?.Response?.RawBody}");
                         // Handle Square-specific exceptions
                         _logger.LogSquareEx(squareEx);
                     }
