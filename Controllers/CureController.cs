@@ -18,6 +18,7 @@ using System.Web;
 using KiCWeb.Configuration;
 using KiCWeb.Models;
 using Event = KiCData.Models.Event;
+using System.Threading.Tasks;
 
 namespace KiCWeb.Controllers
 {
@@ -31,6 +32,7 @@ namespace KiCWeb.Controllers
         private readonly RegistrationSessionService _registrationSessionService;
         private readonly IConfigurationRoot _configurationRoot;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly ItemSessionService _itemSessionService;
 
         public CureController(
             IConfigurationRoot configurationRoot,
@@ -41,7 +43,8 @@ namespace KiCWeb.Controllers
             IPaymentService paymentService,
             IKiCLogger kiCLogger,
             RegistrationSessionService registrationSessionService,
-            FeatureFlags featureFlags
+            FeatureFlags featureFlags,
+            ItemSessionService itemSessionService
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
@@ -51,6 +54,7 @@ namespace KiCWeb.Controllers
             _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
             _featureFlags = featureFlags ?? throw new ArgumentNullException(nameof(featureFlags));
             _contextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _itemSessionService = itemSessionService ?? throw new ArgumentNullException(nameof(itemSessionService));
         }
 
         [Route("")]
@@ -128,9 +132,8 @@ namespace KiCWeb.Controllers
                 {                 
                     item.Disabled = true;
                     item.Text = ti.Name + " - SOLD OUT";
-
-                    registration.TicketTypes.Add(item);
                 }
+                    registration.TicketTypes.Add(item);
             }
 
             registration.RoomTypes =
@@ -365,7 +368,7 @@ namespace KiCWeb.Controllers
                 return RedirectToAction("carderror");
             }
             
-            return View(); // Views/Cure/PaymentProcessing.cshtml
+            return NoContent(); 
         }
         
         [Route("carderror")]
@@ -378,10 +381,13 @@ namespace KiCWeb.Controllers
         }
         
         [Route("cardsuccess")]
-        public IActionResult CardSuccess()
+        public async Task<IActionResult> CardSuccess()
         {
-            // This action could be used to show a success message after a successful card operation
-            // You might want to return a specific success view
+            List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
+            List<TicketAddon> ticketAddons = _itemSessionService.TicketAddons;
+            await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
+            await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
+            await _paymentService.ReduceAddonInventoryAsync(ticketAddons);
             
             return View("CardSuccess"); // Views/Cure/CardSuccess.cshtml
         }
