@@ -148,7 +148,9 @@ namespace KiCWeb.Controllers
             Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
 
             var registrations = _registrationSessionService.Registrations;
-            registrationData.Price = 100; // TODO ⚠️⚠️⚠️ VERY IMPORTANT. MAKE THIS USE REAL TICKET PRICES ⚠️⚠️⚠️ VERY IMPORTANT. MAKE THIS USE REAL TICKET PRICES ⚠️⚠️⚠️
+            
+            registrationData.Price = _paymentService.GetTicketPrice(registrationData.TicketType);
+            
             registrations.Add(registrationData);
             Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
             _registrationSessionService.Registrations = registrations; 
