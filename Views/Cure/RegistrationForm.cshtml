@@ -33,20 +33,7 @@
       <div class="field radio-group">
         <label asp-for="TicketType"></label>
         @Html.DescriptionFor(m => m.TicketType)
-        @for (int i = 0; i < ViewBag.TicketInventory.Count; i++)
-        {
-            var item = ViewBag.TicketInventory[i];
-            <div class="radio">
-              <input
-                type="radio"
-                name="TicketType"
-                id="ticket_@i"
-                value="@item.Name"
-                asp-for="TicketType"
-              />
-              <label for="ticket_@i">@item.Name</label>
-            </div>
-        }
+        @Html.DropDownListFor(m => m.TicketType, Model.TicketTypes)
       </div>
 
       @Html.HiddenFor(m => m.RegId)

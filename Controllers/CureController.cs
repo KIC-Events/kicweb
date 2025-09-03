@@ -83,10 +83,6 @@ namespace KiCWeb.Controllers
             {
                 return NotFound();
             }
-            // This action could be used to return a form for registration
-            // You might want to return a partial view or a specific view for the form
-
-            Console.WriteLine("CUREID: " + _configurationRoot["CUREID"]);
 
             RegistrationViewModel registration = new RegistrationViewModel()
             {
@@ -97,13 +93,19 @@ namespace KiCWeb.Controllers
                 .First()
             };
 
-            registration.TicketTypes =
-            [
-              new SelectListItem("Gold", "Gold"),
-              new SelectListItem("Silver", "Silver"),
-              new SelectListItem("Sweet", "Sweet"),
-              new SelectListItem("Standard", "Standard"),
-            ];
+            registration.TicketTypes = new List<SelectListItem>();
+            
+            foreach(TicketInventory ti in ticketInventory)
+            {
+                SelectListItem item = new SelectListItem(ti.Name, ti.Name);
+                if (ti.QuantityAvailable == 0)
+                {                 
+                    item.Disabled = true;
+                    item.Text = ti.Name + " - SOLD OUT";
+
+                    registration.TicketTypes.Add(item);
+                }
+            }
 
             registration.RoomTypes =
             [
@@ -112,8 +114,6 @@ namespace KiCWeb.Controllers
               new SelectListItem("Staying with someone else", "Staying with someone else"),
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
-
-            ViewBag.TicketInventory = ticketInventory;
 
             return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
@@ -212,7 +212,6 @@ namespace KiCWeb.Controllers
 
             CureCardFormModel cfm = new CureCardFormModel();
             cfm.Items = registrations;
-            //delete registrationStorage.Registrations; // Clear the registrations after payment form is created
             
             ViewBag.AppId = _configurationRoot["Square:AppID"];
             ViewBag.LocationId = _configurationRoot["Square:LocationId"];
@@ -252,24 +251,15 @@ namespace KiCWeb.Controllers
             if (cfmUpdated.CardToken is not null)
             {
                 string paymentStatus;
-                Console.WriteLine("Here 1");
                 try
                 {
                     paymentStatus = _paymentService.CreateCUREPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception during payment processing:");
-                    Console.WriteLine(ex.ToString());
-
-                    Console.WriteLine("Here 2");
 
                     if (ex is Square.Exceptions.ApiException squareEx)
                     {
-                        Console.WriteLine("Square Payment failed:");
-                        Console.WriteLine($"Status Code: {squareEx.ResponseCode}");
-                        Console.WriteLine($"Message: {squareEx.Message}");
-                        Console.WriteLine($"RawBody: {squareEx.HttpContext?.Response?.RawBody}");
                         // Handle Square-specific exceptions
                         _logger.LogSquareEx(squareEx);
                     }
@@ -281,8 +271,6 @@ namespace KiCWeb.Controllers
 
                     return RedirectToAction("error");
                 }
-
-                Console.WriteLine("Here 3");
 
 
                 if (paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
@@ -298,8 +286,6 @@ namespace KiCWeb.Controllers
                     return RedirectToAction("paymentprocessing");
                 }
             }
-
-                Console.WriteLine("Here 4");
 
             
             return RedirectToAction("error");
