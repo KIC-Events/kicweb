@@ -74,11 +74,37 @@ namespace KiCWeb.Controllers
 
         [HttpGet]
         [Route("registration/form")]
-        public IActionResult RegistrationForm()
+        public IActionResult RegistrationForm(Guid? regId)
         {
             var ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+            ViewBag.TicketInventory = ticketInventory;
 
-            
+            if (regId != null)
+            {
+                // Look for existing registration in session
+                var existingRegistration = _registrationSessionService.Registrations
+                    .FirstOrDefault(r => r.RegId == regId);
+                existingRegistration.TicketTypes =
+                [
+                    new SelectListItem("Gold", "Gold"),
+                    new SelectListItem("Silver", "Silver"),
+                    new SelectListItem("Sweet", "Sweet"),
+                    new SelectListItem("Standard", "Standard"),
+                ];
+
+                existingRegistration.RoomTypes =
+                [
+                    new SelectListItem("King", "King"),
+                    new SelectListItem("Doubles", "Doubles"),
+                    new SelectListItem("Staying with someone else", "Staying with someone else"),
+                    new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
+                ];
+
+                ViewBag.IsUpdating = true;
+
+                return View(existingRegistration);
+            }
+
             if (!_featureFlags.ShowCureRegForm)
             {
                 return NotFound();
@@ -115,6 +141,8 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
+            ViewBag.IsUpdating = false;
+
             return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
         
@@ -143,17 +171,31 @@ namespace KiCWeb.Controllers
                 registrationData.TicketComp = comp;             
             }
             
-            // Log registrationData as json to console
-            Console.WriteLine("RegistrationViewModel received:");
-            Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
-
             var registrations = _registrationSessionService.Registrations;
+
+            if (registrationData.RegId != Guid.Empty)
+            {
+                var existingRegistration = registrations
+                    .FirstOrDefault(r => r.RegId == registrationData.RegId);
+
+                if (existingRegistration != null)
+                {
+                    // Update existing registration by adding it at the same index
+                    int index = registrations.IndexOf(existingRegistration);
+                    registrations[index] = registrationData;
+                    _registrationSessionService.Registrations = registrations;
+                    return RedirectToAction("RegistrationPayment");
+                }
+            }
+
+            // Set registrationData.RegID
+            registrationData.RegId = Guid.NewGuid();
+            
             
             registrationData.Price = _paymentService.GetTicketPrice(registrationData.TicketType);
             
             registrations.Add(registrationData);
-            Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
-            _registrationSessionService.Registrations = registrations; 
+            _registrationSessionService.Registrations = registrations;
             
             if (action == "CreateMore")
             {
@@ -164,7 +206,21 @@ namespace KiCWeb.Controllers
                 return RedirectToAction("RegistrationPayment");
             }
         }
-        
+
+        [HttpDelete]
+        [Route("registration/{regId}")]
+        public IActionResult RemoveTicket(Guid regId)
+        {
+            var registrations = _registrationSessionService.Registrations;
+            var registrationToRemove = registrations.FirstOrDefault(r => r.RegId == regId);
+            if (registrationToRemove != null)
+            {
+                registrations.Remove(registrationToRemove);
+                _registrationSessionService.Registrations = registrations;
+            }
+            return NoContent();
+        }
+
         [HttpGet]
         [Route("registration/payment")]
         public IActionResult RegistrationPayment()
@@ -225,9 +281,6 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public IActionResult RegistrationPayment(CureCardFormModel cfmUpdated)
         {
-            Console.WriteLine("CureCardFormModel received:");
-            Console.WriteLine(JsonSerializer.Serialize(cfmUpdated, new JsonSerializerOptions { WriteIndented = true }));
-            
             List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
 
             Event CureEvent = _kdbContext.Events
@@ -389,8 +442,6 @@ namespace KiCWeb.Controllers
         [Route("volunteers")]
         public IActionResult Volunteers()
         {
-            Console.WriteLine("Volunteers page accessed.");
-            Console.WriteLine($"Feature flag for ShowCureVolunteers: {_featureFlags.ShowCureVolunteers}");
             if (!_featureFlags.ShowCureVolunteers)
             {
                 return NotFound();

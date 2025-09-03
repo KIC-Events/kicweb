@@ -9,6 +9,7 @@
     <Content Remove="Views\People\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\kicdata\KiCData.csproj" />
     <PackageReference Include="Square" Version="38.1.0" />
     <PackageReference Include="MailKit" Version="4.8.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
@@ -32,8 +33,5 @@
     <None Include="wwwroot\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\kicdata\KiCData.csproj" />
   </ItemGroup>  
 </Project>

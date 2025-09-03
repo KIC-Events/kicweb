@@ -222,8 +222,17 @@
         }
       </div>
 
-      <button class="button button--secondary" type="submit" name="action" value="CreateMore">Register another</button>
-      <button class="button" type="submit" name="action" value="Checkout">Checkout</button>
+      @* If RegId is set, show the "Update" button *@
+      @if (ViewBag.IsUpdating)
+      {
+        <a href="/Cure/Registration/Payment" class="button button--secondary">Cancel Update</a>
+        <button class="button" type="submit" name="action" value="Checkout">Update Registration</button>
+      }
+      else
+      {
+        <button class="button button--secondary" type="submit" name="action" value="CreateMore">Register another</button>
+        <button class="button" type="submit" name="action" value="Checkout">Checkout</button>
+      }    
     </form>
   </section>
 </div>
