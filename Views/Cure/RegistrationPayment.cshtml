@@ -18,6 +18,9 @@
     decimal totalDue = subtotal + salesTax;
   }
   
+  @* Registration JSON: *@
+  <pre>@JsonSerializer.Serialize(Model, new JsonSerializerOptions { WriteIndented = true })</pre>
+
   <div class="cure-payment">
     <div class="cure-payment__main">
       <section class="page-section">
@@ -65,7 +68,11 @@
               </div>
             </div>
         <div class="content body-text">
-          <p>Review your selections below. Click the pencil icon next to a ticket to edit it.</p>
+          <p>Review your selections below. Click the actions on the top right of the selections to make changes.</p>
+
+          <a asp-action="RegistrationForm" class="button button--secondary">
+            Add Another Ticket
+          </a>
 
           @for (int i = 0; i < Model.Items.Count; i++)
           {
@@ -88,8 +95,19 @@
                 }
 
                 <p>Room Type: @item.RoomType</p>
+
+                <div class="cure-payment__ticket-actions">
+                  @* Font awesome edit/trash here *@
+                  <a asp-action="RegistrationForm" asp-route-regId="@item.RegId">
+                    <i class="fa fa-edit"></i>
+                  </a>
+                  <a href="#" onclick="removeTicket('@item.RegId'); return false;">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </div>
               </div>
           }
+
         </div>          
       </section>
 
@@ -320,6 +338,14 @@ else
 </style>
 
 <script>
+  function removeTicket(regId) {
+    if (!confirm("Are you sure you want to delete this ticket?")) return;
+
+    fetch(`/cure/registration/${regId}`, {
+      method: 'DELETE'
+    }).then(() => location.reload());
+  }
+
   (async () => {
     const payments = Square.payments('@ViewBag.AppId', '@ViewBag.LocationId');
     const card = await payments.card({
