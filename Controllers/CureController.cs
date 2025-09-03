@@ -74,19 +74,43 @@ namespace KiCWeb.Controllers
 
         [HttpGet]
         [Route("registration/form")]
-        public IActionResult RegistrationForm()
+        public IActionResult RegistrationForm(Guid? regId)
         {
             var ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+            ViewBag.TicketInventory = ticketInventory;
 
-            
+            if (regId != null)
+            {
+                // Look for existing registration in session
+                var existingRegistration = _registrationSessionService.Registrations
+                    .FirstOrDefault(r => r.RegId == regId);
+                existingRegistration.TicketTypes =
+                [
+                    new SelectListItem("Gold", "Gold"),
+                    new SelectListItem("Silver", "Silver"),
+                    new SelectListItem("Sweet", "Sweet"),
+                    new SelectListItem("Standard", "Standard"),
+                ];
+
+                existingRegistration.RoomTypes =
+                [
+                    new SelectListItem("King", "King"),
+                    new SelectListItem("Doubles", "Doubles"),
+                    new SelectListItem("Staying with someone else", "Staying with someone else"),
+                    new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
+                ];
+
+                ViewBag.IsUpdating = true;
+
+                return View(existingRegistration);
+            }
+
             if (!_featureFlags.ShowCureRegForm)
             {
                 return NotFound();
             }
             // This action could be used to return a form for registration
             // You might want to return a partial view or a specific view for the form
-
-            Console.WriteLine("CUREID: " + _configurationRoot["CUREID"]);
 
             RegistrationViewModel registration = new RegistrationViewModel()
             {
@@ -113,7 +137,7 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
-            ViewBag.TicketInventory = ticketInventory;
+            ViewBag.IsUpdating = false;
 
             return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
@@ -143,15 +167,28 @@ namespace KiCWeb.Controllers
                 registrationData.TicketComp = comp;             
             }
             
-            // Log registrationData as json to console
-            Console.WriteLine("RegistrationViewModel received:");
-            Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
-
             var registrations = _registrationSessionService.Registrations;
-            registrationData.Price = 100; // TODO ⚠️⚠️⚠️ VERY IMPORTANT. MAKE THIS USE REAL TICKET PRICES ⚠️⚠️⚠️ VERY IMPORTANT. MAKE THIS USE REAL TICKET PRICES ⚠️⚠️⚠️
+
+            if (registrationData.RegId != Guid.Empty)
+            {
+                var existingRegistration = registrations
+                    .FirstOrDefault(r => r.RegId == registrationData.RegId);
+
+                if (existingRegistration != null)
+                {
+                    // Update existing registration by adding it at the same index
+                    int index = registrations.IndexOf(existingRegistration);
+                    registrations[index] = registrationData;
+                    _registrationSessionService.Registrations = registrations;
+                    return RedirectToAction("RegistrationPayment");
+                }
+            }
+
+            // Set registrationData.RegID
+            registrationData.RegId = Guid.NewGuid();
+            
             registrations.Add(registrationData);
-            Console.WriteLine(JsonSerializer.Serialize(registrationData, new JsonSerializerOptions { WriteIndented = true }));
-            _registrationSessionService.Registrations = registrations; 
+            _registrationSessionService.Registrations = registrations;
             
             if (action == "CreateMore")
             {
@@ -162,7 +199,21 @@ namespace KiCWeb.Controllers
                 return RedirectToAction("RegistrationPayment");
             }
         }
-        
+
+        [HttpDelete]
+        [Route("registration/{regId}")]
+        public IActionResult RemoveTicket(Guid regId)
+        {
+            var registrations = _registrationSessionService.Registrations;
+            var registrationToRemove = registrations.FirstOrDefault(r => r.RegId == regId);
+            if (registrationToRemove != null)
+            {
+                registrations.Remove(registrationToRemove);
+                _registrationSessionService.Registrations = registrations;
+            }
+            return NoContent();
+        }
+
         [HttpGet]
         [Route("registration/payment")]
         public IActionResult RegistrationPayment()
@@ -224,9 +275,6 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public IActionResult RegistrationPayment(CureCardFormModel cfmUpdated)
         {
-            Console.WriteLine("CureCardFormModel received:");
-            Console.WriteLine(JsonSerializer.Serialize(cfmUpdated, new JsonSerializerOptions { WriteIndented = true }));
-            
             List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
 
             Event CureEvent = _kdbContext.Events
@@ -252,24 +300,14 @@ namespace KiCWeb.Controllers
             if (cfmUpdated.CardToken is not null)
             {
                 string paymentStatus;
-                Console.WriteLine("Here 1");
                 try
                 {
                     paymentStatus = _paymentService.CreateCUREPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception during payment processing:");
-                    Console.WriteLine(ex.ToString());
-
-                    Console.WriteLine("Here 2");
-
                     if (ex is Square.Exceptions.ApiException squareEx)
                     {
-                        Console.WriteLine("Square Payment failed:");
-                        Console.WriteLine($"Status Code: {squareEx.ResponseCode}");
-                        Console.WriteLine($"Message: {squareEx.Message}");
-                        Console.WriteLine($"RawBody: {squareEx.HttpContext?.Response?.RawBody}");
                         // Handle Square-specific exceptions
                         _logger.LogSquareEx(squareEx);
                     }
@@ -281,9 +319,6 @@ namespace KiCWeb.Controllers
 
                     return RedirectToAction("error");
                 }
-
-                Console.WriteLine("Here 3");
-
 
                 if (paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
                 {
@@ -299,9 +334,6 @@ namespace KiCWeb.Controllers
                 }
             }
 
-                Console.WriteLine("Here 4");
-
-            
             return RedirectToAction("error");
         }
         
@@ -401,8 +433,6 @@ namespace KiCWeb.Controllers
         [Route("volunteers")]
         public IActionResult Volunteers()
         {
-            Console.WriteLine("Volunteers page accessed.");
-            Console.WriteLine($"Feature flag for ShowCureVolunteers: {_featureFlags.ShowCureVolunteers}");
             if (!_featureFlags.ShowCureVolunteers)
             {
                 return NotFound();

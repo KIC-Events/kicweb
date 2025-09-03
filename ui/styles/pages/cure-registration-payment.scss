@@ -52,6 +52,27 @@
     background: var(--color-accent);
     margin-top: var(--space-2);
     padding: var(--space-2-5) var(--space-2);
+    position: relative;
+  }
+
+  &__ticket-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    display: flex;
+    width: 2.5rem;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: #a97f00;
+    a:hover {
+      color: var(--color-black);
+    }
+    .fa-trash {
+      color: #D7634A;
+      &:hover {
+        color: var(--color-red);
+      }
+    }
   }
 
   &__field-row {
