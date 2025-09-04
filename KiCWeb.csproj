@@ -9,6 +9,8 @@
     <Content Remove="Views\People\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.21" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.21" />
     <PackageReference Include="Hangfire.MySqlStorage" Version="2.0.3" />
     <PackageReference Include="KICData" Version="1.4.5" />
     <PackageReference Include="Square" Version="38.1.0" />
