@@ -222,6 +222,19 @@
         }
       </div>
 
+      @*Add addon*@
+      <div class="field radio-group">
+        <label asp-for="HasMealAddon"></label>
+        <p>Select this option if you would like to add the Decadent Delights meal package to your ticket.</p>
+        @if(ViewBag.ItemInventory.QuantityAvailable > 0){
+          <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" />
+        }
+        @if(ViewBag.ItemInventory.QuantityAvailable = 0){
+          <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" disabled />
+          <span>SOLD OUT</span>
+        }
+      </div>
+
       @* If RegId is set, show the "Update" button *@
       @if (ViewBag.IsUpdating)
       {

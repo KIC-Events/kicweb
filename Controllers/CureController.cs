@@ -32,7 +32,6 @@ namespace KiCWeb.Controllers
         private readonly RegistrationSessionService _registrationSessionService;
         private readonly IConfigurationRoot _configurationRoot;
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly ItemSessionService _itemSessionService;
 
         public CureController(
             IConfigurationRoot configurationRoot,
@@ -43,8 +42,7 @@ namespace KiCWeb.Controllers
             IPaymentService paymentService,
             IKiCLogger kiCLogger,
             RegistrationSessionService registrationSessionService,
-            FeatureFlags featureFlags,
-            ItemSessionService itemSessionService
+            FeatureFlags featureFlags
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
@@ -54,7 +52,6 @@ namespace KiCWeb.Controllers
             _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
             _featureFlags = featureFlags ?? throw new ArgumentNullException(nameof(featureFlags));
             _contextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-            _itemSessionService = itemSessionService ?? throw new ArgumentNullException(nameof(itemSessionService));
         }
 
         [Route("")]
@@ -78,10 +75,12 @@ namespace KiCWeb.Controllers
 
         [HttpGet]
         [Route("registration/form")]
-        public IActionResult RegistrationForm(Guid? regId)
+        public async Task<IActionResult> RegistrationForm(Guid? regId = null)
         {
-            var ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+            var ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
+            var addonInventory = await _paymentService.GetItemInventoryAsync("Decadent Delight");
             ViewBag.TicketInventory = ticketInventory;
+            ViewBag.Addon = addonInventory.First();
 
             if (regId != null)
             {
@@ -125,7 +124,7 @@ namespace KiCWeb.Controllers
 
             registration.TicketTypes = new List<SelectListItem>();
             
-            foreach(TicketInventory ti in ticketInventory)
+            foreach(ItemInventory ti in ticketInventory)
             {
                 SelectListItem item = new SelectListItem(ti.Name, ti.Name);
                 if (ti.QuantityAvailable == 0)
@@ -151,13 +150,18 @@ namespace KiCWeb.Controllers
         
         [HttpPost]
         [Route("registration/form")]
-        public IActionResult RegistrationForm(RegistrationViewModel registrationData, string action)
+        public async Task<IActionResult> RegistrationForm(RegistrationViewModel registrationData, string action)
         {
             // if (!ModelState.IsValid)
             // {
             //     ViewBag.Error = "Missing Required Information";
             //     return View(registrationData);
             // }
+            
+            if(registrationData.HasMealAddon == true)
+            {
+                registrationData.MealAddon = await _paymentService.GetAddonItemAsync();
+            }
             
             if(registrationData.DiscountCode is not null)
             {
@@ -226,9 +230,9 @@ namespace KiCWeb.Controllers
 
         [HttpGet]
         [Route("registration/payment")]
-        public IActionResult RegistrationPayment()
+        public async Task<IActionResult> RegistrationPayment()
         {
-            List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+            List<ItemInventory> ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
 
             if (!_featureFlags.ShowCureRegistration)
             {
@@ -247,7 +251,7 @@ namespace KiCWeb.Controllers
             // Set TicketId to the SquareId, and set the Price
             foreach(RegistrationViewModel r in registrations)
             {
-                foreach(TicketInventory ti in ticketInventory)
+                foreach(ItemInventory ti in ticketInventory)
                 {
                     if(r.TicketType == ti.Name)
                     {
@@ -267,6 +271,11 @@ namespace KiCWeb.Controllers
                 {
                     priceCheck -= r.TicketComp.CompAmount;
                 }
+                
+                if(r.MealAddon is not null)
+                {
+                    priceCheck += r.MealAddon.Price;
+                }
             }
 
             if (priceCheck == 0) RedirectToAction("nopay");
@@ -282,9 +291,9 @@ namespace KiCWeb.Controllers
         
         [HttpPost]
         [Route("registration/payment")]
-        public IActionResult RegistrationPayment(CureCardFormModel cfmUpdated)
+        public async Task<IActionResult> RegistrationPayment(CureCardFormModel cfmUpdated)
         {
-            List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+            List<ItemInventory> ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
 
             Event CureEvent = _kdbContext.Events
                 .Where(e => e.Id == int.Parse(_configurationRoot["CUREID"]))
@@ -295,7 +304,7 @@ namespace KiCWeb.Controllers
             // Set TicketId to the SquareId, and set the Price
             foreach (RegistrationViewModel r in cfmUpdated.Items)
             {
-                foreach (TicketInventory ti in ticketInventory)
+                foreach (ItemInventory ti in ticketInventory)
                 {
                     if (r.TicketType == ti.Name)
                     {
@@ -384,7 +393,14 @@ namespace KiCWeb.Controllers
         public async Task<IActionResult> CardSuccess()
         {
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
-            List<TicketAddon> ticketAddons = _itemSessionService.TicketAddons;
+            List<TicketAddon> ticketAddons = new List<TicketAddon>();
+            foreach(RegistrationViewModel rvm in registrationViewModels)
+            {
+                if(rvm.HasMealAddon == true)
+                {
+                    ticketAddons.Add(rvm.MealAddon);
+                }
+            }
             await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
             await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
             await _paymentService.ReduceAddonInventoryAsync(ticketAddons);
