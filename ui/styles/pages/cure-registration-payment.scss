@@ -1,0 +1,112 @@
+.cure-payment {
+  --field-row-width: 30rem;
+
+  input + label, select + label {
+    font-family: verdana, sans-serif !important;
+    -webkit-font-smoothing: auto !important;
+    -moz-osx-font-smoothing: auto !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+  }
+
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  &__main {
+    flex: 2;
+    min-width: 0;
+  }
+
+  &__summary {
+    flex: 1;
+
+    .order-summary {
+      position: sticky;
+      top: 5.5rem;
+      background: white;
+      padding: 1rem;
+      border: 1px solid var(--color-grey);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    &--desktop {
+      display: none;
+      @media (min-width: 768px) {
+        display: block;
+      }
+    }
+
+    &--mobile {
+      display: none;
+      margin-top: 1rem;
+      @media (max-width: 767px) {
+        display: block;
+      }
+    }
+  }
+
+  &__ticket-box {
+    background: var(--color-accent);
+    margin-top: var(--space-2);
+    padding: var(--space-2-5) var(--space-2);
+    position: relative;
+  }
+
+  &__ticket-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    display: flex;
+    width: 2.5rem;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: #a97f00;
+    a:hover {
+      color: var(--color-black);
+    }
+    .fa-trash {
+      color: #D7634A;
+      &:hover {
+        color: var(--color-red);
+      }
+    }
+  }
+
+  &__field-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: var(--space-1-5);
+    max-width: var(--field-row-width);
+    & + & {
+      margin-top: var(--space-3);
+    }
+    .field + .field {
+      margin-top: 0;
+    }
+
+    .field {
+      width: 100%;
+
+      > * {
+        max-width: 100% !important;
+      }
+    }
+  }
+
+  .sq-card-wrapper .sq-card-iframe-container {
+    max-width: var(--field-row-width);
+    border: 0.1rem solid color-mix(in srgb, var(--color-theme) 30%, transparent);
+    border-radius: 3px;
+    &::before {
+      border: 0.1rem solid color-mix(in srgb, var(--color-theme) 75%, transparent) !important;
+      border-radius: 3px !important;
+    }
+  }
+
+  .sq-card-wrapper.sq-error .sq-card-iframe-container::before {
+      border: 0.1rem solid #FF0000 !important;
+  }
+}

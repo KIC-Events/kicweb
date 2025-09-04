@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
 using KiCWeb.Configuration;
 using KiCWeb.Models;
+using Event = KiCData.Models.Event;
 
 namespace KiCWeb.Controllers
 {
@@ -29,6 +30,7 @@ namespace KiCWeb.Controllers
         private readonly IKiCLogger _logger;
         private readonly RegistrationSessionService _registrationSessionService;
         private readonly IConfigurationRoot _configurationRoot;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public CureController(
             IConfigurationRoot configurationRoot,
@@ -48,6 +50,7 @@ namespace KiCWeb.Controllers
             _registrationSessionService = registrationSessionService ?? throw new ArgumentNullException(nameof(registrationSessionService));
             _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
             _featureFlags = featureFlags ?? throw new ArgumentNullException(nameof(featureFlags));
+            _contextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         [Route("")]
@@ -71,8 +74,37 @@ namespace KiCWeb.Controllers
 
         [HttpGet]
         [Route("registration/form")]
-        public IActionResult RegistrationForm()
+        public IActionResult RegistrationForm(Guid? regId)
         {
+            var ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+            ViewBag.TicketInventory = ticketInventory;
+
+            if (regId != null)
+            {
+                // Look for existing registration in session
+                var existingRegistration = _registrationSessionService.Registrations
+                    .FirstOrDefault(r => r.RegId == regId);
+                existingRegistration.TicketTypes =
+                [
+                    new SelectListItem("Gold", "Gold"),
+                    new SelectListItem("Silver", "Silver"),
+                    new SelectListItem("Sweet", "Sweet"),
+                    new SelectListItem("Standard", "Standard"),
+                ];
+
+                existingRegistration.RoomTypes =
+                [
+                    new SelectListItem("King", "King"),
+                    new SelectListItem("Doubles", "Doubles"),
+                    new SelectListItem("Staying with someone else", "Staying with someone else"),
+                    new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
+                ];
+
+                ViewBag.IsUpdating = true;
+
+                return View(existingRegistration);
+            }
+
             if (!_featureFlags.ShowCureRegForm)
             {
                 return NotFound();
@@ -84,8 +116,7 @@ namespace KiCWeb.Controllers
             {
                 Event = _kdbContext.Events
                 .Where(
-                    e => e.Name == "CURE"
-                    && e.EndDate >= DateOnly.FromDateTime(DateTime.Now) // Ensure the event is not in the past, and that it is the CURE event
+                    e => e.Id == int.Parse(_configurationRoot["CUREID"])
                 )
                 .First()
             };
@@ -106,6 +137,8 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
+            ViewBag.IsUpdating = false;
+
             return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
         
@@ -113,9 +146,49 @@ namespace KiCWeb.Controllers
         [Route("registration/form")]
         public IActionResult RegistrationForm(RegistrationViewModel registrationData, string action)
         {
+            // if (!ModelState.IsValid)
+            // {
+            //     ViewBag.Error = "Missing Required Information";
+            //     return View(registrationData);
+            // }
+            
+            if(registrationData.DiscountCode is not null)
+            {
+                TicketComp? comp = _kdbContext.TicketComp
+                    .Where(c => c.DiscountCode == registrationData.DiscountCode)
+                    .FirstOrDefault();
+                    
+                if(comp is null)
+                {
+                    ViewBag.Error = "Discount Code Invalid";
+                    return View(registrationData);
+                }
+
+                registrationData.TicketComp = comp;             
+            }
+            
             var registrations = _registrationSessionService.Registrations;
+
+            if (registrationData.RegId != Guid.Empty)
+            {
+                var existingRegistration = registrations
+                    .FirstOrDefault(r => r.RegId == registrationData.RegId);
+
+                if (existingRegistration != null)
+                {
+                    // Update existing registration by adding it at the same index
+                    int index = registrations.IndexOf(existingRegistration);
+                    registrations[index] = registrationData;
+                    _registrationSessionService.Registrations = registrations;
+                    return RedirectToAction("RegistrationPayment");
+                }
+            }
+
+            // Set registrationData.RegID
+            registrationData.RegId = Guid.NewGuid();
+            
             registrations.Add(registrationData);
-            _registrationSessionService.Registrations = registrations; 
+            _registrationSessionService.Registrations = registrations;
             
             if (action == "CreateMore")
             {
@@ -126,29 +199,70 @@ namespace KiCWeb.Controllers
                 return RedirectToAction("RegistrationPayment");
             }
         }
-        
+
+        [HttpDelete]
+        [Route("registration/{regId}")]
+        public IActionResult RemoveTicket(Guid regId)
+        {
+            var registrations = _registrationSessionService.Registrations;
+            var registrationToRemove = registrations.FirstOrDefault(r => r.RegId == regId);
+            if (registrationToRemove != null)
+            {
+                registrations.Remove(registrationToRemove);
+                _registrationSessionService.Registrations = registrations;
+            }
+            return NoContent();
+        }
+
         [HttpGet]
         [Route("registration/payment")]
         public IActionResult RegistrationPayment()
         {
+            List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+
             if (!_featureFlags.ShowCureRegistration)
             {
                 return NotFound();
             }
-            var registrations = _registrationSessionService.Registrations;
-                
             if (_registrationSessionService.IsEmpty())
             {
-                // Attempt to log registrations json
-                string registrationsJson = JsonSerializer.Serialize(registrations, new JsonSerializerOptions { WriteIndented = true });
-
                 // If no registration data is found, redirect to the registration form
                 //TODO: ADD additional error handling or user feedback
                 return RedirectToAction("RegistrationForm");
+            }            
+
+            List<RegistrationViewModel> registrations = _registrationSessionService.Registrations;
+
+            // Loop through registrations, match TicketType to ticketInventory[].Name.
+            // Set TicketId to the SquareId, and set the Price
+            foreach(RegistrationViewModel r in registrations)
+            {
+                foreach(TicketInventory ti in ticketInventory)
+                {
+                    if(r.TicketType == ti.Name)
+                    {
+                        r.Price = ti.Price;
+                        r.TicketId = ti.SquareId;
+                    }
+                }
             }
 
+            //Check if checkout total is 0 - if user is not paying, we can skip checkout screen.
+            double? priceCheck = 0;
+            foreach(RegistrationViewModel r in registrations)
+            {
+                priceCheck += r.Price;
+                
+                if(r.TicketComp is not null)
+                {
+                    priceCheck -= r.TicketComp.CompAmount;
+                }
+            }
+
+            if (priceCheck == 0) RedirectToAction("nopay");
+
             CureCardFormModel cfm = new CureCardFormModel();
-            cfm.Items = _registrationSessionService.Registrations;
+            cfm.Items = registrations;
             //delete registrationStorage.Registrations; // Clear the registrations after payment form is created
             
             ViewBag.AppId = _configurationRoot["Square:AppID"];
@@ -161,16 +275,38 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public IActionResult RegistrationPayment(CureCardFormModel cfmUpdated)
         {
-            if(cfmUpdated.CardToken is not null)
+            List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+
+            Event CureEvent = _kdbContext.Events
+                .Where(e => e.Id == int.Parse(_configurationRoot["CUREID"]))
+                .First();
+            
+            // Loop through cfmUpdated.Items (which are the registrations).
+            // Match TicketType to ticketInventory[].Name.
+            // Set TicketId to the SquareId, and set the Price
+            foreach (RegistrationViewModel r in cfmUpdated.Items)
+            {
+                foreach (TicketInventory ti in ticketInventory)
+                {
+                    if (r.TicketType == ti.Name)
+                    {
+                        r.Price = ti.Price;
+                        r.TicketId = ti.SquareId;
+                        r.Event = CureEvent;
+                    }
+                }
+            }
+
+            if (cfmUpdated.CardToken is not null)
             {
                 string paymentStatus;
                 try
                 {
                     paymentStatus = _paymentService.CreateCUREPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    if(ex is Square.Exceptions.ApiException squareEx)
+                    if (ex is Square.Exceptions.ApiException squareEx)
                     {
                         // Handle Square-specific exceptions
                         _logger.LogSquareEx(squareEx);
@@ -180,15 +316,15 @@ namespace KiCWeb.Controllers
                         // Handle other exceptions
                         _logger.Log(ex);
                     }
-                    
+
                     return RedirectToAction("error");
                 }
-                
-                if(paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
+
+                if (paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
                 {
                     return RedirectToAction("cardsuccess");
                 }
-                else if(paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
+                else if (paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
                 {
                     return RedirectToAction("carderror");
                 }
@@ -197,7 +333,7 @@ namespace KiCWeb.Controllers
                     return RedirectToAction("paymentprocessing");
                 }
             }
-            
+
             return RedirectToAction("error");
         }
         
@@ -297,8 +433,6 @@ namespace KiCWeb.Controllers
         [Route("volunteers")]
         public IActionResult Volunteers()
         {
-            Console.WriteLine("Volunteers page accessed.");
-            Console.WriteLine($"Feature flag for ShowCureVolunteers: {_featureFlags.ShowCureVolunteers}");
             if (!_featureFlags.ShowCureVolunteers)
             {
                 return NotFound();
@@ -322,6 +456,12 @@ namespace KiCWeb.Controllers
             // You might want to return a specific success view
             
             return View("Success"); // Views/Cure/Success.cshtml
+        }
+        
+        [Route("nopay")]
+        public IActionResult NoPay()
+        {
+            return View();
         }
     }
 }
