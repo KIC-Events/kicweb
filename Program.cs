@@ -1,9 +1,10 @@
 using KiCWeb.Configuration;
 using KiCData.Services;
 using KiCData.Models;
-using KiCData.Models.WebModels;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Hangfire;
+using Hangfire.MySql;
+using KiCWeb.Helpers;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -26,19 +27,35 @@ DbContextOptionsBuilder<KiCdbContext> dbOptionsBuilder = new DbContextOptionsBui
 dbOptionsBuilder.UseMySql(config["Database:ConnectionString"], ServerVersion.AutoDetect(config["Database:ConnectionString"]));
 DbContextOptions<KiCdbContext> options = dbOptionsBuilder.Options;
 builder.Services.AddSingleton<KiCdbContext>(new KiCdbContext(options));
-builder.Services.AddSingleton<IEmailService, EmailService>();
+builder.Services.AddSingleton<IEmailService, SESEmailService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICookieService, CookieService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
-builder.Services.AddHttpClient<IEmailService, EmailService>(client =>
-{
-	client.BaseAddress = new Uri(config["Base Addresses:Mail"]);
-});
+//builder.Services.AddHttpClient<IEmailService, SESEmailService>(client =>
+//{
+//	client.BaseAddress = new Uri(config["Base Addresses:Mail"]);
+//});
 builder.Services.AddSingleton<IPaymentService, PaymentService>();
 builder.Services.AddSingleton<RegistrationSessionService, RegistrationSessionService>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddHangfire((sp, config) =>
+	{
+		var connectionString = sp.GetRequiredService<IConfiguration>()["Database:ConnectionString"];
+		config.UseStorage(
+			new MySqlStorage(
+				connectionString,
+				new MySqlStorageOptions
+				{
+					TablesPrefix = "Hangfire"
+				}
+			)
+		);
+	}
+);
+builder.Services.AddHangfireServer();
+
 var featureFlags = builder.Configuration
     .GetSection("FeatureFlags")
     .Get<FeatureFlags>() ?? new FeatureFlags();
@@ -77,5 +94,19 @@ app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
+if (app.Environment.IsDevelopment())
+{
+	// Allow more relaxed dashboard access if the app is running in dev mode
+	app.UseHangfireDashboard("/hangfire", new DashboardOptions
+	{
+		Authorization = new [] { new HangfireAuthFilter() },
+		IgnoreAntiforgeryToken = true
+	});
+}
+else
+{
+	// Hangfire dashboard only accessible locally in production mode
+	app.UseHangfireDashboard();
+}
 
 app.Run();
