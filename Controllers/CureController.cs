@@ -18,6 +18,7 @@ using System.Web;
 using KiCWeb.Configuration;
 using KiCWeb.Models;
 using Event = KiCData.Models.Event;
+using System.Threading.Tasks;
 
 namespace KiCWeb.Controllers
 {
@@ -74,10 +75,12 @@ namespace KiCWeb.Controllers
 
         [HttpGet]
         [Route("registration/form")]
-        public IActionResult RegistrationForm(Guid? regId)
+        public async Task<IActionResult> RegistrationForm(Guid? regId = null)
         {
-            var ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+            var ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
+            var addonInventory = await _paymentService.GetItemInventoryAsync("Decadent Delight");
             ViewBag.TicketInventory = ticketInventory;
+            ViewBag.Addon = addonInventory.First();
 
             if (regId != null)
             {
@@ -109,8 +112,6 @@ namespace KiCWeb.Controllers
             {
                 return NotFound();
             }
-            // This action could be used to return a form for registration
-            // You might want to return a partial view or a specific view for the form
 
             RegistrationViewModel registration = new RegistrationViewModel()
             {
@@ -121,13 +122,18 @@ namespace KiCWeb.Controllers
                 .First()
             };
 
-            registration.TicketTypes =
-            [
-              new SelectListItem("Gold", "Gold"),
-              new SelectListItem("Silver", "Silver"),
-              new SelectListItem("Sweet", "Sweet"),
-              new SelectListItem("Standard", "Standard"),
-            ];
+            registration.TicketTypes = new List<SelectListItem>();
+            
+            foreach(ItemInventory ti in ticketInventory)
+            {
+                SelectListItem item = new SelectListItem(ti.Name, ti.Name);
+                if (ti.QuantityAvailable == 0)
+                {                 
+                    item.Disabled = true;
+                    item.Text = ti.Name + " - SOLD OUT";
+                }
+                    registration.TicketTypes.Add(item);
+            }
 
             registration.RoomTypes =
             [
@@ -144,13 +150,18 @@ namespace KiCWeb.Controllers
         
         [HttpPost]
         [Route("registration/form")]
-        public IActionResult RegistrationForm(RegistrationViewModel registrationData, string action)
+        public async Task<IActionResult> RegistrationForm(RegistrationViewModel registrationData, string action)
         {
             // if (!ModelState.IsValid)
             // {
             //     ViewBag.Error = "Missing Required Information";
             //     return View(registrationData);
             // }
+            
+            if(registrationData.HasMealAddon == true)
+            {
+                registrationData.MealAddon = await _paymentService.GetAddonItemAsync();
+            }
             
             if(registrationData.DiscountCode is not null)
             {
@@ -187,6 +198,9 @@ namespace KiCWeb.Controllers
             // Set registrationData.RegID
             registrationData.RegId = Guid.NewGuid();
             
+            
+            registrationData.Price = _paymentService.GetTicketPrice(registrationData.TicketType);
+            
             registrations.Add(registrationData);
             _registrationSessionService.Registrations = registrations;
             
@@ -216,9 +230,9 @@ namespace KiCWeb.Controllers
 
         [HttpGet]
         [Route("registration/payment")]
-        public IActionResult RegistrationPayment()
+        public async Task<IActionResult> RegistrationPayment()
         {
-            List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+            List<ItemInventory> ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
 
             if (!_featureFlags.ShowCureRegistration)
             {
@@ -237,7 +251,7 @@ namespace KiCWeb.Controllers
             // Set TicketId to the SquareId, and set the Price
             foreach(RegistrationViewModel r in registrations)
             {
-                foreach(TicketInventory ti in ticketInventory)
+                foreach(ItemInventory ti in ticketInventory)
                 {
                     if(r.TicketType == ti.Name)
                     {
@@ -257,13 +271,17 @@ namespace KiCWeb.Controllers
                 {
                     priceCheck -= r.TicketComp.CompAmount;
                 }
+                
+                if(r.MealAddon is not null)
+                {
+                    priceCheck += r.MealAddon.Price;
+                }
             }
 
             if (priceCheck == 0) RedirectToAction("nopay");
 
             CureCardFormModel cfm = new CureCardFormModel();
             cfm.Items = registrations;
-            //delete registrationStorage.Registrations; // Clear the registrations after payment form is created
             
             ViewBag.AppId = _configurationRoot["Square:AppID"];
             ViewBag.LocationId = _configurationRoot["Square:LocationId"];
@@ -273,9 +291,9 @@ namespace KiCWeb.Controllers
         
         [HttpPost]
         [Route("registration/payment")]
-        public IActionResult RegistrationPayment(CureCardFormModel cfmUpdated)
+        public async Task<IActionResult> RegistrationPayment(CureCardFormModel cfmUpdated)
         {
-            List<TicketInventory> ticketInventory = _paymentService.GetTicketInventory("CURE 2026");
+            List<ItemInventory> ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
 
             Event CureEvent = _kdbContext.Events
                 .Where(e => e.Id == int.Parse(_configurationRoot["CUREID"]))
@@ -286,7 +304,7 @@ namespace KiCWeb.Controllers
             // Set TicketId to the SquareId, and set the Price
             foreach (RegistrationViewModel r in cfmUpdated.Items)
             {
-                foreach (TicketInventory ti in ticketInventory)
+                foreach (ItemInventory ti in ticketInventory)
                 {
                     if (r.TicketType == ti.Name)
                     {
@@ -306,6 +324,7 @@ namespace KiCWeb.Controllers
                 }
                 catch (Exception ex)
                 {
+
                     if (ex is Square.Exceptions.ApiException squareEx)
                     {
                         // Handle Square-specific exceptions
@@ -319,6 +338,7 @@ namespace KiCWeb.Controllers
 
                     return RedirectToAction("error");
                 }
+
 
                 if (paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
                 {
@@ -334,6 +354,7 @@ namespace KiCWeb.Controllers
                 }
             }
 
+            
             return RedirectToAction("error");
         }
         
@@ -356,7 +377,7 @@ namespace KiCWeb.Controllers
                 return RedirectToAction("carderror");
             }
             
-            return View(); // Views/Cure/PaymentProcessing.cshtml
+            return NoContent(); 
         }
         
         [Route("carderror")]
@@ -369,10 +390,22 @@ namespace KiCWeb.Controllers
         }
         
         [Route("cardsuccess")]
-        public IActionResult CardSuccess()
+        public async Task<IActionResult> CardSuccess()
         {
-            // This action could be used to show a success message after a successful card operation
-            // You might want to return a specific success view
+            List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
+            List<TicketAddon> ticketAddons = new List<TicketAddon>();
+            foreach(RegistrationViewModel rvm in registrationViewModels)
+            {
+                if(rvm.HasMealAddon == true)
+                {
+                    ticketAddons.Add(rvm.MealAddon);
+                }
+            }
+            await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
+            await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
+            await _paymentService.ReduceAddonInventoryAsync(ticketAddons);
+
+            _registrationSessionService.Clear();
             
             return View("CardSuccess"); // Views/Cure/CardSuccess.cshtml
         }
@@ -459,8 +492,15 @@ namespace KiCWeb.Controllers
         }
         
         [Route("nopay")]
-        public IActionResult NoPay()
+        public async Task<IActionResult> NoPay()
         {
+            List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
+            
+            await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
+            await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
+
+            _registrationSessionService.Clear();
+            
             return View();
         }
     }
