@@ -404,6 +404,8 @@ namespace KiCWeb.Controllers
             await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
             await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
             await _paymentService.ReduceAddonInventoryAsync(ticketAddons);
+
+            _registrationSessionService.Clear();
             
             return View("CardSuccess"); // Views/Cure/CardSuccess.cshtml
         }
@@ -490,8 +492,15 @@ namespace KiCWeb.Controllers
         }
         
         [Route("nopay")]
-        public IActionResult NoPay()
+        public async Task<IActionResult> NoPay()
         {
+            List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
+            
+            await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
+            await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
+
+            _registrationSessionService.Clear();
+            
             return View();
         }
     }
