@@ -77,10 +77,8 @@ namespace KiCWeb.Controllers
         [Route("registration/form")]
         public async Task<IActionResult> RegistrationForm(Guid? regId = null)
         {
-            var ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
-            var addonInventory = await _paymentService.GetItemInventoryAsync("Decadent Delight");
-            ViewBag.TicketInventory = ticketInventory;
-            ViewBag.Addon = addonInventory.First();
+            var ticketInventory = _paymentService.GetItemInventoryAsync("CURE 2026");
+            var addonInventory = _paymentService.GetItemInventoryAsync("Decadent Delights");
 
             if (regId != null)
             {
@@ -103,6 +101,9 @@ namespace KiCWeb.Controllers
                     new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
                 ];
 
+                List<ItemInventory> _addons = await addonInventory;
+                ViewBag.Addon = _addons.First();
+                ViewBag.TicketInventory = await ticketInventory;
                 ViewBag.IsUpdating = true;
 
                 return View(existingRegistration);
@@ -123,8 +124,8 @@ namespace KiCWeb.Controllers
             };
 
             registration.TicketTypes = new List<SelectListItem>();
-            
-            foreach(ItemInventory ti in ticketInventory)
+            var ticketInventoryList = await ticketInventory;
+            foreach(ItemInventory ti in ticketInventoryList)
             {
                 SelectListItem item = new SelectListItem(ti.Name, ti.Name);
                 if (ti.QuantityAvailable == 0)
@@ -132,7 +133,8 @@ namespace KiCWeb.Controllers
                     item.Disabled = true;
                     item.Text = ti.Name + " - SOLD OUT";
                 }
-                    registration.TicketTypes.Add(item);
+                
+                registration.TicketTypes.Add(item);
             }
 
             registration.RoomTypes =
@@ -143,6 +145,9 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
+            List<ItemInventory> addons = await addonInventory;
+            ViewBag.Addon = addons.First();
+            ViewBag.TicketInventory = ticketInventoryList;
             ViewBag.IsUpdating = false;
 
             return View(registration); // Views/Cure/RegistrationForm.cshtml
@@ -232,7 +237,7 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public async Task<IActionResult> RegistrationPayment()
         {
-            List<ItemInventory> ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
+            var ticketInventory = _paymentService.GetItemInventoryAsync("CURE 2026");
 
             if (!_featureFlags.ShowCureRegistration)
             {
@@ -246,12 +251,13 @@ namespace KiCWeb.Controllers
             }            
 
             List<RegistrationViewModel> registrations = _registrationSessionService.Registrations;
+            var ticketInventoryList = await ticketInventory;
 
             // Loop through registrations, match TicketType to ticketInventory[].Name.
             // Set TicketId to the SquareId, and set the Price
             foreach(RegistrationViewModel r in registrations)
             {
-                foreach(ItemInventory ti in ticketInventory)
+                foreach(ItemInventory ti in ticketInventoryList)
                 {
                     if(r.TicketType == ti.Name)
                     {
@@ -293,18 +299,19 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public async Task<IActionResult> RegistrationPayment(CureCardFormModel cfmUpdated)
         {
-            List<ItemInventory> ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
+            var ticketInventory = _paymentService.GetItemInventoryAsync("CURE 2026");
 
             Event CureEvent = _kdbContext.Events
                 .Where(e => e.Id == int.Parse(_configurationRoot["CUREID"]))
                 .First();
-            
+
             // Loop through cfmUpdated.Items (which are the registrations).
             // Match TicketType to ticketInventory[].Name.
             // Set TicketId to the SquareId, and set the Price
+            var ticketInventoryList = await ticketInventory;
             foreach (RegistrationViewModel r in cfmUpdated.Items)
             {
-                foreach (ItemInventory ti in ticketInventory)
+                foreach (ItemInventory ti in ticketInventoryList)
                 {
                     if (r.TicketType == ti.Name)
                     {
@@ -401,9 +408,14 @@ namespace KiCWeb.Controllers
                     ticketAddons.Add(rvm.MealAddon);
                 }
             }
-            await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
-            await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
-            await _paymentService.ReduceAddonInventoryAsync(ticketAddons);
+            _paymentService.SetAttendeesPaidAsync(registrationViewModels);
+            _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
+            if(ticketAddons.Count > 0)
+            {
+                _paymentService.ReduceAddonInventoryAsync(ticketAddons);
+            }            
+
+            ViewBag.OrderID = _paymentService.GetOrderIDAsync(registrationViewModels);
 
             _registrationSessionService.Clear();
             
@@ -496,8 +508,8 @@ namespace KiCWeb.Controllers
         {
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
             
-            await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
-            await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
+            _paymentService.SetAttendeesPaidAsync(registrationViewModels);
+            _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
 
             _registrationSessionService.Clear();
             
