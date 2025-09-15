@@ -21,6 +21,10 @@ else if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Develop
 else { throw new Exception("Bad environment variable."); }
 IConfigurationRoot config = configBuilder.Build();
 
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 // Add services to the container.
 builder.Services.AddSingleton(config);
 DbContextOptionsBuilder<KiCdbContext> dbOptionsBuilder = new DbContextOptionsBuilder<KiCdbContext>();

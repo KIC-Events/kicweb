@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,10 @@ using KiCWeb.Configuration;
 using KiCWeb.Models;
 using Event = KiCData.Models.Event;
 using System.Threading.Tasks;
+using KiCData.Exceptions;
+using Newtonsoft.Json;
+using NuGet.Protocol;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace KiCWeb.Controllers
 {
@@ -28,7 +33,7 @@ namespace KiCWeb.Controllers
         private readonly KiCdbContext _kdbContext;
         private readonly FeatureFlags _featureFlags;
         private readonly IPaymentService _paymentService;
-        private readonly IKiCLogger _logger;
+        private readonly ILogger _logger;
         private readonly RegistrationSessionService _registrationSessionService;
         private readonly IConfigurationRoot _configurationRoot;
         private readonly IHttpContextAccessor _contextAccessor;
@@ -40,7 +45,7 @@ namespace KiCWeb.Controllers
             KiCdbContext kiCdbContext,
             ICookieService cookieService,
             IPaymentService paymentService,
-            IKiCLogger kiCLogger,
+            ILogger<CureController> kiCLogger,
             RegistrationSessionService registrationSessionService,
             FeatureFlags featureFlags
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
@@ -57,7 +62,16 @@ namespace KiCWeb.Controllers
         [Route("")]
         public IActionResult Index()
         {
-            ViewBag.Sponsors = _kdbContext.Sponsors.ToList();
+            try
+            {
+                ViewBag.Sponsors = _kdbContext.Sponsors.ToList();
+            }
+            catch (Exception e)
+            {
+                ViewBag.Sponsors = new List<Sponsor>();
+                _logger.LogError("Error loading sponsors. Setting sponsors to an empty list.");
+                _logger.LogError(e.Message);
+            }
 
             return View(); // Views/Cure/Index.cshtml
         }
@@ -77,10 +91,21 @@ namespace KiCWeb.Controllers
         [Route("registration/form")]
         public async Task<IActionResult> RegistrationForm(Guid? regId = null)
         {
-            var ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
-            var addonInventory = await _paymentService.GetItemInventoryAsync("Decadent Delight");
-            ViewBag.TicketInventory = ticketInventory;
-            ViewBag.Addon = addonInventory.First();
+            List<ItemInventory> ticketInventory;
+            List<ItemInventory> addonInventory;
+            try
+            {
+                ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
+                addonInventory = await _paymentService.GetItemInventoryAsync("Decadent Delight");
+                ViewBag.TicketInventory = ticketInventory;
+                ViewBag.Addon = addonInventory.First();
+            }
+            catch (InventoryException e)
+            {
+                _logger.LogError("An error occured while loading inventory items for the CURE registration form.");
+                _logger.LogError(e.Message);
+                throw;
+            }
 
             if (regId != null)
             {
@@ -127,7 +152,7 @@ namespace KiCWeb.Controllers
             foreach(ItemInventory ti in ticketInventory)
             {
                 SelectListItem item = new SelectListItem(ti.Name, ti.Name);
-                if (ti.QuantityAvailable == 0)
+                if (ti.QuantityAvailable <= 0)
                 {                 
                     item.Disabled = true;
                     item.Text = ti.Name + " - SOLD OUT";
@@ -328,12 +353,17 @@ namespace KiCWeb.Controllers
                     if (ex is Square.Exceptions.ApiException squareEx)
                     {
                         // Handle Square-specific exceptions
-                        _logger.LogSquareEx(squareEx);
+                        _logger.LogError("A Square API exception occured. HTTP return code {statusCode}. {errorCount} errors occured.", squareEx.ResponseCode, squareEx.Errors.Count);
+                        foreach (var err in squareEx.Errors)
+                        {
+                            _logger.LogError("[{errorCode} {errorCategory}]: {errorMessage}. Associated Field: {errorField}", err.Code, err.Category, err.Detail, err.Field);
+                        }
                     }
                     else
                     {
                         // Handle other exceptions
-                        _logger.Log(ex);
+                        _logger.LogError("An error occured while processing payment.");
+                        _logger.LogError(ex.ToString());
                     }
 
                     return RedirectToAction("error");
@@ -420,6 +450,7 @@ namespace KiCWeb.Controllers
         [Route("presenters")]
         public IActionResult Presenters()
         {
+            var cureEventId = _configurationRoot["CUREID"];
             ViewBag.Presenters = _kdbContext.Presenters
                 .Include(p => p.Socials)
                 .Include(p => p.Presentations)
@@ -430,10 +461,14 @@ namespace KiCWeb.Controllers
                 .OrderBy(v => v.PublicName)
                 .ToList();
 
-            List<Presentation> presentations = _kdbContext.Presentations
-                .Include(p => p.Presenters)
-                .Where(p => p.EventId == int.Parse(_configurationRoot["CUREID"]))
-                .ToList();
+            List<Presentation> presentations = [];
+            if (cureEventId is not null)
+            {
+                presentations = _kdbContext.Presentations
+                    .Include(p => p.Presenters)
+                    .Where(p => p.EventId == int.Parse(_configurationRoot["CUREID"]))
+                    .ToList();
+            }
 
             ViewBag.Presentations = new List<AccordionItem>();
             
@@ -495,6 +530,8 @@ namespace KiCWeb.Controllers
         public async Task<IActionResult> NoPay()
         {
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
+            var regIds = registrationViewModels.Select(x => x.RegId.ToString("D")).ToImmutableArray();
+            _logger.LogInformation("Processing NoPay checkout for the following registrations: {registrations}", regIds);
             
             await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
             await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
