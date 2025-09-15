@@ -21,6 +21,7 @@ using KiCWeb.Models;
 using Event = KiCData.Models.Event;
 using System.Threading.Tasks;
 using KiCData.Exceptions;
+using KiCWeb.Helpers;
 using Newtonsoft.Json;
 using NuGet.Protocol;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -431,6 +432,11 @@ namespace KiCWeb.Controllers
                     ticketAddons.Add(rvm.MealAddon);
                 }
             }
+
+            foreach (RegistrationViewModel rvm in registrationViewModels)
+            {
+                CureRegistrationHelpers.CreateAttendeeFromRegistration(_kdbContext, rvm, int.Parse(_configurationRoot["CUREID"]));
+            }
             await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
             await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
             await _paymentService.ReduceAddonInventoryAsync(ticketAddons);
@@ -532,6 +538,10 @@ namespace KiCWeb.Controllers
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
             var regIds = registrationViewModels.Select(x => x.RegId.ToString("D")).ToImmutableArray();
             _logger.LogInformation("Processing NoPay checkout for the following registrations: {registrations}", regIds);
+            foreach (RegistrationViewModel rvm in registrationViewModels)
+            {
+                CureRegistrationHelpers.CreateAttendeeFromRegistration(_kdbContext, rvm, int.Parse(_configurationRoot["CUREID"]));
+            }
             
             await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
             await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
