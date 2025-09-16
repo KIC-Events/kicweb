@@ -202,7 +202,8 @@ namespace KiCWeb.Controllers
             if (registrationData.DiscountCode is not null)
             {
                 TicketComp? comp = _kdbContext.TicketComp
-                    .Where(c => c.DiscountCode == registrationData.DiscountCode)
+                    .Where(c => c.DiscountCode == registrationData.DiscountCode
+                    && c.Ticket.EventId == int.Parse(_configurationRoot["CUREID"]))
                     .FirstOrDefault();
 
                 if (comp is null)
