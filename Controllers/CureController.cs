@@ -34,8 +34,8 @@ namespace KiCWeb.Controllers
     {
         private readonly KiCdbContext _kdbContext;
         private readonly FeatureFlags _featureFlags;
-        private readonly IPaymentService _paymentService;
         private readonly ILogger _logger;
+        private readonly PaymentService _paymentService;
         private readonly RegistrationSessionService _registrationSessionService;
         private readonly IConfigurationRoot _configurationRoot;
         private readonly IHttpContextAccessor _contextAccessor;
@@ -46,7 +46,7 @@ namespace KiCWeb.Controllers
             IHttpContextAccessor httpContextAccessor,
             KiCdbContext kiCdbContext,
             ICookieService cookieService,
-            IPaymentService paymentService,
+            PaymentService paymentService,
             ILogger<CureController> kiCLogger,
             RegistrationSessionService registrationSessionService,
             FeatureFlags featureFlags
@@ -230,7 +230,8 @@ namespace KiCWeb.Controllers
             if (registrationData.DiscountCode is not null)
             {
                 TicketComp? comp = _kdbContext.TicketComp
-                    .Where(c => c.DiscountCode == registrationData.DiscountCode)
+                    .Where(c => c.DiscountCode == registrationData.DiscountCode
+                    && c.Ticket.EventId == int.Parse(_configurationRoot["CUREID"]))
                     .FirstOrDefault();
 
                 if (comp is null)
