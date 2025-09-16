@@ -37,7 +37,7 @@ builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
 //{
 //	client.BaseAddress = new Uri(config["Base Addresses:Mail"]);
 //});
-builder.Services.AddSingleton<IPaymentService, PaymentService>();
+builder.Services.AddSingleton<PaymentService, PaymentService>();
 builder.Services.AddSingleton<RegistrationSessionService, RegistrationSessionService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHangfire((sp, config) =>

@@ -28,7 +28,7 @@ namespace KiCWeb.Controllers
     {
         private readonly KiCdbContext _kdbContext;
         private readonly FeatureFlags _featureFlags;
-        private readonly IPaymentService _paymentService;
+        private readonly PaymentService _paymentService;
         private readonly IKiCLogger _logger;
         private readonly RegistrationSessionService _registrationSessionService;
         private readonly IConfigurationRoot _configurationRoot;
@@ -40,7 +40,7 @@ namespace KiCWeb.Controllers
             IHttpContextAccessor httpContextAccessor,
             KiCdbContext kiCdbContext,
             ICookieService cookieService,
-            IPaymentService paymentService,
+            PaymentService paymentService,
             IKiCLogger kiCLogger,
             RegistrationSessionService registrationSessionService,
             FeatureFlags featureFlags
