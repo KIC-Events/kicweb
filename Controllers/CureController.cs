@@ -25,6 +25,7 @@ using KiCWeb.Helpers;
 using Newtonsoft.Json;
 using NuGet.Protocol;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.Diagnostics;
 
 namespace KiCWeb.Controllers
 {
@@ -77,6 +78,14 @@ namespace KiCWeb.Controllers
             return View(); // Views/Cure/Index.cshtml
         }
 
+        /// <summary>
+        /// Displays the main registration page for the CURE event.
+        /// Checks if registration is enabled via feature flags.
+        /// Returns a 404 Not Found result if registration is disabled.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="IActionResult"/> that renders the Registration view, or NotFound if registration is disabled.
+        /// </returns>
         [Route("registration")]
         public IActionResult Registration()
         {
@@ -88,6 +97,17 @@ namespace KiCWeb.Controllers
             return View(); // Views/Cure/Registration.cshtml
         }
 
+        /// <summary>
+        /// Displays the CURE event registration form.
+        /// If a registration ID is provided, loads the existing registration for editing.
+        /// Otherwise, prepares a new registration form with ticket and addon inventory.
+        /// Returns a 404 Not Found result if the registration form feature flag is disabled.
+        /// </summary>
+        /// <param name="regId">The optional registration ID for editing an existing registration.</param>
+        /// <returns>
+        /// An <see cref="Task{IActionResult}"/> that renders the registration form view,
+        /// or returns NotFound if the registration form is disabled.
+        /// </returns>
         [HttpGet]
         [Route("registration/form")]
         public async Task<IActionResult> RegistrationForm(Guid? regId = null)
@@ -129,6 +149,9 @@ namespace KiCWeb.Controllers
                     new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
                 ];
 
+                List<ItemInventory> _addons = await addonInventory;
+                ViewBag.Addon = _addons.First();
+                ViewBag.TicketInventory = await ticketInventory;
                 ViewBag.IsUpdating = true;
 
                 return View(existingRegistration);
@@ -149,8 +172,8 @@ namespace KiCWeb.Controllers
             };
 
             registration.TicketTypes = new List<SelectListItem>();
-            
-            foreach(ItemInventory ti in ticketInventory)
+            var ticketInventoryList = await ticketInventory;
+            foreach (ItemInventory ti in ticketInventoryList)
             {
                 SelectListItem item = new SelectListItem(ti.Name, ti.Name);
                 if (ti.QuantityAvailable <= 0)
@@ -158,7 +181,8 @@ namespace KiCWeb.Controllers
                     item.Disabled = true;
                     item.Text = ti.Name + " - SOLD OUT";
                 }
-                    registration.TicketTypes.Add(item);
+
+                registration.TicketTypes.Add(item);
             }
 
             registration.RoomTypes =
@@ -169,11 +193,25 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
+            List<ItemInventory> addons = await addonInventory;
+            ViewBag.Addon = addons.First();
+            ViewBag.TicketInventory = ticketInventoryList;
             ViewBag.IsUpdating = false;
 
             return View(registration); // Views/Cure/RegistrationForm.cshtml
         }
-        
+
+        /// <summary>
+        /// Handles submission of the CURE event registration form.
+        /// Processes meal addon and discount code, updates or adds the registration to the session,
+        /// and redirects to the appropriate next step based on the user's action.
+        /// </summary>
+        /// <param name="registrationData">The <see cref="RegistrationViewModel"/> containing registration details.</param>
+        /// <param name="action">The action indicating whether to create more registrations or proceed to payment.</param>
+        /// <returns>
+        /// An <see cref="Task{IActionResult}"/> that redirects to the registration form or payment page,
+        /// or returns the view with error information if validation fails.
+        /// </returns>
         [HttpPost]
         [Route("registration/form")]
         public async Task<IActionResult> RegistrationForm(RegistrationViewModel registrationData, string action)
@@ -183,27 +221,27 @@ namespace KiCWeb.Controllers
             //     ViewBag.Error = "Missing Required Information";
             //     return View(registrationData);
             // }
-            
-            if(registrationData.HasMealAddon == true)
+
+            if (registrationData.HasMealAddon == true)
             {
                 registrationData.MealAddon = await _paymentService.GetAddonItemAsync();
             }
-            
-            if(registrationData.DiscountCode is not null)
+
+            if (registrationData.DiscountCode is not null)
             {
                 TicketComp? comp = _kdbContext.TicketComp
                     .Where(c => c.DiscountCode == registrationData.DiscountCode)
                     .FirstOrDefault();
-                    
-                if(comp is null)
+
+                if (comp is null)
                 {
                     ViewBag.Error = "Discount Code Invalid";
                     return View(registrationData);
                 }
 
-                registrationData.TicketComp = comp;             
+                registrationData.TicketComp = comp;
             }
-            
+
             var registrations = _registrationSessionService.Registrations;
 
             if (registrationData.RegId != Guid.Empty)
@@ -223,13 +261,13 @@ namespace KiCWeb.Controllers
 
             // Set registrationData.RegID
             registrationData.RegId = Guid.NewGuid();
-            
-            
+
+
             registrationData.Price = _paymentService.GetTicketPrice(registrationData.TicketType);
-            
+
             registrations.Add(registrationData);
             _registrationSessionService.Registrations = registrations;
-            
+
             if (action == "CreateMore")
             {
                 return RedirectToAction("RegistrationForm");
@@ -240,6 +278,15 @@ namespace KiCWeb.Controllers
             }
         }
 
+        /// <summary>
+        /// Removes a registration ticket from the current session based on the provided registration ID.
+        /// If the registration is found, it is removed from the session.
+        /// Returns a 204 No Content response.
+        /// </summary>
+        /// <param name="regId">The unique identifier of the registration to remove.</param>
+        /// <returns>
+        /// An <see cref="IActionResult"/> representing a 204 No Content response.
+        /// </returns>
         [HttpDelete]
         [Route("registration/{regId}")]
         public IActionResult RemoveTicket(Guid regId)
@@ -254,11 +301,20 @@ namespace KiCWeb.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Displays the payment page for CURE event registrations.
+        /// Prepares registration and ticket inventory data, calculates total price,
+        /// and redirects to the appropriate action if payment is not required or registration is missing.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="Task{IActionResult}"/> that renders the RegistrationPaymentForm view,
+        /// or redirects to another action if conditions are not met.
+        /// </returns>
         [HttpGet]
         [Route("registration/payment")]
         public async Task<IActionResult> RegistrationPayment()
         {
-            List<ItemInventory> ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
+            var ticketInventory = _paymentService.GetItemInventoryAsync("CURE 2026");
 
             if (!_featureFlags.ShowCureRegistration)
             {
@@ -269,17 +325,18 @@ namespace KiCWeb.Controllers
                 // If no registration data is found, redirect to the registration form
                 //TODO: ADD additional error handling or user feedback
                 return RedirectToAction("RegistrationForm");
-            }            
+            }
 
             List<RegistrationViewModel> registrations = _registrationSessionService.Registrations;
+            var ticketInventoryList = await ticketInventory;
 
             // Loop through registrations, match TicketType to ticketInventory[].Name.
             // Set TicketId to the SquareId, and set the Price
-            foreach(RegistrationViewModel r in registrations)
+            foreach (RegistrationViewModel r in registrations)
             {
-                foreach(ItemInventory ti in ticketInventory)
+                foreach (ItemInventory ti in ticketInventoryList)
                 {
-                    if(r.TicketType == ti.Name)
+                    if (r.TicketType == ti.Name)
                     {
                         r.Price = ti.Price;
                         r.TicketId = ti.SquareId;
@@ -289,16 +346,16 @@ namespace KiCWeb.Controllers
 
             //Check if checkout total is 0 - if user is not paying, we can skip checkout screen.
             double? priceCheck = 0;
-            foreach(RegistrationViewModel r in registrations)
+            foreach (RegistrationViewModel r in registrations)
             {
                 priceCheck += r.Price;
-                
-                if(r.TicketComp is not null)
+
+                if (r.TicketComp is not null)
                 {
                     priceCheck -= r.TicketComp.CompAmount;
                 }
-                
-                if(r.MealAddon is not null)
+
+                if (r.MealAddon is not null)
                 {
                     priceCheck += r.MealAddon.Price;
                 }
@@ -308,29 +365,39 @@ namespace KiCWeb.Controllers
 
             CureCardFormModel cfm = new CureCardFormModel();
             cfm.Items = registrations;
-            
+
             ViewBag.AppId = _configurationRoot["Square:AppID"];
             ViewBag.LocationId = _configurationRoot["Square:LocationId"];
-            
+
             return View(cfm); // Views/Cure/RegistrationPaymentForm.cshtml
         }
-        
+
+        /// <summary>
+        /// Processes the payment for CURE event registrations.
+        /// Updates registration items with ticket and event details, attempts payment using the provided card token,
+        /// handles payment status, logs exceptions, and redirects to the appropriate result view.
+        /// </summary>
+        /// <param name="cfmUpdated">The updated <see cref="CureCardFormModel"/> containing registration and payment data.</param>
+        /// <returns>
+        /// An <see cref="Task{IActionResult}"/> that redirects to the success, error, or processing view based on payment outcome.
+        /// </returns>
         [HttpPost]
         [Route("registration/payment")]
         public async Task<IActionResult> RegistrationPayment(CureCardFormModel cfmUpdated)
         {
-            List<ItemInventory> ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
+            var ticketInventory = _paymentService.GetItemInventoryAsync("CURE 2026");
 
             Event CureEvent = _kdbContext.Events
                 .Where(e => e.Id == int.Parse(_configurationRoot["CUREID"]))
                 .First();
-            
+
             // Loop through cfmUpdated.Items (which are the registrations).
             // Match TicketType to ticketInventory[].Name.
             // Set TicketId to the SquareId, and set the Price
+            var ticketInventoryList = await ticketInventory;
             foreach (RegistrationViewModel r in cfmUpdated.Items)
             {
-                foreach (ItemInventory ti in ticketInventory)
+                foreach (ItemInventory ti in ticketInventoryList)
                 {
                     if (r.TicketType == ti.Name)
                     {
@@ -385,21 +452,21 @@ namespace KiCWeb.Controllers
                 }
             }
 
-            
+
             return RedirectToAction("error");
         }
-        
+
         [Route("paymentprocessing")]
         public IActionResult PaymentProcessing(string paymentId)
         {
             string paymentStatus = "pending";
-            
+
             while (paymentStatus == "pending")
             {
                 paymentStatus = _paymentService.CheckPaymentStatus(paymentId);
             }
-            
-            if(paymentStatus == "approved" || paymentStatus == "completed")
+
+            if (paymentStatus == "approved" || paymentStatus == "completed")
             {
                 return RedirectToAction("cardsuccess");
             }
@@ -407,42 +474,50 @@ namespace KiCWeb.Controllers
             {
                 return RedirectToAction("carderror");
             }
-            
-            return NoContent(); 
+
+            throw new UnreachableException("No card status or unexpected card status");
         }
-        
+
         [Route("carderror")]
         public IActionResult CardError()
         {
             // This action could be used to handle card errors
             // You might want to return a specific error view
-            
+
             return View("CardError"); // Views/Cure/CardError.cshtml
         }
-        
+
+        /// <summary>
+        /// Handles post-payment success logic for CURE event registrations.
+        /// Marks attendees as paid, reduces ticket and addon inventory, retrieves the order ID,
+        /// clears the registration session, and returns the CardSuccess view.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="Task{IActionResult}"/> that renders the CardSuccess view.
+        /// </returns>
         [Route("cardsuccess")]
         public async Task<IActionResult> CardSuccess()
         {
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
             List<TicketAddon> ticketAddons = new List<TicketAddon>();
-            foreach(RegistrationViewModel rvm in registrationViewModels)
+            foreach (RegistrationViewModel rvm in registrationViewModels)
             {
-                if(rvm.HasMealAddon == true)
+                if (rvm.HasMealAddon == true)
                 {
                     ticketAddons.Add(rvm.MealAddon);
                 }
             }
-
-            foreach (RegistrationViewModel rvm in registrationViewModels)
+            _paymentService.SetAttendeesPaidAsync(registrationViewModels);
+            _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
+            if (ticketAddons.Count > 0)
             {
-                CureRegistrationHelpers.CreateAttendeeFromRegistration(_kdbContext, rvm, int.Parse(_configurationRoot["CUREID"]));
+                _paymentService.ReduceAddonInventoryAsync(ticketAddons);
             }
-            await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
-            await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
-            await _paymentService.ReduceAddonInventoryAsync(ticketAddons);
+
+            ViewBag.OrderID = _paymentService.GetOrderIDAsync(registrationViewModels);
 
             _registrationSessionService.Clear();
-            
+
             return View("CardSuccess"); // Views/Cure/CardSuccess.cshtml
         }
 
@@ -453,6 +528,14 @@ namespace KiCWeb.Controllers
             return View(); // Views/Cure/Rules.cshtml
         }
 
+        /// <summary>
+        /// Displays the presenters page for the CURE event.
+        /// Loads presenters, vendors, and presentations from the database,
+        /// prepares presentation data for accordion display, and passes them to the view.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="IActionResult"/> that renders the Presenters view.
+        /// </returns>
         [Route("presenters")]
         public IActionResult Presenters()
         {
@@ -477,15 +560,15 @@ namespace KiCWeb.Controllers
             }
 
             ViewBag.Presentations = new List<AccordionItem>();
-            
-            foreach(Presentation p in presentations)
+
+            foreach (Presentation p in presentations)
             {
                 string concatName = p.Name;
-                foreach(Presenter presenter in p.Presenters)
+                foreach (Presenter presenter in p.Presenters)
                 {
                     concatName = concatName + " - " + presenter.PublicName;
                 }
-                
+
                 AccordionItem accordionItem = new AccordionItem()
                 {
                     Title = concatName,
@@ -494,16 +577,23 @@ namespace KiCWeb.Controllers
 
                 ViewBag.Presentations.Add(accordionItem);
             }
-                
+
             // Log to console or logger
             string json = JsonSerializer.Serialize(ViewBag.Vendors, new JsonSerializerOptions
             {
                 WriteIndented = true // optional: makes it pretty
             });
-            
+
             return View(); // Views/Cure/Presenters.cshtml
         }
 
+        /// <summary>
+        /// Displays the volunteers page for the CURE event.
+        /// Returns a 404 Not Found result if the volunteers feature flag is disabled.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="IActionResult"/> that renders the Volunteers view, or NotFound if disabled.
+        /// </returns>
         [Route("volunteers")]
         public IActionResult Volunteers()
         {
@@ -513,25 +603,33 @@ namespace KiCWeb.Controllers
             }
             return View(); // Views/Cure/Volunteers.cshtml
         }
-        
+
         [Route("error")]
         public IActionResult Error()
         {
             // This action could be used to handle errors
             // You might want to return a specific error view
-            
+
             return View("Error"); // Views/Cure/Error.cshtml
         }
-        
+
         [Route("success")]
         public IActionResult Success()
         {
             // This action could be used to show a success message after a successful operation
             // You might want to return a specific success view
-            
+
             return View("Success"); // Views/Cure/Success.cshtml
         }
-        
+
+        /// <summary>
+        /// Handles registrations that do not require payment.
+        /// Marks attendees as paid, reduces ticket inventory, clears the registration session,
+        /// and returns the NoPay view.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="IActionResult"/> that renders the NoPay view.
+        /// </returns>
         [Route("nopay")]
         public async Task<IActionResult> NoPay()
         {
@@ -547,7 +645,7 @@ namespace KiCWeb.Controllers
             await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
 
             _registrationSessionService.Clear();
-            
+
             return View();
         }
     }

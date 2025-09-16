@@ -226,12 +226,16 @@
       <div class="field radio-group">
         <label asp-for="HasMealAddon"></label>
         <p>Select this option if you would like to add the Decadent Delights meal package to your ticket.</p>
-        @if(ViewBag.ItemInventory is not null && ViewBag.ItemInventory.QuantityAvailable > 0){
-          <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" />
+        @if(ViewBag.AddOn.QuantityAvailable > 0){
+          <div class="radio">
+            <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" />
+          </div>
         }
-        @if(ViewBag.ItemInventory is null || ViewBag.ItemInventory.QuantityAvailable == 0){
-          <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" disabled />
-          <span>SOLD OUT</span>
+        @if(ViewBag.AddOn.QuantityAvailable == 0){
+          <div class="radio">
+            <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" disabled />
+            <span>SOLD OUT</span>
+          </div>
         }
       </div>
 
