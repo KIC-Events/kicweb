@@ -355,7 +355,7 @@ namespace KiCWeb.Controllers
             {
                 var attendees = _paymentService.HandleNonPaymentCURETicketOrder(registrations);
                 var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_paymentService, registrations, attendees);
-                RedirectToAction("nopay");
+                return RedirectToAction("NoPay");
             }
 
             CureCardFormModel cfm = new CureCardFormModel();
