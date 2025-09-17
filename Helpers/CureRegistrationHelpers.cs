@@ -45,7 +45,7 @@ public static class CureRegistrationHelpers
     }
 
     public static string? FinalizeTicketOrder(PaymentService paymentService,
-        List<RegistrationViewModel> registrationViewModels)
+        List<RegistrationViewModel> registrationViewModels, List<Attendee> attendees)
     {
         List<TicketAddon> ticketAddons = new List<TicketAddon>();
         foreach (RegistrationViewModel rvm in registrationViewModels)
@@ -55,7 +55,7 @@ public static class CureRegistrationHelpers
                 ticketAddons.Add(rvm.MealAddon);
             }
         }
-        paymentService.SetAttendeesPaidAsync(registrationViewModels);
+        paymentService.SetAttendeesPaid(attendees);
         paymentService.ReduceTicketInventoryAsync(registrationViewModels);
         if (ticketAddons.Count > 0)
         {

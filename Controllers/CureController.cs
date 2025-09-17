@@ -353,7 +353,8 @@ namespace KiCWeb.Controllers
 
             if (priceCheck == 0)
             {
-                var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_paymentService, registrations);
+                var attendees = _paymentService.HandleNonPaymentCURETicketOrder(registrations);
+                var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_paymentService, registrations, attendees);
                 RedirectToAction("nopay");
             }
 
@@ -405,9 +406,10 @@ namespace KiCWeb.Controllers
             if (cfmUpdated.CardToken is not null)
             {
                 string paymentStatus;
+                List<Attendee> attendees;
                 try
                 {
-                    paymentStatus = _paymentService.CreateCUREPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items);
+                    paymentStatus = _paymentService.CreateCUREPayment(cfmUpdated.CardToken, cfmUpdated.BillingContact, cfmUpdated.Items, out attendees);
                 }
                 catch (Exception ex)
                 {
@@ -435,7 +437,7 @@ namespace KiCWeb.Controllers
                 if (paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
                 {
                     List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
-                    var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_paymentService, registrationViewModels);
+                    var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_paymentService, registrationViewModels, attendees);
                     return RedirectToAction("cardsuccess");
                 }
                 else if (paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
