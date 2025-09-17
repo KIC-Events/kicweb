@@ -1,5 +1,7 @@
 using KiCData.Models;
 using KiCData.Models.WebModels;
+using KiCData.Models.WebModels.PurchaseModels;
+using KiCData.Services;
 
 namespace KiCWeb.Helpers;
 
@@ -40,5 +42,26 @@ public static class CureRegistrationHelpers
             });
         ctx.SaveChanges();
         return attendee.Entity;
+    }
+
+    public static string? FinalizeTicketOrder(PaymentService paymentService,
+        List<RegistrationViewModel> registrationViewModels)
+    {
+        List<TicketAddon> ticketAddons = new List<TicketAddon>();
+        foreach (RegistrationViewModel rvm in registrationViewModels)
+        {
+            if (rvm.HasMealAddon == true)
+            {
+                ticketAddons.Add(rvm.MealAddon);
+            }
+        }
+        paymentService.SetAttendeesPaidAsync(registrationViewModels);
+        paymentService.ReduceTicketInventoryAsync(registrationViewModels);
+        if (ticketAddons.Count > 0)
+        {
+            paymentService.ReduceAddonInventoryAsync(ticketAddons);
+        }
+
+        return paymentService.getOrderID(registrationViewModels);
     }
 }

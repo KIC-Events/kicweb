@@ -1,8 +1,5 @@
 using System.Collections.Immutable;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using KiCData;
 using KiCData.Services;
 using KiCData.Models.WebModels;
 using KiCData.Models.WebModels.PaymentModels;
@@ -10,20 +7,12 @@ using KiCData.Models.WebModels.PurchaseModels;
 using KiCData.Models;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Square;
-using Square.Models;
-using Square.Authentication;
-using Square.Exceptions;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Web;
 using KiCWeb.Configuration;
 using KiCWeb.Models;
 using Event = KiCData.Models.Event;
-using System.Threading.Tasks;
 using KiCData.Exceptions;
 using KiCWeb.Helpers;
-using Newtonsoft.Json;
-using NuGet.Protocol;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using System.Diagnostics;
 
@@ -149,9 +138,9 @@ namespace KiCWeb.Controllers
                     new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
                 ];
 
-                List<ItemInventory> _addons = await addonInventory;
+                List<ItemInventory> _addons = addonInventory;
                 ViewBag.Addon = _addons.First();
-                ViewBag.TicketInventory = await ticketInventory;
+                ViewBag.TicketInventory = ticketInventory;
                 ViewBag.IsUpdating = true;
 
                 return View(existingRegistration);
@@ -172,7 +161,7 @@ namespace KiCWeb.Controllers
             };
 
             registration.TicketTypes = new List<SelectListItem>();
-            var ticketInventoryList = await ticketInventory;
+            var ticketInventoryList = ticketInventory;
             foreach (ItemInventory ti in ticketInventoryList)
             {
                 SelectListItem item = new SelectListItem(ti.Name, ti.Name);
@@ -193,7 +182,7 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
-            List<ItemInventory> addons = await addonInventory;
+            List<ItemInventory> addons = addonInventory;
             ViewBag.Addon = addons.First();
             ViewBag.TicketInventory = ticketInventoryList;
             ViewBag.IsUpdating = false;
@@ -362,7 +351,11 @@ namespace KiCWeb.Controllers
                 }
             }
 
-            if (priceCheck == 0) RedirectToAction("nopay");
+            if (priceCheck == 0)
+            {
+                var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_paymentService, registrations);
+                RedirectToAction("nopay");
+            }
 
             CureCardFormModel cfm = new CureCardFormModel();
             cfm.Items = registrations;
@@ -441,6 +434,8 @@ namespace KiCWeb.Controllers
 
                 if (paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
                 {
+                    List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
+                    var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_paymentService, registrationViewModels);
                     return RedirectToAction("cardsuccess");
                 }
                 else if (paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
@@ -500,23 +495,7 @@ namespace KiCWeb.Controllers
         public async Task<IActionResult> CardSuccess()
         {
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
-            List<TicketAddon> ticketAddons = new List<TicketAddon>();
-            foreach (RegistrationViewModel rvm in registrationViewModels)
-            {
-                if (rvm.HasMealAddon == true)
-                {
-                    ticketAddons.Add(rvm.MealAddon);
-                }
-            }
-            _paymentService.SetAttendeesPaidAsync(registrationViewModels);
-            _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
-            if (ticketAddons.Count > 0)
-            {
-                _paymentService.ReduceAddonInventoryAsync(ticketAddons);
-            }
-
-            ViewBag.OrderID = _paymentService.GetOrderIDAsync(registrationViewModels);
-
+            ViewBag.OrderID = _paymentService.getOrderID(registrationViewModels);
             _registrationSessionService.Clear();
 
             return View("CardSuccess"); // Views/Cure/CardSuccess.cshtml
@@ -635,16 +614,7 @@ namespace KiCWeb.Controllers
         public async Task<IActionResult> NoPay()
         {
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
-            var regIds = registrationViewModels.Select(x => x.RegId.ToString("D")).ToImmutableArray();
-            _logger.LogInformation("Processing NoPay checkout for the following registrations: {registrations}", regIds);
-            foreach (RegistrationViewModel rvm in registrationViewModels)
-            {
-                CureRegistrationHelpers.CreateAttendeeFromRegistration(_kdbContext, rvm, int.Parse(_configurationRoot["CUREID"]));
-            }
-            
-            await _paymentService.SetAttendeesPaidAsync(registrationViewModels);
-            await _paymentService.ReduceTicketInventoryAsync(registrationViewModels);
-
+            ViewBag.OrderID = _paymentService.getOrderID(registrationViewModels);
             _registrationSessionService.Clear();
 
             return View();
