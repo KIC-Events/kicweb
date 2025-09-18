@@ -91,6 +91,11 @@
                     <p>Pronouns: @item.Pronouns</p>
                 }
 
+                @if (item.HasMealAddon == true)
+                {
+                    <p>Decadent Delights - @item.MealAddon.Price</p>
+                }
+
                 <p>Room Type: @item.RoomType</p>
 
                 <div class="cure-payment__ticket-actions">

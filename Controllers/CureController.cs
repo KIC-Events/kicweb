@@ -365,6 +365,7 @@ namespace KiCWeb.Controllers
                 if (r.MealAddon is not null)
                 {
                     priceCheck += r.MealAddon.Price;
+                    r.Price += r.MealAddon.Price;
                 }
             }
 
