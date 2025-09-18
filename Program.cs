@@ -21,6 +21,10 @@ else if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Develop
 else { throw new Exception("Bad environment variable."); }
 IConfigurationRoot config = configBuilder.Build();
 
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 // Add services to the container.
 builder.Services.AddSingleton(config);
 DbContextOptionsBuilder<KiCdbContext> dbOptionsBuilder = new DbContextOptionsBuilder<KiCdbContext>();
@@ -37,7 +41,7 @@ builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
 //{
 //	client.BaseAddress = new Uri(config["Base Addresses:Mail"]);
 //});
-builder.Services.AddSingleton<IPaymentService, PaymentService>();
+builder.Services.AddSingleton<PaymentService, PaymentService>();
 builder.Services.AddSingleton<RegistrationSessionService, RegistrationSessionService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHangfire((sp, config) =>

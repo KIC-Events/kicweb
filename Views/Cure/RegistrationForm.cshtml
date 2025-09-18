@@ -33,20 +33,7 @@
       <div class="field radio-group">
         <label asp-for="TicketType"></label>
         @Html.DescriptionFor(m => m.TicketType)
-        @for (int i = 0; i < ViewBag.TicketInventory.Count; i++)
-        {
-            var item = ViewBag.TicketInventory[i];
-            <div class="radio">
-              <input
-                type="radio"
-                name="TicketType"
-                id="ticket_@i"
-                value="@item.Name"
-                asp-for="TicketType"
-              />
-              <label for="ticket_@i">@item.Name</label>
-            </div>
-        }
+        @Html.DropDownListFor(m => m.TicketType, Model.TicketTypes)
       </div>
 
       @Html.HiddenFor(m => m.RegId)
@@ -232,6 +219,23 @@
               />
               <label for="room_@i">@item.Text</label>
             </div>
+        }
+      </div>
+
+      @*Add addon*@
+      <div class="field radio-group">
+        <label asp-for="HasMealAddon"></label>
+        <p>Select this option if you would like to add the Decadent Delights meal package to your ticket.</p>
+        @if(ViewBag.AddOn.QuantityAvailable > 0){
+          <div class="radio">
+            <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" />
+          </div>
+        }
+        @if(ViewBag.AddOn.QuantityAvailable == 0){
+          <div class="radio">
+            <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" disabled />
+            <span>SOLD OUT</span>
+          </div>
         }
       </div>
 
