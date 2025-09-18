@@ -459,11 +459,13 @@ namespace KiCWeb.Controllers
                 }
                 else if (paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
                 {
-                    return RedirectToAction("carderror");
+                    var orderId = _paymentService.getOrderID(_registrationSessionService.Registrations);
+                    return RedirectToAction("carderror", new {paymentId = orderId});
                 }
                 else
                 {
-                    return RedirectToAction("paymentprocessing");
+                    var orderId = _paymentService.getOrderID(_registrationSessionService.Registrations);
+                    return RedirectToAction("paymentprocessing", new { paymentId = orderId});
                 }
             }
 
@@ -474,32 +476,25 @@ namespace KiCWeb.Controllers
         [Route("paymentprocessing")]
         public IActionResult PaymentProcessing(string paymentId)
         {
-            string paymentStatus = "pending";
+            ViewBag.PaymentId = paymentId;
 
-            while (paymentStatus == "pending")
-            {
-                paymentStatus = _paymentService.CheckPaymentStatus(paymentId);
-            }
-
-            if (paymentStatus == "approved" || paymentStatus == "completed")
-            {
-                return RedirectToAction("cardsuccess");
-            }
-            else
-            {
-                return RedirectToAction("carderror");
-            }
-
-            throw new UnreachableException("No card status or unexpected card status");
+            return View();
         }
 
+        [HttpGet]
+        [Route("carderror")]
+        public IActionResult CardError(string paymentId)
+        {
+            ViewBag.PaymentId = paymentId;
+            return View("CardError"); // Views/Cure/CardError.cshtml
+        }
+        
+        [HttpPost]
         [Route("carderror")]
         public IActionResult CardError()
         {
-            // This action could be used to handle card errors
-            // You might want to return a specific error view
-
-            return View("CardError"); // Views/Cure/CardError.cshtml
+            _registrationSessionService.Clear();
+            return RedirectToAction("Index");
         }
 
         /// <summary>

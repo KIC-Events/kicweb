@@ -1,0 +1,25 @@
+@{
+    ViewBag.Title = "Credit Card Error";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Payment Error</h4>
+        <p>
+            There was a problem processing your credit card. Please check your card details and try again.
+        </p>
+        <p>
+            Your order ID is @ViewBag.PaymentId
+        </p>
+    </div>
+    <div class="d-flex gap-3 mt-4">
+        <a asp-action="RegistrationPayment" asp-controller="Cure" class="btn btn-primary">
+            Try Again
+        </a>
+        <form asp-action="CardError" asp-controller="Cure" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-danger">
+                Cancel Registration
+            </button>
+        </form>
+    </div>
+</div>
