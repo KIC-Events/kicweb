@@ -99,7 +99,7 @@ namespace KiCWeb.Controllers
         /// </returns>
         [HttpGet]
         [Route("registration/form")]
-        public async Task<IActionResult> RegistrationForm(Guid? regId = null)
+        public async Task<IActionResult> RegistrationForm(Guid? regId)
         {
             List<ItemInventory> ticketInventory;
             List<ItemInventory> addonInventory;
@@ -142,6 +142,19 @@ namespace KiCWeb.Controllers
                 ViewBag.Addon = _addons.First();
                 ViewBag.TicketInventory = ticketInventory;
                 ViewBag.IsUpdating = true;
+                
+                if(existingRegistration.DiscountCode is not null)
+                {
+                    TicketComp? ticketComp = _kdbContext.TicketComp
+                        .Where(tc => tc.DiscountCode == existingRegistration.DiscountCode)
+                        .FirstOrDefault();
+                        
+                    if(ticketComp is null)
+                    {
+                        ViewBag.Error = "Invalid Discount Code. Please check the discount code and try again.";
+                        ViewBag.IsUpdating = false;
+                    }
+                }
 
                 return View(existingRegistration);
             }
@@ -216,6 +229,8 @@ namespace KiCWeb.Controllers
                 registrationData.MealAddon = await _paymentService.GetAddonItemAsync();
             }
 
+            var registrations = _registrationSessionService.Registrations;
+
             if (registrationData.DiscountCode is not null)
             {
                 TicketComp? comp = _kdbContext.TicketComp
@@ -225,14 +240,13 @@ namespace KiCWeb.Controllers
 
                 if (comp is null)
                 {
-                    ViewBag.Error = "Discount Code Invalid";
-                    return View(registrationData);
+                    registrationData.RegId = Guid.NewGuid();
+                    registrations.Add(registrationData);
+                    return RedirectToAction("RegistrationForm", new RouteValueDictionary(new{controller = "cure", action = "RegistrationForm", regId = registrationData.RegId}));
                 }
 
                 registrationData.TicketComp = comp;
             }
-
-            var registrations = _registrationSessionService.Registrations;
 
             if (registrationData.RegId != Guid.Empty)
             {
