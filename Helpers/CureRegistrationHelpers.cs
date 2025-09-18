@@ -64,4 +64,15 @@ public static class CureRegistrationHelpers
 
         return paymentService.getOrderID(registrationViewModels);
     }
+    
+    public static void UpdateOrderID(KiCdbContext ctx, List<Attendee> attendees, string orderId)
+    {
+        foreach(Attendee attendee in attendees)
+        {
+            attendee.OrderID = orderId;
+            ctx.Attendees.Update(attendee);
+        }
+
+        ctx.SaveChanges();
+    }
 }

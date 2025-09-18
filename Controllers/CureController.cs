@@ -456,16 +456,19 @@ namespace KiCWeb.Controllers
                 {
                     List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
                     var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_paymentService, registrationViewModels, attendees);
+                    CureRegistrationHelpers.UpdateOrderID(_kdbContext, attendees, orderId);
                     return RedirectToAction("cardsuccess");
                 }
                 else if (paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
                 {
                     var orderId = _paymentService.getOrderID(_registrationSessionService.Registrations);
+                    CureRegistrationHelpers.UpdateOrderID(_kdbContext, attendees, orderId)
                     return RedirectToAction("carderror", new {paymentId = orderId});
                 }
                 else
                 {
                     var orderId = _paymentService.getOrderID(_registrationSessionService.Registrations);
+                    CureRegistrationHelpers.UpdateOrderID(_kdbContext, attendees, orderId);
                     return RedirectToAction("paymentprocessing", new { paymentId = orderId});
                 }
             }
