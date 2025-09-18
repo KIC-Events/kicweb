@@ -242,7 +242,8 @@ namespace KiCWeb.Controllers
                 {
                     registrationData.RegId = Guid.NewGuid();
                     registrations.Add(registrationData);
-                    return RedirectToAction("RegistrationForm", new RouteValueDictionary(new{controller = "cure", action = "RegistrationForm", regId = registrationData.RegId}));
+                    _registrationSessionService.Registrations = registrations;
+                    return RedirectToAction("RegistrationForm", new { regId = registrationData.RegId });
                 }
 
                 registrationData.TicketComp = comp;
