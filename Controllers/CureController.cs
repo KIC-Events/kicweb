@@ -462,7 +462,7 @@ namespace KiCWeb.Controllers
                 else if (paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")
                 {
                     var orderId = _paymentService.getOrderID(_registrationSessionService.Registrations);
-                    CureRegistrationHelpers.UpdateOrderID(_kdbContext, attendees, orderId)
+                    CureRegistrationHelpers.UpdateOrderID(_kdbContext, attendees, orderId);
                     return RedirectToAction("carderror", new {paymentId = orderId});
                 }
                 else
