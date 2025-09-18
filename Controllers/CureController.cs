@@ -349,6 +349,7 @@ namespace KiCWeb.Controllers
             }
 
             //Check if checkout total is 0 - if user is not paying, we can skip checkout screen.
+            //Reduce price by discount ammount
             double? priceCheck = 0;
             foreach (RegistrationViewModel r in registrations)
             {
@@ -357,6 +358,7 @@ namespace KiCWeb.Controllers
                 if (r.TicketComp is not null)
                 {
                     priceCheck -= r.TicketComp.CompAmount;
+                    r.Price -= (double)r.TicketComp.CompAmount;
                 }
 
                 if (r.MealAddon is not null)
