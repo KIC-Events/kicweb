@@ -222,17 +222,17 @@
       </div>
 
       @*Add addon*@
-      <div class="field radio-group">
+      <div class="field">
         <label asp-for="HasMealAddon"></label>
         <p>Select here if you would like to add on this Friday VIP exclusive opportunity to mingle with our presenters with a Buffet style dinner. Limited capacity and already included with the Gold Ticket Option.</p>
         @if(ViewBag.AddOn.QuantityAvailable > 0){
-          <div class="radio">
-            <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" />
+          <div class="checkbox">
+            <input type="checkbox" name="HasMealAddon" asp-for="HasMealAddon" />
           </div>
         }
         @if(ViewBag.AddOn.QuantityAvailable == 0){
-          <div class="radio">
-            <input type="radio" name="HasMealAddon" value="Decadent Delights" asp-for="HasMealAddon" disabled />
+          <div class="checkbox">
+            <input type="checkbox" name="HasMealAddon" asp-for="HasMealAddon" disabled />
             <span>SOLD OUT</span>
           </div>
         }
