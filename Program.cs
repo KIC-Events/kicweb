@@ -5,6 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Hangfire;
 using Hangfire.MySql;
 using KiCWeb.Helpers;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Exporter.Prometheus;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +29,41 @@ IConfigurationRoot config = configBuilder.Build();
 
 // Configure logging
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+builder.Logging.AddOpenTelemetry(options =>
+	{
+		options
+			.SetResourceBuilder(
+				ResourceBuilder.CreateDefault().AddService("KiCWeb"))
+			.AddOtlpExporter((exporterOptions, processorOptions) =>
+			{
+				exporterOptions.Endpoint = new Uri(config["OpenTelemetry:LogEndpoint"] ?? "");
+				exporterOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
+			})
+			.AddConsoleExporter();
+	}
+);
+builder.Services.AddOpenTelemetry()
+	.WithTracing(tracing =>
+		tracing
+			.AddAspNetCoreInstrumentation()
+			.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("KiCWeb"))
+			.SetErrorStatusOnException()
+			.AddOtlpExporter(exporterOptions =>
+			{
+				exporterOptions.Endpoint = new Uri(config["OpenTelemetry:TraceEndpoint"] ?? "");
+				exporterOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
+			})
+		)
+	.WithMetrics(metrics =>
+		metrics
+			.AddAspNetCoreInstrumentation()
+			.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("KiCWeb"))
+			.AddOtlpExporter(exporterOptions =>
+			{
+				exporterOptions.Endpoint = new Uri(config["OpenTelemetry:MetricsEndpoint"] ?? "");
+				exporterOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
+			})
+	);
 
 // Add services to the container.
 builder.Services.AddSingleton(config);
