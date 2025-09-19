@@ -94,7 +94,8 @@
 
                 @if (item.HasMealAddon == true)
                 {
-                    <p>Decadent Delights - @item.MealAddon.Price</p>
+                    decimal mealPrice = (decimal)@item.MealAddon.Price;
+                    <p>Decadent Delights - @mealPrice.ToString()</p>
                 }
 
                 <p>Room Type: @item.RoomType</p>
