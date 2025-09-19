@@ -1,5 +1,15 @@
 @model KiCData.Models.WebModels.RegistrationViewModel
 
+@if(ViewBag.Error is not null){
+  <div class="container">
+    <section class="page-section" aria-labelledby="error-warning-title">
+      <div class="info-banner">
+        <p>@ViewBag.Error</p>
+      </div>
+    </section>
+  </div>
+}
+
 <div class="container">
   <section class="page-section" aria-labelledby="registration-form-title">
     <h1 class="h2">CURE 2026 Registration</h1>    
@@ -15,24 +25,18 @@
       </p>
     </div>
     <form asp-action="RegistrationForm" method="post">
+      <div class="field">
+        <label asp-for="DiscountCode"></label>
+        @Html.DescriptionFor(m => m.DiscountCode)
+        <input asp-for="DiscountCode" />
+      </div>
       <div class="field radio-group">
         <label asp-for="TicketType"></label>
         @Html.DescriptionFor(m => m.TicketType)
-        @for (int i = 0; i < Model.TicketTypes.Count; i++)
-        {
-            var item = Model.TicketTypes[i];
-            <div class="radio">
-              <input
-                type="radio"
-                name="TicketType"
-                id="ticket_@i"
-                value="@item.Value"
-                asp-for="TicketType"
-              />
-              <label for="ticket_@i">@item.Text</label>
-            </div>
-        }
+        @Html.DropDownListFor(m => m.TicketType, Model.TicketTypes)
       </div>
+
+      @Html.HiddenFor(m => m.RegId)
 
       @* First name *@
       <div class="field">
@@ -86,12 +90,19 @@
         <span asp-validation-for="SexOnID"></span>
       </div>
 
+      @* Pronouns *@
+      <div class="field">
+        <label asp-for="Pronouns"></label>
+        @Html.DescriptionFor(m => m.Pronouns)
+        <input asp-for="Pronouns" />
+        <span asp-validation-for="Pronouns"></span>
+      </div>
+
       @* Phone Number *@
       <div class="field">
         <label asp-for="PhoneNumber"></label>
         @Html.DescriptionFor(m => m.PhoneNumber)
-        <input asp-for="PhoneNumber" type="tel" required />
-        <span asp-validation-for="PhoneNumber"></span>
+        <input asp-for="PhoneNumber" type="tel" />
       </div>
 
       @* City *@
@@ -166,7 +177,7 @@
       <div class="field">
         <label asp-for="FetName"></label>
         @Html.DescriptionFor(m => m.FetName)
-        <input asp-for="FetName" required />
+        <input asp-for="FetName" />
         <span asp-validation-for="FetName"></span>
       </div>
 
@@ -174,7 +185,7 @@
       <div class="field">
         <label asp-for="ClubId"></label>
         @Html.DescriptionFor(m => m.ClubId)
-        <input asp-for="ClubId" required />
+        <input asp-for="ClubId" />
         <span asp-validation-for="ClubId"></span>
       </div>
 
@@ -210,8 +221,34 @@
         }
       </div>
 
-      <button class="button button--secondary" type="submit" name="action" value="CreateMore">Register another</button>
-      <button class="button" type="submit" name="action" value="Checkout">Checkout</button>
+      @*Add addon*@
+      <div class="field">
+        <label asp-for="HasMealAddon"></label>
+        <p>Select here if you would like to add on this Friday VIP exclusive opportunity to mingle with our presenters with a Buffet style dinner. Limited capacity and already included with the Gold Ticket Option.</p>
+        @if(ViewBag.AddOn.QuantityAvailable > 0){
+          <div class="radio">
+            <input type="checkbox" name="HasMealAddon" asp-for="HasMealAddon" />
+          </div>
+        }
+        @if(ViewBag.AddOn.QuantityAvailable == 0){
+          <div class="radio">
+            <input type="checkbox" name="HasMealAddon" asp-for="HasMealAddon" disabled />
+            <span>SOLD OUT</span>
+          </div>
+        }
+      </div>
+
+      @* If RegId is set, show the "Update" button *@
+      @if (ViewBag.IsUpdating)
+      {
+        <a href="/Cure/Registration/Payment" class="button button--secondary">Cancel Update</a>
+        <button class="button" type="submit" name="action" value="Checkout">Update Registration</button>
+      }
+      else
+      {
+        <button class="button button--secondary" type="submit" name="action" value="CreateMore">Register another</button>
+        <button class="button" type="submit" name="action" value="Checkout">Checkout</button>
+      }    
     </form>
   </section>
 </div>

@@ -1,12 +1,391 @@
 @using KiCData.Models.WebModels
 @using KiCData.Models.WebModels.PaymentModels
 @using System.Text.Json
+@using Microsoft.EntityFrameworkCore.Metadata.Conventions
 
 @model CureCardFormModel
 
-@{
-    var options = new JsonSerializerOptions { WriteIndented = true };
-    var json = JsonSerializer.Serialize(Model.Items, options);
+<form class="container" method="post" asp-action="RegistrationPayment">
+  @{
+    var groupedItems = Model.Items
+        .Where(i => i.Type == "Ticket")
+        .GroupBy(i => i.TicketType)
+        .Select(g => new { TicketType = g.Key, Count = g.Count(), Total = g.Sum(i => i.Price) })
+        .ToList();
+    
+    decimal subtotal = Model.Items.Sum(i => (decimal)i.Price);
+    decimal taxRate = 0.08M;
+    decimal salesTax = Math.Round(subtotal * taxRate, 2);
+    decimal totalDue = subtotal + salesTax;
+  }
+  
+  <div class="cure-payment">
+    <div class="cure-payment__main">
+      <section class="page-section">
+        <h1 class="h2">Review your order</h1>
+
+
+        <div class="cure-payment__summary cure-payment__summary--mobile" style="font-family: var(--font-montserrat)">
+              <div class="order-summary" style="border: 1px solid #000; padding: 1rem; font-family: var(--font-montserrat)">
+                <h3 style="font-weight: 800; font-size: 1rem;">YOUR ORDER</h3>
+                
+                
+
+                @foreach (var group in groupedItems)
+                {
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>@group.TicketType Ticket @("x" + group.Count)</span>
+                    <span>@group.Total.ToString("C")</span>
+                  </div>
+                }
+
+                @* TODO this is how we can do merch *@
+                @* 
+                  <div style="display: flex; justify-content: space-between;">
+                    <span class="sub-item" style="margin-left: 1rem;">• Official CURE 2026 T-Shirt</span>
+                    <span>$19.00</span> @* Replace with actual price if dynamic
+                  </div> 
+                *@
+
+                <hr style="margin: 1rem 0;" />
+
+                <div style="display: flex; justify-content: space-between;">
+                  <strong>Subtotal</strong>
+                  <strong>@subtotal.ToString("C")</strong>
+                </div>
+
+                <div style="display: flex; justify-content: space-between;">
+                  <span>Sales Tax (8%)</span>
+                  <span>@salesTax.ToString("C")</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; font-weight: 800; margin-top: 0.5rem;">
+                  <span>Total due</span>
+                  <span>@totalDue.ToString("C")</span>
+                </div>
+              </div>
+            </div>
+        <div class="content body-text">
+          <p>Review your selections below. Click the actions on the top right of the selections to make changes.</p>
+
+          <a asp-action="RegistrationForm" class="button button--secondary">
+            Add Another Ticket
+          </a>
+
+          @for (int i = 0; i < Model.Items.Count; i++)
+          {
+              var item = Model.Items[i];
+
+              <div class="cure-payment__ticket-box">
+                <strong>TICKET @(i + 1): @item.TicketType.ToUpper() TICKET</strong><br />
+
+                <p>First Name: @item.FirstName</p>
+                <p>Last Name: @item.LastName</p>
+                <p>DoB: @(item.DateOfBirth?.ToString("MM/dd/yyyy") ?? "N/A")</p>
+                <p>Email: @item.Email</p>
+                <p>Phone: @item.PhoneNumber</p>
+                <br />
+                <p>Badge Name: @item.BadgeName</p>
+
+                @if (!string.IsNullOrEmpty(item.Pronouns))
+                {
+                    <p>Pronouns: @item.Pronouns</p>
+                }
+
+                @if (item.HasMealAddon == true)
+                {
+                    decimal mealPrice = (decimal)@item.MealAddon.Price;
+                    <p>Decadent Delights - @mealPrice.ToString()</p>
+                }
+
+                <p>Room Type: @item.RoomType</p>
+
+                <div class="cure-payment__ticket-actions">
+                  @* Font awesome edit/trash here *@
+                  <a asp-action="RegistrationForm" asp-route-regId="@item.RegId">
+                    <i class="fa fa-edit"></i>
+                  </a>
+                  <a href="#" onclick="removeTicket('@item.RegId'); return false;">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </div>
+              </div>
+          }
+
+        </div>          
+      </section>
+
+      <section class="page-section">
+        <h2>
+          Contact information
+        </h2>
+
+        <div class="content body-text">
+          <p>
+            Please provide contact info for the person completing the ticket purchase. We’ll use this information to contact you if there’s an issue with your ticket order.
+          </p>
+          <div class="cure-payment__field-row">
+            @* First name *@
+            <div class="field field--inline">
+              <input asp-for="BillingContact.GivenName" />
+              <label asp-for="BillingContact.GivenName"></label>
+            </div>
+
+            @* Last name *@
+            <div class="field field--inline">
+              <input asp-for="BillingContact.FamilyName" />
+              <label asp-for="BillingContact.FamilyName"></label>
+            </div>
+          </div>
+
+          <div class="cure-payment__field-row">
+            @* Email *@
+            <div class="field field--inline" style="max-width: calc(var(--field-row-width) / 2 + 4rem)">
+              <input asp-for="BillingContact.EmailAddress" type="email" />
+              <label asp-for="BillingContact.EmailAddress"></label>
+            </div>
+
+            @* Phone number *@
+            <div class="field field--inline" style="max-width: calc(var(--field-row-width) / 2 - 4rem)">
+              <input asp-for="BillingContact.PhoneNumber" type="tel" placeholder="@Html.PromptFor(m => m.BillingContact.PhoneNumber)" />
+              <label asp-for="BillingContact.PhoneNumber"></label>
+            </div>
+          </div>
+        </div>        
+      </section>
+
+      <section class="page-section">
+        <h2>Billing Information</h2>
+
+        <div class="content">
+
+          <div class="cure-payment__field-row">
+            @* Address Line 1 *@
+            <div class="field field--inline">
+              <input asp-for="BillingContact.AddressLine1" />
+              <label asp-for="BillingContact.AddressLine1"></label>
+            </div>
+          </div>
+
+          <div class="cure-payment__field-row">
+            @* Address Line 2 *@
+            <div class="field field--inline">
+              <input asp-for="BillingContact.AddressLine2" data-val="false" />
+              <label asp-for="BillingContact.AddressLine2"></label>
+            </div>
+          </div>
+
+          <div class="cure-payment__field-row">
+            @* City *@
+            <div class="field field--inline" style="max-width: calc(var(--field-row-width) / 3 + 1.5rem)">
+              <input asp-for="BillingContact.City" />
+              <label asp-for="BillingContact.City"></label>
+            </div>
+
+            @* State *@
+            <div class="field field--inline" style="max-width: calc(var(--field-row-width) / 3 - 3rem)">
+              <select required asp-for="BillingContact.State">
+                <option value=""></option>
+                <option value="AL">AL</option>
+                <option value="AK">AK</option>
+                <option value="AZ">AZ</option>
+                <option value="AR">AR</option>
+                <option value="CA">CA</option>
+                <option value="CO">CO</option>
+                <option value="CT">CT</option>
+                <option value="DE">DE</option>
+                <option value="FL">FL</option>
+                <option value="GA">GA</option>
+                <option value="HI">HI</option>
+                <option value="ID">ID</option>
+                <option value="IL">IL</option>
+                <option value="IN">IN</option>
+                <option value="IA">IA</option>
+                <option value="KS">KS</option>
+                <option value="KY">KY</option>
+                <option value="LA">LA</option>
+                <option value="ME">ME</option>
+                <option value="MD">MD</option>
+                <option value="MA">MA</option>
+                <option value="MI">MI</option>
+                <option value="MN">MN</option>
+                <option value="MS">MS</option>
+                <option value="MO">MO</option>
+                <option value="MT">MT</option>
+                <option value="NE">NE</option>
+                <option value="NV">NV</option>
+                <option value="NH">NH</option>
+                <option value="NJ">NJ</option>
+                <option value="NM">NM</option>
+                <option value="NY">NY</option>
+                <option value="NC">NC</option>
+                <option value="ND">ND</option>
+                <option value="OH">OH</option>
+                <option value="OK">OK</option>
+                <option value="OR">OR</option>
+                <option value="PA">PA</option>
+                <option value="RI">RI</option>
+                <option value="SC">SC</option>
+                <option value="SD">SD</option>
+                <option value="TN">TN</option>
+                <option value="TX">TX</option>
+                <option value="UT">UT</option>
+                <option value="VT">VT</option>
+                <option value="VA">VA</option>
+                <option value="WA">WA</option>
+                <option value="WV">WV</option>
+                <option value="WI">WI</option>
+                <option value="WY">WY</option>
+              </select>
+              <label asp-for="BillingContact.State"></label>
+            </div>
+
+            @* Postal Code *@
+            <div class="field field--inline" style="max-width: calc(var(--field-row-width) / 3 + 1.5rem)">
+              <input asp-for="BillingContact.PostalCode" />
+              <label asp-for="BillingContact.PostalCode"></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card fields and form -->
+        <input type="hidden" asp-for="CardToken" />
+        <div id="card-container"></div>
+
+        <button type="button" id="submit-button" class="button">
+          Checkout
+        </button>
+      </section>
+    </div>
+
+    <div class="cure-payment__summary cure-payment__summary--desktop" style="font-family: var(--font-montserrat)">
+      <div class="order-summary" style="border: 1px solid #000; padding: 1rem; font-family: var(--font-montserrat)">
+        <h3 style="font-weight: 800; font-size: 1rem;">YOUR ORDER</h3>
+
+        @foreach (var group in groupedItems)
+        {
+          <div style="display: flex; justify-content: space-between;">
+            <span>@group.TicketType Ticket @("x" + group.Count)</span>
+            <span>@group.Total.ToString("C")</span>
+          </div>
+        }
+
+        @* TODO this is how we can do merch *@
+        @* 
+          <div style="display: flex; justify-content: space-between;">
+            <span class="sub-item" style="margin-left: 1rem;">• Official CURE 2026 T-Shirt</span>
+            <span>$19.00</span> @* Replace with actual price if dynamic
+          </div> 
+        *@
+
+        <hr style="margin: 1rem 0;" />
+
+        <div style="display: flex; justify-content: space-between;">
+          <strong>Subtotal</strong>
+          <strong>@subtotal.ToString("C")</strong>
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
+          <span>Sales Tax (8%)</span>
+          <span>@salesTax.ToString("C")</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-weight: 800; margin-top: 0.5rem;">
+          <span>Total due</span>
+          <span>@totalDue.ToString("C")</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @for (var i = 0; i < Model.Items.Count; i++)
+  {
+      @Html.Hidden($"Items[{i}].TicketType", Model.Items[i].TicketType)
+      @Html.Hidden($"Items[{i}].RoomType", Model.Items[i].RoomType)
+      @Html.Hidden($"Items[{i}].ArrivalDay", Model.Items[i].ArrivalDay)
+      @Html.Hidden($"Items[{i}].ArrivalDayOther", Model.Items[i].ArrivalDayOther)
+      @Html.Hidden($"Items[{i}].EmailConf", Model.Items[i].EmailConf)
+      @Html.Hidden($"Items[{i}].CreateMore", Model.Items[i].CreateMore)
+      @Html.Hidden($"Items[{i}].DiscountCode", Model.Items[i].DiscountCode)
+      @Html.Hidden($"Items[{i}].TicketComp", Model.Items[i].TicketComp)
+      @Html.Hidden($"Items[{i}].City", Model.Items[i].City)
+      @Html.Hidden($"Items[{i}].State", Model.Items[i].State)
+      @Html.Hidden($"Items[{i}].WaitList", Model.Items[i].WaitList)
+      @Html.Hidden($"Items[{i}].Pronouns", Model.Items[i].Pronouns)
+      @Html.Hidden($"Items[{i}].Price", Model.Items[i].Price)
+      @Html.Hidden($"Items[{i}].TicketId", Model.Items[i].TicketId)
+      @Html.Hidden($"Items[{i}].Type", Model.Items[i].Type)
+      @Html.Hidden($"Items[{i}].BadgeName", Model.Items[i].BadgeName)
+      @Html.Hidden($"Items[{i}].FirstName", Model.Items[i].FirstName)
+      @Html.Hidden($"Items[{i}].LastName", Model.Items[i].LastName)
+      @Html.Hidden($"Items[{i}].Email", Model.Items[i].Email)
+      @Html.Hidden($"Items[{i}].DateOfBirth", Model.Items[i].DateOfBirth?.ToString("yyyy-MM-dd"))
+      @Html.Hidden($"Items[{i}].FetName", Model.Items[i].FetName)
+      @Html.Hidden($"Items[{i}].ClubId", Model.Items[i].ClubId)
+      @Html.Hidden($"Items[{i}].PhoneNumber", Model.Items[i].PhoneNumber)
+      @Html.Hidden($"Items[{i}].AdditionalInfo", Model.Items[i].AdditionalInfo)
+      @Html.Hidden($"Items[{i}].SexOnID", Model.Items[i].SexOnID)
+  }
+</form>
+
+@if (Environment.GetEnvironmentVariable("IS_LOCAL_DEV") == "true" || Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
+  <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+}
+else 
+{
+  <script src="https://web.squarecdn.com/v1/square.js"></script>
 }
 
-<pre>@Html.Raw(json)</pre>
+<style>
+
+</style>
+
+<script>
+  function removeTicket(regId) {
+    if (!confirm("Are you sure you want to delete this ticket?")) return;
+
+    fetch(`/cure/registration/${regId}`, {
+      method: 'DELETE'
+    }).then(() => location.reload());
+  }
+
+  (async () => {
+    const payments = Square.payments('@ViewBag.AppId', '@ViewBag.LocationId');
+    const card = await payments.card({
+      style: {
+        input: {
+          fontFamily: 'verdana, sans-serif',
+          fontSize: '14px',
+        },
+        'input::placeholder': {
+          color: '#505050',
+        }
+      }
+    });
+    await card.attach('#card-container');
+
+    const submitButton = document.getElementById('submit-button');
+    const form = document.querySelector('form');
+
+    // This request submit runs our validation.
+    // If the form is valid, we proceed to tokenize the card and actually submit to the server.
+    submitButton.addEventListener('click', async () => {
+      form.requestSubmit();
+    });
+
+    // Handle the form submission
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // Tokenize the card details
+      const result = await card.tokenize();
+      if (result.status === 'OK') {
+        // If tokenization was successful, add the token to a hidden input and submit the form
+        const tokenInput = document.getElementById('CardToken');
+        tokenInput.value = result.token;
+        form.submit();
+      }
+    });
+  })();
+</script>

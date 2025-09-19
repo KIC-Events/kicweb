@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hangfire;
+using KiCData.Models.WebModels;
+using KiCData.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace KiCWeb.Controllers
 {
@@ -7,10 +10,14 @@ namespace KiCWeb.Controllers
     public class ApiController : Controller
     {
         private readonly IConfigurationRoot _config;
+        private readonly IEmailService _emailService;
+        private readonly IBackgroundJobClient _jobClient;
 
-        public ApiController(IConfigurationRoot config)
+        public ApiController(IConfigurationRoot config, IEmailService emailService, IBackgroundJobClient  backgroundJobClient)
         {
             _config = config;
+            _emailService = emailService;
+            _jobClient = backgroundJobClient;
         }
 
         [HttpGet]
@@ -63,5 +70,23 @@ namespace KiCWeb.Controllers
 
             return File(fileBytes, "img/png");
         }
+
+        /*
+        [Route("SendEmail")]
+        [HttpPost]
+        public string SendEmail(string to, string subject, string body)
+        {
+            var msg = new FormMessage
+            {
+                To = [to],
+                From = _config["Email Addresses:From"],
+                Sender = _config["Email Addresses:From"],
+                Subject = subject,
+                Html = body
+            };
+            _jobClient.Enqueue(() => _emailService.SendEmail(msg));
+            return "OK";
+        }
+        */
     }
 }

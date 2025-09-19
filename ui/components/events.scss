@@ -18,6 +18,8 @@
     border: .325rem solid var(--color-accent);
     background: var(--color-black);
     color: var(--color-white);
+    max-width: 400px;
+    max-height: 400px;
 
     &__top {
       aspect-ratio: 390 / 415;

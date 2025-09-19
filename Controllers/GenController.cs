@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Hangfire;
 using KiCData;
 using KiCData.Services;
 
@@ -17,9 +18,10 @@ namespace KiCWeb.Controllers
         private readonly ICookieService _cookieService;
         private readonly IEmailService _emailService;
         private readonly IConfigurationRoot _configurationRoot;
+        private readonly IBackgroundJobClient _jobClient;
         private KiCdbContext _kdbContext;
 
-        public GenController(IKiCLogger logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext, IUserService userService) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
+        public GenController(IKiCLogger logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext, IUserService userService, IBackgroundJobClient jobClient) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _logger = logger;
             _contextAccessor = httpContextAccessor;
@@ -27,6 +29,7 @@ namespace KiCWeb.Controllers
             _emailService = emailService;
             _configurationRoot = configurationRoot;
             _kdbContext = kiCdbContext;
+            _jobClient = jobClient;
         }
 
         [Route("~/Privacy")]
@@ -377,7 +380,7 @@ namespace KiCWeb.Controllers
 
             try
             {
-                _emailService.SendEmail(message);
+                _jobClient.Enqueue(() => _emailService.SendEmail(message));
             }
             catch (Exception ex)
             {
