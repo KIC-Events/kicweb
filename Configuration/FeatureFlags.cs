@@ -10,5 +10,6 @@ namespace KiCWeb.Configuration
         public bool ShowBlasphemyContent{ get; set; }
         public bool ShowHotelInfo{ get; set; }
         public bool ShowCureRegForm{ get; set; }
+        public bool ObfuscateCureRegForm{ get; set; }
     }
 }

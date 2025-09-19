@@ -78,7 +78,7 @@
           @*add link to merch*@
         </ul>
       </ul>
-      @if(ViewBag.ShowCureRegForm)
+      @if(ViewBag.ShowCureRegForm && !ViewBag.ObfuscateCureRegForm)
       {
         <p>
           <strong>Registration is now open!</strong> Click the button below to register.
@@ -92,6 +92,18 @@
         <p>
           <strong>Registration will open soon!</strong> Please check back later.
         </p>
+      }
+      @if (ViewBag.ShowCureRegForm && ViewBag.ObfuscateCureRegForm)
+      {
+        <form>
+          <div id="reg-code-gate" class="theme__cure field">
+              <label for="regCodeInput"><strong>Enter your registration access code:</strong></label>
+              <input type="text" id="regCodeInput" class="form-control" style="max-width: 300px; display: inline-block;" />
+              <button id="regCodeSubmit" class="button" style="margin-left: 8px;">Submit Code</button>
+              <span id="regCodeError" style="color: var(--color-red); margin-left: 12px; display: none;">Invalid code. Please try again.</span>
+          </div>
+          <div id="reg-code-success"></div>
+        </form>
       }
     </div>
   </section>
@@ -174,3 +186,29 @@
     })
   </section>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const codeGate = document.getElementById('reg-code-gate');
+    const codeInput = document.getElementById('regCodeInput');
+    const codeSubmit = document.getElementById('regCodeSubmit');
+    const codeError = document.getElementById('regCodeError');
+    const codeSuccess = document.getElementById('reg-code-success');
+
+    // Replace this with your actual code check logic
+    const validCode = '@(ViewBag.CureRegFormCode)';
+
+    codeSubmit?.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (codeInput.value.trim() === validCode) {
+            codeGate.style.display = 'none';
+            codeSuccess.innerHTML = `<a href="/cure/registration/form" class="button">Register for CURE 2026</a>`;
+        } else {
+            codeError.style.display = '';
+        }
+    });
+
+    codeInput?.addEventListener('input', function () {
+        codeError.style.display = 'none';
+    });
+});
+</script>

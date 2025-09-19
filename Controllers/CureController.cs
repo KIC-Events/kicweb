@@ -83,6 +83,8 @@ namespace KiCWeb.Controllers
                 return NotFound();
             }
             ViewBag.ShowCureRegForm = _featureFlags.ShowCureRegForm;
+            ViewBag.ObfuscateCureRegForm = _featureFlags.ObfuscateCureRegForm;
+            ViewBag.CureRegFormCode = _configurationRoot["EACODE"];
             return View(); // Views/Cure/Registration.cshtml
         }
 
