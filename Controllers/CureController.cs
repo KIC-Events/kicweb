@@ -151,13 +151,29 @@ namespace KiCWeb.Controllers
                 return NotFound();
             }
 
+            int cureId;
+            try
+            {
+                cureId = int.Parse(_configurationRoot["CUREID"]);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogError(
+                    "An error occured while fetching the CURE event ID. Verify that the 'CUREID' parameter is set in your appsettings file.");
+                _logger.LogError(e.Message);
+                throw;
+            }
+            catch (FormatException e)
+            {
+                _logger.LogError("The CURE event ID value is not formatted properly. Cannot convert string '{cureid_value}' to integer.", _configurationRoot["CUREID"]);
+                _logger.LogError(e.Message);
+                throw;
+            }
+
             RegistrationViewModel registration = new RegistrationViewModel()
             {
                 Event = _kdbContext.Events
-                .Where(
-                    e => e.Id == int.Parse(_configurationRoot["CUREID"])
-                )
-                .First()
+                    .First(e => e.Id == cureId)
             };
 
             registration.TicketTypes = new List<SelectListItem>();
@@ -216,12 +232,29 @@ namespace KiCWeb.Controllers
                 registrationData.MealAddon = await _paymentService.GetAddonItemAsync();
             }
 
+            int cureId;
+            try
+            {
+                cureId = int.Parse(_configurationRoot["CUREID"]);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogError(
+                    "An error occured while fetching the CURE event ID. Verify that the 'CUREID' parameter is set in your appsettings file.");
+                _logger.LogError(e.Message);
+                throw;
+            }
+            catch (FormatException e)
+            {
+                _logger.LogError("The CURE event ID value is not formatted properly. Cannot convert string '{cureid_value}' to integer.", _configurationRoot["CUREID"]);
+                _logger.LogError(e.Message);
+                throw;
+            }
             if (registrationData.DiscountCode is not null)
             {
                 TicketComp? comp = _kdbContext.TicketComp
-                    .Where(c => c.DiscountCode == registrationData.DiscountCode
-                    && c.Ticket.EventId == int.Parse(_configurationRoot["CUREID"]))
-                    .FirstOrDefault();
+                    .FirstOrDefault(c => c.DiscountCode == registrationData.DiscountCode
+                                         && c.Ticket.EventId == cureId);
 
                 if (comp is null)
                 {
@@ -287,8 +320,12 @@ namespace KiCWeb.Controllers
             {
                 registrations.Remove(registrationToRemove);
                 _registrationSessionService.Registrations = registrations;
+                return NoContent();
             }
-            return NoContent();
+            else
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>
@@ -313,7 +350,8 @@ namespace KiCWeb.Controllers
             if (_registrationSessionService.IsEmpty())
             {
                 // If no registration data is found, redirect to the registration form
-                //TODO: ADD additional error handling or user feedback
+                ViewBag.Error =
+                    "You attempted to checkout without any registrations in your cart. Fill out at least one registration form in order to check out.";
                 return RedirectToAction("RegistrationForm");
             }
 
@@ -382,9 +420,26 @@ namespace KiCWeb.Controllers
         {
             var ticketInventory = _paymentService.GetItemInventoryAsync("CURE 2026");
 
+            int cureId;
+            try
+            {
+                cureId = int.Parse(_configurationRoot["CUREID"]);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogError(
+                    "An error occured while fetching the CURE event ID. Verify that the 'CUREID' parameter is set in your appsettings file.");
+                _logger.LogError(e.Message);
+                throw;
+            }
+            catch (FormatException e)
+            {
+                _logger.LogError("The CURE event ID value is not formatted properly. Cannot convert string '{cureid_value}' to integer.", _configurationRoot["CUREID"]);
+                _logger.LogError(e.Message);
+                throw;
+            }
             Event CureEvent = _kdbContext.Events
-                .Where(e => e.Id == int.Parse(_configurationRoot["CUREID"]))
-                .First();
+                .First(e => e.Id == cureId);
 
             // Loop through cfmUpdated.Items (which are the registrations).
             // Match TicketType to ticketInventory[].Name.
@@ -498,6 +553,7 @@ namespace KiCWeb.Controllers
         {
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
             ViewBag.OrderID = _paymentService.getOrderID(registrationViewModels);
+            ViewBag.Registrations = registrationViewModels;
             _registrationSessionService.Clear();
 
             return View("CardSuccess"); // Views/Cure/CardSuccess.cshtml
