@@ -605,10 +605,12 @@ namespace KiCWeb.Controllers
         }
 
         [Route("error")]
-        public IActionResult Error()
+        public IActionResult Error(Exception? ex)
         {
-            // This action could be used to handle errors
-            // You might want to return a specific error view
+            if(ex is not null)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
 
             return View("Error"); // Views/Cure/Error.cshtml
         }
