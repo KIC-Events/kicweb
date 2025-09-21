@@ -188,6 +188,13 @@
     }
   }
 
+  
+  .nav__menu {
+    &--social {
+      display: flex;
+      gap: var(--space-4);
+    }
+  }
   @include breakpoint(md) {
     flex-direction: column;
     transition: none;
@@ -242,6 +249,8 @@
         &--social {
           margin-top: var(--space-2);
           padding-bottom: var(--space-2-5);
+          display: flex;
+          gap: var(--space-2-5);
         }
       }
     }
@@ -258,5 +267,31 @@
       text-align: center;
       font-size: 1rem;
     }
+    
+    &--cart {
+      margin-left: 30px;
+    }
   }
+}
+
+.checkout-button {
+  text-decoration: none;
+  position: relative;
+  color: var(--color-accent);
+}
+
+.checkout-button::after {
+  content: attr(value);
+  display: inline-block;
+  min-width: 23px;
+  min-height: 23px;
+  background: var(--color-black);;
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+  padding: 0;
+  position: absolute;
+  left: 8px;
+  top: -18px;
+  text-align: center;
+  font-weight: bold;
 }

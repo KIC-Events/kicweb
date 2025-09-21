@@ -25,7 +25,14 @@ namespace KiCWeb.Controllers
 
 		public override void OnActionExecuting(ActionExecutingContext context)
 		{
-			if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request))
+			var regService = context.HttpContext.RequestServices.GetRequiredService<RegistrationSessionService>();
+			if (!regService.IsEmpty())
+			{
+				ViewBag.checkoutCount = regService.Registrations.Count;
+			}
+			
+			if (!_cookieService.AgeGateCookieAccepted(_contextAccessor.HttpContext.Request) &&
+			    (context.RouteData.Values["controller"] ?? "").ToString() != "Home") //don't redirect if we're in HomeController
 			{
 				CookieOptions options = _cookieService.NewCookieFactory();
 				_contextAccessor.HttpContext.Response.Cookies.Append("age_gate_redirect", context.HttpContext.Request.Path, options);
