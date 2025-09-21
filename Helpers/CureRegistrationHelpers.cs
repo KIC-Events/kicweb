@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Services;
@@ -43,11 +44,11 @@ public static class CureRegistrationHelpers
         return attendee.Entity;
     }
 
-    public static string? FinalizeTicketOrder(InventoryService inventoryService, PaymentService paymentService,
+    public static async Task<string?> FinalizeTicketOrder(InventoryService inventoryService, PaymentService paymentService,
         List<RegistrationViewModel> registrationViewModels, List<Attendee> attendees)
     {
         paymentService.SetAttendeesPaid(attendees);
-        inventoryService.AdjustInventoryAsync(registrationViewModels);
+        await inventoryService.AdjustInventoryAsync(registrationViewModels);
 
         return paymentService.getOrderID(registrationViewModels);
     }

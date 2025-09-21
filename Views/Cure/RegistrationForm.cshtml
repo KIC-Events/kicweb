@@ -224,13 +224,13 @@
       @*Add addon*@
       <div class="field" id="decadent-delights-selection">
         <label asp-for="HasMealAddon"></label>
-        <p>Select here if you would like to add on this Friday VIP exclusive opportunity to mingle with our presenters with a Buffet style dinner. Limited capacity and already included with the Gold Ticket Option. - @ViewBag.AddOn.Price.ToString("C")</p>
-        @if(ViewBag.AddOn.QuantityAvailable > 0){
+        <p>Select here if you would like to add on this Friday VIP exclusive opportunity to mingle with our presenters with a Buffet style dinner. Limited capacity and already included with the Gold Ticket Option. - @ViewBag.AddOn.PriceInDollars.ToString("C")</p>
+        @if(ViewBag.AddOn.Stock > 0){
           <div class="radio">
             <input type="checkbox" name="HasMealAddon" asp-for="HasMealAddon" />
           </div>
         }
-        @if(ViewBag.AddOn.QuantityAvailable == 0){
+        @if(ViewBag.AddOn.Stock == 0){
           <div class="radio">
             <input type="checkbox" name="HasMealAddon" asp-for="HasMealAddon" disabled />
             <span>SOLD OUT</span>
