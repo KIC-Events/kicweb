@@ -94,7 +94,7 @@
 
                 @if (item.HasMealAddon == true)
                 {
-                    decimal mealPrice = (decimal)@item.MealAddon.PriceInDollars;
+                    decimal mealPrice = (decimal)@item.MealAddon.Price;
                     <p>Decadent Delights - @mealPrice.ToString()</p>
                 }
 
