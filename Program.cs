@@ -43,6 +43,7 @@ builder.Services.AddSingleton<IKiCLogger, KiCLogger>();
 //});
 builder.Services.AddSingleton<PaymentService, PaymentService>();
 builder.Services.AddSingleton<RegistrationSessionService, RegistrationSessionService>();
+builder.Services.AddSingleton<InventoryService, InventoryService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHangfire((sp, config) =>
 	{

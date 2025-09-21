@@ -3,6 +3,7 @@ using KiCData.Models.WebModels;
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Newtonsoft.Json;
 using Square.Models;
 
@@ -17,9 +18,10 @@ namespace KiCWeb.Controllers
         private readonly IConfigurationRoot _configurationRoot;
         private readonly KiCdbContext _context;
         private readonly PaymentService _paymentService;
+        private readonly InventoryService _inventoryService;
 	    private KiCdbContext _kdbContext;
 
-        public Payment(ILogger<Payment> logger, IHttpContextAccessor contextAccessor, ICookieService cookieService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext, PaymentService paymentService) : base(configurationRoot, userService: null, contextAccessor, kiCdbContext, cookieService)
+        public Payment(ILogger<Payment> logger, IHttpContextAccessor contextAccessor, ICookieService cookieService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext, PaymentService paymentService, InventoryService inventoryService) : base(configurationRoot, userService: null, contextAccessor, kiCdbContext, cookieService)
         {
             _logger = logger;
             _contextAccessor = contextAccessor;
@@ -28,6 +30,7 @@ namespace KiCWeb.Controllers
             _context = kiCdbContext;
             _paymentService = paymentService;
             _kdbContext = kiCdbContext;
+            _inventoryService = inventoryService;
         }
 
         [HttpGet("Purchase")]
@@ -74,8 +77,8 @@ namespace KiCWeb.Controllers
                 ViewBag.SalesActive = false;
             }
 
-            int standardCnt = _paymentService.CheckInventory("Blasphemy", "Standard");
-            int vipCnt = _paymentService.CheckInventory("Blasphemy", "VIP");
+            int? standardCnt = _inventoryService.CheckInventory("Blasphemy Standard");
+            int? vipCnt = _inventoryService.CheckInventory("Blasphemy VIP");
 
             ViewBag.StandardCount = standardCnt;
             ViewBag.VIPCount = vipCnt;
