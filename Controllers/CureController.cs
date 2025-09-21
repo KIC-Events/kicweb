@@ -179,7 +179,7 @@ namespace KiCWeb.Controllers
             var ticketInventoryList = ticketInventory;
             foreach (ItemInventory ti in ticketInventoryList)
             {
-                SelectListItem item = new SelectListItem(ti.Name, ti.Name);
+                SelectListItem item = new SelectListItem(ti.Name + " - $" + ti.Price.ToString(), ti.Name);
                 if (ti.QuantityAvailable <= 0)
                 {                 
                     item.Disabled = true;
@@ -226,13 +226,6 @@ namespace KiCWeb.Controllers
             //     return View(registrationData);
             // }
 
-            // If a gold ticket is registered, clear the MealAddon info since it's included with the ticket
-            if ((registrationData.TicketType ?? "").ToLower() == "gold" && registrationData.HasMealAddon)
-            {
-                registrationData.HasMealAddon = false;
-                registrationData.MealAddon = null; // Clear it if it's set (i.e. if editing a ticket from standard->gold)
-            }
-
             if (registrationData.HasMealAddon == true)
             {
                 registrationData.MealAddon = await _paymentService.GetAddonItemAsync();
@@ -256,10 +249,6 @@ namespace KiCWeb.Controllers
                 }
 
                 registrationData.TicketComp = comp;
-            }
-            else
-            {
-                registrationData.TicketComp = null;
             }
 
             if (registrationData.RegId != Guid.Empty)
@@ -461,7 +450,7 @@ namespace KiCWeb.Controllers
                         _logger.LogError(ex.ToString());
                     }
 
-                    return RedirectToAction("carderror");
+                    return RedirectToAction("error");
                 }
 
 
