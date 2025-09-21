@@ -307,6 +307,8 @@ namespace KiCWeb.Controllers
             if (registrationToRemove != null)
             {
                 registrations.Remove(registrationToRemove);
+                List<RegistrationViewModel> regList = new List<RegistrationViewModel>() { registrationToRemove };
+                _inventoryService.AdjustInventoryAsync(regList, true);
                 _registrationSessionService.Registrations = registrations;
             }
             return NoContent();
@@ -500,6 +502,8 @@ namespace KiCWeb.Controllers
         [Route("carderror")]
         public IActionResult CardError()
         {
+            var regList = _registrationSessionService.Registrations;
+            _inventoryService.AdjustInventoryAsync(regList, true);
             _registrationSessionService.Clear();
             return RedirectToAction("Index");
         }
