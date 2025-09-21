@@ -226,6 +226,13 @@ namespace KiCWeb.Controllers
             //     return View(registrationData);
             // }
 
+            // If a gold ticket is registered, clear the MealAddon info since it's included with the ticket
+            if ((registrationData.TicketType ?? "").ToLower() == "gold" && registrationData.HasMealAddon)
+            {
+                registrationData.HasMealAddon = false;
+                registrationData.MealAddon = null; // Clear it if it's set (i.e. if editing a ticket from standard->gold)
+            }
+
             if (registrationData.HasMealAddon == true)
             {
                 registrationData.MealAddon = await _paymentService.GetAddonItemAsync();
