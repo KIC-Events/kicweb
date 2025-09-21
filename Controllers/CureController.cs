@@ -38,7 +38,8 @@ namespace KiCWeb.Controllers
             PaymentService paymentService,
             ILogger<CureController> kiCLogger,
             RegistrationSessionService registrationSessionService,
-            FeatureFlags featureFlags
+            FeatureFlags featureFlags,
+            InventoryService inventoryService
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
@@ -48,6 +49,7 @@ namespace KiCWeb.Controllers
             _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
             _featureFlags = featureFlags ?? throw new ArgumentNullException(nameof(featureFlags));
             _contextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _inventoryService = inventoryService ?? throw new ArgumentNullException(nameof(inventoryService));
         }
 
         [Route("")]
@@ -107,8 +109,8 @@ namespace KiCWeb.Controllers
             List<ItemInventory> addonInventory;
             try
             {
-                ticketInventory = await _paymentService.GetItemInventoryAsync("CURE 2026");
-                addonInventory = await _paymentService.GetItemInventoryAsync("Decadent Delight");
+                ticketInventory = await _inventoryService.GetItemInventoryAsync("CURE 2026 Ticket");
+                addonInventory = await _inventoryService.GetItemInventoryAsync("CURE 2026 Addon");
                 ViewBag.TicketInventory = ticketInventory;
                 ViewBag.Addon = addonInventory.First();
             }
@@ -303,6 +305,8 @@ namespace KiCWeb.Controllers
             if (registrationToRemove != null)
             {
                 registrations.Remove(registrationToRemove);
+                List<RegistrationViewModel> regList = new List<RegistrationViewModel>() { registrationToRemove };
+                _inventoryService.AdjustInventoryAsync(regList, true);
                 _registrationSessionService.Registrations = registrations;
             }
             return NoContent();
@@ -400,7 +404,7 @@ namespace KiCWeb.Controllers
         [Route("registration/payment")]
         public async Task<IActionResult> RegistrationPayment(CureCardFormModel cfmUpdated)
         {
-            var ticketInventory = _paymentService.GetItemInventoryAsync("CURE 2026");
+            var ticketInventory = await _inventoryService.GetItemInventoryAsync("CURE 2026 Ticket");
 
             Event CureEvent = _kdbContext.Events
                 .Where(e => e.Id == int.Parse(_configurationRoot["CUREID"]))
@@ -409,10 +413,9 @@ namespace KiCWeb.Controllers
             // Loop through cfmUpdated.Items (which are the registrations).
             // Match TicketType to ticketInventory[].Name.
             // Set TicketId to the SquareId, and set the Price
-            var ticketInventoryList = await ticketInventory;
             foreach (RegistrationViewModel r in cfmUpdated.Items)
             {
-                foreach (ItemInventory ti in ticketInventoryList)
+                foreach (InventoryItem ti in ticketInventory)
                 {
                     if (r.TicketType == ti.Name)
                     {
@@ -457,7 +460,7 @@ namespace KiCWeb.Controllers
                 if (paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
                 {
                     List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
-                    var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_paymentService, registrationViewModels, attendees);
+                    var orderId = await CureRegistrationHelpers.FinalizeTicketOrder(_inventoryService, _paymentService, registrationViewModels, attendees);
                     CureRegistrationHelpers.UpdateOrderID(_kdbContext, attendees, orderId);
                     return RedirectToAction("cardsuccess");
                 }
@@ -499,6 +502,8 @@ namespace KiCWeb.Controllers
         [Route("carderror")]
         public IActionResult CardError()
         {
+            var regList = _registrationSessionService.Registrations;
+            _inventoryService.AdjustInventoryAsync(regList, true);
             _registrationSessionService.Clear();
             return RedirectToAction("Index");
         }
