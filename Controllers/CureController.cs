@@ -179,7 +179,7 @@ namespace KiCWeb.Controllers
             var ticketInventoryList = ticketInventory;
             foreach (ItemInventory ti in ticketInventoryList)
             {
-                SelectListItem item = new SelectListItem(ti.Name, ti.Name);
+                SelectListItem item = new SelectListItem(ti.Name + " - $" + ti.Price.ToString(), ti.Name);
                 if (ti.QuantityAvailable <= 0)
                 {                 
                     item.Disabled = true;
@@ -249,10 +249,6 @@ namespace KiCWeb.Controllers
                 }
 
                 registrationData.TicketComp = comp;
-            }
-            else
-            {
-                registrationData.TicketComp = null;
             }
 
             if (registrationData.RegId != Guid.Empty)
@@ -454,7 +450,7 @@ namespace KiCWeb.Controllers
                         _logger.LogError(ex.ToString());
                     }
 
-                    return RedirectToAction("carderror");
+                    return RedirectToAction("error");
                 }
 
 
