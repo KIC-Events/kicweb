@@ -1,6 +1,6 @@
 @using KiCWeb.Helpers
 
-<div class="social-links">
+<div class="nav-icon-links">
   @foreach (var platform in new[] {
     new { Platform = "instagram", Handle = "kic_llc" },
     new { Platform = "fetlife", Handle = "KIC_Events" },
@@ -13,5 +13,11 @@
               @Html.Raw(info.SvgMarkup)
           </a>
       }
+  }
+  @if (ViewBag.checkoutCount != null && ViewBag.checkoutCount > 0)
+  {
+    <a class="checkout-button" value="@ViewBag.checkoutCount" href="/cure/registration/payment" aria-label="Shopping cart with @ViewBag.checkoutCount items">
+      <i class="fa-solid fa-cart-shopping"></i>
+    </a>
   }
 </div>

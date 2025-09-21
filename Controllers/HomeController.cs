@@ -15,7 +15,7 @@ using KiCData.Services;
 
 namespace KiCWeb.Controllers;
 
-public class HomeController : Controller
+public class HomeController : KICController
 {
 	private readonly IKiCLogger _logger;
 	private readonly IHttpContextAccessor _contextAccessor;
@@ -24,7 +24,7 @@ public class HomeController : Controller
 	private readonly IConfigurationRoot _configurationRoot;
 	private KiCdbContext _kdbContext;
 
-	public HomeController(IKiCLogger logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext)
+	public HomeController(IKiCLogger logger, IHttpContextAccessor httpContextAccessor, ICookieService cookieService, IEmailService emailService, IConfigurationRoot configurationRoot, KiCdbContext kiCdbContext, IHttpContextAccessor contextAccessor): base(configurationRoot, userService: null, contextAccessor, kiCdbContext, cookieService)
 	{
 		_logger = logger;
 		_contextAccessor = httpContextAccessor;
