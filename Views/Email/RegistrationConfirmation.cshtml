@@ -26,7 +26,7 @@
                 <div style="margin-top: 30px; font-weight: bold;">Badge & Room Details</div>
                 <div style="margin-left: 30px;">Badge name: @ViewBag.Registration.BadgeName</div>
                 <div style="margin-left: 30px;">Pronouns: @ViewBag.Registration.Pronouns</div>
-                <div style="margin-left: 30px;">Badge type: @ViewBag.Registration.TicketType @(ViewBag.Registration.HasMealAddon ? " + Decadent Delights add-on")</div>
+                <div style="margin-left: 30px;">Badge type: @ViewBag.Registration.TicketType @(ViewBag.Registration.HasMealAddon ? " + Decadent Delights add-on" : "")</div>
                 <div style="margin-left: 30px;">Room preference: @ViewBag.Registration.RoomType</div>
             </td>
         </tr>
