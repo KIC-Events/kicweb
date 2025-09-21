@@ -17,6 +17,7 @@ using System.Diagnostics;
 
 namespace KiCWeb.Controllers
 {
+//A comment
     [Route("cure")]
     public class CureController : KICController
     {
