@@ -250,6 +250,10 @@ namespace KiCWeb.Controllers
 
                 registrationData.TicketComp = comp;
             }
+            else
+            {
+                registrationData.TicketComp = null;
+            }
 
             if (registrationData.RegId != Guid.Empty)
             {
