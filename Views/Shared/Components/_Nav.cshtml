@@ -59,16 +59,8 @@
         <li><a asp-area="" asp-controller="Gen" asp-action="Consent">Consent &amp; Policies</a></li>
       </ul>
       
-      <div class="nav__menu--social">
-        @await Html.PartialAsync("Components/_SocialLinks")
-        @if (ViewBag.checkoutCount != null && ViewBag.checkoutCount > 0)
-        {
-          <div class="nav__menu--cart">
-            <a class="checkout-button" value=@ViewBag.checkoutCount href="/cure/registration/payment">
-              <i class="fa-solid fa-cart-shopping"></i>
-            </a>
-          </div>
-        }
+      <div class="nav__menu--icons">
+        @await Html.PartialAsync("Components/_NavIconLinks")
       </div>
     </div>
 
