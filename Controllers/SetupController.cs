@@ -1,6 +1,8 @@
 using KiCData.Models;
 using KiCData.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using NuGet.Protocol;
 using Square;
 using Square.Authentication;
 using Square.Exceptions;
@@ -60,9 +62,9 @@ public class SetupController
                 RestockVariants(cureId, 100);
             }
 
-            if (!itemExists("Decadent Delight"))
+            if (!itemExists("Decadent Delights"))
             {
-                _logger.LogText("Creating and stocking 'Decadent Delight' in square catalog.");
+                _logger.LogText("Creating and stocking 'Decadent Delights' in square catalog.");
                 var addonId = CreateAddonCatalogObject();
                 RestockVariants(addonId, 100);
             }
@@ -233,7 +235,7 @@ public class SetupController
             "ITEM",
             "#1",
             presentAtAllLocations: true,
-            itemData: new CatalogItem("Decadent Delight", productType: "REGULAR", variations: addonVariations)
+            itemData: new CatalogItem("Decadent Delights", productType: "REGULAR", variations: addonVariations)
         );
 
         try
