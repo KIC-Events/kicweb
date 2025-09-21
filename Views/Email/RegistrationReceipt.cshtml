@@ -1,0 +1,70 @@
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+<div style="font-family: 'Montserrat', sans-serif; background-color: #f6f6f6;">
+    <h1 style="text-align: center;">CURE 2026 Order Receipt</h1>
+    <p style="text-align: center;">Thank you for registering for CURE 2026. Your order receipt is included below. A registration confirmation has been sent to the email address associated with each attendee on your order.</p>
+    <table width="70%" border="0" cellspacing="0" cellpadding="0" style="margin-left: auto; margin-right: auto; border-radius: 10px; font-size: 16pt; background-color: #f6f6f6; background: #ffffff; padding:30px; max-width: 90%;">
+        <tbody style="">
+            <tr>
+                <td colspan="2">
+                    <p style="text-align: center; font-size: 24pt;">Payment Receipt for Order #@ViewBag.OrderId</p>
+                </td>
+            </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        @foreach (var lineItem in ViewBag.Registrations)
+        {
+            <tr style="font-size: 16pt;">
+                <td><span style="font-weight: bold;">@lineItem.TicketType:</span><span>@lineItem.BadgeName</span></td>
+                <td style="text-align: right;">@lineItem.Price.ToString("C")</td>
+            </tr>
+            @if (lineItem.MealAddOn is not null)
+            {
+                <tr>
+                    <td><span style="margin-left: 20px;">+ Decadent Delights add-on</span></td>
+                    <td style="text-align: right;">@lineItem.MealAddOn.Price.ToString("C")</td>
+                </tr>
+            }
+        }
+        <tr>
+            <td>&nbsp;</td>
+            <td style="border-bottom: 1px solid #000000;"></td>
+        </tr>
+        @if (ViewBag.DiscountAmount >= 0)
+        {
+            <tr>
+                <td style="text-align: right;">Discounts</td>
+                <td style="text-align: right;">@ViewBag.DiscountAmount.ToString("C")</td>
+            </tr>
+        }
+            <tr>
+                <td style="text-align: right;">Subtotal</td>
+                <td style="text-align: right;">@ViewBag.Subtotal.ToString("C")</td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">Sales tax (8%)</td>
+                <td style="text-align: right;">@ViewBag.SalesTax.ToString("C")</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td style="border-bottom: 2px solid #000000;"></td>
+            </tr>
+        <tr>
+            <td style="text-align: right; font-weight: bold;">Amount paid</td>
+            <td style="text-align: right; font-weight: bold;">@ViewBag.GrandTotal.ToString("C")</td>
+        </tr>
+        @if (ViewBag.PaymentMethod is not null)
+        {
+            <tr>
+                <td style="text-align: right; font-style: italic;">@ViewBag.PaymentMethod</td>
+                <td></td>
+            </tr>   
+        }
+        </tbody>
+    </table>
+</div>
+
+<div style="font-family: 'Montserrat', sans-serif; background-color: #f6f6f6;">
+    <div style="font-weight: bold;">Need help?</div>
+    <div style="margin-bottom: 10px;">If you need to make a correction or have questions about your order, send an email to <a href="mailto:admin@kicevents.com" style="font-weight: bold; color: #5F0E75; text-decoration: none;">admin@kicevents.com</a>. This transaction is subject to our <a href="https://www.kicevents.com/cure/rules" style="font-weight: bold; color: #5F0E75; text-decoration: none;">Terms of Service and Refund Policy</a>.</div>
+</div>

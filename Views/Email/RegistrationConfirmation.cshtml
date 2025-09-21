@@ -1,0 +1,40 @@
+<div style="font-family: 'Montserrat', sans-serif;">
+    <h1 style="text-align: center;">CURE 2026 Registration Confirmation</h1>
+    <p style="text-align: center;">You’re registered for CURE 2026! A receipt was sent to the billing contact listed on the order. If you had multiple registrations on the same order, each registration will receive a confirmation sent to the email address provided during registration.</p>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: #6E2A80; color: #FFFFFF; padding:30px; width: 100%;">
+        <tr>
+            <td style="text-align: left; font-size: 18pt; font-weight: bold;">
+                <p>Registration Details</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left; font-size: 12pt;">
+                <p style="margin-bottom: 5px;">Order #@ViewBag.OrderId</p>
+                <div style="background: #FFCD36; height: 2px; width: 70%; margin-bottom: 10px;"></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left; font-size: 12pt;">
+                <div style="font-weight: bold;">Legal Name</div>
+                <div style="font-style: italic;">This must match the name on your ID when you check-in at the event.</div>
+                <div style="margin-left: 30px;">First name: @ViewBag.Registration.FirstName</div>
+                <div style="margin-left: 30px;">Last name: @ViewBag.Registration.LastName</div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left; font-size: 12pt;">
+                <div style="margin-top: 30px; font-weight: bold;">Badge & Room Details</div>
+                <div style="margin-left: 30px;">Badge name: @ViewBag.Registration.BadgeName</div>
+                <div style="margin-left: 30px;">Pronouns: @ViewBag.Registration.Pronouns</div>
+                <div style="margin-left: 30px;">Badge type: @ViewBag.Registration.TicketType @(ViewBag.Registration.HasMealAddon ? " + Decadent Delights add-on")</div>
+                <div style="margin-left: 30px;">Room preference: @ViewBag.Registration.RoomType</div>
+            </td>
+        </tr>
+    </table>
+    <div style="height: 30px;"></div>
+    <div style="font-weight: bold;">What's next?</div>
+    <div style="margin-bottom: 10px;">Once we have completed your background check will receive an email with hotel booking instructions. In the meantime, please take a moment to review our <a href="https://www.kicevents.com/cure/rules">Rules & FAQ page.</a></div>
+
+    <div style="font-weight: bold;">Need help?</div>
+    <div style="margin-bottom: 10px;">If you need to make a correction or have questions about your registration, send an email to <a href="mailto:admin@kicevents.com" style="font-weight: bold;">admin@kicevents.com</a></div>
+</div>

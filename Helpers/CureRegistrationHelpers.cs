@@ -1,7 +1,9 @@
+using Hangfire;
 using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Models.WebModels.PurchaseModels;
 using KiCData.Services;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace KiCWeb.Helpers;
 
@@ -61,8 +63,10 @@ public static class CureRegistrationHelpers
         {
             paymentService.ReduceAddonInventoryAsync(ticketAddons);
         }
+        
+        var orderId = paymentService.getOrderID(registrationViewModels);
 
-        return paymentService.getOrderID(registrationViewModels);
+        return orderId;
     }
     
     public static void UpdateOrderID(KiCdbContext ctx, List<Attendee> attendees, string orderId)
@@ -74,5 +78,31 @@ public static class CureRegistrationHelpers
         }
 
         ctx.SaveChanges();
+    }
+
+    public static void ScheduleReceipt(IBackgroundJobClient jobClient,
+        List<RegistrationViewModel> registrationViewModels, string orderId)
+    {
+        var receiptDict = new Dictionary<string, dynamic?>
+        {
+            { "OrderId", orderId },
+            { "DiscountAmount", null },
+            { "Subtotal", null },
+            { "GrandTotal", null },
+            { "PaymentMethod", null },
+            { "Registrations", null }
+        };
+        // TODO: Schedule receipt to billing contact
+
+        foreach (var reg in registrationViewModels)
+        {
+            var registrationDict = new Dictionary<string, dynamic?>
+            {
+                { "OrderId", orderId },
+                { "Registration", reg }
+            };
+            // TODO: Send registration confirmation
+        }
+
     }
 }
