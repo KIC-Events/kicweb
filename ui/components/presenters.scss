@@ -189,7 +189,35 @@
         gap: var(--space-4);
 
         .social-links {
+          @include flex-center;
+          gap: var(--space-2);
+          align-items: center;
           justify-content: flex-start;
+
+          a {
+            position: relative;
+            color: var(--color-accent);
+            transition: var(--transition-default);
+            display: flex;
+            align-items: center;
+
+            svg {
+              height: 1.125rem;
+
+              path {
+                transition: var(--transition-default);
+                fill: var(--color-accent);
+              }
+            }
+
+            &:hover {
+              color: var(--color-white);
+
+              svg path {
+                fill: var(--color-white);
+              }
+            }
+          }
         }
       }
 
