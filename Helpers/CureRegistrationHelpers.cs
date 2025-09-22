@@ -44,11 +44,11 @@ public static class CureRegistrationHelpers
         return attendee.Entity;
     }
 
-    public static async Task<string?> FinalizeTicketOrder(InventoryService inventoryService, PaymentService paymentService,
+    public static string? FinalizeTicketOrder(InventoryService inventoryService, PaymentService paymentService,
         List<RegistrationViewModel> registrationViewModels, List<Attendee> attendees)
     {
         paymentService.SetAttendeesPaid(attendees);
-        await inventoryService.AdjustInventoryAsync(registrationViewModels);
+        inventoryService.AdjustInventory(registrationViewModels);
 
         return paymentService.getOrderID(registrationViewModels);
     }

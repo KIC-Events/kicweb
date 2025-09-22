@@ -236,7 +236,7 @@ namespace KiCWeb.Controllers
 
             var registrations = _registrationSessionService.Registrations;
 
-            _inventoryService.AdjustInventoryAsync(registrations);
+            _inventoryService.AdjustInventory(registrations);
 
             if (registrationData.DiscountCode is not null)
             {
@@ -309,7 +309,7 @@ namespace KiCWeb.Controllers
             {
                 registrations.Remove(registrationToRemove);
                 List<RegistrationViewModel> regList = new List<RegistrationViewModel>() { registrationToRemove };
-                _inventoryService.AdjustInventoryAsync(regList, true);
+                _inventoryService.AdjustInventory(regList, true);
                 _registrationSessionService.Registrations = registrations;
             }
             return NoContent();
@@ -461,7 +461,7 @@ namespace KiCWeb.Controllers
                 if (paymentStatus.ToLower() == "approved" || paymentStatus.ToLower() == "completed")
                 {
                     List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
-                    var orderId = await CureRegistrationHelpers.FinalizeTicketOrder(_inventoryService, _paymentService, registrationViewModels, attendees);
+                    var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_inventoryService, _paymentService, registrationViewModels, attendees);
                     CureRegistrationHelpers.UpdateOrderID(_kdbContext, attendees, orderId);
                     return RedirectToAction("cardsuccess");
                 }
@@ -504,7 +504,7 @@ namespace KiCWeb.Controllers
         public IActionResult CardError()
         {
             var regList = _registrationSessionService.Registrations;
-            _inventoryService.AdjustInventoryAsync(regList, true);
+            _inventoryService.AdjustInventory(regList, true);
             _registrationSessionService.Clear();
             return RedirectToAction("Index");
         }
