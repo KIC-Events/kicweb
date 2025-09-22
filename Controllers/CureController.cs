@@ -236,7 +236,7 @@ namespace KiCWeb.Controllers
 
             var registrations = _registrationSessionService.Registrations;
 
-            _inventoryService.AdjustInventoryAsync(registrations, true);
+            _inventoryService.AdjustInventoryAsync(registrations);
 
             if (registrationData.DiscountCode is not null)
             {
