@@ -523,6 +523,7 @@ namespace KiCWeb.Controllers
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
             ViewBag.OrderID = _paymentService.getOrderID(registrationViewModels);
             _registrationSessionService.Clear();
+            ViewBag.checkoutCount = 0; // Clear cart icon after successful payment
 
             return View("CardSuccess"); // Views/Cure/CardSuccess.cshtml
         }
@@ -644,6 +645,7 @@ namespace KiCWeb.Controllers
             List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
             ViewBag.OrderID = _paymentService.getOrderID(registrationViewModels);
             _registrationSessionService.Clear();
+            ViewBag.checkoutCount = 0; // Clear cart icon after successful registration
 
             return View();
         }
