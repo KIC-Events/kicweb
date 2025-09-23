@@ -377,7 +377,7 @@ namespace KiCWeb.Controllers
                 }
             }
 
-            if (priceCheck == 0)
+            if (priceCheck <= 0)
             {
                 var attendees = _paymentService.HandleNonPaymentCURETicketOrder(registrations);
                 var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_inventoryService, _paymentService, registrations, attendees);
