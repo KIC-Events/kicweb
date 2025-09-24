@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Hangfire;
 using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Services;
@@ -59,6 +60,55 @@ public static class CureRegistrationHelpers
         {
             attendee.OrderID = orderId;
             ctx.Attendees.Update(attendee);
+        }
+
+        ctx.SaveChanges();
+    }
+    
+    public static void WriteNonPaymentTickets(KiCdbContext ctx, List<RegistrationViewModel> registrationViewModels, string orderId)
+    {
+        foreach(RegistrationViewModel rvm in registrationViewModels)
+        {
+            TicketComp tc = ctx.TicketComp
+                .Where(t => t.Id == rvm.TicketComp.Id)
+                .First();
+
+            Ticket ticket = ctx.Ticket
+                .Where(t => t.Id == tc.TicketId)
+                .First();
+
+            Attendee attendee = ctx.Attendees
+                .Where(a => a.TicketId == ticket.Id)
+                .First();
+
+            Member member = ctx.Members
+                .Where(m => m.Id == attendee.MemberId)
+                .First();
+
+            attendee.BadgeName = rvm.BadgeName;
+            attendee.isRegistered = true;
+            attendee.OrderID = orderId;
+            attendee.Pronouns = rvm.Pronouns;
+            attendee.RoomPreference = rvm.RoomType;
+
+            ticket.DatePurchased = DateOnly.FromDateTime(DateTime.Today);
+            ticket.Type = rvm.TicketType;
+            ticket.HasMealAddon = rvm.HasMealAddon;
+
+            member.City = rvm.City;
+            member.DateOfBirth = rvm.DateOfBirth;
+            member.Email = rvm.Email;
+            member.FetName = rvm.FetName;
+            member.ClubId = rvm.ClubId;
+            member.LastName = rvm.LastName;
+            member.PhoneNumber = rvm.PhoneNumber;
+            member.SexOnID = rvm.SexOnID;
+            member.State = rvm.State;
+            member.FirstName = rvm.FirstName;
+
+            ctx.Update(ticket);
+            ctx.Update(attendee);
+            ctx.Update(member);
         }
 
         ctx.SaveChanges();

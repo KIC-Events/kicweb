@@ -381,6 +381,7 @@ namespace KiCWeb.Controllers
             {
                 var attendees = _paymentService.HandleNonPaymentCURETicketOrder(registrations);
                 var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_inventoryService, _paymentService, registrations, attendees);
+                CureRegistrationHelpers.WriteNonPaymentTickets(_kdbContext, registrations, orderId);
                 return RedirectToAction("NoPay");
             }
 
