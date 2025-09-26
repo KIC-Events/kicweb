@@ -236,6 +236,12 @@ namespace KiCWeb.Controllers
 
             var registrations = _registrationSessionService.Registrations;
 
+            registrationData.RegId = Guid.NewGuid();
+
+
+            registrationData.Price = _inventoryService.GetTicketPrice(registrationData.TicketType);
+
+            registrations.Add(registrationData);
             _inventoryService.AdjustInventory(registrations);
 
             if (registrationData.DiscountCode is not null)
@@ -247,7 +253,6 @@ namespace KiCWeb.Controllers
 
                 if (comp is null)
                 {
-                    registrationData.RegId = Guid.NewGuid();
                     registrations.Add(registrationData);
                     _registrationSessionService.Registrations = registrations;
                     return RedirectToAction("RegistrationForm", new { regId = registrationData.RegId });
@@ -271,13 +276,6 @@ namespace KiCWeb.Controllers
                 }
             }
 
-            // Set registrationData.RegID
-            registrationData.RegId = Guid.NewGuid();
-
-
-            registrationData.Price = _inventoryService.GetTicketPrice(registrationData.TicketType);
-
-            registrations.Add(registrationData);
             _registrationSessionService.Registrations = registrations;
 
             if (action == "CreateMore")
