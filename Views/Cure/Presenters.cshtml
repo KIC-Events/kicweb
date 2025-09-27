@@ -48,27 +48,28 @@
                   @p.Tagline
                 </div>
               }
-              <div class="header-details__class-list">
-                @foreach (var presentation in p.Presentations)
-                {
-                  <div>@presentation.Name</div>
-                }
-              </div>
+              @if (p.Presentations?.Any() == true)
+              {
+                <div class="header-details__class-list">
+                  @foreach (var presentation in p.Presentations)
+                  {
+                    <div>@presentation.Name</div>
+                  }
+                </div>
+              }
               @if (p.Socials?.Any() == true)
               {
                 <div class="header-details__socials">
-                  <div>
-                    <div class="header-details__socials-title">Follow @p.PublicName:</div>
-                    <div class="social-links">
-                      @foreach (var social in p.Socials)
-                      {
-                          if (SocialPlatformMap.Platforms.TryGetValue(social.Platform.ToLower(), out var platform))
-                          {
-                              var fullUrl = platform.UrlPrefix + social.Handle;
-                              @Html.Raw($"""<a href="{fullUrl}" target="_blank" rel="noopener noreferrer">{platform.SvgMarkup}</a>""")
-                          }
-                      }
-                    </div>
+                  <div class="header-details__socials-title">Follow @p.PublicName:</div>
+                  <div class="social-links">
+                    @foreach (var social in p.Socials)
+                    {
+                        if (SocialPlatformMap.Platforms.TryGetValue(social.Platform.ToLower(), out var platform))
+                        {
+                            var fullUrl = platform.UrlPrefix + social.Handle;
+                            @Html.Raw($"""<a href="{fullUrl}" target="_blank" rel="noopener noreferrer">{platform.SvgMarkup}</a>""")
+                        }
+                    }
                   </div>
                 </div>
               }
