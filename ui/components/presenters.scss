@@ -186,7 +186,7 @@
       &__socials {
         margin-top: .875rem;
         display: flex;
-        gap: var(--space-4);
+        flex-direction: column;
 
         .social-links {
           @include flex-center;
