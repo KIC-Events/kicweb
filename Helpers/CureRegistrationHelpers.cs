@@ -93,7 +93,6 @@ public static class CureRegistrationHelpers
 
             ticket.DatePurchased = DateOnly.FromDateTime(DateTime.Today);
             ticket.Type = rvm.TicketType;
-            ticket.HasMealAddon = rvm.HasMealAddon;
 
             member.City = rvm.City;
             member.DateOfBirth = rvm.DateOfBirth;

@@ -111,9 +111,7 @@ namespace KiCWeb.Controllers
             try
             {
                 ticketInventory = await _inventoryService.GetItemInventoryAsync("CURE 2026 Ticket");
-                addonInventory = await _inventoryService.GetItemInventoryAsync("CURE 2026 Addon");
                 ViewBag.TicketInventory = ticketInventory;
-                ViewBag.Addon = addonInventory.First();
             }
             catch (InventoryException e)
             {
@@ -143,8 +141,6 @@ namespace KiCWeb.Controllers
                     new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
                 ];
 
-                List<InventoryItem> _addons = addonInventory;
-                ViewBag.Addon = _addons.First();
                 ViewBag.TicketInventory = ticketInventory;
                 ViewBag.IsUpdating = true;
                 
@@ -200,8 +196,6 @@ namespace KiCWeb.Controllers
               new SelectListItem("Not Staying in Host Hotel", "Not Staying in Host Hotel"),
             ];
 
-            List<InventoryItem> addons = addonInventory;
-            ViewBag.Addon = addons.First();
             ViewBag.TicketInventory = ticketInventoryList;
             ViewBag.IsUpdating = false;
 
@@ -229,10 +223,6 @@ namespace KiCWeb.Controllers
             //     return View(registrationData);
             // }
 
-            if (registrationData.HasMealAddon == true)
-            {
-                registrationData.MealAddon = await _inventoryService.GetAddonItemAsync();
-            }
 
             var registrations = _registrationSessionService.Registrations;
 
@@ -366,12 +356,6 @@ namespace KiCWeb.Controllers
                 {
                     priceCheck -= r.TicketComp.CompAmount;
                     r.Price -= (double)r.TicketComp.CompAmount;
-                }
-
-                if (r.MealAddon is not null)
-                {
-                    priceCheck += r.MealAddon.PriceInDollars;
-                    r.Price += (double)r.MealAddon.PriceInDollars;
                 }
             }
 
