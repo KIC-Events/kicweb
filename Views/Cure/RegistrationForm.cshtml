@@ -221,27 +221,6 @@
         }
       </div>
 
-      @*Add addon*@
-      <div class="field" id="decadent-delights-selection">
-        <label asp-for="HasMealAddon"></label>
-        <p>Select here if you would like to add on this Friday VIP exclusive opportunity to mingle with our presenters with a Buffet style dinner. Limited capacity and already included with the Gold Ticket Option. - @ViewBag.AddOn.PriceInDollars.ToString("C")</p>
-        @if(ViewBag.AddOn.Stock > 0){
-          <div class="radio">
-            <input type="checkbox" name="HasMealAddon" asp-for="HasMealAddon" />
-          </div>
-        }
-        @if(ViewBag.AddOn.Stock == 0){
-          <div class="radio">
-            <input type="checkbox" name="HasMealAddon" asp-for="HasMealAddon" disabled />
-            <span>SOLD OUT</span>
-          </div>
-        }
-      </div>
-      <div class="field hidden" id="decadent-delights-gold">
-        <label asp-for="HasMealAddon"></label>
-        <p>Lucky you. Your gold ticket includes the Decadent Delights add-on. Decadent Delights is an exclusive VIP opportunity to mingle with our presenters with a Buffet style dinner on Friday of the convention.</p>
-      </div>
-
       @* If RegId is set, show the "Update" button *@
       @if (ViewBag.IsUpdating)
       {
