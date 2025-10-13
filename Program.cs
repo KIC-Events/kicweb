@@ -1,3 +1,4 @@
+using System;
 using KiCWeb.Configuration;
 using KiCData.Services;
 using KiCData.Models;
@@ -5,6 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Hangfire;
 using Hangfire.MySql;
 using KiCWeb.Helpers;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +65,7 @@ builder.Services.AddHangfire((sp, config) =>
 				}
 			)
 		);
+		config.UseSerializerSettings(new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 	}
 );
 builder.Services.AddHangfireServer();

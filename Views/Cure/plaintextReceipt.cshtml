@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Components.Web
+@model ReceiptViewModel
+@{
+    Layout = null;
+}
+CURE 2026 Registration Receipt
+
+What's next?
+Once we have processed your registration you will receive an email with your registration confirmation number and, if
+applicable, directions on how to secure your hotel request. This may take up to a few weeks to process. In the meantime,
+please take a moment to review our Rules & FAQ page (https://www.kicevents.com/cure/rules).
+
+
+Registration details:
+----------
+@foreach (Attendee attendee in Model.Attendees)
+{
+    <text>@Html.Raw(@attendee.Ticket.Type) Ticket - $@attendee.Ticket.Price</text>
+    @if(attendee.Ticket.Type == "Gold"){
+        <text>
+Includes Decadent Delights VIP meet-and-greet dinner</text>
+    }
+    <text></text>
+    <text>Badge name: @Html.Raw(@attendee.BadgeName)</text>
+    <text>Pronouns: @Html.Raw((attendee.Pronouns ?? ""))</text>
+    <text>Room preference: @Html.Raw(@attendee.RoomPreference)</text>
+    <text>----------</text>
+    <text></text>
+}
+@if (Model.Order.Discounts > 0){<text>Discounts: $@($"{Model.Order.Discounts / 100.0:C}")</text>} 
+
+Subtotal: @($"{Model.Order.SubTotal / 100.0:C}")
+Tax: @($"{Model.Order.Taxes / 100.0:C}")
+Total: @($"{Model.Order.GrandTotal / 100.0:C}")
+
+Order id: @Model.Order.SquareOrderId
+Order date: @Model.Order.OrderDate
+Payment method: @Model.PaymentMethod
+
+Got a question or need to update your registration? Email us at registration@kicevents.com

@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using Microsoft.AspNetCore.Mvc;
 using KiCData.Services;
 using KiCData.Models.WebModels;
@@ -13,7 +12,7 @@ using Event = KiCData.Models.Event;
 using KiCData.Exceptions;
 using KiCWeb.Helpers;
 using JsonSerializer = System.Text.Json.JsonSerializer;
-using System.Diagnostics;
+using Hangfire;
 
 namespace KiCWeb.Controllers
 {
@@ -28,7 +27,7 @@ namespace KiCWeb.Controllers
         private readonly InventoryService _inventoryService;
         private readonly RegistrationSessionService _registrationSessionService;
         private readonly IConfigurationRoot _configurationRoot;
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IBackgroundJobClient _backgroundJobClient;
 
         public CureController(
             IConfigurationRoot configurationRoot,
@@ -40,7 +39,8 @@ namespace KiCWeb.Controllers
             ILogger<CureController> kiCLogger,
             RegistrationSessionService registrationSessionService,
             FeatureFlags featureFlags,
-            InventoryService inventoryService
+            InventoryService inventoryService,
+            IBackgroundJobClient backgroundJobClient
         ) : base(configurationRoot, userService, httpContextAccessor, kiCdbContext, cookieService)
         {
             _kdbContext = kiCdbContext ?? throw new ArgumentNullException(nameof(kiCdbContext));
@@ -49,8 +49,8 @@ namespace KiCWeb.Controllers
             _registrationSessionService = registrationSessionService ?? throw new ArgumentNullException(nameof(registrationSessionService));
             _configurationRoot = configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
             _featureFlags = featureFlags ?? throw new ArgumentNullException(nameof(featureFlags));
-            _contextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _inventoryService = inventoryService ?? throw new ArgumentNullException(nameof(inventoryService));
+            _backgroundJobClient = backgroundJobClient;
         }
 
         [Route("")]
@@ -99,7 +99,7 @@ namespace KiCWeb.Controllers
         /// </summary>
         /// <param name="regId">The optional registration ID for editing an existing registration.</param>
         /// <returns>
-        /// An <see cref="Task{IActionResult}"/> that renders the registration form view,
+        /// An <see cref="Task"/> that renders the registration form view,
         /// or returns NotFound if the registration form is disabled.
         /// </returns>
         [HttpGet]
@@ -364,6 +364,7 @@ namespace KiCWeb.Controllers
                 var attendees = _paymentService.HandleNonPaymentCURETicketOrder(registrations);
                 var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_inventoryService, _paymentService, registrations, attendees);
                 CureRegistrationHelpers.WriteNonPaymentTickets(_kdbContext, registrations, orderId);
+                CureRegistrationHelpers.ScheduleEmailReceipt(attendees, _backgroundJobClient, _kdbContext, _logger, _configurationRoot, _paymentService, this.ControllerContext);
                 return RedirectToAction("NoPay");
             }
 
@@ -446,6 +447,7 @@ namespace KiCWeb.Controllers
                     List<RegistrationViewModel> registrationViewModels = _registrationSessionService.Registrations;
                     var orderId = CureRegistrationHelpers.FinalizeTicketOrder(_inventoryService, _paymentService, registrationViewModels, attendees);
                     CureRegistrationHelpers.UpdateOrderID(_kdbContext, attendees, orderId);
+                    CureRegistrationHelpers.ScheduleEmailReceipt(attendees, _backgroundJobClient, _kdbContext, _logger, _configurationRoot, _paymentService, this.ControllerContext);
                     return RedirectToAction("cardsuccess");
                 }
                 else if (paymentStatus.ToLower() == "canceled" || paymentStatus.ToLower() == "failed")

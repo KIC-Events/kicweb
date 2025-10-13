@@ -1,13 +1,24 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using KiCData.Models;
 using KiCData.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NuGet.Protocol;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Square;
 using Square.Authentication;
 using Square.Exceptions;
 using Square.Models;
 using Event = KiCData.Models.Event;
+using Order = KiCData.Models.Order;
 
 namespace KiCWeb.Controllers;
 
@@ -20,8 +31,9 @@ public class SetupController
     private KiCdbContext _db;
     private SquareClient _client;
     private IWebHostEnvironment _env;
+    private readonly InventoryService _inventoryService;
     
-    public SetupController(IConfigurationRoot configuration, IKiCLogger logger, KiCdbContext context, IWebHostEnvironment appenv)
+    public SetupController(IConfigurationRoot configuration, IKiCLogger logger, KiCdbContext context, IWebHostEnvironment appenv, InventoryService inventoryService)
     {
         Square.Environment env = Square.Environment.Production;
 
@@ -43,6 +55,107 @@ public class SetupController
         _db = context;
         _config = configuration;
         _env =  appenv;
+        _inventoryService = inventoryService;
+    }
+
+    [HttpPost]
+    [Route("/GenerateOrders")]
+    public IActionResult GenerateOrders([FromHeader(Name = "X-Api-Key")] string apiKey)
+    {
+        var user = _db.User.FirstOrDefault(x => x.Token == apiKey);
+        if (user == null)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var attendees = _db.Attendees.Where(x=>x.OrderID != null).ToList();
+        var orderIds =  attendees.Select(x => x.OrderID).Distinct().ToList();
+
+        List<Square.Models.Order> orderData = [];
+        foreach (var orderBatch in orderIds.Chunk(100))
+        {
+            var orderResponse = _client.OrdersApi.BatchRetrieveOrders(new BatchRetrieveOrdersRequest(orderBatch));
+            if (orderResponse != null && orderResponse.Orders != null)
+            {
+                orderData.AddRange(orderResponse.Orders);
+            }
+        }
+        var newOrders = 0;
+
+        foreach (var orderId in orderIds)
+        {
+            Square.Models.Order? squareOrder;
+            try
+            {
+                squareOrder = orderData.First(x => x.Id == orderId);
+            }
+            catch (InvalidOperationException e)
+            {
+                squareOrder = null;
+            }
+            var orderDate = DateTime.MinValue;
+            var attendee = _db.Attendees.Include(attendee => attendee.Ticket).First(x => x.OrderID == orderId);
+            var orderTotal = 0;
+            if (attendee.Ticket != null)
+            {
+                orderDate = attendee.Ticket.DatePurchased.GetValueOrDefault().ToDateTime(TimeOnly.MinValue);
+                orderTotal = (int) _db.Attendees.Where(x => x.OrderID == orderId && x.Ticket != null).Sum(x => x.Ticket!.Price) * 100;
+            }
+
+            int grandTotal;
+            int paymentsTotal = 0;
+            int refundsTotal = 0;
+            if (squareOrder != null)
+            {
+                orderDate = DateTime.Parse(squareOrder.CreatedAt);
+                grandTotal = (int)squareOrder.TotalMoney.Amount.GetValueOrDefault();
+                paymentsTotal = (int)squareOrder.Tenders.Sum(x => x.AmountMoney.Amount.GetValueOrDefault());
+                var paymentIds = squareOrder.Tenders.Select(x => x.PaymentId).ToList();
+                foreach (var paymentId in paymentIds)
+                {
+                    var result = _client.PaymentsApi.GetPayment(paymentId);
+                    if (result.Payment.RefundedMoney != null)
+                    {
+                        refundsTotal += (int)result.Payment.RefundedMoney.Amount.GetValueOrDefault();
+                    }
+                }
+                
+                if (squareOrder.Refunds != null)
+                {
+                    refundsTotal = (int) squareOrder.Refunds.Sum(x => x.AmountMoney.Amount.GetValueOrDefault());
+                }
+            }
+            else
+            {
+                grandTotal = orderTotal;
+            }
+            var existingOrder = _db.Orders.FirstOrDefault(x => x.SquareOrderId == orderId);
+            if (existingOrder == null)
+            {
+                var o = new Order
+                {
+                    SquareOrderId = orderId,
+                    ItemsTotal = orderTotal,
+                    OrderDate = orderDate,
+                    GrandTotal = grandTotal,
+                    PaymentsTotal = paymentsTotal,
+                    RefundsTotal = refundsTotal,
+                };
+                _db.Orders.Add(o);
+                newOrders++;
+            }
+            else
+            {
+                existingOrder.ItemsTotal = orderTotal;
+                existingOrder.OrderDate = orderDate;
+                existingOrder.GrandTotal = grandTotal;
+                existingOrder.PaymentsTotal = paymentsTotal;
+                existingOrder.RefundsTotal = refundsTotal;
+                _db.Orders.Update(existingOrder);
+            }
+        }
+        _db.SaveChanges();
+        return new OkResult();
     }
     
     [HttpPost]
@@ -52,21 +165,23 @@ public class SetupController
         {
             return "This endpoint is only callable in development mode";
         }
+
+        var result = "";
         
         try
         {
-            if (!itemExists("CURE 2026"))
+            if (!itemExists("CURE 2026 Ticket"))
             {
-                _logger.LogText("Creating and stocking 'CURE 2026' in square catalog.");
+                _logger.LogText("Creating and stocking 'CURE 2026 Ticket' in catalog.");
+                result += "Creating and stocking 'CURE 2026 Ticket' in catalog.\n";
                 var cureId = CreateCURECatalogObject();
-                RestockVariants(cureId, 100);
             }
 
-            if (!itemExists("Decadent Delights"))
+            if (!itemExists("CURE 2026 Addon"))
             {
-                _logger.LogText("Creating and stocking 'Decadent Delights' in square catalog.");
+                _logger.LogText("Creating and stocking 'CURE 2026 Addon' in catalog.");
+                result += "Creating and stocking 'CURE 2026 Addon' in catalog.\n";
                 var addonId = CreateAddonCatalogObject();
-                RestockVariants(addonId, 100);
             }
         }
         catch (ApiException e)
@@ -74,7 +189,7 @@ public class SetupController
             Console.WriteLine(e);
             throw;
         }
-        return "OK";
+        return result;
     }
 
     [HttpPost]
@@ -85,6 +200,8 @@ public class SetupController
         {
             return "This endpoint is only callable in development mode";
         }
+        
+        SetupCureProducts();
 
         Event CureEvent = new Event
         {
@@ -100,157 +217,76 @@ public class SetupController
 
     private bool itemExists(string itemName)
     {
-        var response = _client.CatalogApi.SearchCatalogObjects(new SearchCatalogObjectsRequest(query: new CatalogQuery(exactQuery: new CatalogQueryExact("name", itemName))));
-        return !(response.Objects == null || response.Objects.Count == 0);
-    }
-
-    private void RestockVariants(string itemId, int amount)
-    {
-        var response = _client.CatalogApi.RetrieveCatalogObject(itemId);
-        List<InventoryChange> inventoryChanges = new List<InventoryChange>();
-        var locationId = _client.LocationsApi.RetrieveLocation("main").Location.Id;
-        foreach (var variant in response.MObject.ItemData.Variations)
-        {
-            inventoryChanges.Add(
-                new InventoryChange("ADJUSTMENT", adjustment: new InventoryAdjustment(
-                    catalogObjectId: variant.Id,
-                    fromState: "NONE",
-                    toState: "IN_STOCK",
-                    quantity: amount.ToString(),
-                    locationId: locationId,
-                    occurredAt:  DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss.ffffK")
-                    ))
-                );
-        }
-        var idempotencyKey = Guid.NewGuid().ToString("N");
-        _client.InventoryApi.BatchChangeInventory(new BatchChangeInventoryRequest(idempotencyKey, inventoryChanges));
+        var itemCount = _db.InventoryItems.Count(i => i.Type == itemName);
+        return itemCount > 0;
     }
 
     private string CreateCURECatalogObject()
     {
-        var idempotencyKey = Guid.NewGuid().ToString("N");
-
-        List<CatalogObject> cureVariations =
-        [
-            new CatalogObject(
-                type: "ITEM_VARIATION",
-                id: "#2",
-                itemVariationData: new CatalogItemVariation(
-                    inventoryAlertType: "NONE",
-                    itemId: "#1",
-                    priceMoney: new Money(10000, "USD"),
-                    name: "Standard",
-                    sku: "cure-standard",
-                    trackInventory: true,
-                    stockable: true
-                )
-            ),
-            new CatalogObject(
-                type: "ITEM_VARIATION",
-                id: "#3",
-                itemVariationData: new CatalogItemVariation(
-                    inventoryAlertType: "NONE",
-                    itemId: "#1",
-                    priceMoney: new Money(10000, "USD"),
-                    name: "Silver",
-                    sku: "cure-silver",
-                    trackInventory: true,
-                    stockable: true
-                )
-            ),
-            new CatalogObject(
-                type: "ITEM_VARIATION",
-                id: "#4",
-                itemVariationData: new CatalogItemVariation(
-                    inventoryAlertType: "NONE",
-                    itemId: "#1",
-                    priceMoney: new Money(10000, "USD"),
-                    name: "Gold",
-                    sku: "cure-gold",
-                    trackInventory: true,
-                    stockable: true
-                )
-            ),
-            new CatalogObject(
-                type: "ITEM_VARIATION",
-                id: "#5",
-                itemVariationData: new CatalogItemVariation(
-                    inventoryAlertType: "NONE",
-                    itemId: "#1",
-                    priceMoney: new Money(10000, "USD"),
-                    name: "Sweet It's a Suite",
-                    sku: "cure-suite",
-                    trackInventory: true,
-                    stockable: true
-                )
-            )
-        ];
-        var cureCatalogObject = new CatalogObject(
-            "ITEM",
-            "#1",
-            presentAtAllLocations: true,
-            itemData: new CatalogItem("CURE 2026", productType: "EVENT", variations: cureVariations)
-        );
-        try
+        var cureTicketType = "CURE 2026 Ticket";
+        
+        InventoryItem standard = new InventoryItem
         {
-            var response = _client.CatalogApi.UpsertCatalogObject(new UpsertCatalogObjectRequest(idempotencyKey, cureCatalogObject));
-            return response.CatalogObject.Id;
-        }
-        catch (ApiException e)
+            Description = "CURE 2026 Standard Ticket",
+            Name = "Standard",
+            IsActive = true,
+            PriceInCents = 15000,
+            Stock = 100,
+            Type = cureTicketType
+        };
+        
+        InventoryItem silver = new InventoryItem
         {
-            Console.WriteLine(
-                $"An error occured while updating addon catalog. API returned status code {e.ResponseCode}");
-            foreach (var err in e.Errors)
-            {
-                Console.WriteLine($"[{err.Category}] {err.Code}: {err.Detail} Field: {err.Field}");
-            }
-
-            throw;
-        }
+            Description = "CURE 2026 Silver Ticket",
+            Name = "Silver",
+            IsActive = true,
+            PriceInCents = 27500,
+            Stock = 100,
+            Type = cureTicketType
+        };
+        
+        InventoryItem gold = new InventoryItem
+        {
+            Description = "CURE 2026 Gold Ticket",
+            Name = "Gold",
+            IsActive = true,
+            PriceInCents = 40000,
+            Stock = 100,
+            Type = cureTicketType
+        };
+        
+        InventoryItem suiteItsASuite = new InventoryItem
+        {
+            Description = "CURE 2026 Suite it's a Suite Ticket",
+            Name = "Suite it's a Suite",
+            IsActive = true,
+            PriceInCents = 25000,
+            Stock = 100,
+            Type = cureTicketType
+        };
+        
+        var standardResult = _db.InventoryItems.Add(standard);
+        var silverResult = _db.InventoryItems.Add(silver);
+        var goldResult = _db.InventoryItems.Add(gold);
+        var suiteResult = _db.InventoryItems.Add(suiteItsASuite);
+        _db.SaveChanges();
+        return standardResult.Entity.Id.ToString() ?? "null";
     }
 
     private string CreateAddonCatalogObject()
     {
-        var idempotencyKey = Guid.NewGuid().ToString("N");
-
-        List<CatalogObject> addonVariations =
-        [
-            new CatalogObject(
-                type: "ITEM_VARIATION",
-                id: "#4",
-                itemVariationData: new CatalogItemVariation(
-                    inventoryAlertType: "NONE",
-                    itemId: "#1",
-                    priceMoney: new Money(5000, "USD"),
-                    name: "Standard",
-                    sku: "cure-addon-decadentdelight",
-                    trackInventory: true,
-                    stockable: true
-                )
-            )
-        ];
-
-        var addonCatalogObject = new CatalogObject
-        (
-            "ITEM",
-            "#1",
-            presentAtAllLocations: true,
-            itemData: new CatalogItem("Decadent Delights", productType: "REGULAR", variations: addonVariations)
-        );
-
-        try
+        InventoryItem addon = new InventoryItem
         {
-            var response = _client.CatalogApi.UpsertCatalogObject(new UpsertCatalogObjectRequest(idempotencyKey, addonCatalogObject));
-            return response.CatalogObject.Id;
-        }
-        catch (ApiException e)
-        {
-            Console.WriteLine($"An error occured while updating addon catalog. API returned status code {e.ResponseCode}");
-            foreach (var err in e.Errors)
-            {
-                Console.WriteLine($"[{err.Category}] {err.Code}: {err.Detail} Field: {err.Field}");
-            }
-            throw;
-        }
+            Description = "Decadent Delights addon",
+            Name = "Decadent Delights",
+            IsActive = true,
+            PriceInCents = 7500,
+            Stock = 100,
+            Type = "CURE 2026 Addon"
+        };
+        
+        var addonResult = _db.InventoryItems.Add(addon);
+        _db.SaveChanges();
+        return addonResult.Entity.Id.ToString() ?? "null";
     }
 }
