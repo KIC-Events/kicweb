@@ -67,10 +67,11 @@ public static class CureRegistrationHelpers
 
         ctx.SaveChanges();
     }
-    
-    public static void WriteNonPaymentTickets(KiCdbContext ctx, List<RegistrationViewModel> registrationViewModels, string orderId)
+
+    public static void WriteNonPaymentTickets(KiCdbContext ctx, List<RegistrationViewModel> registrationViewModels,
+        string orderId)
     {
-        foreach(RegistrationViewModel rvm in registrationViewModels)
+        foreach (RegistrationViewModel rvm in registrationViewModels)
         {
             TicketComp tc = ctx.TicketComp
                 .Where(t => t.Id == rvm.TicketComp.Id)
@@ -112,6 +113,7 @@ public static class CureRegistrationHelpers
             ctx.Update(attendee);
             ctx.Update(member);
         }
+    }
 
 
     public static void ScheduleEmailReceipt(List<Attendee> attendees, IBackgroundJobClient bgClient, KiCdbContext ctx, ILogger logger, IConfigurationRoot config, PaymentService paymentService, ControllerContext controllerContext)
