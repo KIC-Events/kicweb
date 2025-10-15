@@ -249,5 +249,12 @@
         addon.classList.remove("hidden");
       }
     });
+    if(ticketDropdown.value.toLowerCase()==="gold") {
+      goldtext.classList.remove("hidden");
+      addon.classList.add("hidden");
+    } else {
+      goldtext.classList.add("hidden");
+      addon.classList.remove("hidden");
+    }
   });
 </script>

@@ -3,6 +3,8 @@ using Hangfire;
 using KiCData.Models;
 using KiCData.Models.WebModels;
 using KiCData.Services;
+using KiCWeb.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace KiCWeb.Helpers;
 
@@ -50,6 +52,7 @@ public static class CureRegistrationHelpers
     {
         paymentService.SetAttendeesPaid(attendees);
         inventoryService.AdjustInventory(registrationViewModels);
+        //ScheduleEmailReceipt(attendees, backgroundJobClient, ctx, logger, config, emailService, paymentService);
 
         return paymentService.getOrderID(registrationViewModels);
     }
@@ -64,10 +67,11 @@ public static class CureRegistrationHelpers
 
         ctx.SaveChanges();
     }
-    
-    public static void WriteNonPaymentTickets(KiCdbContext ctx, List<RegistrationViewModel> registrationViewModels, string orderId)
+
+    public static void WriteNonPaymentTickets(KiCdbContext ctx, List<RegistrationViewModel> registrationViewModels,
+        string orderId)
     {
-        foreach(RegistrationViewModel rvm in registrationViewModels)
+        foreach (RegistrationViewModel rvm in registrationViewModels)
         {
             TicketComp tc = ctx.TicketComp
                 .Where(t => t.Id == rvm.TicketComp.Id)
@@ -109,7 +113,69 @@ public static class CureRegistrationHelpers
             ctx.Update(attendee);
             ctx.Update(member);
         }
+    }
 
+
+    public static void ScheduleEmailReceipt(List<Attendee> attendees, IBackgroundJobClient bgClient, KiCdbContext ctx, ILogger logger, IConfigurationRoot config, PaymentService paymentService, ControllerContext controllerContext)
+    {
+        var order = ctx.Orders.First(x => x.SquareOrderId == attendees.First().OrderID);
+        var paymentMethod = "Comp Ticket";
+        if (order.PaymentsTotal > 0 && order.SquareOrderId != null)
+        {
+                paymentMethod = paymentService.GetPaymentMethodForOrder(order.SquareOrderId) ?? "Unknown";
+        }
+
+        var receiptViewModel = new ReceiptViewModel
+        {
+            Attendees = attendees,
+            Order = order,
+            PaymentMethod = paymentMethod
+        };
+        
+        var renderedHtmlTemplate = ViewHelpers.RenderViewToStringAsync("receipt", receiptViewModel, controllerContext).Result;
+        var renderedPlaintextTemplate = ViewHelpers.RenderViewToStringAsync("plaintextReceipt", receiptViewModel, controllerContext).Result;
+        if (config["Email Addresses:From"] == null)
+        {
+            logger.LogError("Unable to generate email receipt. From address is not set in config. Set 'Email Addresses:From' to a valid email address to enable sending.");
+            return;
+        }
+        foreach (var attendee in attendees)
+        {
+            if (attendee.Id == null)
+            {
+                logger.LogError($"Unable to generate email receipt: Attendee {attendee.BadgeName} does not have a record id");
+                continue;
+            }
+            if (attendee.Member == null)
+            {
+                logger.LogError($"Unable to generate email receipt: Attendee {attendee.Id} has no Member");
+                continue;
+            }
+            if (attendee.Member.Email == null)
+            {
+                logger.LogError($"Unable to generate email receipt: Attendee {attendee.Id} has no email address (Member {attendee.Member.Id}).");
+                continue;
+            }
+
+            var msg = new FormMessage
+            {
+                To = [attendee.Member.Email],
+                Subject = "CURE 2026 Registration Receipt",
+                From = config["Email Addresses:From"]!,
+                Html = renderedHtmlTemplate,
+                Text = renderedPlaintextTemplate,
+            };
+            var attendeeId = attendee.Id ?? 0;
+            bgClient.Enqueue<EmailReceiptJob>((job) => job.SendEmail(msg, attendeeId));
+        }
+    }
+
+    public static void SendEmail(FormMessage message, int attendeeId, KiCdbContext ctx, IEmailService emailService)
+    {
+        emailService.SendEmail(message);
+        var attendee = ctx.Attendees.First(x => x.Id == attendeeId);
+        attendee.RegistrationConfirmationEmailTimestamp = DateTime.UtcNow;
+        ctx.Attendees.Update(attendee);
         ctx.SaveChanges();
     }
 }
