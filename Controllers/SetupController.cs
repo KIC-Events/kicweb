@@ -116,7 +116,10 @@ public class SetupController
                 {
                     orderDate = DateTime.Parse(squareOrder.CreatedAt);
                     grandTotal = (int)squareOrder.TotalMoney.Amount.GetValueOrDefault();
-                    paymentsTotal = (int)squareOrder.Tenders.Sum(x => x.AmountMoney?.Amount ?? 0);
+                    if (squareOrder.Tenders != null)
+                    {
+                        paymentsTotal = (int)squareOrder.Tenders.Sum(x => x?.AmountMoney?.Amount ?? 0);
+                    }
                     var paymentIds = squareOrder.Tenders.Select(x => x.PaymentId).ToList();
                     foreach (var paymentId in paymentIds)
                     {
