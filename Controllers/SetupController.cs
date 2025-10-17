@@ -34,7 +34,7 @@ public class SetupController
     private IWebHostEnvironment _env;
     private readonly InventoryService _inventoryService;
     
-    public SetupController(IConfigurationRoot configuration, IKiCLogger logger, KiCdbContext context, IWebHostEnvironment appenv, InventoryService inventoryService, ILogger rootlogger, SquareClient client)
+    public SetupController(IConfigurationRoot configuration, IKiCLogger logger, KiCdbContext context, IWebHostEnvironment appenv, InventoryService inventoryService, ILogger<SetupController> rootlogger)
     {
         Square.Environment env = Square.Environment.Production;
 
