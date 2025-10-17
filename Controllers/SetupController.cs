@@ -102,6 +102,8 @@ public class SetupController
                 orderTotal = (int) _db.Attendees.Where(x => x.OrderID == orderId && x.Ticket != null).Sum(x => x.Ticket!.Price) * 100;
             }
 
+            int taxesTotal = (int)Math.Round(orderTotal * 0.8);
+            int subTotal = orderTotal;
             int grandTotal;
             int paymentsTotal = 0;
             int refundsTotal = 0;
@@ -109,7 +111,7 @@ public class SetupController
             {
                 orderDate = DateTime.Parse(squareOrder.CreatedAt);
                 grandTotal = (int)squareOrder.TotalMoney.Amount.GetValueOrDefault();
-                paymentsTotal = (int)squareOrder.Tenders.Sum(x => x.AmountMoney.Amount.GetValueOrDefault());
+                paymentsTotal = (int)squareOrder.Tenders.Sum(x => x.AmountMoney?.Amount ?? 0);
                 var paymentIds = squareOrder.Tenders.Select(x => x.PaymentId).ToList();
                 foreach (var paymentId in paymentIds)
                 {
@@ -137,6 +139,8 @@ public class SetupController
                     SquareOrderId = orderId,
                     ItemsTotal = orderTotal,
                     OrderDate = orderDate,
+                    SubTotal = subTotal,
+                    Taxes = taxesTotal,
                     GrandTotal = grandTotal,
                     PaymentsTotal = paymentsTotal,
                     RefundsTotal = refundsTotal,
@@ -148,6 +152,8 @@ public class SetupController
             {
                 existingOrder.ItemsTotal = orderTotal;
                 existingOrder.OrderDate = orderDate;
+                existingOrder.SubTotal = subTotal;
+                existingOrder.Taxes = taxesTotal;
                 existingOrder.GrandTotal = grandTotal;
                 existingOrder.PaymentsTotal = paymentsTotal;
                 existingOrder.RefundsTotal = refundsTotal;
