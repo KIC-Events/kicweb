@@ -28,12 +28,13 @@ public class SetupController
 {
     private IConfigurationRoot _config;
     private IKiCLogger _logger;
+    private ILogger _rootlogger;
     private KiCdbContext _db;
     private SquareClient _client;
     private IWebHostEnvironment _env;
     private readonly InventoryService _inventoryService;
     
-    public SetupController(IConfigurationRoot configuration, IKiCLogger logger, KiCdbContext context, IWebHostEnvironment appenv, InventoryService inventoryService)
+    public SetupController(IConfigurationRoot configuration, IKiCLogger logger, KiCdbContext context, IWebHostEnvironment appenv, InventoryService inventoryService, ILogger rootlogger, SquareClient client)
     {
         Square.Environment env = Square.Environment.Production;
 
@@ -56,6 +57,7 @@ public class SetupController
         _config = configuration;
         _env =  appenv;
         _inventoryService = inventoryService;
+        _rootlogger = rootlogger;
     }
 
     [HttpPost]
@@ -81,87 +83,98 @@ public class SetupController
             }
         }
         var newOrders = 0;
+        var errorOrders = new List<string>();
 
         foreach (var orderId in orderIds)
         {
-            Square.Models.Order? squareOrder;
             try
             {
-                squareOrder = orderData.First(x => x.Id == orderId);
-            }
-            catch (InvalidOperationException e)
-            {
-                squareOrder = null;
-            }
-            var orderDate = DateTime.MinValue;
-            var attendee = _db.Attendees.Include(attendee => attendee.Ticket).First(x => x.OrderID == orderId);
-            var orderTotal = 0;
-            if (attendee.Ticket != null)
-            {
-                orderDate = attendee.Ticket.DatePurchased.GetValueOrDefault().ToDateTime(TimeOnly.MinValue);
-                orderTotal = (int) _db.Attendees.Where(x => x.OrderID == orderId && x.Ticket != null).Sum(x => x.Ticket!.Price) * 100;
-            }
-
-            int taxesTotal = (int)Math.Round(orderTotal * 0.8);
-            int subTotal = orderTotal;
-            int grandTotal;
-            int paymentsTotal = 0;
-            int refundsTotal = 0;
-            if (squareOrder != null)
-            {
-                orderDate = DateTime.Parse(squareOrder.CreatedAt);
-                grandTotal = (int)squareOrder.TotalMoney.Amount.GetValueOrDefault();
-                paymentsTotal = (int)squareOrder.Tenders.Sum(x => x.AmountMoney?.Amount ?? 0);
-                var paymentIds = squareOrder.Tenders.Select(x => x.PaymentId).ToList();
-                foreach (var paymentId in paymentIds)
+                Square.Models.Order? squareOrder;
+                try
                 {
-                    var result = _client.PaymentsApi.GetPayment(paymentId);
-                    if (result.Payment.RefundedMoney != null)
+                    squareOrder = orderData.First(x => x.Id == orderId);
+                }
+                catch (InvalidOperationException e)
+                {
+                    squareOrder = null;
+                }
+                var orderDate = DateTime.MinValue;
+                var attendee = _db.Attendees.Include(attendee => attendee.Ticket).First(x => x.OrderID == orderId);
+                var orderTotal = 0;
+                if (attendee.Ticket != null)
+                {
+                    orderDate = attendee.Ticket.DatePurchased.GetValueOrDefault().ToDateTime(TimeOnly.MinValue);
+                    orderTotal = (int) _db.Attendees.Where(x => x.OrderID == orderId && x.Ticket != null).Sum(x => x.Ticket!.Price) * 100;
+                }
+
+                int taxesTotal = (int)Math.Round(orderTotal * 0.8);
+                int subTotal = orderTotal;
+                int grandTotal;
+                int paymentsTotal = 0;
+                int refundsTotal = 0;
+                if (squareOrder != null)
+                {
+                    orderDate = DateTime.Parse(squareOrder.CreatedAt);
+                    grandTotal = (int)squareOrder.TotalMoney.Amount.GetValueOrDefault();
+                    paymentsTotal = (int)squareOrder.Tenders.Sum(x => x.AmountMoney?.Amount ?? 0);
+                    var paymentIds = squareOrder.Tenders.Select(x => x.PaymentId).ToList();
+                    foreach (var paymentId in paymentIds)
                     {
-                        refundsTotal += (int)result.Payment.RefundedMoney.Amount.GetValueOrDefault();
+                        var result = _client.PaymentsApi.GetPayment(paymentId);
+                        if (result.Payment.RefundedMoney != null)
+                        {
+                            refundsTotal += (int)result.Payment.RefundedMoney.Amount.GetValueOrDefault();
+                        }
+                    }
+                    
+                    if (squareOrder.Refunds != null)
+                    {
+                        refundsTotal = (int) squareOrder.Refunds.Sum(x => x.AmountMoney.Amount.GetValueOrDefault());
                     }
                 }
-                
-                if (squareOrder.Refunds != null)
+                else
                 {
-                    refundsTotal = (int) squareOrder.Refunds.Sum(x => x.AmountMoney.Amount.GetValueOrDefault());
+                    grandTotal = orderTotal;
+                }
+                var existingOrder = _db.Orders.FirstOrDefault(x => x.SquareOrderId == orderId);
+                if (existingOrder == null)
+                {
+                    var o = new Order
+                    {
+                        SquareOrderId = orderId,
+                        ItemsTotal = orderTotal,
+                        OrderDate = orderDate,
+                        SubTotal = subTotal,
+                        Taxes = taxesTotal,
+                        GrandTotal = grandTotal,
+                        PaymentsTotal = paymentsTotal,
+                        RefundsTotal = refundsTotal,
+                    };
+                    _db.Orders.Add(o);
+                    newOrders++;
+                }
+                else
+                {
+                    existingOrder.ItemsTotal = orderTotal;
+                    existingOrder.OrderDate = orderDate;
+                    existingOrder.SubTotal = subTotal;
+                    existingOrder.Taxes = taxesTotal;
+                    existingOrder.GrandTotal = grandTotal;
+                    existingOrder.PaymentsTotal = paymentsTotal;
+                    existingOrder.RefundsTotal = refundsTotal;
+                    _db.Orders.Update(existingOrder);
                 }
             }
-            else
+            catch (Exception e)
             {
-                grandTotal = orderTotal;
-            }
-            var existingOrder = _db.Orders.FirstOrDefault(x => x.SquareOrderId == orderId);
-            if (existingOrder == null)
-            {
-                var o = new Order
-                {
-                    SquareOrderId = orderId,
-                    ItemsTotal = orderTotal,
-                    OrderDate = orderDate,
-                    SubTotal = subTotal,
-                    Taxes = taxesTotal,
-                    GrandTotal = grandTotal,
-                    PaymentsTotal = paymentsTotal,
-                    RefundsTotal = refundsTotal,
-                };
-                _db.Orders.Add(o);
-                newOrders++;
-            }
-            else
-            {
-                existingOrder.ItemsTotal = orderTotal;
-                existingOrder.OrderDate = orderDate;
-                existingOrder.SubTotal = subTotal;
-                existingOrder.Taxes = taxesTotal;
-                existingOrder.GrandTotal = grandTotal;
-                existingOrder.PaymentsTotal = paymentsTotal;
-                existingOrder.RefundsTotal = refundsTotal;
-                _db.Orders.Update(existingOrder);
+                _rootlogger.LogError($"Exception occured while processing order {orderId}");
+                _rootlogger.LogError(e.Message);
+                errorOrders.Add(orderId);
+                continue;
             }
         }
         _db.SaveChanges();
-        return new OkResult();
+        return new OkObjectResult(new { errors=errorOrders });
     }
     
     [HttpPost]
