@@ -118,7 +118,13 @@ public class SetupController
                     grandTotal = (int)squareOrder.TotalMoney.Amount.GetValueOrDefault();
                     if (squareOrder.Tenders != null)
                     {
-                        paymentsTotal = (int)squareOrder.Tenders.Sum(x => x?.AmountMoney?.Amount ?? 0);
+                        foreach (var tender in squareOrder.Tenders)
+                        {
+                            if (tender.CardDetails.Status is "APPROVED" or "CAPTURED")
+                            {
+                                paymentsTotal += (int)(tender.AmountMoney?.Amount ?? 0);
+                            }
+                        }
                     }
                     var paymentIds = squareOrder.Tenders.Select(x => x.PaymentId).ToList();
                     foreach (var paymentId in paymentIds)
