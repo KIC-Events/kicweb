@@ -231,6 +231,8 @@ namespace KiCWeb.Controllers
 
             registrationData.Price = _inventoryService.GetTicketPrice(registrationData.TicketType);
 
+            if (registrationData.RoomType == "King" || registrationData.RoomType == "Doubles") registrationData.WaitList = true;
+
             registrations.Add(registrationData);
             _inventoryService.AdjustInventory(registrations);
 
