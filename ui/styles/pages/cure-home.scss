@@ -32,13 +32,56 @@
 
   &__volunteers-callout {
     display: flex;
-    align-items: center;;
+    align-items: center;
     gap: var(--space-3);
+    
+    .content {
+      flex: 1;
+      max-width: 40rem;
+    }
+    
     img {
       display: block;
-      max-width: 22.5rem;
+      max-width: 26rem;
       width: 100%;
       height: auto;
+      flex-shrink: 0;
+      
+      @include mixins.breakpoint(md) {
+        max-width: 22.5rem;
+      }
+    }
+  }
+
+  &__merch-callout {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-direction: row;
+    
+    @include mixins.breakpoint(sm) {
+      flex-direction: column;
+    }
+    
+    .content {
+      flex: 1;
+      max-width: 40rem;
+    }
+    
+    img {
+      display: block;
+      max-width: 26rem;
+      width: 100%;
+      height: auto;
+      flex-shrink: 0;
+      
+      @include mixins.breakpoint(md) {
+        max-width: 22.5rem;
+      }
+
+      @include mixins.breakpoint(sm) {
+        max-width: 100%;
+      }
     }
   }
 }
