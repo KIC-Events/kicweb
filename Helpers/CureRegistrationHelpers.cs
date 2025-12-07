@@ -113,6 +113,8 @@ public static class CureRegistrationHelpers
             ctx.Update(attendee);
             ctx.Update(member);
         }
+
+        ctx.SaveChanges();
     }
 
 
